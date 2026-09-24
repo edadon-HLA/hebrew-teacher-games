@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חדש או ישן?</title>
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:Arial,"Noto Sans Hebrew",sans-serif;
+    background:linear-gradient(135deg,#eef6ff,#fff8ed);
+    color:#1f2937; min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .game{width:min(900px,94vw); padding:24px}
+  .top{text-align:center;margin-bottom:14px}
+  h1{font-size:clamp(32px,6vw,56px);margin:0 0 6px}
+  .subtitle{font-size:clamp(18px,3vw,25px);color:#64748b}
+  .score{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:14px 0}
+  .pill{background:white;border-radius:999px;padding:9px 18px;font-size:20px;box-shadow:0 3px 12px #00000012}
+  .card{
+    background:white;border-radius:28px;padding:22px;
+    box-shadow:0 12px 35px #00000014;text-align:center;
+  }
+  .progress{height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin-bottom:18px}
+  .bar{height:100%;background:#60a5fa;width:0%;transition:.25s}
+  .object{
+    min-height:330px; display:flex;align-items:center;justify-content:center;
+    border-radius:22px;background:#f8fafc;margin-bottom:20px;overflow:hidden;
+  }
+  .object .emoji{font-size:190px;filter:drop-shadow(0 10px 8px #0002)}
+  .object .old{filter:grayscale(.75) sepia(.35) drop-shadow(0 10px 8px #0002)}
+  .buttons{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  button{
+    border:0;border-radius:20px;padding:20px 10px;font-size:clamp(30px,5vw,46px);
+    font-weight:700;cursor:pointer;min-height:90px;
+    background:#e2e8f0;color:#172033;transition:transform .12s,background .12s;
+  }
+  button:hover{transform:translateY(-2px)}
+  button:focus-visible{outline:4px solid #2563eb;outline-offset:3px}
+  .new:hover{background:#dbeafe}.oldbtn:hover{background:#fef3c7}
+  .message{min-height:42px;margin-top:15px;font-size:24px;font-weight:700}
+  .correct{color:#15803d}.wrong{color:#b91c1c}
+  .next{display:none;margin:12px auto 0;padding:12px 25px;font-size:20px;background:#1d4ed8;color:white;min-height:auto}
+  .restart{margin-top:12px;padding:10px 20px;font-size:18px;min-height:auto;background:#f1f5f9}
+  @media(max-width:600px){
+    .game{padding:12px}.card{padding:14px}.object{min-height:250px}.object .emoji{font-size:135px}
+    .buttons{gap:10px} button{min-height:78px}
+  }
+</style>
+</head>
+<body>
+<div class="game">
+  <div class="top">
+    <h1>חדש או ישן?</h1>
+    <div class="subtitle">הסתכלו על התמונה ובחרו את המילה המתאימה.</div>
+    <div class="score">
+      <div class="pill">⭐ ניקוד: <span id="score">0</span></div>
+      <div class="pill">שאלה <span id="num">1</span> מתוך <span id="total">12</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="object" id="object" aria-label="תמונה של חפץ"></div>
+    <div class="buttons">
+      <button class="new" data-answer="new">חדש</button>
+      <button class="oldbtn" data-answer="old">ישן</button>
+    </div>
+    <div class="message" id="message" aria-live="polite"></div>
+    <button class="next" id="next">המשך ➜</button>
+    <br>
+    <button class="restart" id="restart">התחל מחדש</button>
+  </div>
+</div>
+
+<script>
+const items = [
+  {emoji:"🚗", type:"new", label:"מכונית חדשה"},
+  {emoji:"🚲", type:"old", label:"אופניים ישנים", old:true},
+  {emoji:"📱", type:"new", label:"טלפון חדש"},
+  {emoji:"📺", type:"old", label:"טלוויזיה ישנה", old:true},
+  {emoji:"👟", type:"new", label:"נעליים חדשות"},
+  {emoji:"📻", type:"old", label:"רדיו ישן", old:true},
+  {emoji:"🧸", type:"new", label:"דובי חדש"},
+  {emoji:"⌚", type:"old", label:"שעון ישן", old:true},
+  {emoji:"💻", type:"new", label:"מחשב חדש"},
+  {emoji:"📷", type:"old", label:"מצלמה ישנה", old:true},
+  {emoji:"🎒", type:"new", label:"תיק חדש"},
+  {emoji:"☎️", type:"old", label:"טלפון ישן", old:true}
+];
+
+let order=[], index=0, score=0, answered=false;
+const $=id=>document.getElementById(id);
+
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  return a;
+}
+function render(){
+  const item=order[index];
+  $("object").innerHTML=`<div class="emoji ${item.old?"old":""}" role="img" aria-label="${item.label}">${item.emoji}</div>`;
+  $("num").textContent=index+1;
+  $("total").textContent=order.length;
+  $("bar").style.width=((index)/order.length*100)+"%";
+  $("message").textContent="";
+  $("message").className="message";
+  $("next").style.display="none";
+  answered=false;
+}
+function choose(answer){
+  if(answered)return;
+  answered=true;
+  const item=order[index];
+  if(answer===item.type){
+    score++; $("score").textContent=score;
+    $("message").textContent="כל הכבוד! ⭐";
+    $("message").className="message correct";
+  }else{
+    $("message").textContent="כמעט! התשובה היא: "+(item.type==="new"?"חדש":"ישן");
+    $("message").className="message wrong";
+  }
+  document.querySelectorAll("[data-answer]").forEach(b=>b.disabled=true);
+  $("next").style.display="inline-block";
+}
+function next(){
+  if(index<order.length-1){
+    index++;
+    document.querySelectorAll("[data-answer]").forEach(b=>b.disabled=false);
+    render();
+  }else{
+    $("object").innerHTML='<div style="font-size:90px">🎉</div>';
+    $("bar").style.width="100%";
+    $("message").textContent=`סיימתם! קיבלתם ${score} מתוך ${order.length} ⭐`;
+    $("message").className="message correct";
+    $("next").style.display="none";
+    document.querySelectorAll("[data-answer]").forEach(b=>b.disabled=true);
+  }
+}
+function restart(){
+  order=shuffle([...items]); index=0; score=0; $("score").textContent=0;
+  document.querySelectorAll("[data-answer]").forEach(b=>b.disabled=false);
+  render();
+}
+document.querySelectorAll("[data-answer]").forEach(b=>b.addEventListener("click",()=>choose(b.dataset.answer)));
+$("next").addEventListener("click",next);
+$("restart").addEventListener("click",restart);
+restart();
+</script>
+</body>
+</html>

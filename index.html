@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>משחקי עברית למורים</title>
+<style>
+:root{--ink:#182235;--muted:#657187;--line:#e2e7ef;--bg:#f7f8fc;--accent:#4f46e5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Noto Sans Hebrew",sans-serif}
+header{background:#fff;border-bottom:1px solid var(--line)}.nav{max-width:1120px;margin:auto;padding:18px 22px;display:flex;justify-content:space-between;align-items:center}.logo{font-size:22px;font-weight:900}.nav small{color:var(--muted)}
+.hero{max-width:1120px;margin:auto;text-align:center;padding:52px 22px 30px}.badge{display:inline-block;background:#eef2ff;color:#3730a3;border-radius:999px;padding:7px 14px;font-weight:800;margin-bottom:14px}
+h1{font-size:clamp(35px,6vw,58px);margin:0 0 12px}.hero p{max-width:700px;margin:auto;color:var(--muted);font-size:19px;line-height:1.6}
+main{max-width:1120px;margin:auto;padding:10px 22px 60px}h2{font-size:28px;margin:18px 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;min-height:260px;display:flex;flex-direction:column;box-shadow:0 5px 18px #1b28420a}
+.icon{font-size:44px;margin-bottom:12px}.card h3{margin:0 0 9px;font-size:23px}.card p{margin:0 0 18px;color:var(--muted);line-height:1.55;flex:1}
+.play{display:block;text-decoration:none;text-align:center;background:#111827;color:#fff;border-radius:12px;padding:13px;font-weight:800}.play:hover{background:var(--accent)}
+.info{margin-top:25px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}.info p{color:var(--muted);line-height:1.6}
+footer{text-align:center;color:var(--muted);padding:25px}@media(max-width:850px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.grid{grid-template-columns:1fr}.nav{gap:8px;flex-direction:column}}
+</style></head>
+<body>
+<header><div class="nav"><div class="logo">🎓 משחקי עברית</div><small>משחקים אינטראקטיביים למורים ולתלמידים</small></div></header>
+<section class="hero"><div class="badge">Hebrew Classroom Games</div><h1>לומדים עברית דרך משחק</h1><p>בחרו משחק והתחילו לשחק ישירות בדפדפן. האתר מותאם גם למחשב וגם לטלפון.</p></section>
+<main><h2>המשחקים</h2><div class="grid">
+<article class="card"><div class="icon">🗺️</div><h3>מי גר איפה? — מפה</h3><p>מפת ארצות הברית לתרגול גר / גרה, מדינות ושאלות.</p><a class="play" href="games/mi-gar-eifo.html">▶ לשחק</a></article>
+<article class="card"><div class="icon">🖼️</div><h3>מילה ותמונה</h3><p>משחק זיכרון: התאימו בין מילה בעברית לבין תמונה.</p><a class="play" href="games/word-picture-memory.html">▶ לשחק</a></article>
+<article class="card"><div class="icon">🆕</div><h3>חדש או ישן?</h3><p>תרגול המילים חדש וישן באמצעות תמונות.</p><a class="play" href="games/new-or-old.html">▶ לשחק</a></article>
+<article class="card"><div class="icon">🏠</div><h3>בית ושכנים</h3><p>תרגול קומות, דירות, שכנים וגר / גרה.</p><a class="play" href="games/housing-neighbors.html">▶ לשחק</a></article>
+<article class="card"><div class="icon">🔤</div><h3>דפוס וכתב</h3><p>משחק זיכרון שבו בוחרים את האותיות לתרגול.</p><a class="play" href="games/letters-memory.html">▶ לשחק</a></article>
+</div><div class="info"><h2>למורים</h2><p>כל משחק נמצא בקובץ HTML נפרד. כדי להוסיף משחק בעתיד, פשוט מעלים את קובץ המשחק לתיקיית <b>games</b> ומוסיפים כרטיס אחד ל־<b>index.html</b>.</p></div></main>
+<footer>© משחקי עברית למורים</footer></body></html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>משחק זיכרון – בחירת אותיות</title>
+<style>
+@font-face{font-family:GveretLevin;src:url("https://cdn.jsdelivr.net/npm/@fontsource/gveret-levin/files/gveret-levin-hebrew-400-normal.woff2") format("woff2");font-display:swap}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fb;color:#172033;font-family:Arial,sans-serif}
+.wrap{max-width:1100px;margin:auto;padding:24px}
+h1{text-align:center;margin:4px 0 6px;font-size:clamp(28px,4vw,42px)}
+.sub{text-align:center;color:#566176;margin-bottom:18px;font-size:18px}
+.panel{background:#fff;border:1px solid #dfe3ea;border-radius:18px;padding:20px}
+.picker{display:grid;grid-template-columns:repeat(11,1fr);gap:9px;margin:16px 0}
+.pick{min-height:52px;border:1px solid #d8deea;border-radius:11px;background:#fff;font-size:27px;font-weight:700;cursor:pointer}
+.pick.selected{background:#e7eefc;border:2px solid #4267b2}
+.actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+button.action{border:0;border-radius:11px;padding:11px 17px;font:inherit;font-weight:700;cursor:pointer;background:#4267b2;color:white}
+button.secondary{background:#fff;color:#172033;border:1px solid #d8deea}
+.status{font-weight:700;margin:14px 0;min-height:25px;text-align:center}
+.board{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin-top:16px}
+.card{height:125px;perspective:850px;cursor:pointer}
+.inner{width:100%;height:100%;position:relative;transition:transform .4s;transform-style:preserve-3d}
+.card.open .inner,.card.matched .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #dfe3ea;background:#fff}
+.back{font-size:40px;color:#788397;font-weight:700}
+.front{transform:rotateY(180deg)}
+.letter{font-size:62px;line-height:1}
+.print .letter{font-family:Arial,sans-serif;font-weight:700}
+.script .letter{font-family:GveretLevin,cursive;font-weight:400}
+.label{font-size:13px;color:#788397;margin-top:7px}
+.matched .front{background:#eef8f0;border-color:#79bd88}
+@media(max-width:700px){.picker{grid-template-columns:repeat(6,1fr)}.board{grid-template-columns:repeat(4,1fr)}.card{height:110px}}
+@media(max-width:420px){.picker{grid-template-columns:repeat(5,1fr)}.board{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>משחק זיכרון: דפוס ↔ כתב</h1>
+<div class="sub">בחרו את האותיות שיופיעו במשחק, ואז מצאו את הזוגות.</div>
+<div class="panel">
+  <div style="font-size:22px;font-weight:800">בחרו את האותיות למשחק</div>
+  <div style="font-size:15px;color:#788397;margin-top:4px">כל אות שתבחרו תופיע פעמיים: פעם בדפוס ופעם בכתב.</div>
+  <div id="picker" class="picker"></div>
+  <div class="actions">
+    <button class="action secondary" id="all">בחר הכול</button>
+    <button class="action secondary" id="none">נקה הכול</button>
+    <button class="action" id="start">התחל משחק</button>
+  </div>
+  <div id="status" class="status"></div>
+  <div id="game" class="board"></div>
+</div>
+</div>
+<script>
+const letters=['א','ב','ג','ד','ה','ו','ז','ח','ט','י','כ','ל','מ','נ','ס','ע','פ','צ','ק','ר','ש','ת'];
+const picker=document.getElementById('picker'),game=document.getElementById('game'),status=document.getElementById('status');
+let selected=new Set(),first=null,second=null,locked=false,score=0;
+letters.forEach(l=>{
+ const b=document.createElement('button'); b.type='button'; b.className='pick'; b.textContent=l; b.setAttribute('aria-pressed','false');
+ b.addEventListener('click',()=>{selected.has(l)?selected.delete(l):selected.add(l);updatePicker()});
+ picker.appendChild(b);
+});
+function updatePicker(){
+ [...picker.children].forEach((b,i)=>{const yes=selected.has(letters[i]);b.classList.toggle('selected',yes);b.setAttribute('aria-pressed',String(yes))});
+ status.textContent=selected.size?`נבחרו ${selected.size} אותיות.`:'בחרו לפחות אות אחת.';
+}
+document.getElementById('all').onclick=()=>{selected=new Set(letters);updatePicker()};
+document.getElementById('none').onclick=()=>{selected.clear();game.innerHTML='';updatePicker()};
+document.getElementById('start').onclick=startGame;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startGame(){
+ if(!selected.size){status.textContent='בחרו לפחות אות אחת כדי להתחיל.';return}
+ first=second=null;locked=false;score=0;game.innerHTML='';
+ const cards=[];
+ [...selected].forEach((letter,i)=>{cards.push({letter,type:'print',id:i+'p'});cards.push({letter,type:'script',id:i+'s'})});
+ shuffle(cards).forEach(data=>{
+  const c=document.createElement('div');c.className='card '+data.type;c.dataset.letter=data.letter;c.dataset.type=data.type;
+  c.innerHTML='<div class="inner"><div class="face back">?</div><div class="face front"><div class="letter">'+data.letter+'</div><div class="label">'+(data.type==='print'?'דפוס':'כתב')+'</div></div></div>';
+  c.addEventListener('click',()=>flip(c));game.appendChild(c);
+ });
+ status.textContent=`מצאו ${selected.size} זוגות.`;
+}
+function flip(c){
+ if(locked||c.classList.contains('open')||c.classList.contains('matched'))return;
+ c.classList.add('open');
+ if(!first){first=c;return}
+ second=c;locked=true;
+ const match=first.dataset.letter===second.dataset.letter&&first.dataset.type!==second.dataset.type;
+ if(match){
+  first.classList.add('matched');second.classList.add('matched');score++;
+  status.textContent=`מצוין! ${score} מתוך ${selected.size} זוגות.`;
+  first=second=null;locked=false;
+  if(score===selected.size)status.textContent='כל הכבוד! מצאתם את כל הזוגות! 🏆';
+ }else{
+  status.textContent='לא אותו זוג — נסו שוב.';
+  setTimeout(()=>{first.classList.remove('open');second.classList.remove('open');first=second=null;locked=false;status.textContent=`מצאו ${selected.size} זוגות.`},850);
+ }
+}
+updatePicker();
+</script>
+</body>
+</html>
