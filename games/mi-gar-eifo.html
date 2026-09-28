@@ -61,6 +61,15 @@ const people = [{"abbr":"AL","state":"אלבמה","name":"ליונל ריצ׳י"
 const questions = [["NY", "מי גר בניו יורק?", "שרה ג׳סיקה פרקר", "ביונסה", 0], ["TX", "איפה ביונסה גרה?", "טקסס", "ניו יורק", 0], ["NJ", "מי גר בניו ג׳רזי?", "ברוס ספרינגסטין", "טיילור סוויפט", 0], ["PA", "איפה טיילור סוויפט גרה?", "פנסילבניה", "פלורידה", 0], ["HI", "מי גר בהוואי?", "ברונו מארס", "מורגן פרימן", 0], ["TN", "איפה מורגן פרימן גר?", "טנסי", "אוהיו", 0], ["CA", "מי גר בקליפורניה?", "ג׳ניפר אניסטון", "ג׳וליה רוברטס", 0], ["GA", "איפה ג׳וליה רוברטס גרה?", "ג׳ורג׳יה", "יוטה", 0], ["OH", "מי גר באוהיו?", "לברון ג׳יימס", "ביל גייטס", 0], ["WA", "איפה ביל גייטס גר?", "וושינגטון", "טקסס", 0], ["UT", "מי גר ביוטה?", "פוסט מאלון", "ברוס ספרינגסטין", 0], ["FL", "איפה טום בריידי גר?", "פלורידה", "מיין", 0], ["MA", "מי גר במסצ׳וסטס?", "מאט דיימון", "טיילור סוויפט", 0], ["MN", "איפה פרינס גר?", "מינסוטה", "נבדה", 0], ["MI", "מי גר במישיגן?", "מדונה", "ביונסה", 0], ["ME", "איפה סטיבן קינג גר?", "מיין", "קליפורניה", 0], ["NV", "מי גר בנבדה?", "אנדרה אגאסי", "מת׳יו פוקס", 0], ["CO", "איפה קווין קוסטנר גר?", "קולורדו", "ניו יורק", 0], ["AZ", "מי גר באריזונה?", "אמה סטון", "אופרה וינפרי", 0], ["LA", "איפה ריס וית׳רספון גרה?", "לואיזיאנה", "וירג׳יניה", 0]];
 const byAbbr = Object.fromEntries(people.map(p=>[p.abbr,p]));
 const fips = {1:"AL",2:"AK",4:"AZ",5:"AR",6:"CA",8:"CO",9:"CT",10:"DE",11:"DC",12:"FL",13:"GA",15:"HI",16:"ID",17:"IL",18:"IN",19:"IA",20:"KS",21:"KY",22:"LA",23:"ME",24:"MD",25:"MA",26:"MI",27:"MN",28:"MS",29:"MO",30:"MT",31:"NE",32:"NV",33:"NH",34:"NJ",35:"NM",36:"NY",37:"NC",38:"ND",39:"OH",40:"OK",41:"OR",42:"PA",44:"RI",45:"SC",46:"SD",47:"TN",48:"TX",49:"UT",50:"VT",51:"VA",53:"WA",54:"WV",55:"WI",56:"WY"};
+function shuffleArray(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+let questionSet=shuffleArray([...questions]);
 let current=0, score=0, answered=false;
 
 const photo=document.getElementById("photo"), personName=document.getElementById("personName"),
@@ -117,7 +126,7 @@ function selectState(abbr){
 
 function renderQuestion(){
   answered=false; next.disabled=true; feedback.textContent="";
-  const q=questions[current], p=byAbbr[q[0]];
+  const q=questionSet[current], p=byAbbr[q[0]];
   qn.textContent=current+1; scoreEl.textContent=score;
 
   // Do NOT select a state automatically. The map stays blank until the learner clicks it.
@@ -152,7 +161,7 @@ function renderQuestion(){
 function answer(i,button){
   if(answered) return;
   answered=true;
-  const q=questions[current];
+  const q=questionSet[current];
   [...answers.children].forEach((b,j)=>{
     b.disabled=true;
     if(j===q[4]) b.classList.add("correct");
@@ -167,7 +176,14 @@ function answer(i,button){
   scoreEl.textContent=score; next.disabled=false;
 }
 
-next.addEventListener("click",()=>{current=(current+1)%questions.length;renderQuestion();});
+next.addEventListener("click",()=>{
+  current++;
+  if(current>=questionSet.length){
+    current=0;
+    questionSet=shuffleArray([...questions]);
+  }
+  renderQuestion();
+});
 
 async function buildMap(){
   const us=await fetch("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json").then(r=>r.json());
