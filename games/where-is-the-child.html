@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>אֵיפֹה הַיֶּלֶד?</title>
+<style>
+:root{--bg:#e8f6ff;--ink:#23264a;--card:#fff;--line:#c9d8e6;--ok:#1b8a4b;--no:#c8323f;--roof:#c8553d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16213a;--ink:#f4f1e6;--card:#24325a;--line:#465a8c;--ok:#5fd68e;--no:#ff8a93}}
+:root[data-theme="dark"]{--bg:#16213a;--ink:#f4f1e6;--card:#24325a;--line:#465a8c;--ok:#5fd68e;--no:#ff8a93}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Arial Hebrew",Arial,sans-serif;min-height:100vh}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;max-width:900px;margin:0 auto;padding:12px 14px 0}
+h1{margin:0;font-size:clamp(24px,5vw,38px)}
+#score{font-size:clamp(18px,3.5vw,26px);font-weight:700;background:var(--card);border:3px solid var(--line);border-radius:14px;padding:6px 14px}
+.main{max-width:900px;margin:0 auto;padding:10px 14px 20px;touch-action:none}
+.hint{text-align:center;font-size:clamp(15px,2.6vw,19px);margin:0 0 8px}
+.play{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+#char{display:flex;align-items:center;gap:6px;background:var(--card);border:4px solid #f0a92e;border-radius:26px;padding:8px 18px;cursor:grab;user-select:none;touch-action:none;position:relative;z-index:20;font-size:clamp(60px,14vw,96px);line-height:1}
+#char.sel{border-color:#2a7de1;box-shadow:0 0 0 6px rgba(42,125,225,.35)}
+#char.drag{cursor:grabbing;z-index:60;filter:drop-shadow(0 10px 8px rgba(0,0,0,.35))}
+#char .act{font-size:1.2em}
+#who{display:inline-block}
+#fx{position:absolute;top:-10px;left:-6px;font-size:.42em;animation:flt 1.6s ease-in-out infinite}
+@keyframes flt{50%{transform:translateY(-8px);opacity:.7}}
+.m-sway{animation:sway 1.6s ease-in-out infinite}@keyframes sway{50%{transform:rotate(8deg)}}
+.m-jump{animation:jmp .8s ease-in-out infinite}@keyframes jmp{50%{transform:translateY(-14px)}}
+.m-run{animation:run .6s ease-in-out infinite alternate}@keyframes run{from{transform:translateX(-8px) rotate(-6deg)}to{transform:translateX(8px) rotate(6deg)}}
+.m-sleep{animation:slp 2.6s ease-in-out infinite}@keyframes slp{0%,100%{transform:rotate(-82deg)}50%{transform:rotate(-76deg) translateY(-4px)}}
+@media(prefers-reduced-motion:reduce){.m-sway,.m-jump,.m-run,#fx{animation:none}.m-sleep{animation:none;transform:rotate(-80deg)}}
+#clue{font-size:clamp(22px,4.6vw,34px);font-weight:700;text-align:center;min-width:200px}
+#msg{min-height:44px;text-align:center;font-size:clamp(20px,4.2vw,30px);font-weight:700;padding:2px 6px}
+.good{color:var(--ok)}.bad{color:var(--no)}
+.scene{border-radius:18px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.scene svg{width:100%;height:auto;display:block}
+.room{cursor:pointer;outline:none}
+.room .floor{transition:fill .2s}
+.room.hot .floor{stroke:#2a7de1;stroke-width:6}
+.room:focus-visible .floor{stroke:#2a7de1;stroke-width:6}
+.room.ok .floor{fill:#7ddc9a}
+.room.no .floor{stroke:#c8323f;stroke-width:6}
+.lbl{font-family:"Arial Hebrew",Arial,sans-serif;font-size:19px;font-weight:700;fill:#23264a;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:6px;stroke-linejoin:round;pointer-events:none}
+.tok{font-size:44px;text-anchor:middle;pointer-events:none;animation:popt .5s}
+@keyframes popt{0%{opacity:0;font-size:10px}100%{opacity:1;font-size:44px}}
+#dots{text-align:center;padding:6px 0 0}
+.dot{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--line);margin:0 3px}
+.dot.done{background:var(--ok)}.dot.now{background:#f0a92e;transform:scale(1.35)}
+#char:not(.drag){animation:bob 2.4s ease-in-out infinite}
+#char.shake{animation:sh .35s}
+@keyframes bob{50%{transform:translateY(-6px)}}
+@media(prefers-reduced-motion:reduce){#char:not(.drag){animation:none}.tok{animation:none}}
+.shake{animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-12px)}75%{transform:translateX(12px)}}
+@media(prefers-reduced-motion:reduce){.shake{animation:none}}
+#start{text-align:center;padding:40px 10px}#start h2{font-size:clamp(30px,7vw,52px);margin:0 0 10px}#start p{font-size:clamp(20px,4.5vw,30px);margin:0 0 24px}
+button.sm{font-size:clamp(14px,2.6vw,18px);padding:8px 14px}
+#end{display:none;text-align:center;padding:30px 10px}
+#end h2{font-size:clamp(34px,8vw,56px);margin:0 0 10px}
+#end p{font-size:clamp(22px,5vw,34px)}
+button.big{font:inherit;font-weight:700;font-size:clamp(20px,4vw,28px);border:0;border-radius:16px;padding:14px 30px;background:#2a7de1;color:#fff;cursor:pointer}
+button.big:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
+</style>
+</head>
+<body>
+<div class="top"><h1 id="q"></h1><div style="display:flex;gap:8px;align-items:center"><div id="score"></div><button class="big sm" id="reset">מִשְׂחָק חָדָשׁ</button></div></div>
+<div id="dots"></div>
+<div id="start"><h2>🏠 אֵיפֹה הַיֶּלֶד וְהַיַּלְדָּה?</h2><p>גִּרְרוּ אֶת הַדְּמוּת לַחֶדֶר הַנָּכוֹן.</p><button class="big" id="go">הַתְחָלָה</button></div>
+<div class="main" id="game" style="display:none">
+  <p class="hint" id="hint"></p>
+  <div class="play">
+    <div id="char" tabindex="0" role="button" aria-label="דְּמוּת"><span id="who"></span><span class="act" id="act"></span><span id="fx"></span></div>
+    <div id="clue"></div>
+  </div>
+  <div id="msg" aria-live="polite"></div>
+  <div class="scene" id="house"><svg viewBox="0 0 800 600" role="group" aria-label="בַּיִת וְגִנָּה">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd3ff"/><stop offset="1" stop-color="#e6f7ff"/></linearGradient>
+<pattern id="tile" width="26" height="26" patternUnits="userSpaceOnUse"><rect width="26" height="26" fill="#7fd0e6"/><path d="M0 0H26V26" fill="none" stroke="#bdeaf5" stroke-width="2"/></pattern>
+<pattern id="wood" width="30" height="18" patternUnits="userSpaceOnUse"><rect width="30" height="18" fill="#ecc08a"/><path d="M0 9H30M15 0V9M0 18V9" stroke="#d6a26a" stroke-width="1.5" fill="none"/></pattern>
+</defs>
+<rect width="800" height="600" fill="url(#sky)"/>
+<circle cx="735" cy="50" r="30" fill="#ffd54a"/>
+<g fill="#fff"><ellipse cx="130" cy="60" rx="48" ry="16"/><ellipse cx="165" cy="50" rx="30" ry="14"/><ellipse cx="520" cy="30" rx="42" ry="13"/></g>
+<g id="garden" class="room" data-k="garden" tabindex="0" role="button" aria-label="גִּנָּה">
+<rect class="floor" x="0" y="478" width="800" height="122" fill="#7ccf5a"/>
+<path d="M352 484h44l38 116H316z" fill="#e6d3a8"/>
+<g fill="#e8c48f"><rect x="0" y="566" width="800" height="8"/><rect x="20" y="552" width="10" height="36"/><rect x="90" y="552" width="10" height="36"/><rect x="160" y="552" width="10" height="36"/><rect x="230" y="552" width="10" height="36"/><rect x="510" y="552" width="10" height="36"/><rect x="580" y="552" width="10" height="36"/><rect x="650" y="552" width="10" height="36"/><rect x="720" y="552" width="10" height="36"/></g>
+<rect x="34" y="480" width="18" height="70" rx="4" fill="#8b5e3c"/><circle cx="43" cy="462" r="40" fill="#3fa34d"/><circle cx="18" cy="484" r="24" fill="#4fb85d"/><circle cx="70" cy="484" r="24" fill="#4fb85d"/><circle cx="34" cy="452" r="8" fill="#e63946"/><circle cx="60" cy="470" r="8" fill="#e63946"/>
+<circle cx="750" cy="498" r="26" fill="#3fa34d"/><circle cx="722" cy="510" r="20" fill="#4fb85d"/>
+<g><path d="M130 510v30M190 516v26M270 512v30M560 510v30M640 516v26" stroke="#2f8f3a" stroke-width="3"/><circle cx="130" cy="506" r="9" fill="#ff6fa5"/><circle cx="190" cy="512" r="9" fill="#ffd54a"/><circle cx="270" cy="508" r="9" fill="#ff6fa5"/><circle cx="560" cy="506" r="9" fill="#ffd54a"/><circle cx="640" cy="512" r="9" fill="#ff6fa5"/></g>
+<text x="590" y="536" font-size="34" pointer-events="none">⚽</text>
+<text class="lbl" x="205" y="540">גִּנָּה</text>
+</g>
+<rect x="590" y="50" width="40" height="90" fill="#a0442f"/><g fill="#fff" opacity=".85"><ellipse cx="612" cy="38" rx="14" ry="8"/><ellipse cx="626" cy="22" rx="10" ry="6"/></g>
+<polygon points="62,154 400,30 738,154" fill="#c8553d" stroke="#9c3f2b" stroke-width="6" stroke-linejoin="round"/>
+<circle cx="400" cy="98" r="22" fill="#9adcff" stroke="#fff" stroke-width="5"/><path d="M378 98h44M400 76v44" stroke="#fff" stroke-width="3"/>
+<rect x="88" y="150" width="624" height="335" rx="8" fill="#d9a066"/>
+<g id="bed" class="room" data-k="bed" tabindex="0" role="button" aria-label="חֶדֶר שֵׁנָה">
+<rect class="floor" x="98" y="158" width="332" height="152" fill="#eadfff"/>
+<rect x="98" y="158" width="332" height="42" fill="#c9b5f0"/>
+<rect x="330" y="166" width="54" height="30" fill="#9adcff" stroke="#fff" stroke-width="4"/><path d="M357 166v30" stroke="#fff" stroke-width="3"/>
+<rect x="124" y="196" width="166" height="16" rx="6" fill="#8b5e3c"/><rect x="130" y="210" width="154" height="88" rx="8" fill="#fff"/><rect x="130" y="246" width="154" height="52" rx="8" fill="#4a90d9"/><rect x="140" y="216" width="56" height="24" rx="8" fill="#a7d3ff"/><rect x="216" y="216" width="56" height="24" rx="8" fill="#a7d3ff"/>
+<rect x="294" y="226" width="30" height="30" rx="3" fill="#d9a066"/><path d="M300 226h18l-4-16h-10z" fill="#ffd166"/>
+<rect x="392" y="188" width="30" height="110" rx="4" fill="#c98f52"/><path d="M407 188v110" stroke="#a9733d" stroke-width="3"/>
+<rect x="326" y="256" width="58" height="8" fill="#8b5e3c"/><rect x="332" y="264" width="5" height="30" fill="#8b5e3c"/><rect x="374" y="264" width="5" height="30" fill="#8b5e3c"/><rect x="338" y="230" width="34" height="24" rx="3" fill="#23264a"/>
+<text class="lbl" x="250" y="304">חֶדֶר שֵׁנָה</text>
+</g>
+<g id="bath" class="room" data-k="bath" tabindex="0" role="button" aria-label="חֶדֶר רְחָצָה">
+<rect class="floor" x="440" y="158" width="260" height="152" fill="url(#tile)"/>
+<rect x="440" y="158" width="260" height="42" fill="#a4dcec"/>
+<rect x="452" y="170" width="62" height="130" rx="4" fill="#dff6ff" fill-opacity=".7" stroke="#fff" stroke-width="4"/><circle cx="483" cy="184" r="7" fill="#90a4ae"/><path d="M475 198v14M483 198v18M491 198v14" stroke="#5bc0eb" stroke-width="3"/>
+<rect x="548" y="176" width="46" height="32" rx="4" fill="#dff6ff" stroke="#b0bec5" stroke-width="3"/><rect x="540" y="238" width="62" height="12" rx="6" fill="#fff"/><rect x="558" y="250" width="26" height="42" fill="#fff"/>
+<rect x="640" y="228" width="40" height="28" rx="4" fill="#fff" stroke="#cfd8dc" stroke-width="2"/><ellipse cx="660" cy="276" rx="22" ry="14" fill="#fff" stroke="#cfd8dc" stroke-width="2"/><rect x="646" y="278" width="28" height="18" fill="#fff" stroke="#cfd8dc" stroke-width="2"/>
+<rect x="686" y="196" width="10" height="44" rx="3" fill="#ee6c4d"/>
+<text class="lbl" x="580" y="304">חֶדֶר רְחָצָה</text>
+</g>
+<g id="living" class="room" data-k="living" tabindex="0" role="button" aria-label="סָלוֹן">
+<rect class="floor" x="98" y="322" width="292" height="153" fill="url(#wood)"/>
+<rect x="98" y="322" width="292" height="42" fill="#f4c7a1"/>
+<rect x="196" y="328" width="74" height="28" fill="#9adcff" stroke="#fff" stroke-width="4"/><path d="M233 328v28" stroke="#fff" stroke-width="3"/>
+<rect x="300" y="332" width="26" height="24" fill="#fff"/><rect x="304" y="336" width="18" height="16" fill="#f2994a"/>
+<path d="M104 474h68v-56h-14v12h-14v12h-14v12h-14v12h-12z" fill="#b5854f"/><path d="M104 474h68" stroke="#8b5e3c" stroke-width="4"/>
+<ellipse cx="250" cy="452" rx="70" ry="14" fill="#b07cc6"/>
+<rect x="188" y="376" width="108" height="46" rx="12" fill="#ee6c4d"/><rect x="180" y="390" width="24" height="42" rx="10" fill="#d9573a"/><rect x="282" y="390" width="24" height="42" rx="10" fill="#d9573a"/><rect x="204" y="396" width="78" height="32" rx="8" fill="#f08a6f"/>
+<rect x="312" y="386" width="40" height="30" rx="4" fill="#23264a"/><rect x="315" y="389" width="34" height="24" fill="#3a6ea5"/><rect x="306" y="418" width="52" height="10" rx="3" fill="#8b5e3c"/>
+<rect x="358" y="392" width="30" height="83" rx="4" fill="#8b4a2b"/><circle cx="380" cy="436" r="3" fill="#ffd54a"/>
+<text class="lbl" x="245" y="470">סָלוֹן</text>
+</g>
+<g id="kitchen" class="room" data-k="kitchen" tabindex="0" role="button" aria-label="מִטְבָּח">
+<rect class="floor" x="400" y="322" width="300" height="153" fill="#ffe9a8"/>
+<rect x="400" y="322" width="300" height="42" fill="#fff3c9"/>
+<rect x="470" y="328" width="60" height="28" fill="#9adcff" stroke="#fff" stroke-width="4"/><path d="M500 328v28" stroke="#fff" stroke-width="3"/>
+<rect x="410" y="352" width="52" height="118" rx="6" fill="#3c8fd6"/><path d="M410 400h52" stroke="#2a6fae" stroke-width="3"/><rect x="450" y="364" width="4" height="24" fill="#dbeeff"/><rect x="450" y="412" width="4" height="30" fill="#dbeeff"/>
+<rect x="466" y="404" width="96" height="52" rx="3" fill="#a86a3c"/><rect x="466" y="396" width="96" height="10" fill="#cfd8dc"/><rect x="494" y="390" width="36" height="7" fill="#90a4ae"/><path d="M512 382v9h7" stroke="#607d8b" stroke-width="3" fill="none"/>
+<rect x="570" y="394" width="66" height="64" rx="4" fill="#b0bec5" stroke="#78909c" stroke-width="2"/><rect x="570" y="394" width="66" height="10" fill="#37474f"/><ellipse cx="586" cy="399" rx="7" ry="3" fill="#90a4ae"/><ellipse cx="620" cy="399" rx="7" ry="3" fill="#90a4ae"/>
+<rect x="578" y="416" width="50" height="34" rx="3" fill="#263238"/><rect x="584" y="421" width="38" height="20" rx="2" fill="#546e7a"/><rect x="580" y="410" width="46" height="4" rx="2" fill="#eceff1"/>
+<circle cx="586" cy="459" r="0" fill="none"/>
+<rect x="644" y="404" width="46" height="52" rx="3" fill="#a86a3c"/><rect x="644" y="396" width="46" height="10" fill="#cfd8dc"/>
+<text class="lbl" x="545" y="470">מִטְבָּח</text>
+</g>
+<path d="M98 314H700M435 158V310M395 322V475" stroke="#d9a066" stroke-width="9" pointer-events="none"/>
+<rect x="84" y="478" width="632" height="10" rx="3" fill="#8b5e3c" pointer-events="none"/>
+</svg></div>
+</div>
+<div id="end"><h2>כָּל הַכָּבוֹד! 🎉</h2><p id="final"></p><button class="big" id="again">מִשְׂחָק חָדָשׁ</button></div>
+<script>
+var ROOMS={
+ bed:["🛏️","חֶדֶר שֵׁנָה","בַּחֶדֶר שֵׁנָה"],
+ bath:["🛁","חֶדֶר רְחָצָה","בַּחֶדֶר רְחָצָה"],
+ living:["🛋️","סָלוֹן","בַּסָּלוֹן"],
+ kitchen:["🍳","מִטְבָּח","בַּמִּטְבָּח"],
+ garden:["🌳","גִּנָּה","בַּגִּנָּה"]
+};
+// [room, emoji, masculine verb, feminine verb, object]
+var WCAN='<svg class="ic" viewBox="0 0 64 64"><path d="M14 26h28v26a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4z" fill="#3aa0d8" stroke="#1f6f9c" stroke-width="3"/><path d="M42 36l14-12" stroke="#1f6f9c" stroke-width="5" stroke-linecap="round"/><path d="M53 14l9 8-4 5-9-8z" fill="#1f6f9c"/><path d="M14 32c-11 0-11 16 0 16" fill="none" stroke="#1f6f9c" stroke-width="4"/><path d="M22 26c0-11 20-11 20 0" fill="none" stroke="#1f6f9c" stroke-width="4"/></svg>';
+var HOSE='<svg class="ic" viewBox="0 0 64 64"><circle cx="30" cy="36" r="20" fill="none" stroke="#2f8f3a" stroke-width="8"/><circle cx="30" cy="36" r="8" fill="none" stroke="#2f8f3a" stroke-width="6"/><rect x="46" y="6" width="10" height="22" rx="3" fill="#f2b632"/></svg>';
+var ACTS=[
+ ["kitchen","🥞","אוֹכֵל","אוֹכֶלֶת","אֲרוּחַת בּוֹקֶר","😋","sway"],
+ ["kitchen","🍝","אוֹכֵל","אוֹכֶלֶת","אֲרוּחַת צָהֳרַיִם","😋","sway"],
+ ["kitchen","🥛","שׁוֹתֶה","שׁוֹתָה","מַיִם","💧","sway"],
+ ["kitchen","🍳","מְבַשֵּׁל","מְבַשֶּׁלֶת","אֹכֶל","♨️","sway"],
+ ["bed","🛏️","יָשֵׁן","יְשֵׁנָה","","💤","sleep"],
+ ["bed","📖","קוֹרֵא","קוֹרֵאת","סֵפֶר","","sway",["living"]],
+ ["bed","🎧","מַאֲזִין","מַאֲזִינָה","לְמוּזִיקָה","🎵","sway"],
+ ["bed","👕","מִתְלַבֵּשׁ","מִתְלַבֶּשֶׁת","","👖","sway"],
+ ["living","📺","רוֹאֶה","רוֹאָה","טֵלֶוִיזְיָה","","sway"],
+ ["living","🛋️","יוֹשֵׁב","יוֹשֶׁבֶת","עַל הַסַּפָּה","","sway"],
+ ["living","🎲","מְשַׂחֵק","מְשַׂחֶקֶת","בְּמִשְׂחָק","🎉","jump"],
+ ["garden","🧒⚽🧒","מְשַׂחֵק","מְשַׂחֶקֶת","עִם חֲבֵרִים","🪁","jump"],
+ ["garden","⚽","מְשַׂחֵק","מְשַׂחֶקֶת","כַּדּוּרֶגֶל","💨","jump"],
+ ["garden","👟","רָץ","רָצָה","","💨","run"],
+ ["garden",WCAN+"🪴"+HOSE,"מַשְׁקֶה","מַשְׁקָה","צְמָחִים","💦","sway"],
+ ["bath","🪥","מְצַחְצֵחַ","מְצַחְצַחַת","שִׁנַּיִם","🫧","sway"],
+ ["bath","🚿","מִתְקַלֵּחַ","מִתְקַלַּחַת","","💦","sway"],
+ ["bath","🧼","רוֹחֵץ","רוֹחֶצֶת","יָדַיִם","🫧","sway"]
+];
+var SUBJ={m:["הַיֶּלֶד","👦"],f:["הַיַּלְדָּה","👧"]};
+function clue(a,g){return SUBJ[g][0]+" "+(g==="m"?a[2]:a[3])+(a[4]?" "+a[4]:"")}
+function sentence(a,g,rk){return clue(a,g)+" "+ROOMS[rk||a[0]][2]+"."}
+var $=function(i){return document.getElementById(i)};
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+var ROOMC={living:[245,432],kitchen:[520,446],bed:[290,236],bath:[575,276],garden:[400,530]};
+function drawDots(){var h="";for(var i=0;i<rounds.length;i++)h+='<span class="dot'+(i<idx?" done":i===idx?" now":"")+'"></span>';$("dots").innerHTML=h}
+var rounds,idx,score,tries,locked,selected,cur;
+function build(){
+  var pool=shuffle(ACTS.slice()),chosen=[],seen={};
+  pool.forEach(function(a){if(!seen[a[0]]){seen[a[0]]=1;chosen.push(a)}});
+  pool.forEach(function(a){if(chosen.length<12&&chosen.indexOf(a)<0)chosen.push(a)});
+  var gs=shuffle(["m","m","m","m","m","m","f","f","f","f","f","f"]);
+  var r=chosen.map(function(a,i){return [a,gs[i]]});
+  for(var t=0;t<300;t++){
+    shuffle(r);var ok=true;
+    for(var i=1;i<r.length;i++)if(r[i][0][0]===r[i-1][0][0]){ok=false;break}
+    if(ok)break;
+  }
+  return r;
+}
+var gameId=0;
+function showStart(){
+  gameId++;
+  $("game").style.display="none";$("end").style.display="none";$("start").style.display="block";
+  $("q").textContent="אֵיפֹה הַיֶּלֶד?";$("score").textContent="";$("dots").innerHTML="";$("reset").style.display="none";
+}
+function start(){
+  gameId++;$("start").style.display="none";$("reset").style.display="";
+  rounds=build();idx=0;score=0;
+  $("end").style.display="none";$("game").style.display="block";
+  drawScore();show();
+}
+function drawScore(){$("score").textContent="נְקֻדּוֹת: "+score}
+function say(t,c){var m=$("msg");m.textContent=t;m.className=c||""}
+function show(){
+  var old=document.querySelector(".tok");if(old)old.remove();drawDots();
+  cur=rounds[idx];tries=0;locked=false;selected=false;
+  var a=cur[0],g=cur[1],c=$("char");
+  c.classList.remove("sel","drag");c.style.transform="";
+  $("who").textContent=SUBJ[g][1];$("act").innerHTML=a[1];$("act").style.fontSize=(a[1].charAt(0)==="<"||Array.from(a[1]).length>2)?"0.7em":"";$("who").className="m-"+a[6];$("fx").textContent=a[5];
+  $("q").textContent="אֵיפֹה "+SUBJ[g][0]+"?";
+  $("clue").textContent=clue(a,g);
+  $("hint").textContent="גִּרְרוּ אֶת "+SUBJ[g][0]+" לַחֶדֶר הַנָּכוֹן. אֶפְשָׁר גַּם לִלְחֹץ עַל הַדְּמוּת וְאָז עַל הַחֶדֶר.";
+  say("");
+  document.querySelectorAll(".room").forEach(function(r){r.classList.remove("ok","no","hot")});
+}
+function answer(key){
+  if(locked)return;
+  var room=$(key);
+  if(key===cur[0][0]||(cur[0][7]&&cur[0][7].indexOf(key)>=0)){
+    locked=true;if(tries===0)score++;drawScore();
+    room.classList.add("ok");
+    var t=document.createElementNS("http://www.w3.org/2000/svg","text");t.setAttribute("class","tok");t.setAttribute("x",ROOMC[key][0]);t.setAttribute("y",ROOMC[key][1]);t.textContent=SUBJ[cur[1]][1]+(cur[0][1].charAt(0)==="<"?"🪴":cur[0][1]);room.appendChild(t);
+    say(sentence(cur[0],cur[1],key),"good");
+    $("char").classList.remove("sel");
+    var gid=gameId;setTimeout(function(){if(gid!==gameId)return;idx++;if(idx>=rounds.length)finish();else show()},3200);
+  }else{
+    tries++;selected=false;
+    var c=$("char");c.classList.remove("sel","drag");c.style.transform="";
+    c.classList.add("shake");setTimeout(function(){c.classList.remove("shake")},400);
+    room.classList.add("no");setTimeout(function(){room.classList.remove("no")},700);
+    say("לֹא נָכוֹן. נַסּוּ שׁוּב!","bad");
+  }
+}
+function finish(){
+  $("game").style.display="none";$("dots").innerHTML="";$("end").style.display="block";
+  $("q").textContent="כָּל הַכָּבוֹד!";
+  $("final").textContent="נְקֻדּוֹת: "+score+" מִתּוֹךְ "+rounds.length;
+}
+// wiring
+(function(){
+  document.querySelectorAll(".room").forEach(function(b){
+    b.addEventListener("click",function(){
+      if(locked)return;
+      if(!selected){say("לִחְצוּ קֹדֶם עַל הַדְּמוּת.","bad");return}
+      answer(b.dataset.k);
+    });
+    b.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();b.dispatchEvent(new Event("click"))}});
+  });
+  var c=$("char"),sx,sy,on=false,moved=0;
+  function hit(e){
+    var l=document.elementsFromPoint(e.clientX,e.clientY);
+    for(var i=0;i<l.length;i++){var r=l[i].closest&&l[i].closest(".room");if(r)return r}
+    return null;
+  }
+  function toggle(){if(locked)return;selected=!selected;c.classList.toggle("sel",selected);say(selected?"עַכְשָׁו לִחְצוּ עַל הַחֶדֶר.":"")}
+  c.addEventListener("pointerdown",function(e){if(locked)return;on=true;moved=0;sx=e.clientX;sy=e.clientY;c.setPointerCapture(e.pointerId)});
+  c.addEventListener("pointermove",function(e){
+    if(!on)return;var dx=e.clientX-sx,dy=e.clientY-sy;moved=Math.max(moved,Math.abs(dx)+Math.abs(dy));
+    if(moved>8){c.classList.add("drag");c.style.transform="translate("+dx+"px,"+dy+"px)"}
+    var t=hit(e);document.querySelectorAll(".room").forEach(function(b){b.classList.toggle("hot",b===t)});
+  });
+  c.addEventListener("pointerup",function(e){
+    if(!on)return;on=false;c.classList.remove("drag");
+    document.querySelectorAll(".room").forEach(function(b){b.classList.remove("hot")});
+    if(moved<=8){c.style.transform="";toggle();return}
+    var t=hit(e);
+    if(t)answer(t.dataset.k);else c.style.transform="";
+  });
+  c.addEventListener("pointercancel",function(){on=false;c.style.transform="";c.classList.remove("drag")});
+  c.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}});
+  $("again").onclick=start;$("go").onclick=start;$("reset").onclick=start;
+})();
+showStart();
+</script>
+</body>
+</html>
