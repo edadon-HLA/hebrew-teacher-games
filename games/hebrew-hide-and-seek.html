@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מִשְׂחַק מַחְבּוֹא</title>
+<style>
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;background:radial-gradient(1200px 520px at 50% -8%,#fffbe8,#ffe9b9 55%,#ffd79b) fixed;color:#3b2a1a}
+.wrap{max-width:1000px;margin:auto;padding:10px}
+h1{margin:6px 0 10px;font-size:clamp(26px,5.5vw,42px);color:#d35400;text-align:center;text-shadow:0 2px 0 #fff,0 6px 14px #e6510033}
+.card{background:linear-gradient(#fff,#fffaf1);border:2px solid #fff;border-radius:22px;box-shadow:0 6px 20px #8a5a0033,inset 0 0 0 1px #f3d9a8;padding:14px;margin:10px 0}
+button{font:inherit;cursor:pointer;border:0;border-radius:14px;padding:10px 18px;font-size:20px;background:#ffe0b2;color:#3b2a1a;font-weight:600;box-shadow:0 4px 0 #e0b26a;transition:transform .1s,box-shadow .1s}
+button:hover{filter:brightness(1.05)}button:active{transform:translateY(3px);box-shadow:0 1px 0 #e0b26a}#start input:focus{outline:none;border-color:#ff9800;box-shadow:0 0 0 4px #ffe0b2}
+button.on{background:#ff9800;color:#fff;box-shadow:0 0 0 3px #e65100}
+.go{background:#43a047;color:#fff;font-size:24px}
+.go:disabled{background:#bbb;cursor:not-allowed}
+#start{text-align:center}
+#start input{font:inherit;font-size:24px;padding:10px;border-radius:12px;border:3px solid #ffb74d;width:min(90%,320px);text-align:center;margin:10px 0}
+.gender{display:flex;gap:16px;justify-content:center;margin:12px 0}
+.gender button{font-size:30px;padding:16px 34px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.stats{font-size:22px;font-weight:700}
+.who{font-size:clamp(22px,4vw,32px);font-weight:700}
+.clue{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;text-align:center}
+#clueText{font-size:clamp(26px,5.5vw,44px);font-weight:700;color:#1a4fa0;line-height:1.5;flex:1 1 300px}
+.spk{font-size:26px;background:#2196f3;color:#fff}
+#vol{font-size:24px;padding:8px 14px}
+#msg{min-height:40px;font-size:28px;font-weight:700;text-align:center;margin:4px 0}
+#msg.ok{color:#2e7d32}#msg.bad{color:#c62828}
+#tools{display:flex;gap:12px;align-items:center;justify-content:center;min-height:48px;font-size:20px;font-weight:700;color:#8a5a00}
+#leave{background:#5c6bc0;color:#fff}
+svg{width:100%;aspect-ratio:1000/540;height:auto;display:block;border-radius:22px;background:#fff3e0;box-shadow:0 0 0 6px #fff,0 0 0 8px #e8c891,0 14px 30px #6b4f3a44;shape-rendering:geometricPrecision;filter:saturate(1.1) contrast(1.04);text-rendering:geometricPrecision}
+svg text{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.r,.z{fill:rgba(255,255,255,.001);stroke:none;cursor:pointer;outline:none}
+.r:hover,.z:hover,.z.hl,.r:focus,.z:focus{fill:rgba(255,255,255,.35);stroke:#ff6f00;stroke-width:4;stroke-dasharray:10 6}
+.bad{fill:rgba(229,57,53,.35)!important;stroke:#c62828!important}
+svg[data-mode=easy] .z{pointer-events:none}
+svg[data-mode=hard] .r{pointer-events:none}
+svg[data-mode=hard] .lbl{display:none}
+.enter{display:none;cursor:pointer;outline:none}
+svg[data-mode=hard]:not(.zoomed) .enter{display:block}
+.enter circle{fill:#ff9800;stroke:#fff;stroke-width:3}
+.enter:hover circle,.enter:focus circle{fill:#e65100}
+.lbl{font-family:Arial,sans-serif!important;font-size:17px;font-weight:700;fill:#3b2a1a;stroke:#fff;stroke-width:4px;paint-order:stroke;text-anchor:middle;pointer-events:none}
+.pop{animation:pop .5s ease-out;transform-box:fill-box;transform-origin:center bottom;pointer-events:none}.cf{animation:fly .9s ease-out forwards;pointer-events:none}@keyframes fly{to{transform:translate(var(--dx),var(--dy));opacity:0}}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+#end{text-align:center}#end h2{font-size:42px;color:#e65100}#end p{font-size:28px}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>מִשְׂחַק מַחְבּוֹא 🏠</h1>
+
+<section id="start" class="card">
+  <h2>מִי מִתְחַבֵּא?</h2>
+  <label for="nm" style="font-size:24px">הַכְנִיסוּ אֶת הַשֵּׁם שֶׁלָּכֶם:</label><br>
+  <input id="nm" maxlength="12" autocomplete="off">
+  <div class="gender">
+    <button id="gm" aria-pressed="false">👦 בֵּן</button>
+    <button id="gf" aria-pressed="false">👧 בַּת</button>
+  </div>
+  <button id="go" class="go" disabled>הַתְחָלַת הַמִּשְׂחָק</button>
+</section>
+
+<section id="game" class="hide">
+  <div class="card bar">
+    <div class="who"><span id="av"></span> <span id="who"></span></div>
+    <div><button id="lvE">קַל</button> <button id="lvH">קָשֶׁה</button></div>
+    <div class="stats">נְקֻדּוֹת: <span id="sc">0</span> · נִסְיוֹנוֹת: <span id="tr">0</span> · סִבּוּב <span id="rd">1</span>/<span id="rt">12</span></div>
+    <div><button id="vol" aria-pressed="false" title="קוֹל">🔊</button> <button id="newg">מִשְׂחָק חָדָשׁ</button></div>
+  </div>
+  <div class="card">
+    <div id="ask" style="font-size:24px;font-weight:700;text-align:center"></div>
+    <div class="clue"><div id="clueText"></div><button id="spk" class="spk">🔊 הַקְשִׁיבוּ לָרֶמֶז</button></div>
+    <div id="msg" aria-live="polite"></div>
+  </div>
+  <div id="tools"><button id="leave" class="hide">↩ חֲזָרָה לַבַּיִת</button><span id="hint" class="hide">🔍 לִלְחֹץ כְּדֵי לְהִכָּנֵס לַחֶדֶר</span></div>
+  <svg id="house" data-mode="easy" viewBox="0 0 1000 540" role="group" aria-label="בַּיִת">
+    <defs><pattern id="tl" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#a8ddd4" stroke-width="2"/></pattern><linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5ec0fb"/><stop offset="1" stop-color="#e8f8ff"/></linearGradient><linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9adf70"/><stop offset="1" stop-color="#58a63e"/></linearGradient><linearGradient id="wLiv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4d8"/><stop offset="1" stop-color="#f5d599"/></linearGradient><linearGradient id="wKit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eaf9fd"/><stop offset="1" stop-color="#bfe3ee"/></linearGradient><linearGradient id="wBed" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6ebff"/><stop offset="1" stop-color="#d9c2f0"/></linearGradient><linearGradient id="wBth" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6fbf7"/><stop offset="1" stop-color="#b9e6de"/></linearGradient>
+<pattern id="pl" width="48" height="26" patternUnits="userSpaceOnUse"><rect width="48" height="26" fill="#d6a56f"/><path d="M0 25.5H48M24 0V26" stroke="#a9773a" stroke-width="1.5" opacity=".6"/></pattern>
+<pattern id="ck" width="26" height="26" patternUnits="userSpaceOnUse"><rect width="26" height="26" fill="#efe6d6"/><rect width="13" height="13" fill="#bfae94"/><rect x="13" y="13" width="13" height="13" fill="#bfae94"/></pattern>
+<pattern id="rf" width="22" height="14" patternUnits="userSpaceOnUse"><rect width="22" height="14" fill="#c9412f"/><path d="M0 14a11 11 0 0 1 22 0" fill="none" stroke="#8e2a20" stroke-width="2"/></pattern>
+<pattern id="fn" width="20" height="46" x="0" y="392" patternUnits="userSpaceOnUse"><path d="M3 46V10l7-8 7 8v36z" fill="#fff9ea" stroke="#d3aa6a" stroke-width="1.5"/></pattern>
+<radialGradient id="glow"><stop offset="0" stop-color="#fff59d" stop-opacity=".85"/><stop offset="1" stop-color="#fff59d" stop-opacity="0"/></radialGradient>
+<radialGradient id="sunG"><stop offset="0" stop-color="#fffde7"/><stop offset="1" stop-color="#ffca28"/></radialGradient>
+<g id="fl"><path d="M0 0V-24" stroke="#43a047" stroke-width="3"/><path d="M0-10q8-2 10-9q-8 0-10 9z" fill="#66bb6a"/><g fill="currentColor"><circle cx="0" cy="-35" r="6"/><circle cx="6.7" cy="-30" r="6"/><circle cx="4.1" cy="-22" r="6"/><circle cx="-4.1" cy="-22" r="6"/><circle cx="-6.7" cy="-30" r="6"/></g><circle cx="0" cy="-28" r="5" fill="#ffee58"/></g>
+<g id="cloud" fill="#fff"><ellipse cx="0" cy="0" rx="32" ry="12"/><circle cx="-12" cy="-8" r="12"/><circle cx="6" cy="-12" r="15"/><circle cx="21" cy="-4" r="10"/></g>
+<linearGradient id="gBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b93f2"/><stop offset="1" stop-color="#2456b0"/></linearGradient><linearGradient id="gBlue2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7aa9f7"/><stop offset="1" stop-color="#3f74d8"/></linearGradient><linearGradient id="gWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a8703a"/><stop offset="1" stop-color="#6f4520"/></linearGradient><linearGradient id="gWood2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a58273"/><stop offset="1" stop-color="#6d4c41"/></linearGradient><linearGradient id="gMetal" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#b8c4cb"/></linearGradient><linearGradient id="gGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd184"/><stop offset="1" stop-color="#43a047"/></linearGradient><linearGradient id="gPorc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfe3ee"/></linearGradient><linearGradient id="gTrunk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a6250"/><stop offset="1" stop-color="#553a2c"/></linearGradient><linearGradient id="gShed" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9a096"/><stop offset="1" stop-color="#8d746a"/></linearGradient><linearGradient id="gRoof2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6252"/><stop offset="1" stop-color="#5a382b"/></linearGradient><radialGradient id="rG1" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#4caf50"/><stop offset="1" stop-color="#0f4a17"/></radialGradient><radialGradient id="rG2" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#66bb6a"/><stop offset="1" stop-color="#1f6b25"/></radialGradient><radialGradient id="rG3" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#81c784"/><stop offset="1" stop-color="#2e7d32"/></radialGradient><radialGradient id="rBush" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#c5e58c"/><stop offset="1" stop-color="#6fa22f"/></radialGradient><radialGradient id="rTree" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#7ccf7f"/><stop offset="1" stop-color="#2e8b34"/></radialGradient><linearGradient id="shaft" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<radialGradient id="vig" cx=".5" cy=".5" r=".75"><stop offset=".55" stop-color="#3b2a1a" stop-opacity="0"/><stop offset="1" stop-color="#3b2a1a" stop-opacity=".26"/></radialGradient>
+<pattern id="sd" width="10" height="82" x="692" y="396" patternUnits="userSpaceOnUse"><rect width="10" height="82" fill="url(#gShed)"/><path d="M0 0V82" stroke="#5d4037" stroke-width="1.2" opacity=".55"/></pattern>
+<pattern id="gr" width="14" height="10" patternUnits="userSpaceOnUse"><path d="M2 10l1-6M6 10l0-8M10 10l-1-6" stroke="#4d9a35" stroke-width="1.4" stroke-linecap="round" opacity=".55"/></pattern></defs>
+
+    <g id="a-house" class="art">
+      <rect width="620" height="480" fill="url(#skyG)"/><rect y="480" width="620" height="60" fill="url(#grass)"/><rect y="480" width="620" height="60" fill="url(#gr)"/><rect x="506" y="4" width="30" height="34" fill="#a1583f" stroke="#7b3f2c" stroke-width="3"/><rect x="502" y="2" width="38" height="8" rx="2" fill="#7b3f2c"/>
+      <polygon points="6,46 310,2 614,46" fill="url(#rf)" stroke="#8e2a20" stroke-width="4" stroke-linejoin="round"/>
+      <rect x="14" y="254" width="592" height="12" fill="#8d6e63"/>
+    </g>
+
+    <!-- LIVING ROOM -->
+    <g id="a-living" class="art">
+      <rect x="20" y="266" width="320" height="214" fill="url(#wLiv)" stroke="#6b4f3a" stroke-width="5"/>
+      <rect x="20" y="454" width="320" height="26" fill="url(#pl)"/><rect x="20" y="451" width="320" height="4" fill="#fff" opacity=".7"/><ellipse cx="150" cy="470" rx="120" ry="9" fill="#e57373"/>
+      <rect x="60" y="290" width="68" height="84" fill="#fff" stroke="#8d6e63" stroke-width="3"/><rect x="64" y="294" width="28" height="36" fill="#9fd6f5"/><rect x="96" y="294" width="28" height="36" fill="#9fd6f5"/><rect x="64" y="334" width="28" height="36" fill="#9fd6f5"/><rect x="96" y="334" width="28" height="36" fill="#9fd6f5"/>
+      <line x1="34" y1="284" x2="154" y2="284" stroke="#8d6e63" stroke-width="5"/>
+      <rect x="40" y="284" width="22" height="98" rx="6" fill="#fff" stroke="#bbb" stroke-width="2"/><rect x="126" y="284" width="22" height="98" rx="6" fill="#fff" stroke="#bbb" stroke-width="2"/>
+      <path d="M48 288V378M55 288V378M134 288V378M141 288V378" stroke="#ddd" stroke-width="2"/>
+      <line x1="190" y1="266" x2="190" y2="294" stroke="#555" stroke-width="3"/><polygon points="176,294 204,294 212,314 168,314" fill="#ffd54f" stroke="#e0a800" stroke-width="2"/>
+      <rect x="196" y="424" width="76" height="30" rx="3" fill="#6d4c41"/><rect x="200" y="366" width="68" height="46" rx="4" fill="#212121"/><rect x="205" y="371" width="58" height="36" fill="#4dd0e1"/><rect x="226" y="412" width="16" height="12" fill="#424242"/>
+      <rect x="284" y="322" width="48" height="132" rx="3" fill="url(#gWood)" stroke="#5a3a1a" stroke-width="1.5"/>
+      <g stroke-width="26" stroke-dasharray="7 2"><line x1="288" x2="328" y1="346" y2="346" stroke="#e74c3c"/><line x1="288" x2="328" y1="382" y2="382" stroke="#3498db"/><line x1="288" x2="328" y1="418" y2="418" stroke="#f1c40f"/></g>
+      <path d="M301 310h20l-3 12h-14z" fill="#c8693c"/><g fill="#43a047"><ellipse cx="306" cy="303" rx="4.5" ry="10" transform="rotate(-25 306 303)"/><ellipse cx="316" cy="302" rx="4.5" ry="10" transform="rotate(22 316 302)"/><ellipse cx="311" cy="298" rx="4" ry="11"/></g>
+      <rect x="40" y="392" width="140" height="50" rx="14" fill="url(#gBlue)"/><rect x="44" y="420" width="132" height="34" rx="8" fill="url(#gBlue2)"/>
+      <rect x="30" y="404" width="22" height="52" rx="10" fill="#2456b0"/><rect x="168" y="404" width="22" height="52" rx="10" fill="#2456b0"/><path d="M110 424V452" stroke="#2456b0" stroke-width="2"/>
+      <rect x="98" y="442" width="60" height="7" rx="2" fill="#8d5524"/><rect x="102" y="449" width="5" height="24" fill="#8d5524"/><rect x="149" y="449" width="5" height="24" fill="#8d5524"/>
+    <ellipse cx="110" cy="478" rx="94" ry="4" fill="#000" opacity=".14"/><ellipse cx="308" cy="457" rx="32" ry="4" fill="#000" opacity=".14"/><ellipse cx="150" cy="470" rx="100" ry="5" fill="none" stroke="#fff" stroke-width="1.6" stroke-dasharray="8 6" opacity=".8"/><circle cx="245" cy="322" r="17" fill="#fff" stroke="#6b4f3a" stroke-width="4"/><path d="M245 322v-10M245 322l8 4" stroke="#3b2a1a" stroke-width="2.5" stroke-linecap="round"/><rect x="152" y="326" width="34" height="28" fill="#fff" stroke="#8d6e63" stroke-width="3"/><path d="M155 351l9-11 7 7 6-5 7 9z" fill="#66bb6a"/><circle cx="176" cy="335" r="3.5" fill="#ffca28"/><ellipse cx="190" cy="316" rx="36" ry="22" fill="url(#glow)"/><path d="M205 371h30l-14 36h-16z" fill="#fff" opacity=".16"/><rect x="54" y="398" width="28" height="26" rx="7" fill="#ffca28" transform="rotate(-8 68 411)"/><path d="M60 404l14-2M59 412l14-2" stroke="#fff" stroke-width="2" opacity=".8" transform="rotate(-8 68 411)"/><polygon points="66,292 124,292 250,452 130,452" fill="url(#shaft)"/><path d="M52 396q40-9 116 0" stroke="#fff" stroke-width="3" opacity=".3" fill="none" stroke-linecap="round"/><rect x="284" y="322" width="6" height="132" fill="#fff" opacity=".12"/><rect x="20" y="444" width="320" height="8" fill="#000" opacity=".07"/><rect x="20" y="266" width="320" height="214" fill="url(#vig)"/></g>
+
+    <!-- KITCHEN -->
+    <g id="a-kitchen" class="art">
+      <rect x="340" y="266" width="260" height="214" fill="url(#wKit)" stroke="#6b4f3a" stroke-width="5"/>
+      <rect x="340" y="454" width="260" height="26" fill="url(#ck)"/><rect x="340" y="451" width="260" height="4" fill="#fff" opacity=".7"/>
+      <rect x="410" y="296" width="90" height="50" rx="3" fill="#d7a86e" stroke="#a9773a" stroke-width="2"/><path d="M455 296V346" stroke="#a9773a" stroke-width="2"/><circle cx="450" cy="322" r="3" fill="#6d4c41"/><circle cx="460" cy="322" r="3" fill="#6d4c41"/>
+      <rect x="515" y="296" width="64" height="64" fill="#9fd6f5" stroke="#8d6e63" stroke-width="3"/><path d="M547 296V360M515 328H579" stroke="#fff" stroke-width="3"/>
+      <rect x="508" y="290" width="12" height="82" rx="5" fill="#ffd54d"/><rect x="574" y="290" width="12" height="82" rx="5" fill="#ffd54d"/>
+      <rect x="350" y="310" width="52" height="144" rx="6" fill="url(#gMetal)" stroke="#78909c" stroke-width="3"/><path d="M350 352H402" stroke="#78909c" stroke-width="3"/><rect x="392" y="322" width="5" height="22" rx="2" fill="#607d8b"/><rect x="392" y="366" width="5" height="34" rx="2" fill="#607d8b"/>
+      <rect x="410" y="402" width="46" height="52" rx="3" fill="#37474f"/><rect x="408" y="398" width="50" height="5" fill="#607d8b"/><rect x="416" y="420" width="34" height="22" rx="3" fill="#90a4ae"/><circle cx="418" cy="410" r="3" fill="#eee"/><circle cx="432" cy="410" r="3" fill="#eee"/><circle cx="446" cy="410" r="3" fill="#eee"/>
+      <ellipse cx="433" cy="395" rx="12" ry="3.5" fill="#37474f"/><rect x="443" y="393" width="17" height="3.5" rx="1.7" fill="#263238"/>
+      <g fill="#c0392b"><rect x="468" y="392" width="18" height="48" rx="5"/><rect x="494" y="392" width="18" height="48" rx="5"/><rect x="552" y="392" width="18" height="48" rx="5"/><rect x="578" y="392" width="18" height="48" rx="5"/></g>
+      <rect x="519" y="440" width="12" height="26" fill="#b9770e"/><ellipse cx="525" cy="468" rx="30" ry="6" fill="#b9770e"/>
+      <ellipse cx="525" cy="434" rx="62" ry="14" fill="#c98a1f"/><ellipse cx="525" cy="428" rx="62" ry="14" fill="#f5b041" stroke="#b9770e" stroke-width="2"/>
+      <path d="M485 424h20a10 10 0 0 1-20 0z" fill="#ef5350"/><ellipse cx="495" cy="424" rx="10" ry="2.5" fill="#ffab91"/><ellipse cx="525" cy="431" rx="12" ry="3.5" fill="#fff" stroke="#cfd8dc"/><ellipse cx="525" cy="430.5" rx="6" ry="1.8" fill="#eceff1"/><rect x="543" y="418" width="11" height="12" rx="2" fill="#42a5f5"/><path d="M554 421h4a3 3 0 0 1 0 7h-4" fill="none" stroke="#42a5f5" stroke-width="2"/>
+    <ellipse cx="376" cy="457" rx="30" ry="4" fill="#000" opacity=".14"/><ellipse cx="525" cy="472" rx="46" ry="4" fill="#000" opacity=".14"/><path d="M420 352h28l10 24h-48z" fill="#90a4ae" stroke="#607d8b" stroke-width="2"/><rect x="360" y="366" width="12" height="12" rx="2" fill="#ef5350"/><rect x="376" y="330" width="12" height="16" rx="2" fill="#ffca28"/><path d="M430 389q-4-5 0-10M438 389q-4-5 0-10" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".85"/><polygon points="520,298 574,298 596,452 506,452" fill="url(#shaft)"/><rect x="352" y="312" width="8" height="140" rx="3" fill="#fff" opacity=".55"/><rect x="340" y="444" width="260" height="8" fill="#000" opacity=".07"/><rect x="340" y="266" width="260" height="214" fill="url(#vig)"/></g>
+
+    <!-- BEDROOM -->
+    <g id="a-bedroom" class="art">
+      <rect x="20" y="44" width="320" height="210" fill="url(#wBed)" stroke="#6b4f3a" stroke-width="5"/>
+      <rect x="20" y="228" width="320" height="26" fill="url(#pl)"/><rect x="20" y="225" width="320" height="4" fill="#fff" opacity=".7"/><ellipse cx="140" cy="241" rx="110" ry="8" fill="#f8bbd0"/>
+      <rect x="76" y="64" width="90" height="70" fill="#9fd6f5" stroke="#8d6e63" stroke-width="3"/><path d="M121 64V134M76 99H166" stroke="#fff" stroke-width="3"/>
+      <rect x="66" y="58" width="16" height="84" rx="6" fill="#b39ddb"/><rect x="160" y="58" width="16" height="84" rx="6" fill="#b39ddb"/>
+      <rect x="196" y="84" width="44" height="34" rx="2" fill="#fff" stroke="#8d6e63" stroke-width="4"/><rect x="202" y="90" width="32" height="22" fill="#9fd6f5"/><path d="M202 112l9-9 7 6 6-5 10 8z" fill="#66bb6a"/><circle cx="226" cy="97" r="3.5" fill="#ffca28"/>
+      <rect x="54" y="204" width="136" height="24" fill="#3e2f52"/>
+      <rect x="30" y="132" width="14" height="96" rx="4" fill="#795548"/><rect x="44" y="186" width="156" height="18" fill="#795548"/><rect x="46" y="204" width="8" height="24" fill="#5d4037"/><rect x="190" y="204" width="8" height="24" fill="#5d4037"/>
+      <rect x="44" y="160" width="156" height="28" rx="8" fill="#fff" stroke="#ccc" stroke-width="2"/><rect x="92" y="154" width="108" height="36" rx="10" fill="url(#gGreen)"/><path d="M116 156V188M140 156V188M164 156V188" stroke="#4caf50" stroke-width="4"/>
+      <ellipse cx="68" cy="156" rx="24" ry="12" fill="#e3f2fd" stroke="#90a4ae" stroke-width="2"/>
+      <rect x="210" y="186" width="40" height="42" rx="3" fill="#a1887f"/><rect x="216" y="196" width="28" height="10" fill="#8d6e63"/><circle cx="230" cy="201" r="2" fill="#ffd54d"/>
+      <rect x="226" y="176" width="8" height="10" fill="#666"/><polygon points="216,158 244,158 252,178 208,178" fill="#ffd54f" stroke="#e0a800" stroke-width="2"/>
+      <rect x="258" y="82" width="76" height="8" fill="#6d4c41"/><rect x="262" y="88" width="68" height="140" fill="url(#gWood2)" stroke="#5d4037" stroke-width="3"/><path d="M296 88V228" stroke="#5d4037" stroke-width="3"/><circle cx="290" cy="160" r="4" fill="#ffd54d"/><circle cx="302" cy="160" r="4" fill="#ffd54d"/>
+    <ellipse cx="116" cy="230" rx="92" ry="4" fill="#000" opacity=".14"/><ellipse cx="296" cy="231" rx="40" ry="4" fill="#000" opacity=".14"/><path d="M182 44v16" stroke="#555" stroke-width="2"/><path d="M166 76a16 15 0 0 1 32 0z" fill="#f48fb1" stroke="#c2185b" stroke-width="2"/><ellipse cx="182" cy="82" rx="30" ry="12" fill="url(#glow)"/><ellipse cx="232" cy="164" rx="34" ry="22" fill="url(#glow)"/><path d="M100 168h96M100 178h96" stroke="#fff" stroke-width="3" opacity=".45"/><path d="M268 96h8v124h-8z" fill="#fff" opacity=".13"/><polygon points="82,66 160,66 250,226 120,226" fill="url(#shaft)"/><path d="M100 158q50-8 96 0" stroke="#fff" stroke-width="3" opacity=".3" fill="none" stroke-linecap="round"/><rect x="20" y="218" width="320" height="8" fill="#000" opacity=".07"/><rect x="20" y="44" width="320" height="210" fill="url(#vig)"/></g>
+
+    <!-- BATHROOM -->
+    <g id="a-bath" class="art">
+      <rect x="340" y="44" width="260" height="210" fill="url(#wBth)" stroke="#6b4f3a" stroke-width="5"/><rect x="343" y="47" width="254" height="180" fill="url(#tl)"/>
+      <rect x="340" y="228" width="260" height="26" fill="#9db8b3"/><ellipse cx="430" cy="232" rx="44" ry="6" fill="#f48fb1"/>
+      <path d="M460 46V100H440" stroke="#607d8b" stroke-width="5" fill="none"/><path d="M430 100H476L468 110H438Z" fill="#90a4ae"/><path d="M448 126c4 6 6 9 6 12a6 6 0 0 1-12 0c0-3 2-6 6-12z" fill="#4fc3f7"/><path d="M464 142c3 5 5 7 5 10a5 5 0 0 1-10 0c0-3 2-5 5-10z" fill="#4fc3f7"/>
+      <line x1="356" y1="100" x2="420" y2="100" stroke="#607d8b" stroke-width="4"/><rect x="362" y="100" width="18" height="34" rx="2" fill="#ef5350"/><rect x="388" y="100" width="18" height="34" rx="2" fill="#42a5f5"/>
+      <rect x="352" y="176" width="130" height="44" rx="14" fill="url(#gPorc)" stroke="#90a4ae" stroke-width="3"/><rect x="346" y="170" width="142" height="10" rx="5" fill="#cfd8dc"/><rect x="362" y="220" width="8" height="8" fill="#c9a227"/><rect x="466" y="220" width="8" height="8" fill="#c9a227"/><rect x="358" y="192" width="118" height="6" fill="#81d4fa"/>
+      <ellipse cx="515" cy="112" rx="24" ry="32" fill="#b3e5fc" stroke="#eee" stroke-width="5"/>
+      <rect x="496" y="166" width="40" height="12" rx="6" fill="#fff" stroke="#90a4ae" stroke-width="2"/><rect x="508" y="178" width="16" height="50" fill="#fff" stroke="#90a4ae" stroke-width="2"/><path d="M516 166V152H524" stroke="#607d8b" stroke-width="3" fill="none"/>
+      <rect x="548" y="128" width="36" height="40" rx="4" fill="#fff" stroke="#90a4ae" stroke-width="2"/><rect x="540" y="168" width="52" height="26" rx="10" fill="#fff" stroke="#90a4ae" stroke-width="2"/><rect x="550" y="192" width="30" height="36" fill="#fff" stroke="#90a4ae" stroke-width="2"/><circle cx="566" cy="136" r="3" fill="#90a4ae"/>
+    <ellipse cx="417" cy="226" rx="70" ry="4" fill="#000" opacity=".14"/><ellipse cx="566" cy="230" rx="30" ry="4" fill="#000" opacity=".14"/><circle cx="392" cy="169" r="7" fill="#ffd600"/><circle cx="399" cy="164" r="4.5" fill="#ffd600"/><path d="M403 163l6 2-6 3z" fill="#ff9800"/><g fill="#fff" stroke="#81d4fa" stroke-width="1.2" opacity=".9"><circle cx="420" cy="190" r="5"/><circle cx="433" cy="186" r="3.5"/><circle cx="446" cy="192" r="4.5"/></g><path d="M362 182q60-6 110 0" stroke="#fff" stroke-width="3" opacity=".7" fill="none" stroke-linecap="round"/><rect x="340" y="218" width="260" height="8" fill="#000" opacity=".07"/><rect x="340" y="44" width="260" height="210" fill="url(#vig)"/></g>
+
+    <!-- GARDEN -->
+    <g id="a-garden" class="art">
+      <rect x="620" y="0" width="380" height="480" fill="url(#skyG)"/><path d="M620 396Q720 322 830 384T1000 350V440H620Z" fill="#a9dc8b"/><path d="M620 420Q760 360 900 410T1000 396V450H620Z" fill="#8fce72"/><rect x="620" y="392" width="380" height="46" fill="url(#fn)"/><path d="M620 404H1000M620 424H1000" stroke="#d3aa6a" stroke-width="5"/>
+      <circle cx="672" cy="72" r="44" fill="url(#glow)"/><circle cx="672" cy="72" r="34" fill="none" stroke="#ffca28" stroke-width="5" stroke-dasharray="3 10" stroke-linecap="round"/><circle cx="672" cy="72" r="22" fill="url(#sunG)"/><use href="#cloud" transform="translate(810 104)"/><use href="#cloud" transform="translate(945 60) scale(.7)"/>
+      <line x1="620" y1="452" x2="1000" y2="452" stroke="#e6b980" stroke-width="52" stroke-dasharray="14 8"/><rect x="620" y="438" width="380" height="6" fill="#c99a5b"/><rect x="620" y="466" width="380" height="6" fill="#c99a5b"/>
+      <rect x="620" y="476" width="380" height="64" fill="url(#grass)"/><rect x="620" y="476" width="380" height="64" fill="url(#gr)"/>
+      <rect x="660" y="380" width="16" height="100" fill="url(#gTrunk)"/><circle cx="668" cy="350" r="44" fill="url(#rTree)"/><g fill="#e53935"><circle cx="652" cy="342" r="5"/><circle cx="680" cy="362" r="5"/><circle cx="672" cy="330" r="5"/></g>
+      <rect x="692" y="396" width="98" height="82" fill="url(#sd)"/><polygon points="682,398 741,350 800,398" fill="url(#gRoof2)" stroke="#4a2d22" stroke-width="2" stroke-linejoin="round"/><rect x="726" y="424" width="28" height="54" fill="#4e342e"/><rect x="702" y="418" width="18" height="18" fill="#9fd6f5" stroke="#fff" stroke-width="2"/>
+      <ellipse cx="832" cy="452" rx="34" ry="30" fill="url(#rBush)" stroke="#6a9a2c" stroke-width="2"/><g fill="#7cb342"><circle cx="820" cy="444" r="9"/><circle cx="842" cy="458" r="9"/><circle cx="836" cy="436" r="7"/></g>
+      <rect x="892" y="300" width="28" height="180" fill="url(#gTrunk)"/><circle cx="906" cy="270" r="76" fill="url(#rG1)"/><circle cx="880" cy="250" r="38" fill="url(#rG2)"/><circle cx="930" cy="290" r="36" fill="url(#rG2)"/><circle cx="908" cy="240" r="30" fill="url(#rG3)"/>
+      <rect x="700" y="480" width="90" height="16" fill="#8b4513"/><rect x="700" y="498" width="90" height="10" rx="2" fill="#d2691e"/><rect x="706" y="508" width="6" height="20" fill="#6d4c41"/><rect x="778" y="508" width="6" height="20" fill="#6d4c41"/>
+      <rect x="830" y="516" width="112" height="16" rx="6" fill="#6d4c41"/><use href="#fl" transform="translate(846 520) scale(1.15)" style="color:#e91e63"/><use href="#fl" transform="translate(872 520) scale(1.15)" style="color:#ffb300"/><use href="#fl" transform="translate(900 520) scale(1.15)" style="color:#ab47bc"/><use href="#fl" transform="translate(926 520) scale(1.15)" style="color:#ff7043"/>
+      <g fill="none" stroke="#37474f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="640" cy="520" r="11"/><circle cx="668" cy="520" r="11"/><path d="M640 520L650 507H662L668 520M650 507L656 520L662 507M645 503h10M662 507L660 498h7" stroke="#e53935"/></g><circle cx="809" cy="522" r="11" fill="#fff" stroke="#37474f" stroke-width="2"/><path d="M809 515l6 4-2 7h-8l-2-7z" fill="#37474f"/><path d="M950 520h16l-2 12h-12z" fill="#c8693c"/><ellipse cx="958" cy="514" rx="9" ry="8" fill="#43a047"/><path d="M976 520h16l-2 12h-12z" fill="#c8693c"/><ellipse cx="984" cy="514" rx="9" ry="8" fill="#66bb6a"/>
+    <path d="M700 62q6-8 12 0q6-8 12 0M740 40q5-7 10 0q5-7 10 0" fill="none" stroke="#37474f" stroke-width="2" stroke-linecap="round"/><g fill="none" stroke="#3f8f2f" stroke-width="2.5" stroke-linecap="round"><path d="M810 480l-3-10M814 480l1-12M818 480l4-9M640 482l-3-9M644 482v-11M648 482l3-9M960 480l-3-10M964 480l1-12M968 480l4-9"/></g><g transform="translate(760 230)"><ellipse cx="-6" cy="0" rx="7" ry="5" fill="#ff8a65"/><ellipse cx="6" cy="0" rx="7" ry="5" fill="#ff8a65"/><path d="M0-4v8" stroke="#3b2a1a" stroke-width="2"/></g><ellipse cx="906" cy="482" rx="62" ry="6" fill="#000" opacity=".16"/><ellipse cx="668" cy="482" rx="34" ry="5" fill="#000" opacity=".14"/><ellipse cx="741" cy="481" rx="58" ry="5" fill="#000" opacity=".14"/><path d="M842 236a76 76 0 0 1 60-38" stroke="#fff" stroke-width="4" opacity=".22" fill="none" stroke-linecap="round"/></g>
+
+    <g id="labels"></g><g id="zones"></g><g id="rooms"></g><g id="enters"></g><g id="rev"></g>
+  </svg>
+</section>
+
+<section id="end" class="card hide">
+  <h2>כָּל הַכָּבוֹד! 🎉</h2>
+  <p>מְצָאתֶם אֶת כָּל הַמְּקוֹמוֹת!</p>
+  <p>הַנְּקֻדּוֹת שֶׁלָּכֶם: <b id="fs">0</b></p>
+  <button id="again" class="go">מִשְׂחָק חָדָשׁ</button>
+</section>
+</div>
+
+<script>
+/* ===== CONTENT: edit / add hiding places here =====
+   b = room box [x,y,w,h] (used for zooming), lb = label position, eb = "enter room" button position.
+   Zone z: ['r',x,y,width,height] or ['c',cx,cy,radius]. Each hard clue must point to ONE unique object drawn on the map. */
+const H = ['מִתְחַבֵּא','מִתְחַבֵּאת']; // masculine / feminine
+const ROUNDS = 12;   // questions per game, drawn at random from PLACES
+const ROOMS = {
+  living: {he:'סָלוֹן', b:[20,266,320,214], lb:[180,474], eb:[262,284], easy:['בַּסָּלוֹן','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ טֶלֶוִיזְיָה וְסַפָּה','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ כּוֹנָנִית','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ שָׁעוֹן']},
+  kitchen:{he:'מִטְבָּח', b:[340,266,260,214], lb:[470,286], eb:[378,286], easy:['בַּמִּטְבָּח','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ מְקָרֵר וְכִסְאוֹת','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ תַּנּוּר','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ שֻׁלְחָן עָגוֹל']},
+  bedroom:{he:'חֶדֶר שֵׁנָה', b:[20,44,320,210], lb:[160,248], eb:[318,66], easy:['בְּחֶדֶר הַשֵּׁנָה','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ מִטָּה','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ אֲרוֹן בְּגָדִים','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ מְנוֹרָה וְרוּדָּה']},
+  bath:   {he:'חֶדֶר רַחֲצָה', b:[340,44,260,210], lb:[470,248], eb:[578,66], easy:['בְּחֶדֶר הָרַחֲצָה','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ אַמְבַּטְיָה וְכִיּוֹר','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ מַרְאָה','בַּחֶדֶר שֶׁיֵּשׁ בּוֹ אַסְלָה']},
+  garden: {he:'גִּנָּה', b:[620,190,380,350], o:[620,40,380,500], lb:[800,300], eb:[970,70], easy:['בַּגִּנָּה','בַּמָּקוֹם שֶׁיֵּשׁ בּוֹ עֵץ וּפְרָחִים','בַּמָּקוֹם שֶׁיֵּשׁ בּוֹ סַפְסָל','בַּמָּקוֹם שֶׁיֵּשׁ בּוֹ מַחְסָן']}
+};
+/* 50 hiding places. A zone is one shape or a list of shapes:
+   ['r',x,y,w,h] rectangle · ['c',cx,cy,r] circle · ['p','x1,y1 x2,y2 ...'] polygon.
+   Order matters: later zones sit on top, so big background items (sofa, fence) come before small items on them. */
+const PLACES = [
+  // ---- LIVING ROOM (12)
+  {id:'sofa',       room:'living', n:'סַפָּה',      hard:'לְיַד הַסַּפָּה הַכְּחוּלָּה',      z:['r',26,390,168,68]},
+  {id:'cushion',    room:'living', n:'כָּרִית',     hard:'לְיַד הַכָּרִית הַצְּהוּבָּה',      z:['r',50,394,36,34]},
+  {id:'coffeetable',room:'living', n:'שֻׁלְחָן',    hard:'מִתַּחַת לַשֻּׁלְחָן הַקָּטָן',     z:['r',96,440,64,34]},
+  {id:'rug_l',      room:'living', n:'שָׁטִיחַ',    hard:'עַל הַשָּׁטִיחַ הָאָדוֹם',          z:[['r',30,458,66,22],['r',160,458,110,22]]},
+  {id:'curtain',    room:'living', n:'וִילוֹן',     hard:'מֵאֲחוֹרֵי הַוִּילוֹן הַלָּבָן',     z:[['r',36,278,28,108],['r',122,278,30,108]]},
+  {id:'window_l',   room:'living', n:'חַלּוֹן',     hard:'לְיַד הַחַלּוֹן בַּסָּלוֹן',        z:['r',64,288,58,88]},
+  {id:'tv',         room:'living', n:'טֶלֶוִיזְיָה', hard:'לְיַד הַטֶּלֶוִיזְיָה',             z:['r',194,362,80,94]},
+  {id:'lamp_l',     room:'living', n:'מְנוֹרָה',    hard:'מִתַּחַת לַמְּנוֹרָה בַּסָּלוֹן',    z:['r',166,268,48,48]},
+  {id:'clock',      room:'living', n:'שָׁעוֹן',     hard:'מִתַּחַת לַשָּׁעוֹן',               z:['c',245,322,21]},
+  {id:'picture_l',  room:'living', n:'תְּמוּנָה',   hard:'לְיַד הַתְּמוּנָה בַּסָּלוֹן',      z:['r',149,323,40,34]},
+  {id:'bookshelf',  room:'living', n:'כּוֹנָנִית',  hard:'לְיַד הַכּוֹנָנִית',                z:['r',280,322,56,136]},
+  {id:'plant',      room:'living', n:'עָצִיץ',      hard:'לְיַד הָעָצִיץ בַּסָּלוֹן',         z:['r',296,286,30,36]},
+  // ---- KITCHEN (8)
+  {id:'fridge',     room:'kitchen', n:'מְקָרֵר',    hard:'לְיַד הַמְּקָרֵר',                 z:['r',346,304,60,156]},
+  {id:'cabinet',    room:'kitchen', n:'אָרוֹן',     hard:'מִתַּחַת לַאֲרוֹן הַמִּטְבָּח',     z:['r',406,292,98,58]},
+  {id:'oven',       room:'kitchen', n:'תַּנּוּר',   hard:'לְיַד הַתַּנּוּר',                  z:['r',406,398,54,60]},
+  {id:'pan',        room:'kitchen', n:'מַחֲבַת',    hard:'לְיַד הַמַּחֲבַת',                  z:['r',416,376,48,22]},
+  {id:'curtain_k',  room:'kitchen', n:'וִילוֹן',    hard:'מֵאֲחוֹרֵי הַוִּילוֹן הַצָּהוֹב',    z:[['r',505,286,17,90],['r',572,286,17,90]]},
+  {id:'window_k',   room:'kitchen', n:'חַלּוֹן',    hard:'לְיַד הַחַלּוֹן בַּמִּטְבָּח',       z:['r',522,292,50,72]},
+  {id:'roundtable', room:'kitchen', n:'שֻׁלְחָן',   hard:'מִתַּחַת לַשֻּׁלְחָן הָעָגוֹל',      z:['r',460,416,132,60]},
+  {id:'chairs',     room:'kitchen', n:'כִּסְאוֹת',  hard:'מֵאֲחוֹרֵי הַכִּסְאוֹת הָאֲדוּמִּים', z:[['r',466,388,48,28],['r',550,388,48,28]]},
+  // ---- BEDROOM (10)
+  {id:'curtain_b',  room:'bedroom', n:'וִילוֹן',    hard:'מֵאֲחוֹרֵי הַוִּילוֹן הַסָּגוֹל',    z:['r',62,56,118,90]},
+  {id:'lamp_b',     room:'bedroom', n:'מְנוֹרָה',   hard:'מִתַּחַת לַמְּנוֹרָה הַוְּרוּדָּה',  z:['r',164,46,36,36]},
+  {id:'picture_b',  room:'bedroom', n:'תְּמוּנָה',  hard:'לְיַד הַתְּמוּנָה בְּחֶדֶר הַשֵּׁנָה', z:['r',192,82,52,40]},
+  {id:'wardrobe',   room:'bedroom', n:'אֲרוֹן בְּגָדִים', hard:'לְיַד אֲרוֹן הַבְּגָדִים',     z:['r',256,80,78,152]},
+  {id:'bed',        room:'bedroom', n:'מִטָּה',     hard:'מִתַּחַת לַמִּטָּה',                z:[['r',44,186,160,44],['r',28,130,18,100]]},
+  {id:'blanket',    room:'bedroom', n:'שְׂמִיכָה',  hard:'מִתַּחַת לַשְּׂמִיכָה הַיְּרוּקָּה', z:['r',92,150,112,36]},
+  {id:'pillow',     room:'bedroom', n:'כָּרִית',    hard:'לְיַד הַכָּרִית הַלְּבָנָה',         z:['r',44,140,48,46]},
+  {id:'nightstand', room:'bedroom', n:'שִׁדָּה',    hard:'לְיַד הַשִּׁדָּה',                  z:['r',208,186,44,44]},
+  {id:'nightlamp',  room:'bedroom', n:'מְנוֹרַת לַיְלָה', hard:'לְיַד מְנוֹרַת הַלַּיְלָה',   z:['r',206,154,48,32]},
+  {id:'rug_b',      room:'bedroom', n:'שָׁטִיחַ',   hard:'עַל הַשָּׁטִיחַ בְּחֶדֶר הַשֵּׁנָה',  z:['r',30,230,224,20]},
+  // ---- BATHROOM (9)
+  {id:'tub',        room:'bath', n:'אַמְבַּטְיָה', hard:'לְיַד הָאַמְבַּטְיָה',               z:['r',346,166,144,62]},
+  {id:'duck',       room:'bath', n:'בַּרְוָז',     hard:'לְיַד הַבַּרְוָז הַצָּהוֹב',          z:['r',382,154,32,26]},
+  {id:'mat',        room:'bath', n:'שָׁטִיחַ',     hard:'עַל הַשָּׁטִיחַ בְּחֶדֶר הָרַחֲצָה',   z:['r',382,226,96,16]},
+  {id:'shower',     room:'bath', n:'מִקְלַחַת',    hard:'מִתַּחַת לַמִּקְלַחַת',              z:['r',426,46,54,108]},
+  {id:'towel_r',    room:'bath', n:'מַגֶּבֶת',     hard:'מֵאֲחוֹרֵי הַמַּגֶּבֶת הָאֲדוּמָּה',  z:['r',358,96,26,42]},
+  {id:'towel_b',    room:'bath', n:'מַגֶּבֶת',     hard:'מֵאֲחוֹרֵי הַמַּגֶּבֶת הַכְּחוּלָּה', z:['r',384,96,26,42]},
+  {id:'mirror',     room:'bath', n:'מַרְאָה',      hard:'לְיַד הַמַּרְאָה',                   z:['r',488,76,52,72]},
+  {id:'sink',       room:'bath', n:'כִּיּוֹר',     hard:'לְיַד הַכִּיּוֹר',                   z:['r',492,148,48,82]},
+  {id:'toilet',     room:'bath', n:'אַסְלָה',      hard:'לְיַד הָאַסְלָה',                    z:['r',540,124,58,108]},
+  // ---- GARDEN (11)
+  {id:'fence',      room:'garden', n:'גָּדֵר',     hard:'מֵאֲחוֹרֵי הַגָּדֵר',                z:['r',620,392,380,46]},
+  {id:'path',       room:'garden', n:'שְׁבִיל',    hard:'עַל הַשְּׁבִיל',                     z:['r',620,438,380,38]},
+  {id:'appletree',  room:'garden', n:'עֵץ תַּפּוּחִים', hard:'מֵאֲחוֹרֵי עֵץ הַתַּפּוּחִים',  z:[['c',668,350,46],['r',656,380,24,100]]},
+  {id:'shed',       room:'garden', n:'מַחְסָן',    hard:'מֵאֲחוֹרֵי הַמַּחְסָן',              z:['p','682,400 741,346 802,400 800,480 684,480']},
+  {id:'bigtree',    room:'garden', n:'עֵץ',        hard:'מֵאֲחוֹרֵי הָעֵץ הַגָּדוֹל',          z:[['c',906,270,78],['r',888,300,36,180]]},
+  {id:'bush',       room:'garden', n:'שִׂיחַ',     hard:'מֵאֲחוֹרֵי הַשִּׂיחַ הַיָּרוֹק',      z:['r',798,418,70,64]},
+  {id:'bench',      room:'garden', n:'סַפְסָל',    hard:'מֵאֲחוֹרֵי הַסַּפְסָל',              z:['r',692,482,104,54]},
+  {id:'ball',       room:'garden', n:'כַּדּוּר',   hard:'לְיַד הַכַּדּוּר',                   z:['c',809,522,14]},
+  {id:'bike',       room:'garden', n:'אוֹפַנַּיִם', hard:'לְיַד הָאוֹפַנַּיִם',                z:['r',626,494,56,40]},
+  {id:'flowers',    room:'garden', n:'פְּרָחִים',  hard:'לְיַד הַפְּרָחִים',                  z:['r',826,488,120,52]},
+  {id:'pots',       room:'garden', n:'עֲצִיצִים',  hard:'לְיַד הָעֲצִיצִים',                  z:['r',946,500,50,36]}
+];
+const T = {ok:n=>'כָּל הַכָּבוֹד! מְצָאתֶם אֶת '+n+'! 🎉', bad:'לֹא נָכוֹן. נַסּוּ שׁוּב!'};
+/* ===== END CONTENT ===== */
+
+const $ = id => document.getElementById(id);
+const NIK = /[\u0591-\u05C7]/g;
+const NS = 'http://www.w3.org/2000/svg';
+const svg = $('house'), VIEW0 = '0 0 1000 540';
+let S = {name:'', g:null, level:'easy', score:0, tries:0, idx:0, deck:[], cur:null, lock:false, zoom:null, muted:false, clue:''};
+
+function shapes(p){return typeof p.z[0]==='string'?[p.z]:p.z;}
+function box(z){
+  if(z[0]==='r')return[z[1],z[2],z[1]+z[3],z[2]+z[4]];
+  if(z[0]==='c')return[z[1]-z[3],z[2]-z[3],z[1]+z[3],z[2]+z[3]];
+  const n=z[1].split(/[ ,]+/).map(Number),xs=n.filter((_,i)=>i%2===0),ys=n.filter((_,i)=>i%2);
+  return[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
+}
+function center(p){
+  const b=shapes(p).map(box).reduce((a,c)=>[Math.min(a[0],c[0]),Math.min(a[1],c[1]),Math.max(a[2],c[2]),Math.max(a[3],c[3])]);
+  return[(b[0]+b[2])/2,(b[1]+b[3])/2];
+}
+function mk(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent.appendChild(e);return e;}
+
+(function build(){
+  for(const k in ROOMS){
+    const R=ROOMS[k], r=R.o||R.b;
+    const e=mk('rect',{class:'r','data-id':k,x:r[0]+3,y:r[1]+3,width:r[2]-6,height:r[3]-6,role:'button','aria-label':R.he,tabindex:-1},$('rooms'));
+    e.addEventListener('click',()=>pick('room',k));
+    const t=mk('text',{class:'lbl',x:R.lb[0],y:R.lb[1]},$('labels'));t.textContent=R.he;
+    const g=mk('g',{class:'enter','data-room':k,role:'button','aria-label':'כְּנִיסָה לַחֶדֶר: '+R.he,tabindex:-1},$('enters'));
+    mk('circle',{cx:R.eb[0],cy:R.eb[1],r:16},g);
+    const tt=mk('text',{x:R.eb[0],y:R.eb[1]+1,'font-size':18,'text-anchor':'middle','dominant-baseline':'central'},g);tt.textContent='🔍';
+    g.addEventListener('click',()=>enterRoom(k));
+  }
+  PLACES.forEach(p=>{
+    const parts=shapes(p).map((z,i)=>{
+      const a={class:'z','data-id':p.id,'data-room':p.room,role:'button','aria-label':p.n,tabindex:-1};
+      if(i)a['aria-hidden']='true';
+      const e=z[0]==='r'?mk('rect',Object.assign(a,{x:z[1],y:z[2],width:z[3],height:z[4],rx:8}),$('zones'))
+             :z[0]==='c'?mk('circle',Object.assign(a,{cx:z[1],cy:z[2],r:z[3]}),$('zones'))
+             :mk('polygon',Object.assign(a,{points:z[1]}),$('zones'));
+      e.addEventListener('click',()=>pick('place',p.id));
+      return e;
+    });
+    parts.forEach(e=>{   // highlight every part of a multi-part item together
+      e.addEventListener('mouseenter',()=>parts.forEach(x=>x.classList.add('hl')));
+      e.addEventListener('mouseleave',()=>parts.forEach(x=>x.classList.remove('hl')));
+    });
+  });
+  document.querySelectorAll('.r,.z,.enter').forEach(e=>e.addEventListener('keydown',ev=>{
+    if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();e.dispatchEvent(new Event('click'));}
+  }));
+})();
+
+function applyView(){
+  const hard=S.level==='hard', zm=S.zoom;
+  svg.dataset.mode=S.level;
+  svg.classList.toggle('zoomed',!!zm);
+  svg.setAttribute('viewBox',zm?ROOMS[zm].b.join(' '):VIEW0);
+  document.querySelectorAll('.art').forEach(g=>g.style.display=(!zm||g.id==='a-'+zm)?'':'none');
+  document.querySelectorAll('.z').forEach(e=>{
+    const show=!zm||e.dataset.room===zm;
+    e.style.display=show?'':'none';e.setAttribute('tabindex',hard&&show&&!e.hasAttribute('aria-hidden')?0:-1);
+  });
+  document.querySelectorAll('.r').forEach(e=>e.setAttribute('tabindex',hard?-1:0));
+  document.querySelectorAll('.enter').forEach(e=>e.setAttribute('tabindex',hard&&!zm?0:-1));
+  $('leave').classList.toggle('hide',!zm);
+  $('hint').classList.toggle('hide',!(hard&&!zm));
+}
+function enterRoom(k){S.zoom=k;applyView();}
+function leaveRoom(){S.zoom=null;applyView();}
+
+function shuffleDeck(){
+  let a=PLACES.slice();
+  for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}
+  a=a.slice(0,Math.min(ROUNDS,a.length));
+  for(let i=1;i<a.length;i++){
+    if(a[i].room===a[i-1].room){
+      let j=a.findIndex((p,k)=>k>i&&p.room!==a[i-1].room&&(!a[i+1]||p.room!==a[i+1].room));
+      if(j<0)j=a.findIndex((p,k)=>k>i&&p.room!==a[i-1].room);
+      if(j>-1)[a[i],a[j]]=[a[j],a[i]];
+    }
+  }
+  return a;
+}
+
+function newGame(){
+  S.playing=true;S.score=0;S.tries=0;S.idx=0;S.lock=false;S.deck=shuffleDeck();S.zoom=null;
+  $('lvE').classList.toggle('on',S.level==='easy');$('lvH').classList.toggle('on',S.level==='hard');
+  $('lvE').setAttribute('aria-pressed',S.level==='easy');$('lvH').setAttribute('aria-pressed',S.level==='hard');
+  $('av').textContent=S.g==='m'?'👦':'👧';
+  $('who').textContent=S.name+' '+H[S.g==='m'?0:1]+'!';
+  $('ask').textContent='אֵיפֹה '+S.name+'?';
+  $('end').classList.add('hide');$('game').classList.remove('hide');
+  nextRound();
+}
+
+function nextRound(){
+  if(!S.playing)return;
+  S.zoom=null;applyView();
+  $('rev').innerHTML='';$('msg').textContent='';$('msg').className='';
+  if(S.idx>=S.deck.length)return finish();
+  S.cur=S.deck[S.idx];S.lock=false;
+  const p=S.cur, verb=H[S.g==='m'?0:1];
+  const phrase=S.level==='easy'?ROOMS[p.room].easy[Math.random()*ROOMS[p.room].easy.length|0]:p.hard;
+  S.clue=S.name+' '+verb+' '+phrase+'.';   // third person: name + gender-agreed verb
+  $('clueText').textContent=S.clue;
+  $('sc').textContent=S.score;$('tr').textContent=S.tries;$('rd').textContent=S.idx+1;$('rt').textContent=S.deck.length;
+  setTimeout(()=>{if(S.playing)speak(S.clue);},250);
+}
+
+const SAY_P=[['שיש בו','אשר יש בו']];        // spoken-only phrase fixes
+const SAY_W={'מטה':'מיטה','גנה':'גינה','שלחן':'שולחן','כסאות':'כיסאות','טלויזיה':'טלוויזיה','שדה':'שידה','ברוז':'ברווז','אופנים':'אופניים'};        // spoken-only spellings (bed, garden) - add more here
+function sayText(t){
+  t=t.replace(NIK,'');
+  SAY_P.forEach(([a,b])=>{t=t.split(a).join(b);});
+  t=t.replace(/[\u05D0-\u05EA]+/g,w=>{
+    for(const k in SAY_W){
+      if(w===k)return SAY_W[k];
+      if(w.endsWith(k)&&/^[בהלמוכש]{1,3}$/.test(w.slice(0,-k.length)))return w.slice(0,-k.length)+SAY_W[k];
+    }
+    return w;
+  });
+  return t.replace(/[^\p{L}\p{N} .,!?'-]/gu,' ').replace(/\s+/g,' ').trim();
+}
+let VOICES=[];
+function loadV(){try{VOICES=speechSynthesis.getVoices()||[];}catch(e){}}
+if('speechSynthesis' in window){loadV();speechSynthesis.addEventListener('voiceschanged',loadV);}
+function pickVoice(re){
+  const l=VOICES.filter(v=>re.test(v.lang.replace('_','-')));
+  return l.find(v=>/google|microsoft|enhanced|premium|natural/i.test(v.name))||l.find(v=>!/compact/i.test(v.name))||l[0];
+}
+function speak(t,force){
+  try{
+    if(S.muted&&!force)return;
+    if(!('speechSynthesis' in window))return;
+    speechSynthesis.cancel();
+    sayText(t).split(/([A-Za-z][A-Za-z' -]*)/).forEach(seg=>{
+      if(!seg.trim())return;
+      const en=/[A-Za-z]/.test(seg), u=new SpeechSynthesisUtterance(seg.trim());
+      u.lang=en?'en-US':'he-IL';u.rate=en?.9:.85;
+      const v=pickVoice(en?/^en/i:/^(he|iw)/i);if(v)u.voice=v;
+      speechSynthesis.speak(u);
+    });
+  }catch(e){}
+}
+function kid(x,y,g){
+  const e=mk('g',{class:'pop'},$('rev')), A=(t,a)=>mk(t,a,e);
+  A('circle',{cx:x,cy:y+22,r:16,fill:g==='m'?'#42a5f5':'#ec407a',stroke:'#fff','stroke-width':3});
+  if(g==='f'){A('circle',{cx:x-19,cy:y-2,r:7,fill:'#5d4037'});A('circle',{cx:x+19,cy:y-2,r:7,fill:'#5d4037'});}
+  A('circle',{cx:x,cy:y-4,r:19,fill:'#ffcc9c',stroke:'#fff','stroke-width':3});
+  A('path',{d:'M'+(x-19)+' '+(g==='m'?y-6:y-4)+'a19 19 0 0 1 38 0c-10-9-28-9-38 0z',fill:'#5d4037'});
+  A('circle',{cx:x-7,cy:y,r:2.5,fill:'#3b2a1a'});A('circle',{cx:x+7,cy:y,r:2.5,fill:'#3b2a1a'});
+  A('path',{d:'M'+(x-7)+' '+(y+7)+'q7 7 14 0',stroke:'#c0392b','stroke-width':2.5,fill:'none','stroke-linecap':'round'});
+}
+function burst(x,y){
+  const C=['#ffca28','#ef5350','#42a5f5','#66bb6a','#ab47bc'];
+  for(let i=0;i<12;i++){
+    const a=i/12*6.283,d=50+Math.random()*40,c=mk('circle',{class:'cf',cx:x,cy:y,r:5,fill:C[i%5]},$('rev'));
+    c.style.setProperty('--dx',Math.cos(a)*d+'px');c.style.setProperty('--dy',Math.sin(a)*d+'px');
+  }
+}
+
+function pick(kind,id){
+  if(S.lock)return;
+  const want=kind==='room'?S.cur.room:S.cur.id;
+  S.tries++;$('tr').textContent=S.tries;
+  const els=document.querySelectorAll((kind==='room'?'.r':'.z')+'[data-id="'+id+'"]');
+  if(id!==want){
+    $('msg').textContent=T.bad;$('msg').className='bad';
+    els.forEach(el=>el.classList.add('bad'));setTimeout(()=>els.forEach(el=>el.classList.remove('bad')),600);
+    speak(T.bad);
+    return;
+  }
+  S.lock=true;S.score++;$('sc').textContent=S.score;
+  const okMsg=T.ok(S.name);
+  $('msg').textContent=okMsg;$('msg').className='ok';
+  const c=center(S.cur);
+  const rb=ROOMS[S.cur.room].b, ky=Math.max(rb[1]+30,Math.min(c[1]-8,rb[1]+rb[3]-42));
+  kid(c[0],ky,S.g);burst(c[0],c[1]);
+  speak(okMsg);
+  S.idx++;
+  setTimeout(nextRound,2200);
+}
+
+function finish(){
+  S.playing=false;
+  $('game').classList.add('hide');$('end').classList.remove('hide');
+  $('fs').textContent=S.score;
+  speak('כל הכבוד! מצאתם את כל המקומות!');
+}
+
+function chkStart(){$('go').disabled=!($('nm').value.trim()&&S.g);}
+$('nm').addEventListener('input',chkStart);
+function setG(g){S.g=g;['m','f'].forEach(k=>{const b=$('g'+k);b.classList.toggle('on',k===g);b.setAttribute('aria-pressed',k===g);});chkStart();}
+$('gm').addEventListener('click',()=>setG('m'));$('gf').addEventListener('click',()=>setG('f'));
+function toStart(){
+  S.playing=false;S.zoom=null;
+  try{speechSynthesis.cancel();}catch(e){}
+  $('game').classList.add('hide');$('end').classList.add('hide');$('start').classList.remove('hide');
+  $('nm').value=S.name;if(S.g)setG(S.g);chkStart();
+}
+$('go').addEventListener('click',()=>{S.name=$('nm').value.trim();$('start').classList.add('hide');newGame();});
+$('lvE').addEventListener('click',()=>{S.level='easy';newGame();});
+$('lvH').addEventListener('click',()=>{S.level='hard';newGame();});
+$('newg').addEventListener('click',toStart);
+$('again').addEventListener('click',toStart);
+$('spk').addEventListener('click',()=>speak(S.clue,true));
+$('leave').addEventListener('click',leaveRoom);
+$('vol').addEventListener('click',()=>{
+  S.muted=!S.muted;$('vol').textContent=S.muted?'🔇':'🔊';$('vol').setAttribute('aria-pressed',S.muted);
+  if(S.muted&&'speechSynthesis' in window)speechSynthesis.cancel();
+});
+</script>
+</body>
+</html>
