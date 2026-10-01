@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Olam street 1.17 &amp; 1.18 – שִׂיחָה וּכְתִיבָה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@400;600;700&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:GveretLevin;src:url("https://cdn.jsdelivr.net/npm/@fontsource/gveret-levin/files/gveret-levin-hebrew-400-normal.woff2") format("woff2");font-display:swap}
+:root{
+  --bg:#f3f6f9; --paper:#ffffff; --ink:#1d2b3a; --muted:#5d6b7a; --line:#d5dee8;
+  --accent:#1f93c4; --accent-ink:#ffffff;
+  --s1:#bee6f7; --s1i:#0f5a7a; --s2:#e3d7fb; --s2i:#4b2a8c; --s3:#f8e3a3; --s3i:#6b4e00;
+  --s4:#cdeedb; --s4i:#1d6a40; --s5:#fbd5cf; --s5i:#8a2a1c;
+  --ok:#2e9e5b;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#131a21; --paper:#1b242e; --ink:#e9eef3; --muted:#9aa8b6; --line:#33404d;
+    --accent:#5cc4ef; --accent-ink:#0d1a24;
+    --s1:#1d4b60; --s1i:#bfe9fb; --s2:#3b2c63; --s2i:#e3d7fb; --s3:#5a4a17; --s3i:#fbe7a6;
+    --s4:#1f4a33; --s4i:#c9f1da; --s5:#5c2a22; --s5i:#ffd9d2;
+    --ok:#4cc27e;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131a21; --paper:#1b242e; --ink:#e9eef3; --muted:#9aa8b6; --line:#33404d;
+  --accent:#5cc4ef; --accent-ink:#0d1a24;
+  --s1:#1d4b60; --s1i:#bfe9fb; --s2:#3b2c63; --s2i:#e3d7fb; --s3:#5a4a17; --s3i:#fbe7a6;
+  --s4:#1f4a33; --s4i:#c9f1da; --s5:#5c2a22; --s5i:#ffd9d2;
+  --ok:#4cc27e;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:"Noto Serif Hebrew","David Libre","Times New Roman",serif;font-size:19px;line-height:1.7}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1240px;margin:0 auto;padding:20px 16px 48px}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 20px;margin-bottom:14px}
+header.top h1{font-family:"Secular One","Arial Hebrew",sans-serif;font-weight:400;font-size:clamp(1.5rem,3.6vw,2.2rem);margin:0;line-height:1.2}
+header.top .sub{color:var(--muted);font-size:1rem}
+header.top a.back{color:var(--muted);font-size:.95rem;text-decoration:none}
+header.top a.back:hover{color:var(--ink)}
+
+/* ---- steps ---- */
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px;padding:0;list-style:none}
+.step{border:2px solid transparent;border-radius:999px;padding:6px 16px 6px 10px;cursor:pointer;font-family:"Secular One",sans-serif;font-size:1rem;display:flex;align-items:center;gap:8px;line-height:1.3}
+.step .n{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--paper);color:var(--ink);font-size:.85rem;flex:none}
+.step[data-i="0"]{background:var(--s1);color:var(--s1i)}
+.step[data-i="1"]{background:var(--s2);color:var(--s2i)}
+.step[data-i="2"]{background:var(--s3);color:var(--s3i)}
+.step[data-i="3"]{background:var(--s4);color:var(--s4i)}
+.step[data-i="4"]{background:var(--s5);color:var(--s5i)}
+.step[aria-selected="false"]{opacity:.6}
+.step[aria-selected="true"]{border-color:currentColor;opacity:1}
+.step.done .n::after{content:"✓"}
+.step.done .n span{display:none}
+
+.sheet{background:var(--paper);border-radius:14px;padding:20px clamp(12px,2.6vw,28px) 24px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 8px 28px -18px rgba(20,40,60,.35)}
+.sheet[hidden]{display:none}
+.shead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.badge{display:inline-flex;align-items:center;gap:8px;font-family:"Secular One",sans-serif;font-size:1.2rem;padding:4px 18px;border-radius:999px}
+.instr{font-size:1.06rem;margin:6px 0 14px}
+.btn{border:none;border-radius:10px;padding:8px 18px;cursor:pointer;font-family:"Secular One",sans-serif;font-size:1rem;background:var(--bg);color:var(--ink);display:inline-flex;align-items:center;gap:6px;text-decoration:none;line-height:1.4}
+.btn:hover{filter:brightness(.96)}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.next{margin-top:18px;display:flex;justify-content:flex-end}
+
+/* ---- embedded games ---- */
+.gameFrame{width:100%;height:min(78vh,780px);border:2px solid var(--line);border-radius:12px;background:#fff;display:block}
+
+/* ---- comic ---- */
+.comic{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;direction:rtl}
+.comic .panel{grid-column:span 4}
+.comic .panel:nth-child(n+7){grid-column:span 3}
+@media (max-width:900px){.comic{grid-template-columns:1fr 1fr}.comic .panel,.comic .panel:nth-child(n+7){grid-column:span 1}}
+@media (max-width:520px){.comic{grid-template-columns:1fr}}
+.panel{position:relative;aspect-ratio:4/3;container-type:inline-size;border:3px solid #1d2b3a;border-radius:6px;overflow:hidden;cursor:pointer;background:#cfe9e4;user-select:none;-webkit-user-select:none}
+.panel svg.scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.panel .num{position:absolute;bottom:1.5cqw;left:2cqw;background:#1d2b3a;color:#fff;font-family:"Secular One",sans-serif;font-size:3.6cqw;line-height:1;padding:.9cqw 1.8cqw;border-radius:99px;z-index:3}
+.panel .tap{position:absolute;bottom:1.5cqw;right:2cqw;font-size:6cqw;z-index:3;animation:tapHint 1.6s ease-in-out infinite}
+.panel.seen .tap{display:none}
+@keyframes tapHint{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.5cqw)}}
+.bub{position:absolute;top:3%;z-index:2;background:#fff;color:#1d2b3a;border:.5cqw solid #1d2b3a;border-radius:7cqw/6cqw;padding:1.3cqw 2.4cqw;font-family:"Noto Serif Hebrew",serif;font-size:4.5cqw;line-height:1.45;font-weight:700;text-align:center;opacity:0;transform:scale(.3);transform-origin:var(--tx) 130%;transition:opacity .25s ease,transform .35s cubic-bezier(.3,1.6,.5,1);transition-delay:var(--d,0s);cursor:pointer}
+.bub::after{content:"";position:absolute;bottom:-2.1cqw;left:calc(var(--tx) - 1.7cqw);width:3.4cqw;height:3.4cqw;background:#fff;border-right:.5cqw solid #1d2b3a;border-bottom:.5cqw solid #1d2b3a;transform:rotate(45deg)}
+.bub.on,.showAll .bub{opacity:1;transform:scale(1)}
+.bub.low{top:auto;bottom:36%}
+
+/* characters */
+.ch .body{transform-box:fill-box;transform-origin:50% 100%}
+.ch .arm{transform-box:fill-box;transform-origin:50% 6%}
+.ch .head{transform-box:fill-box;transform-origin:50% 90%}
+.ch .eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 4.5s infinite}
+.ch.d .eyes{animation-delay:1.7s}
+.ch .mouth{transform-box:fill-box;transform-origin:50% 0%}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.play .ch.talk .mouth{animation:talk .16s ease-in-out 12 alternate;animation-delay:var(--td,0s)}
+@keyframes talk{to{transform:scaleY(2.6)}}
+.play .ch.k.a-wave .armB{animation:waveR 2.2s ease-in-out both;animation-delay:var(--td,0s)}
+.play .ch.d.a-wave .armA{animation:waveL 2.2s ease-in-out both;animation-delay:var(--td,0s)}
+@keyframes waveL{0%{transform:rotate(0)}15%{transform:rotate(150deg)}30%{transform:rotate(120deg)}45%{transform:rotate(152deg)}60%{transform:rotate(120deg)}75%{transform:rotate(150deg)}100%{transform:rotate(0)}}
+@keyframes waveR{0%{transform:rotate(0)}15%{transform:rotate(-150deg)}30%{transform:rotate(-120deg)}45%{transform:rotate(-152deg)}60%{transform:rotate(-120deg)}75%{transform:rotate(-150deg)}100%{transform:rotate(0)}}
+.play .ch.k.a-point .armA{animation:pointL 2.6s ease-in-out both;animation-delay:var(--pd,0s)}
+.play .ch.d.a-point .armB{animation:pointR 2.6s ease-in-out both;animation-delay:var(--pd,0s)}
+@keyframes pointL{0%{transform:rotate(0)}18%,82%{transform:rotate(78deg)}100%{transform:rotate(0)}}
+@keyframes pointR{0%{transform:rotate(0)}18%,82%{transform:rotate(-78deg)}100%{transform:rotate(0)}}
+.play .ch.a-cheer .armA{animation:cheerL 1.8s ease-in-out both;animation-delay:var(--td,0s)}
+.play .ch.a-cheer .armB{animation:cheerR 1.8s ease-in-out both;animation-delay:var(--td,0s)}
+@keyframes cheerL{0%{transform:rotate(0)}20%,40%{transform:rotate(155deg)}30%{transform:rotate(140deg)}50%,70%{transform:rotate(155deg)}60%{transform:rotate(140deg)}100%{transform:rotate(0)}}
+@keyframes cheerR{0%{transform:rotate(0)}20%,40%{transform:rotate(-155deg)}30%{transform:rotate(-140deg)}50%,70%{transform:rotate(-155deg)}60%{transform:rotate(-140deg)}100%{transform:rotate(0)}}
+.play .ch.a-clap .armA{animation:clapL .3s ease-in-out 7 alternate both;animation-delay:var(--cd,.3s)}
+.play .ch.a-clap .armB{animation:clapR .3s ease-in-out 7 alternate both;animation-delay:var(--cd,.3s)}
+@keyframes clapL{from{transform:rotate(-30deg)}to{transform:rotate(-58deg)}}
+@keyframes clapR{from{transform:rotate(30deg)}to{transform:rotate(58deg)}}
+.play .ch.a-jump .body{animation:jump 1.1s ease-out both;animation-delay:var(--jd,0s)}
+@keyframes jump{0%,100%{transform:translateY(0)}20%{transform:translateY(-30px)}40%{transform:translateY(0)}58%{transform:translateY(-16px)}74%{transform:translateY(0)}}
+.play .ch.a-nod .head{animation:nod 1.4s ease-in-out both}
+@keyframes nod{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}50%{transform:rotate(6deg)}75%{transform:rotate(-4deg)}}
+.play .ch.a-dribble .armA{animation:dribble .45s ease-in-out 6 alternate both}
+@keyframes dribble{from{transform:rotate(20deg)}to{transform:rotate(45deg)}}
+
+/* props */
+.prop{opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+.play .p-float{animation:floatUp 2.4s ease-out both;animation-delay:var(--pd,0s)}
+@keyframes floatUp{0%{opacity:0;transform:translateY(12px) scale(.4)}20%{opacity:1;transform:translateY(0) scale(1.15)}75%{opacity:1;transform:translateY(-26px) scale(1)}100%{opacity:0;transform:translateY(-44px) scale(.9)}}
+.play .p-pop{animation:popIn .6s cubic-bezier(.3,1.6,.5,1) both;animation-delay:var(--pd,0s)}
+@keyframes popIn{0%{opacity:0;transform:scale(0) rotate(-20deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+.play .p-q{animation:qBounce 2.4s ease-in-out both;animation-delay:var(--pd,0s)}
+@keyframes qBounce{0%{opacity:0;transform:scale(0)}15%{opacity:1;transform:scale(1.3)}25%,45%,65%{transform:scale(1) translateY(0)}35%,55%{transform:scale(1) translateY(-10px)}85%{opacity:1}100%{opacity:0;transform:scale(1) translateY(-6px)}}
+.play .p-ball{animation:ballBounce .45s ease-in 6 alternate both}
+@keyframes ballBounce{from{opacity:1;transform:translateY(0)}to{opacity:1;transform:translateY(42px)}}
+.play .p-soccer{animation:soccer 2.6s ease-in-out both;animation-delay:var(--pd,0s)}
+@keyframes soccer{0%{opacity:0;transform:translate(0,0) rotate(0)}10%{opacity:1}30%{transform:translate(0,-60px) rotate(180deg)}50%{transform:translate(0,0) rotate(360deg)}70%{transform:translate(0,-40px) rotate(540deg)}88%{opacity:1;transform:translate(0,0) rotate(720deg)}100%{opacity:1;transform:translate(0,0) rotate(720deg)}}
+.play .p-shot{animation:shot 2.2s ease-in-out both;animation-delay:var(--pd,0s)}
+@keyframes shot{0%{opacity:1;transform:translate(0,0)}45%{transform:translate(55px,-150px)}75%{transform:translate(87px,-104px)}88%{opacity:1;transform:translate(87px,-70px)}100%{opacity:1;transform:translate(87px,-40px)}}
+.play .p-draw path{animation:draw 1.8s ease-in-out both;animation-delay:var(--pd,0s)}
+.p-draw path{stroke-dasharray:1;stroke-dashoffset:1}
+@keyframes draw{to{stroke-dashoffset:0}}
+.play .p-draw{opacity:1}
+.play .p-brush{animation:brush 1.8s ease-in-out both;animation-delay:var(--pd,0s)}
+@keyframes brush{0%{opacity:1;transform:translate(0,0)}25%{transform:translate(-14px,-16px)}50%{transform:translate(-30px,-4px)}75%{transform:translate(-44px,-18px)}100%{opacity:0;transform:translate(-56px,-6px)}}
+
+.comicBar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+
+/* stage (one panel big) */
+.stage{position:fixed;inset:0;z-index:100;background:rgba(10,18,26,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:12px}
+.stage[hidden]{display:none}
+.stage .big{width:min(96vw,calc((100vh - 110px) * 4 / 3));cursor:pointer}
+.stage .sbar{display:flex;gap:10px;align-items:center;color:#fff;font-family:"Secular One",sans-serif}
+.stage .sbar .btn{background:#ffffff1f;color:#fff;font-size:1.15rem;padding:8px 18px}
+.stage .sbar .btn:hover{background:#ffffff33}
+.stage .count{min-width:4.5em;text-align:center;font-size:1.1rem}
+
+/* ---- writing ---- */
+.writeCard{background:var(--paper)}
+.writeCard:fullscreen{padding:16px;overflow:auto}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px;position:sticky;top:0;z-index:5;background:var(--paper);padding:6px 0}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid var(--paper);box-shadow:0 0 0 2px var(--line);cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
+.sz{width:38px;height:38px;border-radius:10px;border:none;background:var(--bg);cursor:pointer;display:grid;place-items:center;padding:0}
+.sz i{display:block;border-radius:50%;background:var(--ink)}
+.sz[aria-pressed="true"]{background:var(--accent)}
+.sz[aria-pressed="true"] i{background:var(--accent-ink)}
+.sep{width:1px;height:28px;background:var(--line);margin:0 4px}
+.sheetWrap{position:relative;border-radius:10px;overflow:hidden;background:#fffdf7;border:1px solid #e6dcc4}
+.sheetWrap svg{display:block;width:100%;height:auto}
+.sheetWrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.sheetWrap.erase canvas{cursor:cell}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+@media (max-width:720px){.cards{grid-template-columns:repeat(2,1fr)}}
+.card{background:var(--bg);border-radius:14px;padding:10px 8px;text-align:center;cursor:pointer;border:none}
+.card .pic{font-size:3rem;line-height:1.15}
+.card .script{font-family:GveretLevin,cursive;font-size:2.4rem;line-height:1.2}
+.card .print{font-weight:700;font-size:1.15rem}
+@media (prefers-reduced-motion:reduce){
+  .panel .tap{animation:none}
+  .bub{transition:opacity .2s}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Olam street 1.17 &amp; 1.18</h1>
+      <div class="sub">שִׂיחָה וּכְתִיבָה · אֲנִי, אַתָּה, אַתְּ, עוֹלָם</div>
+    </div>
+    <a class="back" href="https://edadon-hla.github.io/hebrew-teacher-games/full-lessons/">→ לְכָל הַשִּׁעוּרִים</a>
+  </header>
+
+  <ol class="steps" role="tablist" id="steps"></ol>
+
+  <!-- 1: צליל פותח -->
+  <section class="sheet" data-step="0" role="tabpanel">
+    <div class="shead">
+      <span class="badge" style="background:var(--s1);color:var(--s1i)">🔊 צְלִיל פּוֹתֵחַ</span>
+      <a class="btn" href="https://edadon-hla.github.io/hebrew-teacher-games/games/tsil-poteach.html" target="_blank" rel="noopener">↗ פְּתִיחָה בְּחַלּוֹן חָדָשׁ</a>
+    </div>
+    <iframe class="gameFrame" data-src="https://edadon-hla.github.io/hebrew-teacher-games/games/tsil-poteach.html" title="צליל פותח"></iframe>
+    <div class="next"><button class="btn primary" data-go="1">הַשָּׁלָב הַבָּא ←</button></div>
+  </section>
+
+  <!-- 2: דפוס וכתב -->
+  <section class="sheet" data-step="1" role="tabpanel" hidden>
+    <div class="shead">
+      <span class="badge" style="background:var(--s2);color:var(--s2i)">🔤 מִשְׂחַק זִכָּרוֹן: דְּפוּס וּכְתָב</span>
+      <a class="btn" href="https://edadon-hla.github.io/hebrew-teacher-games/games/letters-memory.html" target="_blank" rel="noopener">↗ פְּתִיחָה בְּחַלּוֹן חָדָשׁ</a>
+    </div>
+    <iframe class="gameFrame" data-src="https://edadon-hla.github.io/hebrew-teacher-games/games/letters-memory.html" title="דפוס וכתב"></iframe>
+    <div class="next"><button class="btn primary" data-go="2">הַשָּׁלָב הַבָּא ←</button></div>
+  </section>
+
+  <!-- 3: קומיקס 1.18 -->
+  <section class="sheet" data-step="2" role="tabpanel" hidden>
+    <div class="shead">
+      <span class="badge" style="background:var(--s3);color:var(--s3i)">💬 1.18 חֵלֶק ב' – שִׂיחָה</span>
+    </div>
+    <p class="instr">לַחֲצוּ עַל כָּל תְּמוּנָה – הַדְּמֻיּוֹת יְדַבְּרוּ וְיָזוּזוּ. לַחֲצוּ עַל בּוּעָה כְּדֵי לִשְׁמֹעַ אוֹתָהּ.</p>
+    <div class="comicBar">
+      <button class="btn primary" id="openStage">⛶ תְּמוּנָה אַחַר תְּמוּנָה</button>
+      <button class="btn" id="showAll" aria-pressed="false">💬 הַצְּגַת כָּל הַבּוּעוֹת</button>
+      <button class="btn" id="resetComic">↺ אִפּוּס</button>
+    </div>
+    <div class="comic" id="comic"></div>
+    <div class="next"><button class="btn primary" data-go="3">הַשָּׁלָב הַבָּא ←</button></div>
+  </section>
+
+  <!-- 4: בדרך לבית הספר -->
+  <section class="sheet" data-step="3" role="tabpanel" hidden>
+    <div class="shead">
+      <span class="badge" style="background:var(--s4);color:var(--s4i)">🏫 בַּדֶּרֶךְ לְבֵית הַסֵּפֶר</span>
+      <a class="btn" href="https://edadon-hla.github.io/hebrew-teacher-games/games/bederech-lebeit-hasefer.html" target="_blank" rel="noopener">↗ פְּתִיחָה בְּחַלּוֹן חָדָשׁ</a>
+    </div>
+    <iframe class="gameFrame" data-src="https://edadon-hla.github.io/hebrew-teacher-games/games/bederech-lebeit-hasefer.html" title="בדרך לבית הספר"></iframe>
+    <div class="next"><button class="btn primary" data-go="4">הַשָּׁלָב הַבָּא ←</button></div>
+  </section>
+
+  <!-- 5: כתיבה 1.17 -->
+  <section class="sheet writeCard" data-step="4" role="tabpanel" hidden id="writeCard">
+    <div class="shead">
+      <span class="badge" style="background:var(--s5);color:var(--s5i)">✏️ 1.17 תַּרְגִּיל כְּתִיבָה</span>
+    </div>
+    <p class="instr">כִּתְבוּ אֶת הָאוֹתִיּוֹת הַבָּאוֹת בִּכְתָב. הָאוֹתִיּוֹת א, נ, י יוֹצְרוֹת אֶת הַמִּלָּה 'אֲנִי', הָאוֹתִיּוֹת א, ת, ה יוֹצְרוֹת אֶת הַמִּלָּה 'אַתָּה', וְהָאוֹתִיּוֹת א, ת יוֹצְרוֹת אֶת הַמִּלָּה 'אַתְּ'. הָאוֹתִיּוֹת ע, ו, ל, ם יוֹצְרוֹת אֶת הַמִּלָּה 'עוֹלָם'.</p>
+    <div class="tools" id="tools">
+      <button class="sw" data-c="#1d2b3a" style="background:#1d2b3a" aria-label="עט שחור" aria-pressed="true"></button>
+      <button class="sw" data-c="#1f62d4" style="background:#1f62d4" aria-label="עט כחול" aria-pressed="false"></button>
+      <button class="sw" data-c="#e1342b" style="background:#e1342b" aria-label="עט אדום" aria-pressed="false"></button>
+      <button class="sw" data-c="#14874c" style="background:#14874c" aria-label="עט ירוק" aria-pressed="false"></button>
+      <span class="sep"></span>
+      <button class="sz" data-s="3" aria-label="קו דק" aria-pressed="false"><i style="width:6px;height:6px"></i></button>
+      <button class="sz" data-s="5.5" aria-label="קו בינוני" aria-pressed="true"><i style="width:10px;height:10px"></i></button>
+      <button class="sz" data-s="9" aria-label="קו עבה" aria-pressed="false"><i style="width:16px;height:16px"></i></button>
+      <span class="sep"></span>
+      <button class="btn" id="eraser" aria-pressed="false">🧽 מַחַק</button>
+      <button class="btn" id="undo">↶ בִּטּוּל</button>
+      <button class="btn" id="clear">🗑️ נִקּוּי</button>
+      <button class="btn" id="traces" aria-pressed="true">⋯ אוֹתִיּוֹת מְנֻקָּדוֹת</button>
+      <button class="btn" id="fs">⛶ מָסָךְ מָלֵא</button>
+    </div>
+    <div class="sheetWrap" id="sheetWrap">
+      <svg id="lines" viewBox="0 0 1000 560" aria-hidden="true"></svg>
+      <canvas id="pad" aria-label="לוח כתיבה"></canvas>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+</div>
+
+<div class="stage" id="stage" hidden role="dialog" aria-label="שיחה – תמונה אחר תמונה">
+  <div class="big" id="bigHolder"></div>
+  <div class="sbar">
+    <button class="btn" id="prev" aria-label="הקודמת">→</button>
+    <span class="count" id="count" dir="ltr">1 / 10</span>
+    <button class="btn" id="next" aria-label="הבאה">←</button>
+    <button class="btn" id="sayAll" aria-label="השמעה">🔊</button>
+    <button class="btn" id="closeStage" aria-label="סגירה">✕</button>
+  </div>
+</div>
+
+<script>
+/* ================= speech ================= */
+function speak(t){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(t); u.lang='he-IL'; u.rate=.85;
+    const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.toLowerCase().startsWith('he'));
+    if(v) u.voice=v;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ================= steps ================= */
+const STEPS=[['🔊','צְלִיל פּוֹתֵחַ'],['🔤','דְּפוּס וּכְתָב'],['💬','1.18 שִׂיחָה'],['🏫','בַּדֶּרֶךְ לְבֵית הַסֵּפֶר'],['✏️','1.17 כְּתִיבָה']];
+const stepsEl=document.getElementById('steps');
+const sheets=[...document.querySelectorAll('.sheet[data-step]')];
+STEPS.forEach(([ic,label],i)=>{
+  const li=document.createElement('li');
+  li.innerHTML=`<button class="step" role="tab" data-i="${i}" aria-selected="${i===0}"><span class="n"><span>${i+1}</span></span>${ic} ${label}</button>`;
+  stepsEl.appendChild(li);
+});
+const stepBtns=[...stepsEl.querySelectorAll('.step')];
+function showStep(i){
+  stepBtns.forEach((b,j)=>{b.setAttribute('aria-selected',j===i); if(j<i) b.classList.add('done');});
+  sheets.forEach(s=>s.hidden=+s.dataset.step!==i);
+  const f=sheets[i].querySelector('iframe[data-src]');
+  if(f&&!f.src) f.src=f.dataset.src;
+  if(i===4) requestAnimationFrame(sizePad);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+stepBtns.forEach((b,i)=>b.addEventListener('click',()=>showStep(i)));
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showStep(+b.dataset.go)));
+
+/* ================= comic ================= */
+const SKIN={k:'#f2c9a3',d:'#8d5a3b'};
+function person(who,x){
+  const k=who==='k';
+  const shirt=k?'#8b5cf6':'#2fa36b', pants=k?'#334155':'#2c5aa0', shoes=k?'#e85d75':'#222', skin=SKIN[who];
+  const hair=k
+    ? `<ellipse cx="33" cy="-156" rx="11" ry="25" transform="rotate(18 33 -156)" fill="#5a3418"/><circle cx="27" cy="-176" r="5" fill="#f5b700"/>
+       <path d="M-31 -158 Q-31 -196 0 -194 Q31 -196 31 -158 Q24 -180 4 -178 Q-14 -186 -31 -158Z" fill="#5a3418"/>`
+    : `<path d="M-30 -163 Q-29 -196 0 -195 Q29 -196 30 -163 Q26 -182 0 -182 Q-26 -182 -30 -163Z" fill="#1b1b1b"/>
+       <circle cx="-21" cy="-184" r="7" fill="#1b1b1b"/><circle cx="-9" cy="-191" r="7.5" fill="#1b1b1b"/><circle cx="5" cy="-192" r="7.5" fill="#1b1b1b"/><circle cx="18" cy="-186" r="7" fill="#1b1b1b"/>`;
+  const arm=(cls,ax)=>`<g class="arm ${cls}"><rect x="${ax-6}" y="-124" width="12" height="60" rx="6" fill="${shirt}"/><circle cx="${ax}" cy="-62" r="8" fill="${skin}"/></g>`;
+  return `<g transform="translate(${x} 287)"><g class="body">
+    <ellipse cx="0" cy="0" rx="34" ry="5" fill="#00000022"/>
+    <ellipse cx="-12" cy="-4" rx="13" ry="6" fill="${shoes}"/><ellipse cx="12" cy="-4" rx="13" ry="6" fill="${shoes}"/>
+    <rect x="-20" y="-64" width="16" height="60" rx="6" fill="${pants}"/><rect x="4" y="-64" width="16" height="60" rx="6" fill="${pants}"/>
+    ${arm('armA',-35)}${arm('armB',35)}
+    <rect x="-30" y="-128" width="60" height="72" rx="18" fill="${shirt}"/>
+    ${k?'<path d="M-12 -128 Q0 -116 12 -128" stroke="#fff" stroke-width="3" fill="none"/>':'<rect x="-30" y="-92" width="60" height="7" fill="#ffffff55"/>'}
+    <rect x="-7" y="-138" width="14" height="14" fill="${skin}"/>
+    <g class="head">
+      <circle cx="0" cy="-160" r="30" fill="${skin}"/>
+      ${hair}
+      <g class="eyes"><circle cx="-10" cy="-161" r="3.6" fill="#1d1d1d"/><circle cx="10" cy="-161" r="3.6" fill="#1d1d1d"/></g>
+      <circle cx="-17" cy="-150" r="5" fill="#ff7a8a" opacity=".35"/><circle cx="17" cy="-150" r="5" fill="#ff7a8a" opacity=".35"/>
+      <ellipse class="mouth" cx="0" cy="-145" rx="7" ry="2.6" fill="#7a2a2a"/>
+    </g>
+  </g></g>`;
+}
+const BG=`<rect width="400" height="300" fill="#cfe9e4"/>
+  <rect x="30" y="20" width="340" height="128" rx="6" fill="#2f6b5a" stroke="#9a6a3a" stroke-width="7"/>
+  <path d="M60 120 Q90 70 120 120 T180 120" stroke="#ffffff66" stroke-width="2.5" fill="none"/>
+  <text x="318" y="132" font-size="15" fill="#ffffff77" font-family="serif" direction="ltr">y=x²</text>
+  <rect x="0" y="250" width="400" height="50" fill="#ead9b5"/><rect x="0" y="248" width="400" height="4" fill="#d7c193"/>`;
+const PROPS={
+  wave:`<text class="prop p-float" style="--pd:.3s" x="62" y="120" font-size="22">✨</text><text class="prop p-float" style="--pd:1.4s" x="340" y="120" font-size="22">✨</text>`,
+  q:`<text class="prop p-q" style="--pd:.5s" x="200" y="200" font-size="54" text-anchor="middle" font-weight="700" fill="#e1342b" font-family="Secular One,sans-serif">?</text>`,
+  math:['+','×','÷','y=x²','π','='].map((s,i)=>`<text class="prop p-float" style="--pd:${(i*.28).toFixed(2)}s" x="${150+(i%3)*36}" y="${185+(i%2)*28}" font-size="${s.length>1?20:30}" font-weight="700" fill="${['#e1342b','#1f62d4','#14874c','#7a3fd1','#e07a10','#c8287a'][i]}" font-family="sans-serif" direction="ltr" text-anchor="middle">${s}</text>`).join(''),
+  palette:`<text class="prop p-pop" style="--pd:.4s" x="200" y="215" font-size="58" text-anchor="middle">🎨</text>`,
+  soccer:`<text class="prop p-soccer" style="--pd:.2s" x="185" y="272" font-size="34" text-anchor="middle">⚽</text><text class="prop p-q" style="--pd:1.6s" x="228" y="200" font-size="40" text-anchor="middle" font-weight="700" fill="#e1342b" font-family="Secular One,sans-serif">?</text>`,
+  paint:`<g class="prop p-pop" style="--pd:.1s"><rect x="160" y="160" width="80" height="62" fill="#fff" stroke="#9a6a3a" stroke-width="5"/></g>
+    <g class="prop p-draw" style="--pd:.6s" fill="none" stroke-linecap="round"><path pathLength="1" d="M170 205 Q185 175 200 200 T230 185" stroke="#e1342b" stroke-width="5"/><path pathLength="1" d="M172 213 Q187 186 202 210 T232 196" stroke="#f5b700" stroke-width="5"/><path pathLength="1" d="M174 221 Q189 197 204 220 T234 207" stroke="#1f62d4" stroke-width="5"/></g>
+    <text class="prop p-brush" style="--pd:.6s" x="236" y="200" font-size="26">🖌️</text>`,
+  bball:`<text class="prop p-ball" x="66" y="236" font-size="30" text-anchor="middle">🏀</text><text class="prop p-float" style="--pd:.5s" x="205" y="200" font-size="26">⭐</text>`,
+  tv:`<g class="prop p-pop" style="--pd:.3s"><rect x="150" y="155" width="100" height="62" rx="8" fill="#1d2b3a"/><rect x="157" y="161" width="86" height="44" rx="4" fill="#3c8dd6"/><text x="200" y="192" font-size="22" text-anchor="middle" fill="#fff" font-family="Secular One,sans-serif" direction="ltr">🏀 2:1</text><rect x="192" y="217" width="16" height="12" fill="#1d2b3a"/></g>`,
+  hoop:`<g class="prop p-pop" style="--pd:.1s"><rect x="215" y="78" width="46" height="34" rx="3" fill="#fff" stroke="#e1342b" stroke-width="3"/><rect x="230" y="92" width="16" height="12" fill="none" stroke="#e1342b" stroke-width="2"/><path d="M225 116 L230 134 M237 116 L237 135 M249 116 L244 134" stroke="#ffffffcc" stroke-width="2"/><ellipse cx="237" cy="116" rx="14" ry="4" fill="none" stroke="#e07a10" stroke-width="3.5"/></g>
+    <text class="prop p-shot" style="--pd:.8s" x="150" y="220" font-size="26" text-anchor="middle">🏀</text>`,
+  hearts:[0,1,2].map(i=>`<text class="prop p-float" style="--pd:${(.3+i*.45).toFixed(2)}s" x="${300+i*22-22}" y="${110+(i%2)*14}" font-size="22">❤️</text>`).join('')+`<text class="prop p-pop" style="--pd:1s" x="200" y="215" font-size="44" text-anchor="middle">👍</text>`
+};
+/* who: k = Keren (right), d = Dan (left) */
+const PANELS=[
+  {b:[{w:'k',t:'שָׁלוֹם, דָּן.'},{w:'d',t:'שָׁלוֹם, קֶרֶן.',d:1.3}], k:['wave','talk'], d:['wave','talk'], dTd:1.3, props:['wave']},
+  {b:[{w:'k',t:'אֵיזֶה שִׁעוּר אַתָּה אוֹהֵב בְּבֵית הַסֵּפֶר?',wide:1}], k:['point','talk','nod'], d:[], props:['q']},
+  {b:[{w:'d',t:'אֲנִי אוֹהֵב מָתֵמָטִיקָה. אֵיזֶה שִׁעוּר אַתְּ אוֹהֶבֶת?',wide:1}], d:['jump','cheer','talk'], k:[], props:['math']},
+  {b:[{w:'k',t:'אֲנִי אוֹהֶבֶת אָמָּנוּת.'}], k:['jump','talk','cheer'], d:[], props:['palette']},
+  {b:[{w:'d',t:'אֲנִי אוֹהֵב גַּם סְפּוֹרְט. מָה אַתְּ אוֹהֶבֶת בְּשִׁעוּר אָמָּנוּת?',wide:1}], d:['talk','point'], dPd:1.4, k:[], props:['soccer']},
+  {b:[{w:'k',t:'אֲנִי אוֹהֶבֶת לְצַיֵּר.'},{w:'k',t:'מָה אַתָּה אוֹהֵב בְּסְפּוֹרְט?',side:'l',d:1.9}], k:['talk','point'], kPd:1.9, d:[], props:['paint']},
+  {b:[{w:'d',t:'אֲנִי אוֹהֵב כַּדּוּרְסַל.'}], d:['talk','jump','dribble'], dJd:.9, k:[], props:['bball']},
+  {b:[{w:'k',t:'אֲנִי אוֹהֶבֶת לִרְאוֹת מִשְׂחֲקֵי כַּדּוּרְסַל.',wide:1}], k:['talk','clap'], d:[], props:['tv']},
+  {b:[{w:'d',t:'בּוֹאִי לִרְאוֹת אוֹתִי מְשַׂחֵק.'}], d:['talk','point'], k:[], props:['hoop']},
+  {b:[{w:'k',t:'טוֹב, תּוֹדָה!'}], k:['talk','cheer'], d:['wave'], dTd:.8, props:['hearts']},
+];
+const POS={d:27.5,k:72.5}; /* % x of each character */
+function panelHTML(i){
+  const p=PANELS[i];
+  const chars=['d','k'].map(w=>{
+    const acts=(p[w]||[]);
+    const cls=acts.map(a=>a==='talk'?'talk':'a-'+a).join(' ');
+    const td=p[w+'Td']||(p.b.find(b=>b.w===w)||{}).d||0;
+    const st=`--td:${td}s;--pd:${p[w+'Pd']||0}s;--jd:${p[w+'Jd']||0}s`;
+    return `<g class="ch ${w} ${cls}" style="${st}">${person(w,w==='k'?290:110)}</g>`;
+  }).join('');
+  const props=(p.props||[]).map(n=>PROPS[n]).join('');
+  const bubs=p.b.map(b=>{
+    const side=b.side||(b.w==='k'?'r':'l');
+    const width=b.wide?60:44;
+    const left=side==='r'?(98-width):2;
+    let tx=(POS[b.w]-left)/width*100; tx=Math.max(10,Math.min(90,tx));
+    return `<div class="bub" data-t="${b.t}" style="width:${width}%;left:${left}%;--tx:${tx.toFixed(0)}%;--d:${b.d||0}s">${b.t}</div>`;
+  }).join('');
+  return `<svg class="scene" viewBox="0 0 400 300" aria-hidden="true">${BG}${chars}${props}</svg>${bubs}<span class="num">${i+1}</span><span class="tap" aria-hidden="true">👆</span>`;
+}
+function play(panel){
+  panel.classList.remove('play');
+  panel.querySelectorAll('.bub').forEach(b=>b.classList.remove('on'));
+  void panel.offsetWidth;
+  panel.classList.add('play','seen');
+  panel.querySelectorAll('.bub').forEach(b=>b.classList.add('on'));
+}
+function bindPanel(el){
+  el.addEventListener('click',e=>{
+    const bub=e.target.closest('.bub');
+    if(bub&&(bub.classList.contains('on')||el.closest('.showAll'))){ speak(bub.dataset.t); return; }
+    play(el);
+  });
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();play(el);}});
+}
+const comic=document.getElementById('comic');
+PANELS.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='panel'; d.tabIndex=0; d.setAttribute('role','button');
+  d.setAttribute('aria-label','תמונה '+(i+1)+': '+PANELS[i].b.map(b=>b.t).join(' '));
+  d.innerHTML=panelHTML(i);
+  bindPanel(d); comic.appendChild(d);
+});
+const showAllBtn=document.getElementById('showAll');
+showAllBtn.onclick=()=>{
+  const on=showAllBtn.getAttribute('aria-pressed')!=='true';
+  showAllBtn.setAttribute('aria-pressed',on);
+  comic.classList.toggle('showAll',on);
+};
+document.getElementById('resetComic').onclick=()=>{
+  comic.querySelectorAll('.panel').forEach(p=>{p.classList.remove('play','seen');p.querySelectorAll('.bub').forEach(b=>b.classList.remove('on'));});
+  showAllBtn.setAttribute('aria-pressed','false'); comic.classList.remove('showAll');
+};
+
+/* stage */
+const stage=document.getElementById('stage'), holder=document.getElementById('bigHolder'), countEl=document.getElementById('count');
+let cur=0;
+function stageShow(i){
+  cur=(i+PANELS.length)%PANELS.length;
+  holder.innerHTML='';
+  const d=document.createElement('div'); d.className='panel big seen'; d.innerHTML=panelHTML(cur);
+  bindPanel(d); holder.appendChild(d);
+  countEl.textContent=(cur+1)+' / '+PANELS.length;
+  requestAnimationFrame(()=>play(d));
+  const small=comic.children[cur]; if(small) small.classList.add('seen');
+}
+document.getElementById('openStage').onclick=()=>{stage.hidden=false;stageShow(0);};
+document.getElementById('closeStage').onclick=()=>{stage.hidden=true;holder.innerHTML='';try{speechSynthesis.cancel()}catch(e){}};
+document.getElementById('next').onclick=()=>stageShow(cur+1);
+document.getElementById('prev').onclick=()=>stageShow(cur-1);
+document.getElementById('sayAll').onclick=()=>speak(PANELS[cur].b.map(b=>b.t).join(' '));
+document.addEventListener('keydown',e=>{
+  if(stage.hidden) return;
+  if(e.key==='ArrowLeft'||e.key===' '||e.key==='PageDown'){e.preventDefault();stageShow(cur+1);}
+  else if(e.key==='ArrowRight'||e.key==='PageUp'){e.preventDefault();stageShow(cur-1);}
+  else if(e.key==='Escape'){document.getElementById('closeStage').click();}
+});
+
+/* ================= writing 1.17 ================= */
+const WORDS=[
+  {s:'אני',p:'אֲנִי',pic:'🙋‍♂️'},
+  {s:'אתה',p:'אַתָּה',pic:'👩‍🦰👉🧑'},
+  {s:'את',p:'אַתְּ',pic:'🧑👉👩'},
+  {s:'עולם',p:'עוֹלָם',pic:'🌍'},
+];
+const NS='http://www.w3.org/2000/svg';
+const linesSvg=document.getElementById('lines');
+function buildLines(){
+  linesSvg.innerHTML='';
+  const rowTop=y=>40+y*130;
+  WORDS.forEach((w,i)=>{
+    const y=rowTop(i);
+    const add=(tag,attrs)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);linesSvg.appendChild(e);return e;};
+    add('rect',{x:0,y:y,width:1000,height:76,fill:'#fbf3e3'});
+    add('line',{x1:0,x2:1000,y1:y,y2:y,stroke:'#4aa3df','stroke-width':2});
+    add('line',{x1:0,x2:1000,y1:y+76,y2:y+76,stroke:'#4aa3df','stroke-width':2});
+    add('line',{x1:0,x2:1000,y1:y+38,y2:y+38,stroke:'#e86a6a','stroke-width':1.6,'stroke-dasharray':'8 7'});
+    const base=y+70;
+    let x=985;
+    const model=add('text',{x:x,y:base,'font-family':'GveretLevin, cursive','font-size':74,fill:'#1d2b3a',direction:'rtl','text-anchor':'start'});
+    model.textContent=w.s;
+    let len=model.getComputedTextLength()||120;
+    x-=len+42;
+    for(let k=0;k<2;k++){
+      const t=add('text',{x:x,y:base,'font-family':'GveretLevin, cursive','font-size':74,fill:'none',stroke:'#9aa4b2','stroke-width':1.7,'stroke-dasharray':'3 4',direction:'rtl','text-anchor':'start',class:'trace'});
+      t.textContent=w.s;
+      x-=(t.getComputedTextLength()||len)+42;
+    }
+  });
+  linesSvg.querySelectorAll('.trace').forEach(t=>t.style.display=tracesOn?'':'none');
+}
+let tracesOn=true;
+document.getElementById('traces').onclick=e=>{
+  tracesOn=!tracesOn; e.currentTarget.setAttribute('aria-pressed',tracesOn);
+  linesSvg.querySelectorAll('.trace').forEach(t=>t.style.display=tracesOn?'':'none');
+};
+buildLines();
+if(document.fonts&&document.fonts.load){document.fonts.load('74px GveretLevin','אני').then(buildLines).catch(()=>{});document.fonts.ready.then(buildLines);}
+
+/* cards */
+const cardsEl=document.getElementById('cards');
+WORDS.forEach(w=>{
+  const c=document.createElement('button'); c.className='card'; c.type='button';
+  c.innerHTML=`<div class="pic">${w.pic}</div><div class="script">${w.s}</div><div class="print">${w.p} 🔊</div>`;
+  c.onclick=()=>speak(w.p); cardsEl.appendChild(c);
+});
+
+/* drawing pad – strokes stored in units of sheet width */
+const wrapEl=document.getElementById('sheetWrap'), pad=document.getElementById('pad'), ctx=pad.getContext('2d');
+let strokes=[], history=[], color='#1d2b3a', size=5.5, erasing=false, current=null, W=1;
+function sizePad(){
+  const r=wrapEl.getBoundingClientRect(); if(!r.width) return;
+  const dpr=window.devicePixelRatio||1; W=r.width;
+  pad.width=Math.round(r.width*dpr); pad.height=Math.round(r.height*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0); redraw();
+}
+function drawStroke(s){
+  const pts=s.pts; if(!pts.length) return;
+  ctx.strokeStyle=s.c; ctx.fillStyle=s.c; ctx.lineWidth=s.w*W; ctx.lineCap='round'; ctx.lineJoin='round';
+  if(pts.length===1){ctx.beginPath();ctx.arc(pts[0][0]*W,pts[0][1]*W,s.w*W/2,0,Math.PI*2);ctx.fill();return;}
+  ctx.beginPath(); ctx.moveTo(pts[0][0]*W,pts[0][1]*W);
+  for(let i=1;i<pts.length-1;i++){
+    const mx=(pts[i][0]+pts[i+1][0])/2*W, my=(pts[i][1]+pts[i+1][1])/2*W;
+    ctx.quadraticCurveTo(pts[i][0]*W,pts[i][1]*W,mx,my);
+  }
+  const l=pts[pts.length-1]; ctx.lineTo(l[0]*W,l[1]*W); ctx.stroke();
+}
+function redraw(){ctx.clearRect(0,0,pad.width,pad.height); strokes.forEach(drawStroke); if(current) drawStroke(current);}
+function pos(e){const r=pad.getBoundingClientRect(); return [(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.width];}
+function snapshot(){history.push(strokes.slice()); if(history.length>60) history.shift();}
+function eraseAt(p){
+  const rad=0.018;
+  const keep=strokes.filter(s=>!s.pts.some(q=>Math.hypot(q[0]-p[0],q[1]-p[1])<rad+s.w/2));
+  if(keep.length!==strokes.length){strokes=keep; redraw();}
+}
+pad.addEventListener('pointerdown',e=>{
+  if(e.button!==undefined&&e.button!==0&&e.pointerType==='mouse') return;
+  e.preventDefault(); pad.setPointerCapture(e.pointerId);
+  snapshot();
+  const p=pos(e);
+  if(erasing){current={erase:true}; eraseAt(p); return;}
+  current={c:color,w:size/1000,pts:[p]}; redraw();
+});
+pad.addEventListener('pointermove',e=>{
+  if(!current) return;
+  const evs=e.getCoalescedEvents?e.getCoalescedEvents():[e];
+  for(const ev of evs){
+    const p=pos(ev);
+    if(current.erase){eraseAt(p);continue;}
+    const l=current.pts[current.pts.length-1];
+    if(Math.hypot(p[0]-l[0],p[1]-l[1])>0.0015) current.pts.push(p);
+  }
+  if(!current.erase) redraw();
+});
+function endStroke(){
+  if(!current) return;
+  if(!current.erase) strokes.push(current); else if(history.length&&history[history.length-1].length===strokes.length) history.pop();
+  current=null; redraw();
+}
+pad.addEventListener('pointerup',endStroke); pad.addEventListener('pointercancel',endStroke);
+document.querySelectorAll('.sw').forEach(b=>b.onclick=()=>{
+  color=b.dataset.c; erasing=false; wrapEl.classList.remove('erase'); document.getElementById('eraser').setAttribute('aria-pressed','false');
+  document.querySelectorAll('.sw').forEach(x=>x.setAttribute('aria-pressed',x===b));
+});
+document.querySelectorAll('.sz').forEach(b=>b.onclick=()=>{
+  size=+b.dataset.s; document.querySelectorAll('.sz').forEach(x=>x.setAttribute('aria-pressed',x===b));
+});
+document.getElementById('eraser').onclick=e=>{
+  erasing=!erasing; e.currentTarget.setAttribute('aria-pressed',erasing); wrapEl.classList.toggle('erase',erasing);
+};
+document.getElementById('undo').onclick=()=>{ if(history.length){strokes=history.pop(); redraw();} };
+document.getElementById('clear').onclick=()=>{ if(strokes.length){snapshot(); strokes=[]; redraw();} };
+const writeCard=document.getElementById('writeCard'), fsBtn=document.getElementById('fs');
+fsBtn.onclick=()=>{
+  try{
+    if(document.fullscreenElement) document.exitFullscreen();
+    else if(writeCard.requestFullscreen) writeCard.requestFullscreen();
+    else if(writeCard.webkitRequestFullscreen) writeCard.webkitRequestFullscreen();
+  }catch(e){}
+};
+document.addEventListener('fullscreenchange',()=>{fsBtn.innerHTML=document.fullscreenElement?'✕ יְצִיאָה מִמָּסָךְ מָלֵא':'⛶ מָסָךְ מָלֵא'; setTimeout(sizePad,60);});
+if('ResizeObserver' in window) new ResizeObserver(sizePad).observe(wrapEl); else window.addEventListener('resize',sizePad);
+
+/* start on remembered step */
+showStep(0);
+</script>
+</body>
+</html>
