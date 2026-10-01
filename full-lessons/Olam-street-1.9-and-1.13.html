@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>שִׁעוּר עִבְרִית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Noto+Sans+Hebrew:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F8FC; --rule:#D6E2F1; --margin:#F1A9A4; --ink:#1B2440; --soft:#5B6683;
+  --card:#FFFFFF; --line:#C9D4E5;
+  --red:#E0342A; --blue:#1F62D4; --green:#14874C; --yellow:#FFE15A; --purple:#7A3FD1; --orange:#E07A10;
+  --teal:#0E8C99; --pink:#C8287A; --brown:#8A5A2B;
+  --serif:"Frank Ruhl Libre","David","Times New Roman",serif;
+  --sans:"Noto Sans Hebrew","Arial Hebrew",Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#121826; --rule:#1E2840; --margin:#5A2E35; --ink:#E9EEF8; --soft:#A2ADC6;
+    --card:#1B2336; --line:#34405C;
+    --red:#FF5A4E; --blue:#5B95FF; --green:#3CC47E; --yellow:#E8C93A; --purple:#A57BF0; --orange:#FF9D3B;
+    --teal:#2EC4D1; --pink:#F065A8; --brown:#C9925A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121826; --rule:#1E2840; --margin:#5A2E35; --ink:#E9EEF8; --soft:#A2ADC6;
+  --card:#1B2336; --line:#34405C;
+  --red:#FF5A4E; --blue:#5B95FF; --green:#3CC47E; --yellow:#E8C93A; --purple:#A57BF0; --orange:#FF9D3B;
+  --teal:#2EC4D1; --pink:#F065A8; --brown:#C9925A;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:var(--sans); color:var(--ink); background-color:var(--paper);
+  background-image:
+    linear-gradient(to left, transparent 54px, var(--margin) 54px, var(--margin) 56px, transparent 56px),
+    repeating-linear-gradient(to bottom, transparent 0 39px, var(--rule) 39px 40px);
+  background-attachment:fixed;
+}
+button{font-family:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:6px}
+
+header{display:flex;align-items:center;gap:24px;flex-wrap:wrap;padding:18px 76px 6px 24px}
+h1{font-family:var(--serif);font-size:clamp(26px,3vw,36px);margin:0;font-weight:700}
+.tabs{display:flex;gap:8px;margin-inline-start:auto}
+.tab{border:2px solid var(--ink);background:var(--card);padding:8px 16px;border-radius:999px;font-size:17px;font-weight:600;cursor:pointer;display:flex;gap:8px;align-items:center}
+.num{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;border:2px solid currentColor;font-size:14px;flex:none}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+
+main{padding:10px 76px 40px 24px;max-width:1240px}
+section[hidden],div[hidden]{display:none}
+.task{font-size:clamp(20px,2.1vw,26px);margin:14px 0 18px;font-weight:600;line-height:1.6}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+.btn{border:2px solid var(--ink);background:var(--card);padding:8px 16px;border-radius:10px;font-size:17px;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--yellow);color:#1B2440}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.primary:hover{background:var(--yellow);color:#1B2440}
+.btn.quiet{border-style:dashed;font-weight:400;font-size:15px}
+
+/* hand-drawn loops (shared) */
+.loop{position:absolute;pointer-events:none;overflow:visible;z-index:2}
+.loop path{fill:none;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- Activity 1 ---------- */
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-inline-end:auto}
+.chip{display:flex;align-items:center;gap:10px;padding:6px 14px;border-radius:999px;background:var(--card);border:2px solid var(--c);font-family:var(--serif);font-size:24px;font-weight:700;color:var(--c)}
+.chip small{font-family:var(--sans);font-size:15px;font-weight:600;color:var(--soft)}
+.chip.done{background:var(--c);color:var(--paper)}
+.chip.done small{color:var(--paper)}
+#dialogue{font-family:var(--serif);font-size:clamp(28px,3.4vw,44px);line-height:2.1;font-weight:500}
+.turn{display:grid;grid-template-columns:auto 1fr;column-gap:.35em}
+.speaker{font-weight:700;user-select:none}
+.utter p{margin:0}
+.word{position:relative;display:inline-block;line-height:1.35;cursor:pointer;border-radius:8px;padding:0 .04em;transition:background .15s}
+.word:hover{background:color-mix(in srgb, var(--yellow) 45%, transparent)}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{translate:-6px 0}40%,80%{translate:6px 0}}
+.banner{display:none;margin-top:18px;font-size:clamp(24px,2.6vw,34px);font-weight:800;padding:12px 20px;background:var(--yellow);color:#1B2440;border-radius:12px;width:fit-content;transform:rotate(-1.2deg)}
+.banner.show{display:block;animation:pop .45s}
+@keyframes pop{from{transform:scale(.6) rotate(-6deg);opacity:0}}
+
+/* ---------- Activity 2 ---------- */
+.modes{display:flex;flex-wrap:wrap;border:2px solid var(--ink);border-radius:12px;overflow:hidden;margin-inline-end:auto}
+.mode{border:0;background:var(--card);padding:9px 16px;font-size:17px;font-weight:600;cursor:pointer;display:flex;gap:8px;align-items:center}
+.mode + .mode{border-inline-start:2px solid var(--ink)}
+.mode[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.print{font-family:var(--serif);font-weight:700;line-height:1}
+.script{display:block}
+.script svg{display:block;width:100%;height:100%;overflow:visible}
+.script path{fill:none;stroke:currentColor;stroke-width:6.5;stroke-linecap:round;stroke-linejoin:round}
+.inkp{color:var(--blue)} .inks{color:var(--red)}
+.legend{display:flex;gap:18px;font-size:19px;font-weight:700;margin:-6px 0 14px}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{width:16px;height:16px;border-radius:50%;background:currentColor;display:inline-block}
+
+/* easy matching */
+.eboard{position:relative;display:grid;grid-template-columns:repeat(8,1fr);gap:16px 18px;max-width:1100px}
+@media (max-width:1100px){.eboard{grid-template-columns:repeat(6,1fr)}}
+@media (max-width:560px){.eboard{grid-template-columns:repeat(4,1fr);gap:10px}}
+.etile{position:relative;z-index:1;aspect-ratio:1;border:2px solid var(--line);background:var(--card);border-radius:16px;cursor:pointer;display:grid;place-items:center;padding:0;transform:rotate(var(--r,0deg))}
+.etile .print{font-size:clamp(46px,5.4vw,78px)}
+.etile .script{width:62%;height:78%}
+.etile.sel{box-shadow:0 0 0 5px var(--yellow);border-color:var(--ink)}
+.etile.ok{cursor:default;border-color:transparent}
+#esvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:0}
+#esvg line{stroke-width:4;stroke-linecap:round;stroke-dasharray:2 9;opacity:.8}
+
+/* memory */
+.teams{display:flex;gap:12px;flex-wrap:wrap}
+.team{padding:8px 16px;border-radius:12px;border:2px solid var(--tc);background:var(--card);font-size:18px;font-weight:600;color:var(--tc);display:flex;gap:10px;align-items:center}
+.team b{font-size:26px}
+.team.active{box-shadow:0 0 0 4px var(--yellow)}
+.team.active::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--tc)}
+.turn-note{font-size:18px;color:var(--soft);margin:6px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:12px;max-width:1120px}
+@media (max-width:900px){.grid{grid-template-columns:repeat(5,1fr)}}
+@media (max-width:520px){.grid{grid-template-columns:repeat(4,1fr);gap:8px}}
+.mcard{aspect-ratio:4/5;perspective:800px;border:0;background:none;padding:0;cursor:pointer}
+.mcard .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.mcard.up .in,.mcard.matched .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;display:grid;place-items:center}
+.back{background:var(--ink);border:3px solid var(--ink);
+  background-image:repeating-linear-gradient(45deg, transparent 0 10px, color-mix(in srgb, var(--paper) 12%, transparent) 10px 12px)}
+.back span{font-family:var(--serif);font-size:clamp(26px,3vw,40px);color:var(--paper);opacity:.9;font-weight:700}
+.front{background:var(--card);border:3px solid var(--line);transform:rotateY(180deg)}
+.front .print{font-size:clamp(44px,5.5vw,76px)}
+.front .script{width:62%;height:70%}
+.mcard.matched .front{border-color:var(--tc);border-width:4px}
+.mcard.matched .front::after{content:"";position:absolute;inset:6px;border-radius:8px;background:var(--tc);opacity:.10}
+
+/* lines */
+.lboard{position:relative;display:grid;grid-template-columns:minmax(90px,170px) 1fr minmax(90px,170px);max-width:760px;margin-top:6px}
+.lcol{display:flex;flex-direction:column;gap:12px}
+.lhead{font-size:20px;font-weight:800;text-align:center;margin-bottom:2px}
+.litem{height:clamp(62px,9vh,86px);border:3px solid var(--line);background:var(--card);border-radius:14px;cursor:pointer;display:grid;place-items:center;position:relative;z-index:1;padding:6px}
+.litem .print{font-size:clamp(40px,5vw,60px)}
+.litem .script{height:calc(clamp(62px,9vh,86px) + 18px);width:auto;aspect-ratio:100/120;margin:-18px 0}
+.litem.sel{border-color:var(--ink);box-shadow:0 0 0 4px var(--yellow)}
+.litem.ok{border-color:var(--lc);cursor:default}
+.litem.bad{border-color:var(--red)}
+#lsvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+#lsvg line{stroke-width:5;stroke-linecap:round}
+
+/* teacher drawing tool */
+dialog{border:3px solid var(--ink);border-radius:16px;background:var(--paper);color:var(--ink);padding:20px 22px;max-width:min(560px,94vw)}
+dialog::backdrop{background:rgba(10,15,30,.55)}
+dialog h2{font-family:var(--serif);margin:0 0 6px;font-size:26px}
+dialog .hint{margin:0 0 12px;color:var(--soft);font-size:16px;line-height:1.5}
+.epick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.epick button{width:46px;height:46px;border:2px solid var(--line);background:var(--card);border-radius:10px;font-family:var(--serif);font-size:28px;font-weight:700;cursor:pointer;position:relative}
+.epick button[aria-pressed="true"]{border-color:var(--ink);background:var(--yellow);color:#1B2440}
+.epick button.custom::after{content:"";position:absolute;top:4px;left:4px;width:8px;height:8px;border-radius:50%;background:var(--green)}
+.pad-wrap{display:flex;gap:16px;align-items:center;margin-bottom:14px}
+#pad{width:min(260px,58vw);aspect-ratio:100/120;background:var(--card);border:2px solid var(--line);border-radius:12px;touch-action:none;cursor:crosshair;display:block}
+#pad .guide{stroke:var(--rule);stroke-width:.8}
+#pad .guide.main{stroke:var(--soft);stroke-dasharray:3 3;opacity:.6}
+#pad .ghost{fill:none;stroke:var(--soft);opacity:.22;stroke-width:6.5;stroke-linecap:round;stroke-linejoin:round}
+#pad .ink{fill:none;stroke:var(--red);stroke-width:6.5;stroke-linecap:round;stroke-linejoin:round}
+.pad-side{display:flex;flex-direction:column;gap:8px;align-items:center}
+.pad-side .print{font-size:90px;color:var(--blue)}
+.edit-msg{font-size:15px;color:var(--green);min-height:1.4em;margin:6px 0 0}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+@media (max-width:640px){
+  header,main{padding-inline:16px}
+  body{background-image:repeating-linear-gradient(to bottom, transparent 0 39px, var(--rule) 39px 40px)}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>שִׁעוּר עִבְרִית</h1>
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-go="a1"><span class="num">1</span>מִילִּים בְּעִגּוּל</button>
+    <button class="tab" role="tab" aria-selected="false" data-go="a2"><span class="num">2</span>אוֹתִיּוֹת: דְּפוּס וּכְתָב</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ===== Activity 1 ===== -->
+  <section id="a1">
+    <p class="task">הַקִּיפוּ בְּעִגּוּל אֶת הַמִּילִּים: אֲנִי, אַתָּה, אַתְּ</p>
+    <div class="toolbar">
+      <div class="chips" id="chips"></div>
+      <button class="btn" id="showAll">הַרְאֵה הַכֹּל</button>
+      <button class="btn" id="reset1">מֵחָדָשׁ</button>
+    </div>
+    <div id="dialogue"></div>
+    <div class="banner" id="done1">כָּל הַכָּבוֹד! מְצָאתֶם אֶת כָּל הַמִּילִּים</div>
+  </section>
+
+  <!-- ===== Activity 2 ===== -->
+  <section id="a2" hidden>
+    <div class="toolbar">
+      <div class="modes">
+        <button class="mode" aria-pressed="true" data-mode="easy"><span class="num">1</span>מַתְאִימִים זוּגוֹת</button>
+        <button class="mode" aria-pressed="false" data-mode="lines"><span class="num">2</span>חִבּוּר בְּקַוִּים</button>
+        <button class="mode" aria-pressed="false" data-mode="memory"><span class="num">3</span>מִשְׂחַק זִכָּרוֹן</button>
+      </div>
+      <button class="btn" id="new2">מִשְׂחָק חָדָשׁ</button>
+      <button class="btn quiet" id="openEditor">✏️ צִיּוּר אוֹתִיּוֹת בִּכְתָב</button>
+    </div>
+    <div class="legend"><span class="inkp"><i></i>דְּפוּס</span><span class="inks"><i></i>כְּתָב</span></div>
+
+    <div id="easy">
+      <p class="task">מִצְאוּ אֶת הָאוֹת בִּכְתָב שֶׁל כָּל אוֹת בִּדְפוּס. לַחֲצוּ עַל שְׁתֵּיהֶן</p>
+      <div class="eboard" id="eboard"><svg id="esvg"></svg></div>
+      <div class="banner" id="done4"></div>
+    </div>
+
+    <div id="lines" hidden>
+      <p class="task">לַחֲצוּ עַל אוֹת בִּדְפוּס, וְאַחַר כָּךְ עַל אוֹתָהּ אוֹת בִּכְתָב <span id="roundTxt" style="color:var(--soft);font-weight:400"></span></p>
+      <div class="lboard" id="lboard">
+        <div class="lcol" id="colPrint"><div class="lhead inkp">דְּפוּס</div></div>
+        <div></div>
+        <div class="lcol" id="colScript"><div class="lhead inks">כְּתָב</div></div>
+        <svg id="lsvg"></svg>
+      </div>
+      <div class="banner" id="done3"></div>
+      <button class="btn primary" id="nextRound" style="display:none;margin-top:16px">לַסִּבּוּב הַבָּא</button>
+    </div>
+
+    <div id="memory" hidden>
+      <p class="task">מִצְאוּ זוּג: אוֹת בִּדְפוּס וְאוֹתָהּ אוֹת בִּכְתָב</p>
+      <div class="teams" id="teams"></div>
+      <p class="turn-note" id="memNote"></p>
+      <div class="grid" id="grid"></div>
+      <div class="banner" id="done2"></div>
+    </div>
+  </section>
+</main>
+
+<dialog id="editor">
+  <h2>צִיּוּר אוֹתִיּוֹת בִּכְתָב</h2>
+  <p class="hint">בַּחֲרוּ אוֹת, צַיְּרוּ אוֹתָהּ בַּמִּסְגֶּרֶת (עִם עַכְבָּר אוֹ אֶצְבַּע) וּלְחֲצוּ "שְׁמִירָה". הַקַּוִּים הַמְּקֻוְּקָוִים הֵם שׁוּרַת הַכְּתִיבָה. הַצִּיּוּר נִשְׁמָר בַּדַּפְדְּפָן הַזֶּה.</p>
+  <div class="epick" id="epick"></div>
+  <div class="pad-wrap">
+    <svg id="pad" viewBox="0 0 100 120"></svg>
+    <div class="pad-side"><span class="print" id="padLetter"></span></div>
+  </div>
+  <div class="toolbar" style="margin:0">
+    <button class="btn primary" id="padSave">שְׁמִירָה</button>
+    <button class="btn" id="padClear">מְחִיקָה</button>
+    <button class="btn" id="padReset">חֲזָרָה לַמְּקוֹרִי</button>
+    <button class="btn" id="padCopy">הַעְתָּקַת קוֹד</button>
+    <button class="btn" id="padClose">סְגִירָה</button>
+  </div>
+  <p class="edit-msg" id="padMsg"></p>
+</dialog>
+
+<script>
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const strip = s => s.replace(/[\u0591-\u05C7]/g, '');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SVGNS = 'http://www.w3.org/2000/svg';
+const shake = x => { x.classList.remove('shake'); void x.offsetWidth; x.classList.add('shake'); };
+
+// hand-drawn marker loop around any element
+function drawLoop(host, color, animate, padX, padY) {
+  host.querySelector(':scope > svg.loop')?.remove();
+  const ww = host.offsetWidth, hh = host.offsetHeight;
+  const W = ww + padX * 2, H = hh + padY * 2;
+  const svg = document.createElementNS(SVGNS, 'svg');
+  svg.classList.add('loop');
+  svg.setAttribute('width', W); svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.style.left = -padX + 'px'; svg.style.top = -padY + 'px';
+  const cx = W / 2, cy = H / 2, rx = W / 2 - 3, ry = H / 2 - 3;
+  if (!host.dataset.seed) host.dataset.seed = Math.random();
+  let seed = Math.floor(+host.dataset.seed * 1e4);
+  const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+  const start = -Math.PI * 0.55 + (rnd() - .5) * .5, sweep = Math.PI * 2 * 1.1, n = 16;
+  const pts = [];
+  for (let i = 0; i <= n; i++) {
+    const a = start + sweep * i / n;
+    const f = 0.94 + i / n * 0.1 + (rnd() - .5) * 0.06;
+    pts.push([cx + rx * f * Math.cos(a), cy + ry * f * Math.sin(a)]);
+  }
+  let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+  }
+  const path = document.createElementNS(SVGNS, 'path');
+  path.setAttribute('d', d); path.style.stroke = color;
+  svg.append(path); host.append(svg);
+  if (animate && !reduce) {
+    const L = path.getTotalLength();
+    path.style.strokeDasharray = L; path.style.strokeDashoffset = L;
+    path.getBoundingClientRect();
+    path.style.transition = 'stroke-dashoffset .55s ease-out';
+    path.style.strokeDashoffset = 0;
+  }
+}
+
+/* ---------- tabs ---------- */
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x === t));
+  $('#a1').hidden = t.dataset.go !== 'a1';
+  $('#a2').hidden = t.dataset.go !== 'a2';
+  redrawAll();
+}));
+
+/* =========================================================
+   ACTIVITY 1 — circle אני / אתה / את
+   ========================================================= */
+const DIALOGUE = [
+  { s: 'קֶרֶן', lines: ['הַיי, שָׁלוֹם! אֲנִי קֶרֶן, אֵיךְ קוֹרְאִים לְךָ?'] },
+  { s: 'דָּן', lines: ['שָׁלוֹם קֶרֶן, אֲנִי דָּן, נָעִים מְאֹד!'] },
+  { s: 'קֶרֶן', lines: ['נָעִים מְאֹד דָּן, אֵיפֹה אַתָּה גָּר?'] },
+  { s: 'דָּן', lines: ['אֲנִי גָּר בְּתֵל אָבִיב.', 'אֵיפֹה אַתְּ גָּרָה?'] },
+  { s: 'קֶרֶן', lines: ['גַּם אֲנִי גָּרָה בְּתֵל אָבִיב.', 'אֵיפֹה אַתָּה לוֹמֵד?'] },
+  { s: 'דָּן', lines: ['אֲנִי לוֹמֵד בְּבֵית הַסֵּפֶר "רַבִּין", גַּם אַתְּ?'] },
+  { s: 'קֶרֶן', lines: ['כֵּן, גַּם אֲנִי לוֹמֶדֶת בְּבֵית הַסֵּפֶר "רַבִּין"', 'נִתְרָאֶה בְּבֵית הַסֵּפֶר.'] },
+];
+const TARGETS = {
+  'אני': { key: 'ani', label: 'אֲנִי', color: 'var(--red)' },
+  'אתה': { key: 'ata', label: 'אַתָּה', color: 'var(--blue)' },
+  'את':  { key: 'at',  label: 'אַתְּ',  color: 'var(--green)' },
+};
+const TCOLOR = Object.fromEntries(Object.values(TARGETS).map(t => [t.key, t.color]));
+let totals = {}, found = {};
+
+function renderDialogue() {
+  const box = $('#dialogue'); box.innerHTML = '';
+  totals = { ani: 0, ata: 0, at: 0 }; found = { ani: 0, ata: 0, at: 0 };
+  DIALOGUE.forEach(turn => {
+    const t = el('div', 'turn');
+    t.append(el('span', 'speaker', turn.s + ':'));
+    const u = el('div', 'utter');
+    turn.lines.forEach(line => {
+      const p = el('p');
+      line.split(' ').forEach((tok, i) => {
+        if (i) p.append(' ');
+        const m = tok.match(/^(["״]*)(.*?)([.,!?:;"״]*)$/);
+        if (m[1]) p.append(m[1]);
+        const w = el('span', 'word', m[2]);
+        w.tabIndex = 0; w.setAttribute('role', 'button');
+        const tg = TARGETS[strip(m[2])];
+        if (tg) { w.dataset.target = tg.key; totals[tg.key]++; }
+        p.append(w);
+        if (m[3]) p.append(m[3]);
+      });
+      u.append(p);
+    });
+    t.append(u); box.append(t);
+  });
+  renderChips();
+  $('#done1').classList.remove('show');
+}
+function renderChips() {
+  const c = $('#chips'); c.innerHTML = '';
+  Object.values(TARGETS).forEach(tg => {
+    const ch = el('div', 'chip'); ch.style.setProperty('--c', tg.color);
+    ch.append(el('span', '', tg.label), el('small', '', `${found[tg.key]} / ${totals[tg.key]}`));
+    if (found[tg.key] === totals[tg.key]) ch.classList.add('done');
+    c.append(ch);
+  });
+}
+const circleWord = (w, anim) => { const h = w.offsetHeight; drawLoop(w, TCOLOR[w.dataset.target], anim, Math.max(12, h * 0.42), h * 0.16); };
+function toggleWord(w) {
+  if (!w.dataset.target) { shake(w); return; }
+  const k = w.dataset.target;
+  if (w.classList.contains('circled')) { w.classList.remove('circled'); w.querySelector('svg.loop')?.remove(); found[k]--; }
+  else { w.classList.add('circled'); circleWord(w, true); found[k]++; }
+  renderChips();
+  $('#done1').classList.toggle('show', Object.keys(totals).every(k => found[k] === totals[k]));
+}
+$('#dialogue').addEventListener('click', e => { const w = e.target.closest('.word'); if (w) toggleWord(w); });
+$('#dialogue').addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('word')) { e.preventDefault(); toggleWord(e.target); }
+});
+$('#reset1').addEventListener('click', renderDialogue);
+$('#showAll').addEventListener('click', () => {
+  [...document.querySelectorAll('.word[data-target]:not(.circled)')]
+    .forEach((w, i) => setTimeout(() => toggleWord(w), reduce ? 0 : i * 180));
+});
+
+/* =========================================================
+   ACTIVITY 2 — print / script letters
+   ========================================================= */
+// Hebrew cursive (כתב) shapes. viewBox 0 0 100 120; writing line: x-height 40–80.
+const SCRIPT_DEFAULT = {
+  'א': 'M40 42 C44 56 43 68 36 80 M70 46 C62 38 50 44 50 58 C50 72 62 80 71 74',
+  'מ': 'M30 47 C31 41 37 37 39 43 C40 55 39 68 38 80 M39 43 C47 55 55 67 63 80 C64 66 64 52 63 40',
+  'ם': 'M42 33 C39 50 35 66 32 80 M39 45 C46 36 66 38 66 58 C66 76 52 82 42 80 C38 79 35 77 33 74',
+  'נ': 'M46 40 C60 49 63 70 53 79 C48 83 42 82 39 77',
+  'ן': 'M54 40 C55 62 53 90 48 113',
+  'ש': 'M36 66 C50 64 64 58 64 48 C64 40 55 37 48 42 C39 49 37 66 44 76 C50 84 62 82 69 74',
+  'ת': 'M64 80 L64 52 C64 41 55 38 49 40 C41 42 40 50 40 60 L40 73 C40 82 31 84 27 78',
+  'ע': 'M34 41 C38 58 46 70 54 78 C58 82 58 88 52 87 C46 86 49 77 55 69 C61 60 66 50 68 41',
+  'י': 'M59 40 C57 46 53 50 46 55',
+  'ו': 'M55 40 C55 54 54 68 53 80',
+  'ל': 'M70 22 C68 12 60 8 54 12 C49 16 50 30 50 44 C50 58 52 70 50 78 C48 84 40 82 40 74 C40 66 48 62 57 60',
+};
+const STORE_KEY = 'hebrew-lesson-script-v1';
+let custom = {};
+try { custom = JSON.parse(localStorage.getItem(STORE_KEY) || '{}') || {}; } catch (e) { custom = {}; }
+const scriptOf = l => custom[l] || SCRIPT_DEFAULT[l];
+
+const LETTERS = ['א', 'מ', 'ם', 'נ', 'ן', 'ש', 'ת', 'ע', 'י', 'ו', 'ל'];
+const PAIR = ['var(--green)', 'var(--purple)', 'var(--orange)', 'var(--teal)', 'var(--pink)', 'var(--brown)'];
+
+function face(l, kind) {
+  if (kind === 'print') return el('span', 'print inkp', l);
+  const s = el('span', 'script inks');
+  s.innerHTML = `<svg viewBox="0 0 100 120" aria-hidden="true"><path d="${scriptOf(l)}"/></svg>`;
+  return s;
+}
+
+/* mode switch */
+let mode = 'easy';
+const MODES = { easy: () => newEasy(), lines: () => newLines(), memory: () => newMemory() };
+document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => {
+  mode = b.dataset.mode;
+  document.querySelectorAll('.mode').forEach(x => x.setAttribute('aria-pressed', x === b));
+  Object.keys(MODES).forEach(m => $('#' + m).hidden = m !== mode);
+  redrawAll();
+}));
+$('#new2').addEventListener('click', () => MODES[mode]());
+
+/* ---------- 1. easy matching (everything visible) ---------- */
+let ez = {};
+function newEasy() {
+  ez = { sel: null, pairs: [], ci: 0 };
+  const b = $('#eboard'); b.querySelectorAll('.etile').forEach(x => x.remove());
+  shuffle(LETTERS.flatMap(l => [{ l, kind: 'print' }, { l, kind: 'script' }])).forEach(c => {
+    const t = el('button', 'etile');
+    t.dataset.l = c.l; t.dataset.kind = c.kind;
+    t.setAttribute('aria-label', c.kind === 'print' ? c.l : 'כְּתָב');
+    t.style.setProperty('--r', (Math.random() * 10 - 5).toFixed(1) + 'deg');
+    t.append(face(c.l, c.kind));
+    t.addEventListener('click', () => pickEasy(t));
+    b.append(t);
+  });
+  $('#done4').classList.remove('show');
+  drawEasy();
+}
+function pickEasy(t) {
+  if (t.classList.contains('ok')) return;
+  const s = ez.sel;
+  if (!s || s.dataset.kind === t.dataset.kind) { s?.classList.remove('sel'); ez.sel = t; t.classList.add('sel'); return; }
+  s.classList.remove('sel'); ez.sel = null;
+  if (s.dataset.l === t.dataset.l) {
+    const c = PAIR[ez.ci++ % PAIR.length];
+    [s, t].forEach(x => { x.classList.add('ok'); drawLoop(x, c, true, 6, 6); });
+    ez.pairs.push({ a: s, b: t, c });
+    drawEasy();
+    if (ez.pairs.length === LETTERS.length) {
+      $('#done4').textContent = 'כָּל הַכָּבוֹד! מְצָאתֶם אֶת כָּל הַזּוּגוֹת';
+      $('#done4').classList.add('show');
+    }
+  } else { shake(s); shake(t); }
+}
+function drawEasy(loops) {
+  const svg = $('#esvg'); if ($('#easy').hidden || $('#a2').hidden) return;
+  svg.innerHTML = '';
+  const br = $('#eboard').getBoundingClientRect();
+  ez.pairs.forEach(p => {
+    const a = p.a.getBoundingClientRect(), b = p.b.getBoundingClientRect();
+    const ln = document.createElementNS(SVGNS, 'line');
+    ln.setAttribute('x1', a.left + a.width / 2 - br.left); ln.setAttribute('y1', a.top + a.height / 2 - br.top);
+    ln.setAttribute('x2', b.left + b.width / 2 - br.left); ln.setAttribute('y2', b.top + b.height / 2 - br.top);
+    ln.style.stroke = p.c; svg.append(ln);
+    if (loops) [p.a, p.b].forEach(x => drawLoop(x, p.c, false, 6, 6));
+  });
+}
+
+/* ---------- 2. lines ---------- */
+const ROUNDS = [['א', 'מ', 'ם', 'נ', 'ן', 'ש'], ['ת', 'ע', 'י', 'ו', 'ל']];
+let ln = { pairs: [] };
+function newLines() { ln = { round: 0, pairs: [] }; startRound(); }
+function startRound() {
+  Object.assign(ln, { sel: null, pairs: [], ci: 0 });
+  const set = ROUNDS[ln.round];
+  ['colPrint', 'colScript'].forEach((id, k) => {
+    const col = $('#' + id); col.querySelectorAll('.litem').forEach(x => x.remove());
+    shuffle(set).forEach(l => {
+      const b = el('button', 'litem');
+      b.dataset.l = l; b.dataset.kind = k ? 'script' : 'print';
+      b.setAttribute('aria-label', k ? 'כְּתָב' : l);
+      b.append(face(l, b.dataset.kind));
+      b.addEventListener('click', () => pickLine(b));
+      col.append(b);
+    });
+  });
+  $('#roundTxt').textContent = `(סִבּוּב ${ln.round + 1} מִתּוֹךְ ${ROUNDS.length})`;
+  $('#done3').classList.remove('show'); $('#nextRound').style.display = 'none';
+  drawLines();
+}
+function pickLine(b) {
+  if (b.classList.contains('ok')) return;
+  const s = ln.sel;
+  if (!s || s.dataset.kind === b.dataset.kind) { s?.classList.remove('sel'); ln.sel = b; b.classList.add('sel'); return; }
+  s.classList.remove('sel'); ln.sel = null;
+  if (s.dataset.l === b.dataset.l) {
+    const c = PAIR[ln.ci++ % PAIR.length];
+    [s, b].forEach(x => { x.classList.add('ok'); x.style.setProperty('--lc', c); });
+    const p = s.dataset.kind === 'print' ? s : b, q = p === s ? b : s;
+    ln.pairs.push({ p, q, c, fresh: true });
+    drawLines();
+    if (ln.pairs.length === ROUNDS[ln.round].length) {
+      const last = ln.round === ROUNDS.length - 1;
+      $('#done3').textContent = last ? 'כָּל הַכָּבוֹד! חִבַּרְתֶּם אֶת כָּל הָאוֹתִיּוֹת' : 'יוֹפִי! כָּל הַזּוּגוֹת נְכוֹנִים';
+      $('#done3').classList.add('show');
+      if (!last) $('#nextRound').style.display = 'inline-block';
+    }
+  } else {
+    [s, b].forEach(x => { x.classList.add('bad'); shake(x); });
+    setTimeout(() => [s, b].forEach(x => x.classList.remove('bad')), 450);
+  }
+}
+function drawLines() {
+  const svg = $('#lsvg'); if ($('#lines').hidden || $('#a2').hidden) return;
+  svg.innerHTML = '';
+  const br = $('#lboard').getBoundingClientRect();
+  ln.pairs.forEach(pr => {
+    const a = pr.p.getBoundingClientRect(), b = pr.q.getBoundingClientRect();
+    const x1 = a.left - br.left, y1 = a.top + a.height / 2 - br.top;
+    const x2 = b.right - br.left, y2 = b.top + b.height / 2 - br.top;
+    const line = document.createElementNS(SVGNS, 'line');
+    Object.entries({ x1, y1, x2, y2 }).forEach(([k, v]) => line.setAttribute(k, v));
+    line.style.stroke = pr.c; svg.append(line);
+    [[x1, y1], [x2, y2]].forEach(([x, y]) => {
+      const c = document.createElementNS(SVGNS, 'circle');
+      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 7); c.style.fill = pr.c; svg.append(c);
+    });
+    if (pr.fresh && !reduce) {
+      const L = Math.hypot(x2 - x1, y2 - y1);
+      line.style.strokeDasharray = L; line.style.strokeDashoffset = L;
+      line.getBoundingClientRect();
+      line.style.transition = 'stroke-dashoffset .4s ease-out'; line.style.strokeDashoffset = 0;
+    }
+    pr.fresh = false;
+  });
+}
+$('#nextRound').addEventListener('click', () => { ln.round++; startRound(); });
+
+/* ---------- 3. memory ---------- */
+const TEAMS = [{ name: 'קְבוּצָה א', c: 'var(--green)' }, { name: 'קְבוּצָה ב', c: 'var(--purple)' }];
+let mem = {};
+function newMemory() {
+  mem = { up: [], lock: false, team: 0, score: [0, 0], matched: 0 };
+  const grid = $('#grid'); grid.innerHTML = '';
+  shuffle(LETTERS.flatMap(l => [{ l, kind: 'print' }, { l, kind: 'script' }])).forEach(c => {
+    const b = el('button', 'mcard');
+    b.dataset.l = c.l; b.dataset.kind = c.kind;
+    b.setAttribute('aria-label', 'קְלָף');
+    const inn = el('div', 'in');
+    const back = el('div', 'face back'); back.append(el('span', '', 'אב'));
+    const front = el('div', 'face front'); front.append(face(c.l, c.kind));
+    inn.append(back, front); b.append(inn); grid.append(b);
+    b.addEventListener('click', () => flip(b));
+  });
+  $('#done2').classList.remove('show');
+  renderTeams();
+}
+function renderTeams() {
+  const t = $('#teams'); t.innerHTML = '';
+  TEAMS.forEach((tm, i) => {
+    const d = el('div', 'team' + (i === mem.team ? ' active' : ''));
+    d.style.setProperty('--tc', tm.c);
+    d.append(el('span', '', tm.name), el('b', '', mem.score[i]));
+    t.append(d);
+  });
+  $('#memNote').textContent = 'הַתּוֹר שֶׁל ' + TEAMS[mem.team].name;
+}
+function flip(b) {
+  if (mem.lock || b.classList.contains('up') || b.classList.contains('matched')) return;
+  b.classList.add('up'); mem.up.push(b);
+  if (mem.up.length < 2) return;
+  const [a, c] = mem.up; mem.lock = true;
+  if (a.dataset.l === c.dataset.l && a.dataset.kind !== c.dataset.kind) {
+    setTimeout(() => {
+      [a, c].forEach(x => { x.classList.remove('up'); x.classList.add('matched'); x.style.setProperty('--tc', TEAMS[mem.team].c); });
+      mem.score[mem.team]++; mem.matched++; mem.up = []; mem.lock = false;
+      renderTeams();
+      if (mem.matched === LETTERS.length) {
+        const [x, y] = mem.score;
+        $('#done2').textContent = x === y ? 'תֵּיקוּ! כָּל הַכָּבוֹד לִשְׁתֵּי הַקְּבוּצוֹת' : `${TEAMS[x > y ? 0 : 1].name} נִיצְּחָה! כָּל הַכָּבוֹד`;
+        $('#done2').classList.add('show'); $('#memNote').textContent = '';
+      }
+    }, 450);
+  } else {
+    setTimeout(() => {
+      a.classList.remove('up'); c.classList.remove('up');
+      mem.up = []; mem.lock = false; mem.team = 1 - mem.team; renderTeams();
+    }, 1400);
+  }
+}
+
+/* =========================================================
+   Teacher tool — redraw any script letter
+   ========================================================= */
+const pad = $('#pad');
+let edL = 'א', strokes = [], cur = null;
+function renderPick() {
+  const box = $('#epick'); box.innerHTML = '';
+  LETTERS.forEach(l => {
+    const b = el('button', custom[l] ? 'custom' : '', l);
+    b.setAttribute('aria-pressed', l === edL);
+    b.addEventListener('click', () => { edL = l; strokes = []; renderPick(); renderPad(); $('#padMsg').textContent = ''; });
+    box.append(b);
+  });
+}
+const strokeD = s => s.length === 1 ? `M${s[0][0]} ${s[0][1]} l0.1 0`
+  : s.reduce((d, p, i) => {
+      if (i === 0) return `M${p[0]} ${p[1]}`;
+      const n = s[i + 1]; if (!n) return d + ` L${p[0]} ${p[1]}`;
+      return d + ` Q${p[0]} ${p[1]} ${((p[0] + n[0]) / 2).toFixed(1)} ${((p[1] + n[1]) / 2).toFixed(1)}`;
+    }, '');
+function renderPad() {
+  $('#padLetter').textContent = edL;
+  let g = '';
+  [8, 112].forEach(y => g += `<line class="guide" x1="0" x2="100" y1="${y}" y2="${y}"/>`);
+  [40, 80].forEach(y => g += `<line class="guide main" x1="0" x2="100" y1="${y}" y2="${y}"/>`);
+  g += `<path class="ghost" d="${strokes.length ? '' : scriptOf(edL)}"/>`;
+  strokes.forEach(s => g += `<path class="ink" d="${strokeD(s)}"/>`);
+  pad.innerHTML = g;
+}
+function padPt(e) {
+  const r = pad.getBoundingClientRect();
+  return [+((e.clientX - r.left) / r.width * 100).toFixed(1), +((e.clientY - r.top) / r.height * 120).toFixed(1)];
+}
+pad.addEventListener('pointerdown', e => { pad.setPointerCapture(e.pointerId); cur = [padPt(e)]; strokes.push(cur); renderPad(); });
+pad.addEventListener('pointermove', e => {
+  if (!cur) return;
+  const p = padPt(e), q = cur[cur.length - 1];
+  if (Math.hypot(p[0] - q[0], p[1] - q[1]) > 1.5) { cur.push(p); renderPad(); }
+});
+['pointerup', 'pointercancel'].forEach(ev => pad.addEventListener(ev, () => { cur = null; }));
+function persist() { try { localStorage.setItem(STORE_KEY, JSON.stringify(custom)); } catch (e) {} }
+function rebuildGames() { newEasy(); newLines(); newMemory(); }
+$('#padSave').addEventListener('click', () => {
+  if (!strokes.length) { $('#padMsg').textContent = 'צַיְּרוּ אֶת הָאוֹת לִפְנֵי הַשְּׁמִירָה'; return; }
+  custom[edL] = strokes.map(strokeD).join(' ');
+  persist(); strokes = []; renderPick(); renderPad(); rebuildGames();
+  $('#padMsg').textContent = 'נִשְׁמַר! הַמִּשְׂחָקִים הִתְחִילוּ מֵחָדָשׁ עִם הָאוֹת הַחֲדָשָׁה';
+});
+$('#padClear').addEventListener('click', () => { strokes = []; renderPad(); });
+$('#padReset').addEventListener('click', () => {
+  delete custom[edL]; persist(); strokes = []; renderPick(); renderPad(); rebuildGames();
+  $('#padMsg').textContent = 'הָאוֹת חָזְרָה לַצּוּרָה הַמְּקוֹרִית';
+});
+$('#padCopy').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(JSON.stringify(custom)); $('#padMsg').textContent = 'הַקּוֹד הוּעְתַּק'; }
+  catch (e) { $('#padMsg').textContent = JSON.stringify(custom); }
+});
+$('#padClose').addEventListener('click', () => $('#editor').close());
+$('#openEditor').addEventListener('click', () => { strokes = []; renderPick(); renderPad(); $('#padMsg').textContent = ''; $('#editor').showModal(); });
+
+/* ---------- init ---------- */
+function redrawAll() {
+  document.querySelectorAll('.word.circled').forEach(w => circleWord(w, false));
+  drawEasy(true); drawLines();
+}
+let rt;
+addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(redrawAll, 120); });
+renderDialogue();
+rebuildGames();
+if (document.fonts) document.fonts.ready.then(redrawAll);
+</script>
+</body>
+</html>
