@@ -150,7 +150,7 @@ header.top a.back:hover{color:var(--ink)}
 .comicBar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
 
 /* stage (one panel big) */
-.stage{position:fixed;inset:0;z-index:100;background:rgba(10,18,26,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:12px}
+.stage{position:fixed;inset:0;z-index:10000;background:rgba(10,18,26,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:12px}
 .stage[hidden]{display:none}
 .stage .big{width:min(96vw,calc((100vh - 110px) * 4 / 3));cursor:pointer}
 .stage .sbar{display:flex;gap:10px;align-items:center;color:#fff;font-family:"Secular One",sans-serif}
@@ -161,7 +161,8 @@ header.top a.back:hover{color:var(--ink)}
 /* ---- writing ---- */
 .writeCard{background:var(--paper)}
 .writeCard:fullscreen{padding:16px;overflow:auto}
-.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px;position:sticky;top:0;z-index:5;background:var(--paper);padding:6px 0}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px;position:sticky;top:var(--navh,0px);z-index:5;background:var(--paper);padding:6px 0}
+.writeCard:fullscreen .tools{top:0}
 .sw{width:34px;height:34px;border-radius:50%;border:3px solid var(--paper);box-shadow:0 0 0 2px var(--line);cursor:pointer;padding:0}
 .sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
 .sz{width:38px;height:38px;border-radius:10px;border:none;background:var(--bg);cursor:pointer;display:grid;place-items:center;padding:0}
@@ -184,15 +185,22 @@ header.top a.back:hover{color:var(--ink)}
   .bub{transition:opacity .2s}
 }
 </style>
-</head>
-<body>
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style></head>
+<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../full-lessons/index.html">📚 שיעורים מלאים</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../full-lessons/index.html'}">← חזרה</button></nav>
 <div class="wrap">
   <header class="top">
     <div>
       <h1>Olam street 1.17 &amp; 1.18</h1>
       <div class="sub">שִׂיחָה וּכְתִיבָה · אֲנִי, אַתָּה, אַתְּ, עוֹלָם</div>
     </div>
-    <a class="back" href="https://edadon-hla.github.io/hebrew-teacher-games/full-lessons/">→ לְכָל הַשִּׁעוּרִים</a>
   </header>
 
   <ol class="steps" role="tablist" id="steps"></ol>
@@ -581,7 +589,10 @@ fsBtn.onclick=()=>{
 document.addEventListener('fullscreenchange',()=>{fsBtn.innerHTML=document.fullscreenElement?'✕ יְצִיאָה מִמָּסָךְ מָלֵא':'⛶ מָסָךְ מָלֵא'; setTimeout(sizePad,60);});
 if('ResizeObserver' in window) new ResizeObserver(sizePad).observe(wrapEl); else window.addEventListener('resize',sizePad);
 
-/* start on remembered step */
+/* keep writing toolbar below the site bar */
+function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}
+setNavH(); window.addEventListener('resize',setNavH);
+/* start */
 showStep(0);
 </script>
 </body>
