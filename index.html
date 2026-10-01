@@ -9,8 +9,17 @@ header{background:#fff;border-bottom:1px solid #e2e7ef}.nav{max-width:1120px;mar
 .hero{max-width:900px;margin:auto;text-align:center;padding:60px 22px 35px}.badge{display:inline-block;background:#eef2ff;color:#3730a3;border-radius:999px;padding:7px 14px;font-weight:800;margin-bottom:14px}h1{font-size:clamp(35px,6vw,58px);margin:0 0 12px}.hero p{color:#657187;font-size:19px;line-height:1.6}
 main{max-width:900px;margin:auto;padding:10px 22px 70px}.choices{display:grid;grid-template-columns:1fr 1fr;gap:24px}.choice{background:#fff;border:1px solid #e2e7ef;border-radius:24px;padding:38px 28px;text-align:center;text-decoration:none;color:#182235;box-shadow:0 8px 25px #1b28420d;transition:.2s}.choice:hover{transform:translateY(-4px);box-shadow:0 12px 30px #1b284218}.icon{font-size:60px}.choice h2{font-size:30px;margin:14px 0 8px}.choice p{color:#657187;line-height:1.5;margin:0}
 footer{text-align:center;color:#657187;padding:25px}@media(max-width:650px){.choices{grid-template-columns:1fr}}
+</style>
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
 </style></head>
-<body>
+<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="index.html">דף הבית</a><a href="games/index.html">🎮 משחקים</a><a href="full-lessons/index.html">📚 שיעורים מלאים</a></nav>
 <header><div class="nav"><div class="logo">🎓 משחקי עברית</div><small>משחקים ושיעורים למורים ולתלמידים</small></div></header>
 <section class="hero"><div class="badge">Hebrew Classroom</div><h1>לומדים עברית</h1><p>בחרו מה תרצו לפתוח: משחקים אינטראקטיביים או שיעורים מלאים.</p></section>
 <main><div class="choices">
