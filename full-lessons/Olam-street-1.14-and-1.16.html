@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Olam street 1.14 &amp; 1.16 – אֲנִי, אַתָּה, אַתְּ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@400;600;700&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f6f9; --paper:#ffffff; --ink:#1d2b3a; --muted:#5d6b7a; --rule:#2a3540;
+  --listen:#bee6f7; --listen-ink:#0f5a7a;
+  --write:#f8e3a3; --write-ink:#6b4e00;
+  --pen:#e1342b; --ok:#2e9e5b; --bad:#e1342b; --miss:#e6a100;
+  --bank:#fbefdf; --tile:#ffffff; --tile-border:#e2c9a6;
+  --keren:#5f9e1f; --dan:#1f93c4;
+  --blank:#eef3f8;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#131a21; --paper:#1b242e; --ink:#e9eef3; --muted:#9aa8b6; --rule:#55636f;
+    --listen:#1d4b60; --listen-ink:#bfe9fb; --write:#5a4a17; --write-ink:#fbe7a6;
+    --pen:#ff5a50; --ok:#4cc27e; --bad:#ff5a50; --miss:#f3b928;
+    --bank:#2a2620; --tile:#232d38; --tile-border:#6a5a42;
+    --keren:#93d453; --dan:#5cc4ef; --blank:#25313d;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131a21; --paper:#1b242e; --ink:#e9eef3; --muted:#9aa8b6; --rule:#55636f;
+  --listen:#1d4b60; --listen-ink:#bfe9fb; --write:#5a4a17; --write-ink:#fbe7a6;
+  --pen:#ff5a50; --ok:#4cc27e; --bad:#ff5a50; --miss:#f3b928;
+  --bank:#2a2620; --tile:#232d38; --tile-border:#6a5a42;
+  --keren:#93d453; --dan:#5cc4ef; --blank:#25313d;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:"Noto Serif Hebrew","David Libre","Times New Roman",serif;font-size:19px;line-height:1.7}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--dan);outline-offset:2px;border-radius:6px}
+
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px 48px}
+header.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+header.top h1{font-family:"Secular One","Arial Hebrew",sans-serif;font-weight:400;font-size:clamp(1.6rem,4vw,2.3rem);margin:0;letter-spacing:.01em}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{border:2px solid transparent;border-radius:999px;padding:6px 18px;cursor:pointer;font-family:"Secular One",sans-serif;font-size:1rem;display:flex;align-items:center;gap:8px}
+.tab[data-for="ex116"]{background:var(--listen);color:var(--listen-ink)}
+.tab[data-for="ex114"]{background:var(--write);color:var(--write-ink)}
+.tab[aria-selected="false"]{opacity:.55}
+.tab[aria-selected="true"]{border-color:currentColor}
+
+.sheet{background:var(--paper);border-radius:14px;padding:22px clamp(14px,3vw,30px) 26px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 8px 28px -18px rgba(20,40,60,.35)}
+.sheet[hidden]{display:none}
+.badge{display:inline-flex;align-items:center;gap:10px;font-family:"Secular One",sans-serif;font-size:1.25rem;padding:4px 18px;border-radius:999px}
+.badge.listen{background:var(--listen);color:var(--listen-ink)}
+.badge.write{background:var(--write);color:var(--write-ink)}
+.head{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.song{background:var(--write);color:var(--write-ink);border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:.95rem;line-height:1.5}
+.song a{display:inline-flex;align-items:center;gap:6px;background:var(--paper);color:var(--ink);text-decoration:none;border-radius:999px;padding:4px 14px;font-weight:600;white-space:nowrap}
+.instr{font-size:1.08rem;margin:12px 0 16px}
+
+/* ---------- 1.16 grid ---------- */
+.gridScroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.circle{border-collapse:collapse;width:100%;min-width:560px;table-layout:fixed}
+table.circle td{border:1.5px solid var(--rule);text-align:center;vertical-align:middle;padding:0;height:104px}
+table.circle td.head-cell{width:118px;padding:6px 4px}
+.head-cell .tw{font-weight:700;font-size:1.15rem;display:flex;align-items:center;justify-content:center;gap:4px}
+.head-cell .pic{font-size:2.6rem;line-height:1.1;display:block}
+.say{border:none;background:none;cursor:pointer;font-size:1rem;padding:2px 4px;border-radius:6px;opacity:.75}
+.say:hover{opacity:1}
+.cell{width:100%;height:100%;background:none;border:none;cursor:pointer;position:relative;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.cell:hover{background:var(--blank)}
+.cell .w{position:relative;z-index:1}
+.ring{position:absolute;inset:50% auto auto 50%;width:84%;height:62%;transform:translate(-50%,-50%) rotate(-4deg);overflow:visible;pointer-events:none}
+.ring path{fill:none;stroke:var(--pen);stroke-width:3;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .32s ease-out}
+.cell.on .ring path{stroke-dashoffset:0}
+.cell.example{cursor:default}
+.cell.example:hover{background:none}
+.cell.ok .ring path{stroke:var(--ok)}
+.cell.bad{background:color-mix(in srgb,var(--bad) 14%,transparent)}
+.cell.miss .ring path{stroke:var(--miss);stroke-dasharray:.04 .03;stroke-dashoffset:0}
+.cell.miss .ring{opacity:.9}
+.cell .mark{position:absolute;top:6px;left:8px;font-size:.85rem;font-family:"Secular One",sans-serif}
+.cell.ok .mark::after{content:"✓";color:var(--ok)}
+.cell.bad .mark::after{content:"✗";color:var(--bad)}
+
+/* ---------- controls ---------- */
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px}
+.btn{border:none;border-radius:10px;padding:9px 22px;cursor:pointer;font-family:"Secular One",sans-serif;font-size:1.05rem}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.reset{background:var(--pen);color:#fff}
+.btn.reset:hover{filter:brightness(1.08)}
+.feedback{font-weight:600;min-height:1.6em}
+.feedback.good{color:var(--ok)}
+.feedback.warn{color:var(--miss)}
+
+/* ---------- 1.14 dialogue ---------- */
+.dlgLayout{display:grid;grid-template-columns:1fr 170px;gap:26px;align-items:start}
+.dialog{list-style:none;margin:0;padding:0}
+.dialog li{padding:7px 0;line-height:2.2}
+.who{font-weight:700;margin-left:6px}
+.who.k{color:var(--keren)}
+.who.d{color:var(--dan)}
+.blank{display:inline-flex;align-items:center;justify-content:center;min-width:4.6em;height:1.9em;margin:0 4px;padding:0 8px;vertical-align:middle;border-bottom:2.5px dashed var(--muted);background:var(--blank);border-radius:8px 8px 2px 2px;cursor:pointer;font-weight:700;font-size:1.05em;transition:background .15s,transform .15s;border-top:none;border-left:none;border-right:none}
+.blank.hover{background:color-mix(in srgb,var(--dan) 22%,var(--blank));transform:scale(1.06)}
+.blank.filled{border-bottom-style:solid;border-bottom-color:var(--ink)}
+.blank.ok{border-bottom-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--blank))}
+.blank.bad{border-bottom-color:var(--bad);background:color-mix(in srgb,var(--bad) 18%,var(--blank))}
+.blank.empty{border-bottom-color:var(--miss)}
+.blank.pop{animation:pop .22s ease-out}
+@keyframes pop{0%{transform:scale(.85)}100%{transform:scale(1)}}
+
+.bank{background:var(--bank);border-radius:16px;padding:14px 12px 16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);text-align:center}
+.bank h3{font-family:"Secular One",sans-serif;font-weight:400;margin:0 0 10px;font-size:1.1rem}
+.tiles{display:flex;flex-direction:column;gap:10px;align-items:center}
+.tile{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;background:var(--tile);border:2px solid var(--tile-border);border-radius:12px;padding:6px 0;width:100%;max-width:130px;font-size:1.3rem;font-weight:700;box-shadow:0 3px 0 var(--tile-border)}
+.tile:active{cursor:grabbing}
+.tile.selected{border-color:var(--dan);box-shadow:0 3px 0 var(--dan);transform:translateY(-2px)}
+.bank .hint{font-size:.82rem;color:var(--muted);margin-top:10px;line-height:1.45}
+.ghost{position:fixed;z-index:50;pointer-events:none;transform:translate(-50%,-60%) rotate(-3deg);background:var(--tile);border:2px solid var(--dan);border-radius:12px;padding:6px 18px;font-size:1.3rem;font-weight:700;box-shadow:0 10px 24px -8px rgba(0,0,0,.35)}
+
+.people{display:flex;justify-content:center;gap:clamp(18px,6vw,70px);margin-top:26px;flex-wrap:wrap}
+.person{text-align:center}
+.person .face{font-size:3.4rem;line-height:1.1}
+.person .lbl{font-weight:700;font-size:1.2rem}
+
+@media (max-width:720px){
+  body{font-size:18px}
+  .dlgLayout{grid-template-columns:1fr}
+  .bank{order:-1;top:calc(env(safe-area-inset-top,0px) + 6px);z-index:5;padding:10px}
+  .tiles{flex-direction:row;justify-content:center}
+  .tile{max-width:none;flex:1}
+  .bank .hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .ring path,.blank,.cell{transition:none}
+  .blank.pop{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>אֲנִי, אַתָּה, אַתְּ</h1>
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" data-for="ex116" aria-selected="true">🎧 1.16 תרגיל האזנה</button>
+      <button class="tab" role="tab" data-for="ex114" aria-selected="false">✏️ 1.14 תרגיל כתיבה</button>
+    </nav>
+  </header>
+
+  <!-- ===== 1.16 ===== -->
+  <section class="sheet" id="ex116" role="tabpanel">
+    <div class="head">
+      <span class="badge listen">🎧 1.16 תרגיל האזנה</span>
+      <div class="song">
+        <div>הַאֲזִינוּ לַשִּׁיר "אֲנִי וְאַתָּה"<br>מִילִּים: אָרִיק אַיְינְשְׁטֵיין &nbsp; לַחַן: מִיקִי גַּבְרִיאֵלוֹב</div>
+        <a id="songLink" target="_blank" rel="noopener">▶ לַשִּׁיר</a>
+      </div>
+    </div>
+    <p class="instr">הַקִּיפוּ בְּעִיגּוּל אֶת הַמִּלִּים הַמַּתְאִימוֹת בְּכָל שׁוּרָה כְּמוֹ בַּדֻּגְמָה.</p>
+    <div class="gridScroll"><table class="circle"><tbody id="circleBody"></tbody></table></div>
+    <div class="controls">
+      <button class="btn primary" id="check116">בְּדִיקָה ✓</button>
+      <button class="btn reset" id="reset116">אִפּוּס ↺</button>
+      <span class="feedback" id="fb116" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <!-- ===== 1.14 ===== -->
+  <section class="sheet" id="ex114" role="tabpanel" hidden>
+    <div class="head"><span class="badge write">✏️ 1.14 תרגיל כתיבה</span></div>
+    <p class="instr">הַשְׁלִימוּ אֶת כִּנּוּיֵי הַגּוּף (אֲנִי, אַתָּה, אַתְּ) הַחֲסֵרִים בַּשִּׂיחָה. גִּרְרוּ אֶת הַמִּלִּים מִמַּחְסַן הַמִּלִּים.</p>
+    <div class="dlgLayout">
+      <ol class="dialog" id="dialog"></ol>
+      <aside class="bank">
+        <h3>מַחְסַן מִלִּים:</h3>
+        <div class="tiles" id="tiles"></div>
+        <div class="hint">אֶפְשָׁר גַּם לִלְחֹץ עַל מִלָּה וְאַחַר כָּךְ עַל הַמָּקוֹם הָרֵיק.<br>לְחִיצָה עַל מִלָּה בַּשִּׂיחָה מוֹחֶקֶת אוֹתָהּ.</div>
+      </aside>
+    </div>
+    <div class="controls">
+      <button class="btn primary" id="check114">בְּדִיקָה ✓</button>
+      <button class="btn reset" id="reset114">אִפּוּס ↺</button>
+      <span class="feedback" id="fb114" aria-live="polite"></span>
+    </div>
+    <div class="people" aria-hidden="true">
+      <div class="person"><div class="face">🙋‍♀️</div><div class="lbl">אֲנִי</div></div>
+      <div class="person"><div class="face">👦🏾</div><div class="lbl">אַתָּה</div></div>
+      <div class="person"><div class="face">👧</div><div class="lbl">אַתְּ</div></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const W = {ani:'אֲנִי', ata:'אַתָּה', at:'אַתְּ', olam:'עוֹלָם', kulam:'כֻּלָּם'};
+
+/* ---------- speech ---------- */
+function speak(t){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t); u.lang='he-IL'; u.rate=.85;
+    const v = speechSynthesis.getVoices().find(v=>v.lang && v.lang.toLowerCase().startsWith('he'));
+    if(v) u.voice=v;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ---------- tabs ---------- */
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected', x===t));
+  document.querySelectorAll('.sheet').forEach(s=>s.hidden = s.id!==t.dataset.for);
+}));
+
+document.getElementById('songLink').href =
+  'https://www.youtube.com/results?search_query=' + encodeURIComponent('אריק איינשטיין אני ואתה');
+
+/* ================= 1.16 ================= */
+const rows = [
+  {t:'ani',   pic:'🙋‍♂️', cells:['ani','ata','ani','ani','olam','at','ani'], example:0},
+  {t:'ata',   pic:'🫵',   cells:['at','olam','ata','ata','ani','kulam','ata']},
+  {t:'olam',  pic:'🌍',   cells:['kulam','ani','olam','at','olam','olam','ata']},
+  {t:'kulam', pic:'👨‍👩‍👧‍👦', cells:['ani','kulam','kulam','ata','kulam','olam','kulam']},
+];
+const RING = '<svg class="ring" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M52 5 C80 3 97 15 95 31 C93 49 71 57 47 56 C21 55 4 45 5 29 C6 14 24 4 58 7"/></svg>';
+const body = document.getElementById('circleBody');
+let total116 = 0;
+rows.forEach(r=>{
+  const tr = document.createElement('tr');
+  const h = document.createElement('td'); h.className='head-cell';
+  h.innerHTML = `<div class="tw">${W[r.t]}<button class="say" aria-label="הַשְׁמָעָה">🔊</button></div><span class="pic">${r.pic}</span>`;
+  h.querySelector('.say').onclick = ()=>speak(W[r.t]);
+  tr.appendChild(h);
+  r.cells.forEach((c,i)=>{
+    const td = document.createElement('td');
+    const b = document.createElement('button');
+    b.className='cell'; b.dataset.correct = c===r.t ? '1':'0';
+    b.innerHTML = `<span class="w">${W[c]}</span>${RING}<span class="mark"></span>`;
+    if(r.example===i){ b.classList.add('on','example'); b.dataset.example='1'; b.setAttribute('aria-label',W[c]+' – דֻּגְמָה'); }
+    else{
+      if(c===r.t) total116++;
+      b.setAttribute('aria-pressed','false');
+      b.onclick = ()=>{
+        b.classList.toggle('on');
+        b.setAttribute('aria-pressed', b.classList.contains('on'));
+        clearMarks116();
+      };
+    }
+    td.appendChild(b); tr.appendChild(td);
+  });
+  body.appendChild(tr);
+});
+const fb116 = document.getElementById('fb116');
+function clearMarks116(){
+  document.querySelectorAll('.cell').forEach(c=>c.classList.remove('ok','bad','miss'));
+  fb116.textContent=''; fb116.className='feedback';
+}
+document.getElementById('check116').onclick = ()=>{
+  clearMarks116();
+  let good=0, wrong=0;
+  document.querySelectorAll('.cell:not(.example)').forEach(c=>{
+    const on=c.classList.contains('on'), ok=c.dataset.correct==='1';
+    if(on&&ok){c.classList.add('ok');good++}
+    else if(on&&!ok){c.classList.add('bad');wrong++}
+    else if(!on&&ok){c.classList.add('miss')}
+  });
+  if(good===total116 && wrong===0){fb116.textContent='כָּל הַכָּבוֹד! 🎉 הַכֹּל נָכוֹן.'; fb116.classList.add('good');}
+  else{
+    fb116.textContent = `${good} מִתּוֹךְ ${total116} נְכוֹנוֹת` + (wrong?` · ${wrong} טָעֻיּוֹת`:'') + ' – נַסּוּ שׁוּב!';
+    fb116.classList.add('warn');
+  }
+};
+document.getElementById('reset116').onclick = ()=>{
+  document.querySelectorAll('.cell:not(.example)').forEach(c=>{c.classList.remove('on');c.setAttribute('aria-pressed','false')});
+  clearMarks116();
+};
+
+/* ================= 1.14 ================= */
+const dialog = [
+  ['k','הַי שָׁלוֹם, {ata} תַּלְמִיד חָדָשׁ, נָכוֹן?'],
+  ['d','שָׁלוֹם, כֵּן {ani} תַּלְמִיד חָדָשׁ.'],
+  ['k','{ani} קֶרֶן. אֵיךְ קוֹרְאִים לְךָ?'],
+  ['d','שָׁלוֹם קֶרֶן, {ani} דָּן.'],
+  ['k','אֵיפֹה {ata} גָּר?'],
+  ['d','{ani} גָּר בְּתֵל אָבִיב. אֵיפֹה {at} גָּרָה?'],
+  ['k','גַּם {ani} גָּרָה בְּתֵל אָבִיב. אֵיפֹה {ata} לוֹמֵד?'],
+  ['d','{ani} לוֹמֵד בְּבֵית סֵפֶר "רַבִּין". אֵיפֹה {at} לוֹמֶדֶת?'],
+  ['k','גַּם {ani} לוֹמֶדֶת בְּבֵית הַסֵּפֶר "רַבִּין", נִתְרָאֶה בְּבֵית הַסֵּפֶר.'],
+];
+const dlg = document.getElementById('dialog');
+dialog.forEach(([who,text])=>{
+  const li = document.createElement('li');
+  const name = who==='k' ? 'קֶרֶן' : 'דָּן';
+  li.innerHTML = `<span class="who ${who}">${name}:</span>` +
+    text.replace(/\{(\w+)\}/g,(m,a)=>`<button class="blank" data-answer="${a}" aria-label="מָקוֹם רֵיק"></button>`);
+  dlg.appendChild(li);
+});
+const blanks = [...document.querySelectorAll('.blank')];
+const fb114 = document.getElementById('fb114');
+
+let selected = null;
+const tilesEl = document.getElementById('tiles');
+['ani','ata','at'].forEach(k=>{
+  const t = document.createElement('div');
+  t.className='tile'; t.textContent=W[k]; t.dataset.w=k; t.tabIndex=0; t.setAttribute('role','button');
+  tilesEl.appendChild(t);
+  t.addEventListener('pointerdown', e=>startDrag(e,t));
+  t.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();select(t);} });
+});
+
+function select(t){
+  document.querySelectorAll('.tile').forEach(x=>x.classList.remove('selected'));
+  if(selected===t.dataset.w){selected=null;return;}
+  selected=t.dataset.w; t.classList.add('selected');
+}
+function clearMarks114(){
+  blanks.forEach(b=>b.classList.remove('ok','bad','empty'));
+  fb114.textContent=''; fb114.className='feedback';
+}
+function fill(b,w){
+  clearMarks114();
+  b.dataset.v=w; b.textContent=W[w]; b.classList.add('filled');
+  b.setAttribute('aria-label',W[w]);
+  b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+}
+function empty(b){
+  clearMarks114();
+  delete b.dataset.v; b.textContent=''; b.classList.remove('filled');
+  b.setAttribute('aria-label','מָקוֹם רֵיק');
+}
+blanks.forEach(b=>b.addEventListener('click',()=>{
+  if(selected){ fill(b,selected); }
+  else if(b.dataset.v){ empty(b); }
+}));
+
+function startDrag(e,t){
+  if(e.button!==undefined && e.button!==0) return;
+  e.preventDefault();
+  const w=t.dataset.w, sx=e.clientX, sy=e.clientY;
+  let ghost=null, over=null;
+  const move = ev=>{
+    if(!ghost){
+      if(Math.hypot(ev.clientX-sx, ev.clientY-sy) < 6) return;
+      ghost=document.createElement('div'); ghost.className='ghost'; ghost.textContent=W[w];
+      document.body.appendChild(ghost);
+    }
+    ghost.style.left=ev.clientX+'px'; ghost.style.top=ev.clientY+'px';
+    const el=document.elementFromPoint(ev.clientX,ev.clientY);
+    const b=el && el.closest('.blank');
+    if(b!==over){ over&&over.classList.remove('hover'); over=b; over&&over.classList.add('hover'); }
+  };
+  const up = ()=>{
+    window.removeEventListener('pointermove',move);
+    window.removeEventListener('pointerup',up);
+    window.removeEventListener('pointercancel',up);
+    if(ghost){
+      ghost.remove();
+      if(over){ over.classList.remove('hover'); fill(over,w); }
+    } else {
+      select(t);
+    }
+  };
+  window.addEventListener('pointermove',move);
+  window.addEventListener('pointerup',up);
+  window.addEventListener('pointercancel',up);
+}
+
+document.getElementById('check114').onclick = ()=>{
+  clearMarks114();
+  let good=0, missing=0;
+  blanks.forEach(b=>{
+    if(!b.dataset.v){b.classList.add('empty');missing++;}
+    else if(b.dataset.v===b.dataset.answer){b.classList.add('ok');good++;}
+    else b.classList.add('bad');
+  });
+  if(good===blanks.length){fb114.textContent='כָּל הַכָּבוֹד! 🎉 הַשִּׂיחָה מְלֵאָה וּנְכוֹנָה.'; fb114.classList.add('good');}
+  else{
+    fb114.textContent = `${good} מִתּוֹךְ ${blanks.length} נְכוֹנוֹת` + (missing?` · ${missing} חֲסֵרוֹת`:'') + ' – נַסּוּ שׁוּב!';
+    fb114.classList.add('warn');
+  }
+};
+document.getElementById('reset114').onclick = ()=>{
+  blanks.forEach(empty);
+  selected=null; document.querySelectorAll('.tile').forEach(x=>x.classList.remove('selected'));
+};
+</script>
+</body>
+</html>
