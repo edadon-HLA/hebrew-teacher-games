@@ -44,8 +44,13 @@ main{flex:1; display:flex; flex-direction:column; align-items:center; gap:16px; 
 
 .person{width:min(760px,100%); display:grid; grid-template-columns:auto minmax(0,1fr); gap:22px; align-items:center; background:var(--surface); border:3px solid var(--ink); border-radius:26px; padding:18px 22px; animation:in .5s cubic-bezier(.2,1.4,.4,1)}
 @keyframes in{from{transform:translateY(24px) scale(.94); opacity:0}}
-.badge{width:clamp(110px,18vw,150px); aspect-ratio:1; border-radius:50%; display:grid; place-items:center; font-size:clamp(60px,10vw,84px); background:var(--plate); border:4px solid var(--line); position:relative}
-.badge .cake{position:absolute; bottom:-6px; inset-inline-start:-6px; font-size:34px; background:var(--surface); border-radius:50%; width:52px; height:52px; display:grid; place-items:center; border:3px solid var(--line)}
+.photo{margin:0; width:clamp(150px,24vw,220px); display:flex; flex-direction:column; align-items:center; gap:4px}
+.badge{width:100%; aspect-ratio:3/4; border-radius:22px; background:var(--plate); border:4px solid var(--line); position:relative}
+.badge img{width:100%; height:100%; object-fit:cover; object-position:50% 20%; border-radius:18px; display:block}
+.badge .ic, .badge .cake{position:absolute; bottom:-10px; font-size:26px; background:var(--surface); border-radius:50%; width:46px; height:46px; display:grid; place-items:center; border:3px solid var(--line)}
+.badge .ic{inset-inline-end:-10px} .badge .cake{inset-inline-start:-10px}
+.credit{margin-top:8px; font-family:var(--f-display); direction:ltr; unicode-bidi:isolate; font-size:11px; color:var(--muted); text-align:center; line-height:1.3}
+.credit a{color:inherit}
 .who h2{margin:0; font-size:clamp(30px,5vw,46px); line-height:1.1}
 .who .en{font-family:var(--f-display); direction:ltr; unicode-bidi:isolate; color:var(--muted); font-size:clamp(17px,2.4vw,22px); font-weight:600; display:block; margin-top:2px}
 .who .born{margin-top:12px; display:inline-flex; align-items:center; gap:10px; background:var(--plate); color:#2b2a3a; border-radius:14px; padding:8px 14px; font-size:clamp(20px,3vw,26px); font-weight:700}
@@ -152,28 +157,30 @@ main{flex:1; display:flex; flex-direction:column; align-items:center; gap:16px; 
 const $ = id => document.getElementById(id);
 const YEAR = new Date().getFullYear();
 const ROUNDS = 10;
-/* g: 'm' = בֶּן, 'f' = בַּת. Birth years checked against public records. */
+/* g: 'm' = בֶּן, 'f' = בַּת. Birth years checked against public records.
+   img: ./ben-kama-photos/<img>.jpg, from Wikimedia Commons (cr = photographer · license, f = Commons file name). */
 const PEOPLE = [
-  {he:'מסי', en:'Lionel Messi', y:1987, g:'m', ic:'⚽'},
-  {he:'רונאלדו', en:'Cristiano Ronaldo', y:1985, g:'m', ic:'⚽'},
-  {he:'אמבפה', en:'Kylian Mbappé', y:1998, g:'m', ic:'⚽'},
-  {he:'לברון ג\'יימס', en:'LeBron James', y:1984, g:'m', ic:'🏀'},
-  {he:'סטף קרי', en:'Stephen Curry', y:1988, g:'m', ic:'🏀'},
-  {he:'דני אבדיה', en:'Deni Avdija', y:2001, g:'m', ic:'🏀'},
-  {he:'מייקל פלפס', en:'Michael Phelps', y:1985, g:'m', ic:'🏊'},
-  {he:'מיסטר ביסט', en:'MrBeast', y:1998, g:'m', ic:'📹'},
-  {he:'טום הולנד', en:'Tom Holland', y:1996, g:'m', ic:'🕷️'},
-  {he:'אד שירן', en:'Ed Sheeran', y:1991, g:'m', ic:'🎸'},
-  {he:'טיילור סוויפט', en:'Taylor Swift', y:1989, g:'f', ic:'🎤'},
-  {he:'בילי אייליש', en:'Billie Eilish', y:2001, g:'f', ic:'🎤'},
-  {he:'אוליביה רודריגו', en:'Olivia Rodrigo', y:2003, g:'f', ic:'🎤'},
-  {he:'אריאנה גרנדה', en:'Ariana Grande', y:1993, g:'f', ic:'🎤'},
-  {he:'סלינה גומז', en:'Selena Gomez', y:1992, g:'f', ic:'🎬'},
-  {he:'זנדאיה', en:'Zendaya', y:1996, g:'f', ic:'🎬'},
-  {he:'גל גדות', en:'Gal Gadot', y:1985, g:'f', ic:'🎬'},
-  {he:'סימון ביילס', en:'Simone Biles', y:1997, g:'f', ic:'🤸'},
-  {he:'סרינה ויליאמס', en:'Serena Williams', y:1981, g:'f', ic:'🎾'}
+  {he:'מסי', en:'Lionel Messi', y:1987, g:'m', ic:'⚽', img:'messi', cr:'Bryan Berlin · CC BY-SA 4.0', f:'Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg'},
+  {he:'רונאלדו', en:'Cristiano Ronaldo', y:1985, g:'m', ic:'⚽', img:'ronaldo', cr:'Bryan Berlin · CC BY-SA 4.0', f:'Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_(cropped).jpg'},
+  {he:'אמבפה', en:'Kylian Mbappé', y:1998, g:'m', ic:'⚽', img:'mbappe', cr:'Bryan Berlin · CC BY-SA 4.0', f:'Kylian_Mbappe_France_v_Senegal_16_June_2026-391_(cropped).jpg'},
+  {he:'לברון ג\'יימס', en:'LeBron James', y:1984, g:'m', ic:'🏀', img:'lebron', cr:'Erik Drost · CC BY 2.0', f:'LeBron_James_(51959977144)_(cropped2).jpg'},
+  {he:'סטף קרי', en:'Stephen Curry', y:1988, g:'m', ic:'🏀', img:'curry', cr:'Clément Bardot · CC BY-SA 4.0', f:'Stephen_Curry,_Olympic_Games_2024_(cropped).jpg'},
+  {he:'דני אבדיה', en:'Deni Avdija', y:2001, g:'m', ic:'🏀', img:'avdija', cr:'All-Pro Reels · CC BY-SA 2.0', f:'Deni_Avdija_2022_(52380408867)_(cropped).jpg'},
+  {he:'מייקל פלפס', en:'Michael Phelps', y:1985, g:'m', ic:'🏊', img:'phelps', cr:'Agência Brasil · CC BY 2.0', f:'Michael_Phelps_Rio_Olympics_2016.jpg'},
+  {he:'מיסטר ביסט', en:'MrBeast', y:1998, g:'m', ic:'📹', img:'mrbeast', cr:'Tyren Redd · CC BY 4.0', f:'MrBeast_in_2026_(cropped_4).png'},
+  {he:'טום הולנד', en:'Tom Holland', y:1996, g:'m', ic:'🕷️', img:'holland', cr:'PhilipRomano · CC BY-SA 4.0', f:'TomHolland-byPhilipRomano.jpg'},
+  {he:'אד שירן', en:'Ed Sheeran', y:1991, g:'m', ic:'🎸', img:'sheeran', cr:'Harald Krichel · CC BY-SA 3.0', f:'Ed_Sheeran-6886_(cropped).jpg'},
+  {he:'טיילור סוויפט', en:'Taylor Swift', y:1989, g:'f', ic:'🎤', img:'swift', cr:'iHeartRadioCA · CC BY 3.0', f:'Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_(3).png'},
+  {he:'בילי אייליש', en:'Billie Eilish', y:2001, g:'f', ic:'🎤', img:'eilish', cr:'Raph_PH · CC BY 4.0', f:'BillieEilishO2140725-39_-_54665577407_(cropped).jpg'},
+  {he:'אוליביה רודריגו', en:'Olivia Rodrigo', y:2003, g:'f', ic:'🎤', img:'rodrigo', cr:'Raph_PH · CC BY 4.0', f:'Glasto2025-546_(cropped)_2.jpg'},
+  {he:'אריאנה גרנדה', en:'Ariana Grande', y:1993, g:'f', ic:'🎤', img:'grande', cr:'Barbie Simons · CC BY 3.0', f:'Ariana_Grande_promoting_Wicked_(2024).jpg'},
+  {he:'סלינה גומז', en:'Selena Gomez', y:1992, g:'f', ic:'🎬', img:'gomez', cr:'Frank Sun · CC BY-SA 4.0', f:'Selena_Gomez_at_the_2024_Toronto_International_Film_Festival_10_(cropped).jpg'},
+  {he:'זנדאיה', en:'Zendaya', y:1996, g:'f', ic:'🎬', img:'zendaya', cr:'PhilipRomano · CC BY-SA 4.0', f:'Zendaya-byPhilipRomano.jpg'},
+  {he:'גל גדות', en:'Gal Gadot', y:1985, g:'f', ic:'🎬', img:'gadot', cr:'Gage Skidmore · CC BY-SA 3.0', f:'Gal_Gadot_by_Gage_Skidmore_3.jpg'},
+  {he:'סימון ביילס', en:'Simone Biles', y:1997, g:'f', ic:'🤸', img:'biles', cr:'Ocoudis · CC BY-SA 4.0', f:'Simone_Biles_National_Team_2024.jpg'},
+  {he:'סרינה ויליאמס', en:'Serena Williams', y:1981, g:'f', ic:'🎾', img:'serena', cr:'AndrewHenkelman · CC BY-SA 4.0', f:'Serena-Smiling-2020.png'}
 ];
+const photo = p => `./ben-kama-photos/${p.img}.jpg`;
 window.GAME_DATA = {PEOPLE, YEAR};
 $('thisYear').textContent = YEAR;
 
@@ -216,7 +223,8 @@ function show(){
   const r = deck[i]; answered = false;
   const pc = $('person');
   pc.style.animation = 'none'; void pc.offsetWidth; pc.style.animation = '';
-  pc.innerHTML = `<div class="badge" aria-hidden="true">${r.p.ic}<span class="cake">🎂</span></div>
+  pc.innerHTML = `<figure class="photo"><div class="badge"><img src="${photo(r.p)}" alt="${r.p.en}"><span class="ic" aria-hidden="true">${r.p.ic}</span><span class="cake" aria-hidden="true">🎂</span></div>
+      <figcaption class="credit">📷 <a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(r.p.f)}" target="_blank" rel="noopener">${r.p.cr}</a></figcaption></figure>
     <div class="who"><h2>${r.p.he}</h2><span class="en">${r.p.en}</span>
       <div class="born">שְׁנַת לֵידָה: <span class="num">${r.p.y}</span></div></div>`;
   $('calc').hidden = true;
@@ -267,7 +275,7 @@ function finish(){
   $('end').hidden = false; $('bAgain').focus();
   if (s >= 2) burstAt($('endStars'), ['★', '🎂', '🎈'], ['#f2b01e', '#e2506a', '#2a8bd0'], 24);
 }
-function start(){ deck = makeDeck(); i = 0; score = 0; results = []; $('start').hidden = true; $('end').hidden = true; show(); }
+function start(){ deck = makeDeck(); deck.forEach(r => { new Image().src = photo(r.p); }); i = 0; score = 0; results = []; $('start').hidden = true; $('end').hidden = true; show(); }
 $('bStart').onclick = start;
 $('bAgain').onclick = start;
 $('bNext').onclick = next;
