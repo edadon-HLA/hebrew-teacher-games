@@ -383,7 +383,8 @@ function answer(saidYes){
   $(saidYes ? 'aNo' : 'aYes').disabled = true;
   $('sentence').classList.remove('hidden');
   const v = document.createElement('div'); v.className='verdict';
-  v.innerHTML = `<div class="stamp ${r.truth ? 'y' : 'n'}">${r.truth ? '✓' : '✕'}</div>`;
+  /* stamp shows whether the student was right, not whether the sentence was true */
+  v.innerHTML = `<div class="stamp ${right ? 'y' : 'n'}">${right ? '✓' : '✕'}</div>`;
   $('stage').appendChild(v);
   const fr = $('fbR');
   fr.className = 'r ' + (right ? 'y' : 'n');
@@ -393,6 +394,7 @@ function answer(saidYes){
   if (r.truth) why = `הַתְּמוּנָה מַתְאִימָה לַמִּשְׁפָּט.`;
   else if (r.kind === 'neg') why = `בַּתְּמוּנָה: <b>${pHe}</b> שִׂימוּ לֵב לַמִּלָּה <b>לֹא</b>!`;
   else why = `בַּמִּשְׁפָּט: <b>${r.item.he}</b>. בַּתְּמוּנָה: <b>${r.pItem.he}</b>.`;
+  if (!right) why = `הַתְּשׁוּבָה הַנְּכוֹנָה: <b>${r.truth ? 'נָכוֹן' : 'לֹא נָכוֹן'}</b>. ` + why;
   $('fbWhy').innerHTML = why;
   $('feedback').hidden = false;
   drawDots();

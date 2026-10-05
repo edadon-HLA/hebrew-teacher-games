@@ -419,12 +419,19 @@ $('bCheck').onclick = () => {
     void b.offsetWidth;
     if (state[r][c] === a){ ok++; b.classList.add('ok'); } else { bad++; b.classList.add('bad'); }
   }));
-  if (ok === total){
-    $('result').innerHTML = `<span class="he">${CHEERS[Math.floor(Math.random()*CHEERS.length)]} הַכֹּל נָכוֹן!</span>`;
+  const empty = total - ok - bad;
+  const res = $('result');
+  res.style.color = '';
+  if (ok + bad === 0){
+    res.style.color = 'var(--coral)';
+    res.innerHTML = `<span class="he">עוֹד לֹא סִמַּנְתֶּם! לוֹחֲצִים עַל מִשְׁבֶּצֶת וּמְסַמְּנִים לֵב אוֹ לֵב שָׁבוּר.</span>`;
+  } else if (ok === total){
+    res.style.color = 'var(--green)';
+    res.innerHTML = `<span class="he">${CHEERS[Math.floor(Math.random()*CHEERS.length)]} הַכֹּל נָכוֹן!</span>`;
     burstAt($('tbl'), ['♥','♥','★','✓'], ['#ef5470','#f2b01e','#2f9d55','#e2506a'], 26);
   } else {
-    $('result').innerHTML = `<span class="he">נָכוֹן: ${ok} · טָעוּת: ${bad} · עוֹד ${total-ok-bad} מִשְׁבְּצוֹת</span>`;
-    if (bad === 0 && ok) burstAt($('result'), ['♥','★'], ['#ef5470','#f2b01e'], 8);
+    if (bad) res.style.color = 'var(--coral)';
+    res.innerHTML = `<span class="he">נָכוֹן: ${ok} · טָעוּת: ${bad}${empty ? ` · חֲסֵרוֹת עוֹד ${empty} מִשְׁבְּצוֹת` : ''}</span>`;
   }
 };
 const bAns = $('bAns');
