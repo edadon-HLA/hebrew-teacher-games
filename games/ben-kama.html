@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>בן כמה? בת כמה? | משחקי עברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+/* Layout: one-screen classroom game — a famous-person card with a birth year, four full-sentence answers below. */
+:root{
+  --bg:#fdf3e7; --surface:#ffffff; --ink:#23233a; --muted:#6b6880; --line:#eadfce;
+  --yes:#2f9d55; --yes-soft:#dcf2e3; --no:#e2506a; --no-soft:#fde3e7; --sky:#2a8bd0; --sky-soft:#dcecfb; --gold:#f2b01e; --plate:#fff8ec;
+  --boy:#2a8bd0; --girl:#d6457f;
+  --f-display:'Rubik','Segoe UI',Arial,sans-serif; --f-he:'Noto Sans Hebrew','Arial Hebrew','Segoe UI',Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647; --yes-soft:#1d3a29; --no-soft:#45252f; --sky:#62b4f0; --sky-soft:#1c3247; color-scheme:dark; } }
+:root[data-theme="dark"]{ --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647; --yes-soft:#1d3a29; --no-soft:#45252f; --sky:#62b4f0; --sky-soft:#1c3247; color-scheme:dark; }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--f-he); min-height:100vh; display:flex; flex-direction:column}
+button{font:inherit; color:inherit; cursor:pointer}
+:focus-visible{outline:3px solid var(--sky); outline-offset:3px}
+.he{font-family:var(--f-he); direction:rtl; unicode-bidi:isolate}
+.num{font-family:var(--f-display); direction:ltr; unicode-bidi:isolate; font-variant-numeric:tabular-nums}
+
+.bar{display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; padding:12px 16px; border-bottom:2px solid var(--line); background:var(--surface)}
+.bar h1{margin:0; font-size:22px; font-weight:800}
+.dots{display:flex; gap:5px; flex-wrap:wrap}
+.dots i{width:12px; height:12px; border-radius:50%; background:var(--line); display:block}
+.dots i.cur{background:var(--sky); transform:scale(1.25)}
+.dots i.y{background:var(--yes)} .dots i.n{background:var(--no)}
+.score{font-family:var(--f-display); direction:ltr; unicode-bidi:isolate; font-weight:800; font-size:18px}
+.spacer{flex:1}
+.tog{border:2px solid var(--line); background:var(--surface); border-radius:10px; padding:5px 10px; font-weight:600; font-size:14px}
+.tog[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+
+main{flex:1; display:flex; flex-direction:column; align-items:center; gap:16px; padding:16px}
+.year{font-size:18px; color:var(--muted); font-weight:700}
+.year b{color:var(--ink); font-size:22px}
+
+.person{width:min(760px,100%); display:grid; grid-template-columns:auto minmax(0,1fr); gap:22px; align-items:center; background:var(--surface); border:3px solid var(--ink); border-radius:26px; padding:18px 22px; animation:in .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes in{from{transform:translateY(24px) scale(.94); opacity:0}}
+.badge{width:clamp(110px,18vw,150px); aspect-ratio:1; border-radius:50%; display:grid; place-items:center; font-size:clamp(60px,10vw,84px); background:var(--plate); border:4px solid var(--line); position:relative}
+.badge .cake{position:absolute; bottom:-6px; inset-inline-start:-6px; font-size:34px; background:var(--surface); border-radius:50%; width:52px; height:52px; display:grid; place-items:center; border:3px solid var(--line)}
+.who h2{margin:0; font-size:clamp(30px,5vw,46px); line-height:1.1}
+.who .en{font-family:var(--f-display); direction:ltr; unicode-bidi:isolate; color:var(--muted); font-size:clamp(17px,2.4vw,22px); font-weight:600; display:block; margin-top:2px}
+.who .born{margin-top:12px; display:inline-flex; align-items:center; gap:10px; background:var(--plate); color:#2b2a3a; border-radius:14px; padding:8px 14px; font-size:clamp(20px,3vw,26px); font-weight:700}
+.who .born .num{font-size:1.25em; font-weight:800; color:#c2410c}
+.ask{font-size:clamp(24px,4vw,34px); font-weight:800; text-align:center}
+.ask .b{color:var(--boy)} .ask .g{color:var(--girl)}
+
+.hint{border:2px dashed var(--line); background:transparent; border-radius:12px; padding:6px 14px; font-weight:700; color:var(--muted)}
+.calc{font-family:var(--f-display); direction:ltr; font-size:clamp(24px,4vw,32px); font-weight:800; background:var(--sky-soft); border-radius:14px; padding:6px 18px}
+.calc .q{color:var(--sky)}
+
+.answers{display:grid; grid-template-columns:1fr 1fr; gap:14px; width:min(760px,100%)}
+.ans{border:3px solid var(--line); background:var(--surface); border-radius:20px; padding:16px 10px; font-weight:800; font-size:clamp(24px,4vw,34px); box-shadow:0 5px 0 var(--line); transition:transform .1s; direction:rtl}
+.ans:hover:not(:disabled){border-color:var(--ink)}
+.ans:active:not(:disabled){transform:translateY(4px); box-shadow:0 1px 0 var(--line)}
+.ans .bn{color:var(--boy)} .ans .bt{color:var(--girl)}
+.ans.ok{border-color:var(--yes); background:var(--yes-soft); box-shadow:0 5px 0 var(--yes)}
+.ans.bad{border-color:var(--no); background:var(--no-soft); animation:shake .4s}
+.ans:disabled{cursor:default}
+.ans.dim{opacity:.4}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+
+.feedback{width:min(760px,100%); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 16px; background:var(--surface); border:2px solid var(--line); border-radius:18px; padding:12px 16px}
+.feedback .r{font-size:24px; font-weight:800}
+.feedback .r.y{color:var(--yes)} .feedback .r.n{color:var(--no)}
+.feedback .why{color:var(--muted); font-size:18px; flex:1 1 300px; min-width:0}
+.feedback .why b{color:var(--ink)}
+.next{background:var(--sky); color:#fff; border:0; border-radius:14px; padding:12px 22px; font-weight:800; font-size:20px}
+
+.overlay{position:fixed; inset:0; z-index:10000; display:grid; place-items:center; padding:16px; background:rgba(20,27,38,.55)}
+.panel{background:var(--surface); border-radius:28px; padding:28px 24px; width:min(580px,100%); text-align:center; box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.panel h2{font-size:clamp(28px,5vw,40px); margin:0}
+.panel p{color:var(--muted); line-height:1.6; margin:10px auto 16px; max-width:46ch; font-size:18px}
+.how{display:flex; justify-content:center; gap:12px; margin-bottom:18px; flex-wrap:wrap}
+.how span{display:inline-flex; align-items:center; gap:8px; font-weight:800; font-size:22px; padding:6px 14px; border-radius:12px; background:var(--plate); color:#2b2a3a}
+.how .bn{color:var(--boy)} .how .bt{color:var(--girl)}
+.go{background:var(--sky); color:#fff; border:0; border-radius:16px; padding:14px 30px; font-weight:800; font-size:24px}
+.big-stars{font-size:56px; color:var(--gold); letter-spacing:8px}
+.fx{position:fixed; pointer-events:none; z-index:120; font-weight:800; font-family:var(--f-he)}
+
+@media (max-width:560px){
+  .person{grid-template-columns:1fr; justify-items:center; text-align:center}
+  .answers{gap:10px}
+  .ans{padding:12px 6px}
+}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important} }
+</style>
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../full-lessons/index.html">📚 שיעורים מלאים</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../games/index.html'}">← חזרה</button></nav>
+<header class="bar">
+  <h1>בֶּן כַּמָּה? בַּת כַּמָּה?</h1>
+  <span class="spacer"></span>
+  <div class="dots" id="dots" aria-label="התקדמות"></div>
+  <span class="score" id="score">⭐ 0</span>
+  <button class="tog" id="tVoice" type="button" aria-pressed="false" hidden>קול: כבוי</button>
+</header>
+
+<main>
+  <div class="year">הַשָּׁנָה: <b class="num" id="thisYear"></b></div>
+  <div class="person" id="person"></div>
+  <div class="ask"><span class="b">בֶּן כַּמָּה?</span> <span class="g">בַּת כַּמָּה?</span></div>
+  <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:center">
+    <button class="hint" id="bHint" type="button">💡 רמז: חשבון</button>
+    <span class="calc" id="calc" hidden></span>
+  </div>
+  <div class="answers" id="answers"></div>
+  <div class="feedback" id="feedback" hidden>
+    <span class="r" id="fbR"></span>
+    <span class="why" id="fbWhy"></span>
+    <button class="next" id="bNext" type="button">הַבָּא ◀</button>
+  </div>
+</main>
+
+<div class="overlay" id="start">
+  <div class="panel">
+    <h2>בֶּן כַּמָּה? בַּת כַּמָּה?</h2>
+    <p>רוֹאִים אִישׁ מְפֻרְסָם אוֹ אִשָּׁה מְפֻרְסֶמֶת וְאֶת שְׁנַת הַלֵּידָה.<br>בּוֹחֲרִים אֶת הַמִּשְׁפָּט הַנָּכוֹן!</p>
+    <div class="how"><span><span class="bn">בֶּן</span> = 👦</span><span><span class="bt">בַּת</span> = 👧</span></div>
+    <p style="font-size:14px; margin-top:0">למורה: הגיל מחושב לפי השנה הנוכחית (השנה פחות שנת הלידה).</p>
+    <button class="go" id="bStart" type="button">מַתְחִילִים ◀</button>
+  </div>
+</div>
+<div class="overlay" id="end" hidden>
+  <div class="panel">
+    <div class="big-stars" id="endStars"></div>
+    <h2 id="endScore"></h2>
+    <div style="font-size:30px; font-weight:800; margin:6px 0 16px" id="endHe"></div>
+    <button class="go" id="bAgain" type="button">↻ עוֹד פַּעַם</button>
+  </div>
+</div>
+
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const YEAR = new Date().getFullYear();
+const ROUNDS = 10;
+/* g: 'm' = בֶּן, 'f' = בַּת. Birth years checked against public records. */
+const PEOPLE = [
+  {he:'מסי', en:'Lionel Messi', y:1987, g:'m', ic:'⚽'},
+  {he:'רונאלדו', en:'Cristiano Ronaldo', y:1985, g:'m', ic:'⚽'},
+  {he:'אמבפה', en:'Kylian Mbappé', y:1998, g:'m', ic:'⚽'},
+  {he:'לברון ג\'יימס', en:'LeBron James', y:1984, g:'m', ic:'🏀'},
+  {he:'סטף קרי', en:'Stephen Curry', y:1988, g:'m', ic:'🏀'},
+  {he:'דני אבדיה', en:'Deni Avdija', y:2001, g:'m', ic:'🏀'},
+  {he:'מייקל פלפס', en:'Michael Phelps', y:1985, g:'m', ic:'🏊'},
+  {he:'מיסטר ביסט', en:'MrBeast', y:1998, g:'m', ic:'📹'},
+  {he:'טום הולנד', en:'Tom Holland', y:1996, g:'m', ic:'🕷️'},
+  {he:'אד שירן', en:'Ed Sheeran', y:1991, g:'m', ic:'🎸'},
+  {he:'טיילור סוויפט', en:'Taylor Swift', y:1989, g:'f', ic:'🎤'},
+  {he:'בילי אייליש', en:'Billie Eilish', y:2001, g:'f', ic:'🎤'},
+  {he:'אוליביה רודריגו', en:'Olivia Rodrigo', y:2003, g:'f', ic:'🎤'},
+  {he:'אריאנה גרנדה', en:'Ariana Grande', y:1993, g:'f', ic:'🎤'},
+  {he:'סלינה גומז', en:'Selena Gomez', y:1992, g:'f', ic:'🎬'},
+  {he:'זנדאיה', en:'Zendaya', y:1996, g:'f', ic:'🎬'},
+  {he:'גל גדות', en:'Gal Gadot', y:1985, g:'f', ic:'🎬'},
+  {he:'סימון ביילס', en:'Simone Biles', y:1997, g:'f', ic:'🤸'},
+  {he:'סרינה ויליאמס', en:'Serena Williams', y:1981, g:'f', ic:'🎾'}
+];
+window.GAME_DATA = {PEOPLE, YEAR};
+$('thisYear').textContent = YEAR;
+
+const rnd = n => Math.floor(Math.random() * n);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const W = g => g === 'm' ? 'בֶּן' : 'בַּת';
+const sentence = (p, g, n) => `${p.he} <span class="${g === 'm' ? 'bn' : 'bt'}">${W(g)}</span> <span class="num">${n}</span>`;
+const plain = (p, g, n) => `${p.he} ${W(g)} ${n}`;
+
+function makeDeck(){
+  /* half boys, half girls, no repeats */
+  const m = shuffle(PEOPLE.filter(p => p.g === 'm')).slice(0, ROUNDS / 2);
+  const f = shuffle(PEOPLE.filter(p => p.g === 'f')).slice(0, ROUNDS / 2);
+  return shuffle([...m, ...f]).map(p => {
+    const age = YEAR - p.y;
+    let other; do { other = age + (Math.random() < .5 ? -1 : 1) * (2 + rnd(9)); } while (other < 5 || other === age);
+    const og = p.g === 'm' ? 'f' : 'm';
+    const opts = shuffle([
+      {g:p.g, n:age, right:true},
+      {g:og, n:age},
+      {g:p.g, n:other},
+      {g:og, n:other}
+    ]);
+    return {p, age, opts};
+  });
+}
+
+/* speech (only with a Hebrew voice) */
+let heVoice = null, voiceOn = false;
+function findVoice(){ const vs = speechSynthesis.getVoices() || []; heVoice = vs.find(v => /^(he|iw)/i.test(v.lang) && /natural|online/i.test(v.name)) || vs.find(v => /^(he|iw)/i.test(v.lang)) || null; $('tVoice').hidden = !heVoice; }
+if ('speechSynthesis' in window){ findVoice(); speechSynthesis.onvoiceschanged = findVoice; }
+function say(t){ if (!heVoice || !voiceOn) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = heVoice; u.lang = heVoice.lang; u.rate = .8; speechSynthesis.speak(u); }
+
+let deck = [], i = 0, score = 0, results = [], answered = false;
+function drawDots(){
+  $('dots').innerHTML = deck.map((_, j) => `<i class="${j === i && !answered ? 'cur' : ''} ${results[j] === true ? 'y' : results[j] === false ? 'n' : ''}"></i>`).join('');
+  $('score').textContent = `⭐ ${score}`;
+}
+function show(){
+  const r = deck[i]; answered = false;
+  const pc = $('person');
+  pc.style.animation = 'none'; void pc.offsetWidth; pc.style.animation = '';
+  pc.innerHTML = `<div class="badge" aria-hidden="true">${r.p.ic}<span class="cake">🎂</span></div>
+    <div class="who"><h2>${r.p.he}</h2><span class="en">${r.p.en}</span>
+      <div class="born">שְׁנַת לֵידָה: <span class="num">${r.p.y}</span></div></div>`;
+  $('calc').hidden = true;
+  $('bHint').hidden = false;
+  $('answers').innerHTML = r.opts.map((o, j) => `<button class="ans" type="button" data-j="${j}">${sentence(r.p, o.g, o.n)}</button>`).join('');
+  $('answers').querySelectorAll('.ans').forEach(b => b.onclick = () => answer(+b.dataset.j));
+  $('feedback').hidden = true;
+  drawDots();
+}
+$('bHint').onclick = () => {
+  const r = deck[i];
+  $('calc').innerHTML = `${YEAR} − ${r.p.y} = <span class="q">?</span>`;
+  $('calc').hidden = false;
+};
+function answer(j){
+  if (answered) return; answered = true;
+  const r = deck[i], o = r.opts[j], right = !!o.right;
+  results[i] = right; if (right) score++;
+  $('answers').querySelectorAll('.ans').forEach((b, k) => {
+    b.disabled = true;
+    if (r.opts[k].right) b.classList.add('ok');
+    else if (k === j) b.classList.add('bad');
+    else b.classList.add('dim');
+  });
+  $('calc').innerHTML = `${YEAR} − ${r.p.y} = ${r.age}`; $('calc').hidden = false; $('bHint').hidden = true;
+  const fr = $('fbR');
+  fr.className = 'r ' + (right ? 'y' : 'n');
+  fr.textContent = right ? 'נָכוֹן! כָּל הַכָּבוֹד!' : 'אוּפְּס! לֹא הַפַּעַם';
+  const born = r.p.g === 'm' ? 'נוֹלַד' : 'נוֹלְדָה';
+  let why = `${r.p.he} ${born} בְּ־<span class="num">${r.p.y}</span>. <b>${plain(r.p, r.p.g, r.age)}</b>.`;
+  if (!right){
+    if (o.g !== r.p.g && o.n === r.age) why += ` הַמִּסְפָּר נָכוֹן, אֲבָל ${r.p.g === 'm' ? 'הוּא' : 'הִיא'} <b>${W(r.p.g)}</b>, לֹא ${W(o.g)}!`;
+    else if (o.g === r.p.g) why += ` <b>${W(r.p.g)}</b> נָכוֹן, אֲבָל בּוֹדְקִים אֶת הַחֶשְׁבּוֹן.`;
+    else why += ` שִׂימוּ לֵב לַמִּסְפָּר וְגַם לְ<b>בֶּן / בַּת</b>.`;
+  } else burstAt($('answers').querySelectorAll('.ans')[j], ['★', '🎂', '★'], ['#f2b01e', '#e2506a', '#2a8bd0'], 12);
+  $('fbWhy').innerHTML = why;
+  $('feedback').hidden = false;
+  say(plain(r.p, r.p.g, r.age));
+  drawDots();
+  $('bNext').focus({preventScroll:true});
+}
+function next(){ if (!answered) return; i++; if (i < deck.length) show(); else finish(); }
+function finish(){
+  const s = score >= ROUNDS - 1 ? 3 : score >= ROUNDS * .6 ? 2 : 1;
+  $('endStars').textContent = '★'.repeat(s) + '☆'.repeat(3 - s);
+  $('endScore').innerHTML = `<span class="num">${score}</span> מִתּוֹךְ <span class="num">${ROUNDS}</span>`;
+  $('endHe').textContent = s === 3 ? 'מְצֻיָּן!' : s === 2 ? 'כָּל הַכָּבוֹד!' : 'יֹפִי! עוֹד פַּעַם?';
+  $('end').hidden = false; $('bAgain').focus();
+  if (s >= 2) burstAt($('endStars'), ['★', '🎂', '🎈'], ['#f2b01e', '#e2506a', '#2a8bd0'], 24);
+}
+function start(){ deck = makeDeck(); i = 0; score = 0; results = []; $('start').hidden = true; $('end').hidden = true; show(); }
+$('bStart').onclick = start;
+$('bAgain').onclick = start;
+$('bNext').onclick = next;
+$('tVoice').onclick = () => { voiceOn = !voiceOn; $('tVoice').setAttribute('aria-pressed', voiceOn); $('tVoice').textContent = 'קול: ' + (voiceOn ? 'פועל' : 'כבוי'); };
+document.addEventListener('keydown', e => {
+  if (!$('start').hidden || !$('end').hidden) return;
+  if (['1','2','3','4'].includes(e.key) && !answered) answer(+e.key - 1);
+  if ((e.key === 'Enter' || e.key === 'ArrowLeft') && answered){ e.preventDefault(); next(); }
+});
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function burstAt(el, glyphs, colors, n){
+  if (reduce || !el) return;
+  const r = el.getBoundingClientRect(); const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  for (let k = 0; k < n; k++){
+    const s = document.createElement('span'); s.className = 'fx';
+    s.textContent = glyphs[k % glyphs.length]; s.style.color = colors[k % colors.length]; s.style.fontSize = (18 + Math.random() * 24) + 'px';
+    s.style.left = cx + 'px'; s.style.top = cy + 'px';
+    document.body.appendChild(s);
+    const a = Math.random() * Math.PI * 2, d = 80 + Math.random() * 160;
+    s.animate([
+      {transform:'translate(-50%,-50%) scale(.3)', opacity:1},
+      {transform:`translate(calc(-50% + ${Math.cos(a) * d}px), calc(-50% + ${Math.sin(a) * d - 40}px)) scale(1)`, opacity:1, offset:.7},
+      {transform:`translate(calc(-50% + ${Math.cos(a) * d * 1.1}px), calc(-50% + ${Math.sin(a) * d + 30}px)) scale(.8)`, opacity:0}
+    ], {duration:1100 + Math.random() * 600, easing:'cubic-bezier(.2,.8,.3,1)'}).onfinish = () => s.remove();
+  }
+}
+/* preview behind the start screen */
+deck = makeDeck(); show();
+})();
+</script>
+<script>function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}setNavH();window.addEventListener('resize',setNavH);</script>
+</body>
+</html>

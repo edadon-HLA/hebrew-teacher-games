@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Olam Street 1.23</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+/* Layout: a lesson "workbook" — age game shortcut, "where do I live?" talk, then "where do they live?" cards. */
+:root{
+  --bg:#fdf7ef; --surface:#ffffff; --ink:#23233a; --muted:#6b6880; --line:#eadfce;
+  --coral:#e2506a; --coral-soft:#fde3e7; --green:#2f9d55; --green-soft:#dcf2e3;
+  --sky:#2a8bd0; --sky-soft:#dcecfb; --gold:#f2b01e; --plate:#fff8ec; --shadow:0 2px 0 rgba(35,35,58,.08), 0 8px 24px rgba(35,35,58,.08);
+  --boy:#2a8bd0; --girl:#d6457f;
+  --f-display:'Rubik', 'Segoe UI', Arial, sans-serif;
+  --f-he:'Noto Sans Hebrew', 'Arial Hebrew', 'Segoe UI', Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35); --boy:#62b4f0; --girl:#ff7fb0; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35); --boy:#62b4f0; --girl:#ff7fb0; color-scheme:dark; }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--f-he); font-size:17px; line-height:1.55;}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:16px; padding-block:0 64px}
+.he{font-family:var(--f-he); direction:rtl; unicode-bidi:isolate}
+.en{font-family:var(--f-display); direction:ltr; unicode-bidi:isolate}
+svg{direction:ltr}
+button,input{font:inherit; color:inherit}
+:focus-visible{outline:3px solid var(--sky); outline-offset:3px; border-radius:8px}
+
+/* Header */
+.top{padding-block:28px 18px; display:flex; flex-wrap:wrap; gap:12px 24px; align-items:flex-end; justify-content:space-between}
+.crumb{font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 6px}
+h1{font-family:var(--f-he); font-size:clamp(28px,5vw,46px); line-height:1.05; margin:0; font-weight:800; text-wrap:balance}
+.top .he-title{font-size:clamp(20px,3vw,28px); color:var(--muted); margin:0}
+
+/* Step bar */
+.steps{position:sticky; top:calc(var(--navh,0px) + env(safe-area-inset-top,0px)); z-index:20; background:var(--bg); border-bottom:2px solid var(--line); margin-bottom:24px}
+.steps ol{list-style:none; display:flex; gap:8px; padding:10px 0; margin:0; overflow-x:auto}
+.steps a{display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; text-decoration:none; color:var(--ink); font-weight:600; white-space:nowrap; border:2px solid var(--line); background:var(--surface)}
+.steps a b{display:inline-grid; place-items:center; width:24px; height:24px; border-radius:50%; color:#fff; font-size:13px}
+.steps a[data-c="coral"] b{background:var(--coral)} .steps a[data-c="green"] b{background:var(--green)} .steps a[data-c="sky"] b{background:var(--sky)}
+.steps a:hover{border-color:var(--ink)}
+
+/* Section shell */
+section.step{margin-block:28px 48px; scroll-margin-top:calc(var(--navh,0px) + 70px)}
+.tag{display:inline-flex; align-items:center; gap:10px; padding-block:6px; padding-inline:8px 16px; border-radius:999px; font-weight:800; font-size:18px}
+.tag .num{background:var(--surface); border-radius:999px; padding:2px 10px; font-size:16px; font-family:var(--f-display); direction:ltr; unicode-bidi:isolate}
+.tag.green{background:var(--green-soft)} .tag.green .num{color:var(--green)}
+.tag.sky{background:var(--sky-soft)} .tag.sky .num{color:var(--sky)}
+.step-head{display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; justify-content:space-between; margin-bottom:6px}
+.step-head .he{font-size:20px; color:var(--muted)}
+.lead{color:var(--muted); max-width:70ch; margin:4px 0 18px}
+h3{font-size:22px; margin:26px 0 10px}
+
+.panel{background:var(--surface); border:2px solid var(--line); border-radius:20px; padding:18px; box-shadow:var(--shadow)}
+.toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px}
+.btn{border:2px solid var(--line); background:var(--surface); border-radius:12px; padding:8px 14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px}
+.btn:hover{border-color:var(--ink)}
+.btn[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.btn.primary{background:var(--green); border-color:var(--green); color:#fff}
+.spacer{flex:1}
+
+/* 1: game shortcut */
+.shortcut{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; align-items:center; text-decoration:none; color:var(--ink); background:var(--sky-soft); border:3px solid var(--sky); border-radius:24px; padding:20px 24px; transition:transform .2s}
+.shortcut:hover{transform:translateY(-3px)}
+.shortcut .t{font-size:clamp(22px,3vw,30px); font-weight:800; margin:0}
+.shortcut .go{background:var(--sky); color:#fff; font-weight:800; padding:12px 22px; border-radius:14px; white-space:nowrap}
+.shortcut .mini{display:flex; gap:8px}
+.shortcut .mini span{height:56px; padding:0 14px; border-radius:16px; display:grid; place-items:center; font-size:26px; font-weight:800; color:#fff}
+.shortcut .mini .b{background:#2a8bd0} .shortcut .mini .g{background:#d6457f}
+
+/* 2: where do I live */
+.me{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:20px; align-items:center}
+.city{background:var(--plate); border-radius:18px; padding:8px}
+.city svg{width:100%; height:auto; display:block; border-radius:12px}
+.tell{font-size:clamp(22px,2.6vw,28px); font-weight:700; margin:0 0 10px}
+.frame{display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 10px; font-size:clamp(26px,3.2vw,36px); font-weight:800; margin:6px 0 2px}
+.frame .blank{flex:1 1 200px; min-width:160px; border:0; border-bottom:3px dashed var(--ink); background:transparent; font-size:inherit; font-weight:800; padding:0 4px; color:var(--ink)}
+.frame .blank:focus{outline:none; border-bottom-style:solid; border-color:var(--sky)}
+.gpick{display:inline-flex; gap:4px; background:var(--bg); border-radius:12px; padding:3px}
+.gpick button{border:0; background:transparent; border-radius:9px; padding:2px 12px; font-weight:800; cursor:pointer}
+.gpick button[aria-pressed="true"]{background:var(--surface); box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.gpick button.b[aria-pressed="true"]{color:var(--boy)} .gpick button.g[aria-pressed="true"]{color:var(--girl)}
+.note{color:var(--muted); font-size:16px; margin:0 0 14px}
+.asks{display:flex; flex-wrap:wrap; gap:12px; margin-top:6px}
+.bubble{position:relative; border:0; cursor:pointer; border-radius:22px; padding:12px 20px; font-size:clamp(24px,3vw,32px); font-weight:800; color:#fff; display:inline-flex; align-items:center; gap:10px}
+.bubble.b{background:var(--boy)} .bubble.g{background:var(--girl)}
+.bubble::after{content:''; position:absolute; bottom:-10px; inset-inline-start:26px; border:12px solid transparent; border-top-color:inherit; border-bottom:0}
+.bubble.b::after{border-top-color:var(--boy)} .bubble.g::after{border-top-color:var(--girl)}
+.bubble small{font-size:18px; opacity:.85}
+
+/* class board */
+.board-in{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.board-in input{border:2px solid var(--line); background:var(--bg); border-radius:12px; padding:8px 12px; font-size:18px; min-width:0; flex:1 1 140px}
+.chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; min-height:20px}
+.chip{display:inline-flex; align-items:center; gap:8px; background:var(--plate); color:#2b2a3a; border-radius:14px; padding:8px 12px; font-size:22px; font-weight:700; animation:pop .4s cubic-bezier(.2,1.5,.4,1)}
+.chip .v.b{color:#1c6fae} .chip .v.g{color:#b2306a}
+.chip button{border:0; background:transparent; cursor:pointer; font-size:16px; opacity:.5; padding:0 2px}
+.chip button:hover{opacity:1}
+@keyframes pop{from{transform:scale(.5); opacity:0}}
+
+/* 3: where do they live */
+.cards{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; direction:rtl}
+.pcard{background:var(--surface); border:2px solid var(--line); border-radius:20px; padding:12px; display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; box-shadow:var(--shadow)}
+.pic{position:relative; width:100%; aspect-ratio:327/392; background:var(--plate); border-radius:16px}
+.pic > img{width:100%; height:100%; object-fit:cover; border-radius:16px; display:block}
+.flag{position:absolute; bottom:-8px; inset-inline-start:-8px; width:40%; aspect-ratio:1; border-radius:50%; overflow:hidden; border:3px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.25); background:#fff}
+.flag svg{width:100%; height:100%; display:block}
+.pname{font-size:clamp(18px,1.9vw,22px); font-weight:800; margin-top:10px; line-height:1.2}
+.pen{font-family:var(--f-display); direction:ltr; font-size:14px; color:var(--muted); font-weight:600}
+.pq{font-size:clamp(18px,1.9vw,22px); font-weight:700}
+.pq .v.b{color:var(--boy)} .pq .v.g{color:var(--girl)}
+.reveal{width:100%; border:2px dashed var(--line); background:transparent; border-radius:12px; padding:6px; font-weight:700; cursor:pointer; color:var(--muted)}
+.reveal:hover{border-color:var(--ink); color:var(--ink)}
+.ans{width:100%; background:var(--green-soft); border-radius:12px; padding:8px; font-size:clamp(18px,1.9vw,22px); font-weight:800; animation:pop .4s cubic-bezier(.2,1.5,.4,1); cursor:pointer}
+.ans .v{text-decoration:underline; text-decoration-thickness:3px; text-underline-offset:4px}
+.ans .v.b{text-decoration-color:var(--boy)} .ans .v.g{text-decoration-color:var(--girl)}
+.ans small{display:block; font-size:15px; color:var(--muted); font-weight:600}
+
+.fx{position:fixed; pointer-events:none; z-index:120; font-weight:800; font-family:var(--f-he); will-change:transform,opacity}
+
+@media (max-width:980px){
+  .cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .me{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .shortcut{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important; transition:none!important} }
+</style>
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../full-lessons/index.html">📚 שיעורים מלאים</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../full-lessons/index.html'}">← חזרה</button></nav>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="crumb">שיעורים מלאים · רחוב העולם · יחידה 1</p>
+      <h1>רְחוֹב הָעוֹלָם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">1.23</span></h1>
+    </div>
+    <p class="he he-title">בֶּן כַּמָּה? אֵיפֹה גָּר? · עַמּוּד 21</p>
+  </header>
+
+  <nav class="steps" aria-label="שלבי השיעור">
+    <ol>
+      <li><a href="#sgame" data-c="sky"><b>1</b>מִשְׂחָק: בֶּן כַּמָּה? בַּת כַּמָּה?</a></li>
+      <li><a href="#s123" data-c="green"><b>2</b>1.23 אֵיפֹה אֲנִי גָּר?</a></li>
+      <li><a href="#sthey" data-c="green"><b>3</b>אֵיפֹה הֵם גָּרִים?</a></li>
+    </ol>
+  </nav>
+
+  <!-- ===== STEP 1: game shortcut ===== -->
+  <section class="step" id="sgame">
+    <div class="step-head">
+      <span class="tag sky">מִשְׂחָק</span>
+    </div>
+    <p class="lead">רוֹאִים אִישׁ מְפֻרְסָם אוֹ אִשָּׁה מְפֻרְסֶמֶת וְאֶת שְׁנַת הַלֵּידָה. בּוֹחֲרִים אֶת הַמִּשְׁפָּט הַנָּכוֹן: בֶּן אוֹ בַּת, וְכַמָּה?</p>
+    <a class="shortcut" href="../games/ben-kama.html">
+      <div>
+        <p class="t">בֶּן כַּמָּה? בַּת כַּמָּה?</p>
+        <p style="margin:0; font-size:20px; color:var(--muted)">🎂 שְׁנַת לֵידָה ← גִּיל</p>
+      </div>
+      <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap">
+        <div class="mini" aria-hidden="true"><span class="b">בֶּן</span><span class="g">בַּת</span></div>
+        <span class="go">לַמִּשְׂחָק ◀</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- ===== STEP 2: 1.23 ===== -->
+  <section class="step" id="s123">
+    <div class="step-head">
+      <span class="tag green"><span class="num">1.23</span>תַּרְגִּיל הַאֲזָנָה וְדִבּוּר – אֵיפֹה אֲנִי גָּר?</span>
+    </div>
+    <div class="panel me">
+      <div>
+        <p class="tell">סַפְּרוּ: אֵיפֹה אַתָּה גָּר? אֵיפֹה אַתְּ גָּרָה?</p>
+        <div class="frame">
+          <span>אֲנִי</span>
+          <span class="gpick" role="group" aria-label="גר או גרה">
+            <button class="b" type="button" id="meM" aria-pressed="true">גָּר</button>
+            <button class="g" type="button" id="meF" aria-pressed="false">גָּרָה</button>
+          </span>
+          <span>בְּ</span>
+          <input class="blank" id="mePlace" type="text" aria-label="מקום" placeholder="…" autocomplete="off">
+        </div>
+        <p class="note">(מִלְאוּ רַק מְדִינָה וְעִיר, אֶפְשָׁר גַּם בְּאַנְגְּלִית)</p>
+        <p class="tell" style="font-size:22px; margin-top:18px">כָּעֵת, שַׁאֲלוּ אֶת חַבְרֵיכֶם לַכִּתָּה:</p>
+        <div class="asks">
+          <button class="bubble b" type="button" data-say="אֵיפֹה אַתָּה גָּר?">אֵיפֹה אַתָּה גָּר? <small>👦</small></button>
+          <button class="bubble g" type="button" data-say="אֵיפֹה אַתְּ גָּרָה?">אֵיפֹה אַתְּ גָּרָה? <small>👧</small></button>
+        </div>
+      </div>
+      <div class="city" id="city"></div>
+    </div>
+
+    <h3>הַכִּתָּה שֶׁלָּנוּ: מִי גָּר אֵיפֹה?</h3>
+    <div class="panel">
+      <div class="board-in">
+        <input id="bName" type="text" placeholder="שם" aria-label="שם" autocomplete="off">
+        <span class="gpick" role="group" aria-label="גר או גרה">
+          <button class="b" type="button" id="bM" aria-pressed="true">גָּר</button>
+          <button class="g" type="button" id="bF" aria-pressed="false">גָּרָה</button>
+        </span>
+        <span style="font-weight:800; font-size:20px">בְּ</span>
+        <input id="bPlace" type="text" placeholder="מקום" aria-label="מקום" autocomplete="off">
+        <button class="btn primary" id="bAdd" type="button">+ הוסף</button>
+        <span class="spacer"></span>
+        <button class="btn" id="bClear" type="button">נקה</button>
+      </div>
+      <div class="chips" id="chips"></div>
+    </div>
+  </section>
+
+  <!-- ===== STEP 3: where do they live ===== -->
+  <section class="step" id="sthey">
+    <div class="step-head">
+      <span class="tag green">אֵיפֹה הֵם גָּרִים?</span>
+      <span class="he">מִסְתַּכְּלִים עַל הַדֶּגֶל וְעוֹנִים</span>
+    </div>
+    <p class="lead">מִסְתַּכְּלִים בַּתְּמוּנָה וּבַדֶּגֶל. אוֹמְרִים מִשְׁפָּט שָׁלֵם: הוּא גָּר בְּ… / הִיא גָּרָה בְּ…</p>
+    <div class="toolbar">
+      <button class="btn" id="bAll" type="button" aria-pressed="false">הצג את כל התשובות</button>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+</div>
+
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const INK = '#2b2a3a';
+
+/* ---------- drawings ---------- */
+function skyline(){
+  let s = '', x = 0, r = 11;
+  const rnd = () => (r = (r * 9301 + 49297) % 233280) / 233280;
+  const cols = ['#c98d62','#a8714d','#d9b99a','#8aa1b8','#b8c7d6','#e0cdb6','#6f8299'];
+  const back = [], front = [];
+  while (x < 400){ const w = 16 + rnd()*26, h = 60 + rnd()*90; back.push([x, 200-h, w, h, cols[Math.floor(rnd()*cols.length)]]); x += w + 2; }
+  x = 10;
+  while (x < 400){ const w = 20 + rnd()*30, h = 40 + rnd()*60; front.push([x, 220-h, w, h, cols[Math.floor(rnd()*cols.length)]]); x += w + 6 + rnd()*10; }
+  const bld = ([x,y,w,h,c], o) => {
+    let t = `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${c}" stroke="#4b4f63" stroke-width="1.5" opacity="${o}"/>`;
+    for (let yy = y + 6; yy < y + h - 4; yy += 9) for (let xx = x + 4; xx < x + w - 4; xx += 7) t += `<rect x="${xx.toFixed(1)}" y="${yy.toFixed(1)}" width="3" height="4" fill="#fff6d6" opacity="${.5*o}"/>`;
+    return t;
+  };
+  s += back.map(b => bld(b, .75)).join('');
+  /* two famous-looking spires */
+  s += `<path d="M150 200 V70 L162 48 L174 70 V200Z" fill="#8fb8dc" stroke="#4b4f63" stroke-width="2"/><path d="M162 48 V18" stroke="#4b4f63" stroke-width="2.5"/>
+        <path d="M236 200 V92 H242 V74 H250 V60 L254 40 L258 60 V74 H266 V92 H272 V200Z" fill="#d9c7a8" stroke="#4b4f63" stroke-width="2"/><path d="M254 40 V14" stroke="#4b4f63" stroke-width="2.5"/>`;
+  s += front.map(b => bld(b, 1)).join('');
+  return `<svg viewBox="0 0 400 230" role="img" aria-label="עיר גדולה"><defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe3fa"/><stop offset="1" stop-color="#fff3df"/></linearGradient></defs>
+    <rect width="400" height="230" fill="url(#sk)"/>${s}<rect y="220" width="400" height="10" fill="#6b6f80"/></svg>`;
+}
+$('city').innerHTML = skyline();
+
+const FLAGS = {
+  il: id => `<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" fill="#fff"/>
+    <rect y="12" width="60" height="6" fill="#0038b8"/><rect y="42" width="60" height="6" fill="#0038b8"/>
+    <path d="M30 20 L37.8 33.5 H22.2Z M30 40 L22.2 26.5 H37.8Z" fill="none" stroke="#0038b8" stroke-width="2.4" stroke-linejoin="round"/></svg>`,
+  us: id => `<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" fill="#fff"/>
+    ${Array.from({length:7},(_,i)=>`<rect y="${i*60/6.5}" width="60" height="${60/13}" fill="#b22234"/>`).join('')}
+    <rect width="30" height="32" fill="#3c3b6e"/>
+    ${Array.from({length:12},(_,i)=>`<circle cx="${5+(i%4)*6.7}" cy="${6+Math.floor(i/4)*9}" r="1.7" fill="#fff"/>`).join('')}</svg>`,
+  ar: id => `<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" fill="#fff"/>
+    <rect width="60" height="20" fill="#74acdf"/><rect y="40" width="60" height="20" fill="#74acdf"/>
+    <circle cx="30" cy="30" r="5" fill="#f6b40e" stroke="#85340a" stroke-width=".8"/>
+    ${Array.from({length:12},(_,i)=>{const a=i*Math.PI/6; return `<path d="M${30+Math.cos(a)*6} ${30+Math.sin(a)*6} L${30+Math.cos(a)*9} ${30+Math.sin(a)*9}" stroke="#f6b40e" stroke-width="1.6"/>`;}).join('')}</svg>`
+};
+/* ---------- 1.23 me sentence ---------- */
+function pickPair(m, f, onChange){
+  const set = g => { m.setAttribute('aria-pressed', g==='m'); f.setAttribute('aria-pressed', g==='f'); onChange && onChange(g); };
+  m.onclick = () => set('m'); f.onclick = () => set('f');
+  return () => m.getAttribute('aria-pressed') === 'true' ? 'm' : 'f';
+}
+pickPair($('meM'), $('meF'));
+
+/* speech: only with a Hebrew voice */
+let heVoice = null;
+function findVoice(){
+  const vs = speechSynthesis.getVoices() || [];
+  heVoice = vs.find(v => /^(he|iw)/i.test(v.lang) && /natural|online/i.test(v.name)) || vs.find(v => /^(he|iw)/i.test(v.lang)) || null;
+  document.querySelectorAll('.spk').forEach(b => b.hidden = !heVoice);
+}
+if ('speechSynthesis' in window){ findVoice(); speechSynthesis.onvoiceschanged = findVoice; setTimeout(findVoice, 1200); }
+function say(t){ if (!heVoice) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = heVoice; u.lang = heVoice.lang; u.rate = .8; speechSynthesis.speak(u); }
+document.querySelectorAll('.bubble').forEach(b => b.onclick = () => { say(b.dataset.say); burstAt(b, ['?','?','!'], ['#f2b01e','#2a8bd0','#d6457f'], 6); });
+
+/* ---------- class board (kept in this browser only) ---------- */
+const KEY = 'os123-board';
+const store = {get(){ try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ return []; } }, set(v){ try { localStorage.setItem(KEY, JSON.stringify(v)); } catch(e){} }};
+let board = store.get();
+const getG = pickPair($('bM'), $('bF'));
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function drawBoard(){
+  $('chips').innerHTML = board.map((e,i) => `<span class="chip"><span>${esc(e.n)}</span> <span class="v ${e.g==='m'?'b':'g'}">${e.g==='m'?'גָּר':'גָּרָה'}</span> <span>בְּ${/^[A-Za-z]/.test(e.p) ? '־' : ''}${esc(e.p)}</span><button type="button" data-i="${i}" aria-label="מחק">✕</button></span>`).join('');
+  $('chips').querySelectorAll('button').forEach(b => b.onclick = () => { board.splice(+b.dataset.i, 1); store.set(board); drawBoard(); });
+}
+function add(){
+  const n = $('bName').value.trim(), p = $('bPlace').value.trim();
+  if (!n || !p){ (!n ? $('bName') : $('bPlace')).focus(); return; }
+  board.push({n, p, g:getG()}); store.set(board); drawBoard();
+  $('bName').value = ''; $('bPlace').value = ''; $('bName').focus();
+}
+$('bAdd').onclick = add;
+[$('bName'), $('bPlace')].forEach(el => el.addEventListener('keydown', e => { if (e.key === 'Enter') add(); }));
+$('bClear').onclick = () => { board = []; store.set(board); drawBoard(); };
+drawBoard();
+
+/* ---------- where do they live (workbook p.21, right-to-left) ---------- */
+const STARS = [
+  {he:'דודי סלע', en:'Dudi Sela', g:'m', img:'sela', flag:'il', place:'בְּיִשְׂרָאֵל'},
+  {he:'מייקל פלפס', en:'Michael Phelps', g:'m', img:'phelps', flag:'us', place:'בְּאַרְצוֹת הַבְּרִית'},
+  {he:'ליונל מסי', en:'Lionel Messi', g:'m', img:'messi', flag:'ar', place:'בְּאַרְגֶּנְטִינָה'},
+  {he:'סרינה ויליאמס', en:'Serena Williams', g:'f', img:'serena', flag:'us', place:'בְּאַרְצוֹת הַבְּרִית'},
+  {he:'דייוויד אורטיז', en:'David Ortiz', g:'m', img:'ortiz', flag:'us', place:'בְּאַרְצוֹת הַבְּרִית', extra:'בְּבוֹסְטוֹן'}
+];
+const cardsEl = $('cards');
+STARS.forEach((s, i) => {
+  const pro = s.g === 'm' ? 'הוּא' : 'הִיא', verb = s.g === 'm' ? 'גָּר' : 'גָּרָה', cls = s.g === 'm' ? 'b' : 'g';
+  const text = `${pro} ${verb} ${s.place}.`;
+  const c = document.createElement('div'); c.className = 'pcard';
+  c.innerHTML = `<div class="pic"><img src="./olam-1.23-${s.img}.jpg" alt="${s.en}" loading="lazy"><span class="flag">${FLAGS[s.flag]()}</span></div>
+    <div class="pname">${s.he}</div><div class="pen">${s.en}</div>
+    <div class="pq">אֵיפֹה ${pro} <span class="v ${cls}">${verb}</span>?</div>
+    <button class="reveal" type="button">תְּשׁוּבָה 👀</button>
+    <div class="ans" hidden role="button" tabindex="0" title="השמעה">${pro} <span class="v ${cls}">${verb}</span> ${s.place}.${s.extra ? `<small>${s.extra} 🧢</small>` : ''}</div>`;
+  const rv = c.querySelector('.reveal'), an = c.querySelector('.ans');
+  c.show = (on, quiet) => { rv.hidden = on; an.hidden = !on; if (on && !quiet){ say(text); burstAt(an, ['★','✓'], ['#f2b01e','#2f9d55'], 8); } };
+  rv.onclick = () => c.show(true);
+  an.onclick = () => say(text);
+  an.onkeydown = e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); say(text); } };
+  cardsEl.appendChild(c);
+});
+const bAll = $('bAll');
+bAll.onclick = () => {
+  const on = bAll.getAttribute('aria-pressed') !== 'true';
+  bAll.setAttribute('aria-pressed', on); bAll.textContent = on ? 'הסתר את התשובות' : 'הצג את כל התשובות';
+  cardsEl.querySelectorAll('.pcard').forEach(c => c.show(on, true));
+};
+
+/* ---------- particles ---------- */
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function burstAt(el, glyphs, colors, n){
+  if (reduce) return;
+  const r = el.getBoundingClientRect(); const cx = r.left + r.width/2, cy = r.top + r.height/2;
+  for (let i = 0; i < n; i++){
+    const s = document.createElement('span'); s.className = 'fx';
+    s.textContent = glyphs[i % glyphs.length]; s.style.color = colors[i % colors.length]; s.style.fontSize = (18 + Math.random()*22) + 'px';
+    s.style.left = cx + 'px'; s.style.top = cy + 'px';
+    document.body.appendChild(s);
+    const a = Math.random()*Math.PI*2, d = 60 + Math.random()*130;
+    s.animate([
+      {transform:'translate(-50%,-50%) scale(.3)', opacity:1},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d}px), calc(-50% + ${Math.sin(a)*d - 40}px)) scale(1)`, opacity:1, offset:.7},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d*1.1}px), calc(-50% + ${Math.sin(a)*d + 30}px)) scale(.8)`, opacity:0}
+    ], {duration:1000 + Math.random()*600, easing:'cubic-bezier(.2,.8,.3,1)'}).onfinish = () => s.remove();
+  }
+}
+})();
+</script>
+<script>function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}setNavH();window.addEventListener('resize',setNavH);</script>
+</body>
+</html>
