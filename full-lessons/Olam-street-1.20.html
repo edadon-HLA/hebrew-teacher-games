@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Olam Street 1.20</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+/* Layout: a lesson "workbook" — game shortcut, then the 1.20 table beside a story board the teacher reads from. */
+:root{
+  --bg:#fdf7ef; --surface:#ffffff; --ink:#23233a; --muted:#6b6880; --line:#eadfce;
+  --coral:#e2506a; --coral-soft:#fde3e7; --green:#2f9d55; --green-soft:#dcf2e3;
+  --sky:#2a8bd0; --sky-soft:#dcecfb; --gold:#f2b01e; --plate:#fff8ec; --shadow:0 2px 0 rgba(35,35,58,.08), 0 8px 24px rgba(35,35,58,.08);
+  --f-display:'Rubik', 'Segoe UI', Arial, sans-serif;
+  --f-he:'Noto Sans Hebrew', 'Arial Hebrew', 'Segoe UI', Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35); color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35); color-scheme:dark; }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--f-he); font-size:17px; line-height:1.55;}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:16px; padding-block:0 64px}
+.he{font-family:var(--f-he); direction:rtl; unicode-bidi:isolate}
+svg{direction:ltr}
+button{font:inherit; color:inherit}
+:focus-visible{outline:3px solid var(--sky); outline-offset:3px; border-radius:8px}
+
+/* Header */
+.top{padding-block:28px 18px; display:flex; flex-wrap:wrap; gap:12px 24px; align-items:flex-end; justify-content:space-between}
+.crumb{font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 6px}
+h1{font-family:var(--f-he); font-size:clamp(28px,5vw,46px); line-height:1.05; margin:0; font-weight:800; text-wrap:balance}
+.top .he-title{font-size:clamp(20px,3vw,28px); color:var(--muted); margin:0}
+
+/* Step bar */
+.steps{position:sticky; top:calc(var(--navh,0px) + env(safe-area-inset-top,0px)); z-index:20; background:var(--bg); border-bottom:2px solid var(--line); margin-bottom:24px}
+.steps ol{list-style:none; display:flex; gap:8px; padding:10px 0; margin:0; overflow-x:auto}
+.steps a{display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; text-decoration:none; color:var(--ink); font-weight:600; white-space:nowrap; border:2px solid var(--line); background:var(--surface)}
+.steps a b{display:inline-grid; place-items:center; width:24px; height:24px; border-radius:50%; color:#fff; font-size:13px}
+.steps a[data-c="coral"] b{background:var(--coral)} .steps a[data-c="green"] b{background:var(--green)} .steps a[data-c="sky"] b{background:var(--sky)}
+.steps a:hover{border-color:var(--ink)}
+
+/* Section shell */
+section.step{margin-block:28px 48px; scroll-margin-top:calc(var(--navh,0px) + 70px)}
+.tag{display:inline-flex; align-items:center; gap:10px; padding-block:6px; padding-inline:8px 16px; border-radius:999px; font-weight:800; font-size:18px}
+.tag .num{background:var(--surface); border-radius:999px; padding:2px 10px; font-size:16px; font-family:var(--f-display); direction:ltr; unicode-bidi:isolate}
+.tag.green{background:var(--green-soft)} .tag.green .num{color:var(--green)}
+.tag.sky{background:var(--sky-soft)} .tag.sky .num{color:var(--sky)}
+.step-head{display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; justify-content:space-between; margin-bottom:6px}
+.step-head .he{font-size:20px; color:var(--muted)}
+.step-head .he svg{width:26px; height:26px; vertical-align:-6px}
+.lead{color:var(--muted); max-width:70ch; margin:4px 0 18px}
+
+.panel{background:var(--surface); border:2px solid var(--line); border-radius:20px; padding:18px; box-shadow:var(--shadow)}
+.toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px}
+.btn{border:2px solid var(--line); background:var(--surface); border-radius:12px; padding:8px 14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px}
+.btn:hover{border-color:var(--ink)}
+.btn[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.btn.primary{background:var(--green); border-color:var(--green); color:#fff}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.spacer{flex:1}
+
+/* 1: game shortcut */
+.shortcut{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; align-items:center; text-decoration:none; color:var(--ink); background:var(--sky-soft); border:3px solid var(--sky); border-radius:24px; padding:20px 24px; transition:transform .2s}
+.shortcut:hover{transform:translateY(-3px)}
+.shortcut .t{font-size:clamp(22px,3vw,30px); font-weight:800; margin:0}
+.shortcut .he{font-size:clamp(24px,3.4vw,34px); font-weight:800}
+.shortcut .go{background:var(--sky); color:#fff; font-weight:800; padding:12px 22px; border-radius:14px; white-space:nowrap}
+.shortcut .mini{display:flex; gap:8px}
+.shortcut .mini span{width:56px; height:56px; border-radius:16px; display:grid; place-items:center; font-size:30px; font-weight:800; color:#fff}
+.shortcut .mini .g{background:#2f9d55} .shortcut .mini .r{background:#e2506a}
+
+/* 2: 1.20 layout — table on the right (like the workbook), story board beside it */
+.ex{display:grid; grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:20px; align-items:start}
+.story{position:sticky; top:calc(var(--navh,0px) + 76px)}
+
+/* table */
+.tbl-wrap{overflow-x:auto; padding:2px}
+.tbl{width:100%; border-collapse:separate; border-spacing:5px; direction:rtl; table-layout:fixed}
+.tbl th, .tbl td{padding:0}
+.tbl col.namec{width:24%}
+.subj{display:flex; flex-direction:column; align-items:center; gap:2px; padding:6px 2px; background:var(--plate); border-radius:14px; color:#2b2a3a}
+.subj svg{width:min(52px,100%); aspect-ratio:1}
+.subj span{font-size:clamp(12px,1.5vw,16px); font-weight:700; white-space:nowrap}
+.name{width:100%; min-height:62px; border:2px solid var(--line); background:var(--surface); border-radius:14px; cursor:pointer; display:flex; align-items:center; gap:8px; padding:6px 10px; text-align:right; transition:background .15s, border-color .15s, transform .15s}
+.name:hover{border-color:var(--ink)}
+.name .n{font-family:var(--f-display); font-weight:800; color:var(--muted); font-size:15px}
+.name .w{font-size:clamp(17px,2.2vw,24px); font-weight:800; line-height:1.15}
+.name .spk{margin-inline-start:auto; font-size:16px; opacity:.55}
+tr.on .name{background:var(--green-soft); border-color:var(--green); transform:translateX(-4px)}
+tr.me .name{cursor:default}
+.mark{width:100%; min-height:62px; border:2px dashed var(--line); background:var(--surface); border-radius:14px; cursor:pointer; display:grid; place-items:center; padding:4px; transition:background .15s, border-color .15s}
+.mark:hover{border-color:var(--ink); background:var(--bg)}
+.mark svg{width:min(44px,90%); aspect-ratio:1; animation:pop .35s cubic-bezier(.2,1.6,.4,1)}
+.mark[data-v="1"], .mark[data-v="0"]{border-style:solid}
+.mark.ok{border-color:var(--green); background:var(--green-soft)}
+.mark.bad{border-color:var(--coral); background:var(--coral-soft); animation:shake .4s}
+tr.on .mark{border-color:var(--green)}
+@keyframes pop{from{transform:scale(.3)}}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.legend{display:flex; flex-wrap:wrap; gap:6px 14px; align-items:center; color:var(--muted); font-size:15px; margin-bottom:10px}
+.legend svg{width:26px; height:26px; vertical-align:-7px}
+.result{min-height:40px; text-align:center; font-weight:800; font-size:22px; margin-top:8px}
+
+/* story board */
+.story .panel{padding:20px}
+.story-empty{text-align:center; color:var(--muted); padding:26px 8px}
+.story-empty .big{font-size:44px}
+.who{display:flex; align-items:center; gap:12px; margin-bottom:6px}
+.avatar{width:58px; height:58px; border-radius:50%; display:grid; place-items:center; font-size:28px; font-weight:800; color:#fff; flex-shrink:0}
+.who h3{margin:0; font-size:clamp(28px,3.4vw,38px); line-height:1.1}
+.who .en{font-family:var(--f-display); direction:ltr; unicode-bidi:isolate; color:var(--muted); font-size:15px; font-weight:600}
+.text{font-size:clamp(23px,2.6vw,30px); line-height:1.75; margin:10px 0 14px; direction:rtl}
+.text.hide{filter:blur(10px); user-select:none}
+.text .s{border-radius:8px; padding:0 4px; margin:0 -4px; cursor:pointer; transition:background .2s, color .2s}
+.text .s:hover{background:var(--plate); color:#2b2a3a}
+.text .s.cur{background:var(--gold); color:#2b2a3a}
+.story .toolbar{margin:0}
+.note{font-size:14px; color:var(--muted); margin:10px 0 0}
+
+/* "me" sentence */
+.mine{margin-top:16px; background:var(--plate); color:#2b2a3a; border-radius:16px; padding:14px 16px}
+.mine .lbl{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-weight:700; margin-bottom:6px}
+.mine .lbl .btn{padding:4px 12px; background:#fff; color:#2b2a3a; border-color:#e3d6bf}
+.mine .lbl .btn[aria-pressed="true"]{background:#2b2a3a; color:#fff; border-color:#2b2a3a}
+.mine p{margin:0; font-size:clamp(20px,2.4vw,26px); font-weight:600; line-height:1.6}
+
+.fx{position:fixed; pointer-events:none; z-index:120; font-weight:800; font-family:var(--f-he); will-change:transform,opacity}
+
+@media (max-width:980px){
+  .ex{grid-template-columns:1fr}
+  .story{position:static; order:-1}
+}
+@media (max-width:640px){
+  .shortcut{grid-template-columns:1fr}
+  .tbl{border-spacing:3px}
+  .tbl col.namec{width:27%}
+  .subj{padding:4px 0; border-radius:10px}
+  .subj span{font-size:10.5px; white-space:normal; overflow-wrap:anywhere; text-align:center; line-height:1.15}
+  .name{min-height:52px; padding:4px 5px; gap:3px; border-radius:10px}
+  .name .n, .name .spk{display:none}
+  .name .w{font-size:15px}
+  .mark{min-height:52px; border-radius:10px; padding:2px}
+}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important; transition:none!important} }
+</style>
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../full-lessons/index.html">📚 שיעורים מלאים</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../full-lessons/index.html'}">← חזרה</button></nav>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="crumb">שיעורים מלאים · רחוב העולם · יחידה 1</p>
+      <h1>רְחוֹב הָעוֹלָם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">1.20</span></h1>
+    </div>
+    <p class="he he-title">עַמּוּד 18</p>
+  </header>
+
+  <nav class="steps" aria-label="שלבי השיעור">
+    <ol>
+      <li><a href="#sgame" data-c="sky"><b>1</b>מִשְׂחָק: אֲנִי אוֹהֵב?</a></li>
+      <li><a href="#s120" data-c="green"><b>2</b>1.20 אוֹהֵב אוֹ לֹא אוֹהֵב?</a></li>
+    </ol>
+  </nav>
+
+  <!-- ===== STEP 1: game shortcut ===== -->
+  <section class="step" id="sgame">
+    <div class="step-head">
+      <span class="tag sky">מִשְׂחַק הַאֲזָנָה</span>
+    </div>
+    <p class="lead">הַמּוֹרֶה קוֹרֵא מִשְׁפָּט. הַאִם הַתְּמוּנָה מַתְאִימָה? יָרֹק – נָכוֹן, אָדֹם – לֹא נָכוֹן.</p>
+    <a class="shortcut" href="../games/ani-ohev.html">
+      <div>
+        <p class="t">אֲנִי אוֹהֵב?</p>
+        <p class="he" style="margin:0">כֵּן אוֹ לֹא</p>
+      </div>
+      <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap">
+        <div class="mini" aria-hidden="true"><span class="g">✓</span><span class="r">✕</span></div>
+        <span class="go">לַמִּשְׂחָק ◀</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- ===== STEP 2: 1.20 ===== -->
+  <section class="step" id="s120">
+    <div class="step-head">
+      <span class="tag green"><span class="num">1.20</span>תַּרְגִּיל – אוֹהֵב אוֹ לֹא אוֹהֵב?</span>
+      <span class="he" id="instr"></span>
+    </div>
+    <p class="lead">לוֹחֲצִים עַל שֵׁם וְקוֹרְאִים אֶת הַסִּפּוּר. בְּכָל מִשְׁבֶּצֶת מְסַמְּנִים לֵב אוֹ לֵב שָׁבוּר.</p>
+
+    <div class="ex">
+      <div class="panel">
+        <div class="toolbar">
+          <div class="legend" id="legend" style="margin:0"></div>
+          <span class="spacer"></span>
+          <button class="btn primary" id="bCheck" type="button">✓ בְּדִיקָה</button>
+          <button class="btn" id="bAns" type="button" aria-pressed="false">הצג תשובות</button>
+          <button class="btn" id="bClear" type="button">נקה</button>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl" id="tbl" aria-label="טבלת תרגיל 1.20">
+            <colgroup><col class="namec"><col><col><col><col><col><col></colgroup>
+            <thead><tr id="thead"><th></th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <div class="result" id="result" aria-live="polite"></div>
+      </div>
+
+      <aside class="story" id="story" aria-live="polite">
+        <div class="panel">
+          <div class="story-empty" id="storyEmpty">
+            <div class="big">👈</div>
+            <p style="margin:6px 0 0; font-size:20px; font-weight:700">לוֹחֲצִים עַל שֵׁם בַּטַּבְלָה</p>
+          </div>
+          <div id="storyBody" hidden>
+            <div class="who">
+              <span class="avatar" id="sAv"></span>
+              <div><h3 id="sName"></h3><span class="en" id="sEn"></span></div>
+            </div>
+            <div class="text" id="sText" lang="he"></div>
+            <div class="toolbar">
+              <button class="btn primary" id="bSay" type="button">🔊 הַשְׁמָעָה</button>
+              <button class="btn" id="bHide" type="button" aria-pressed="false">הסתר טקסט</button>
+              <span class="spacer"></span>
+              <button class="btn" id="bPrev" type="button">▶ הַקּוֹדֵם</button>
+              <button class="btn" id="bNext" type="button">הַבָּא ◀</button>
+            </div>
+            <p class="note" id="noVoice" hidden>אין קול עברי בדפדפן הזה. כדי לשמוע, פתחו את הדף בדפדפן Microsoft Edge.</p>
+          </div>
+          <div id="meBody" hidden>
+            <div class="who">
+              <span class="avatar" style="background:var(--gold)">★</span>
+              <div><h3>אֲנִי</h3><span class="en">Me</span></div>
+            </div>
+            <p style="margin:6px 0 0; font-size:20px">וְאַתֶּם? מָה אַתֶּם אוֹהֲבִים? סַמְּנוּ בַּשּׁוּרָה שֶׁל „אֲנִי".</p>
+            <div class="mine" id="mine">
+              <div class="lbl">
+                <span>הַמִּשְׁפָּט שֶׁלִּי:</span>
+                <button class="btn" id="gM" type="button" aria-pressed="true">בֵּן</button>
+                <button class="btn" id="gF" type="button" aria-pressed="false">בַּת</button>
+                <span class="spacer"></span>
+                <button class="btn" id="bSayMe" type="button">🔊</button>
+              </div>
+              <p id="mineText" lang="he"></p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</div>
+
+<script>
+/* Shared hand-drawn icons (viewBox 0 0 100 100), same drawings as lesson 1.15 & 1.19. */
+const INK = '#2b2a3a';
+const HEART = 'M50 84 C20 62 10 46 14 32 C18 18 36 14 50 30 C64 14 82 18 86 32 C90 46 80 62 50 84Z';
+const ICONS = {
+  love: `<g><path d="${HEART}" fill="#ef5470" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M28 32 C30 26 36 24 40 27" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8"/></g>`,
+  broken: `<g stroke="${INK}" stroke-width="5" stroke-linejoin="round" fill="#7c7596">
+    <path transform="translate(-5 3) rotate(-9 50 84)" d="M50 30 C36 14 18 18 14 32 C10 46 20 62 50 84 L43 67 L54 55 L43 43Z"/>
+    <path transform="translate(5 3) rotate(9 50 84)" d="M50 30 C64 14 82 18 86 32 C90 46 80 62 50 84 L43 67 L54 55 L43 43Z"/></g>`,
+  math: `<g>
+    <rect x="22" y="10" width="56" height="80" rx="9" fill="#ffd166" stroke="${INK}" stroke-width="4"/>
+    <rect x="30" y="18" width="40" height="18" rx="3" fill="#bfe6f5" stroke="${INK}" stroke-width="3"/>
+    <text x="66" y="32" text-anchor="end" font-family="Rubik,Arial,sans-serif" font-weight="700" font-size="12" fill="${INK}">2+3=5</text>
+    <g fill="#fff" stroke="${INK}" stroke-width="3">
+      <rect x="30" y="44" width="12" height="12" rx="3"/><rect x="44" y="44" width="12" height="12" rx="3"/><rect x="58" y="44" width="12" height="12" rx="3" fill="#ef5470"/>
+      <rect x="30" y="60" width="12" height="12" rx="3"/><rect x="44" y="60" width="12" height="12" rx="3"/><rect x="58" y="60" width="12" height="26" rx="3" fill="#7fdc96"/>
+      <rect x="30" y="74" width="26" height="12" rx="3"/>
+    </g></g>`,
+  english: `<g>
+    <path d="M22 14 H78 a4 4 0 0 1 4 4 V86 H26 a8 8 0 0 1 -8 -8 V18 a4 4 0 0 1 4 -4Z" fill="#3d8bf2" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M18 78 a8 8 0 0 1 8 -8 H82" fill="none" stroke="${INK}" stroke-width="4"/>
+    <path d="M26 74 H80 V84 H26Z" fill="#fff"/>
+    <rect x="30" y="28" width="44" height="24" rx="3" fill="#fff" stroke="${INK}" stroke-width="3"/>
+    <text x="52" y="46" text-anchor="middle" font-family="Rubik,Arial,sans-serif" font-weight="800" font-size="15" fill="${INK}">ABC</text>
+    <path d="M30 86 V96 L35 92 L40 96 V86" fill="#ef5470" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/></g>`,
+  hebrew: `<g>
+    <path d="M22 14 H78 a4 4 0 0 1 4 4 V86 H26 a8 8 0 0 1 -8 -8 V18 a4 4 0 0 1 4 -4Z" fill="#ffc94a" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M18 78 a8 8 0 0 1 8 -8 H82" fill="none" stroke="${INK}" stroke-width="4"/>
+    <path d="M26 74 H80 V84 H26Z" fill="#fff"/>
+    <rect x="30" y="28" width="44" height="24" rx="3" fill="#fff6d6" stroke="${INK}" stroke-width="3"/>
+    <text x="52" y="46" text-anchor="middle" font-family="'Noto Sans Hebrew',Rubik,Arial,sans-serif" font-weight="800" font-size="16" fill="${INK}">אבג</text>
+    <path d="M30 86 V96 L35 92 L40 96 V86" fill="#3d8bf2" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/></g>`,
+  science: `<g>
+    <path d="M40 12 H60 M43 12 V38 L20 80 a6 6 0 0 0 5 9 H75 a6 6 0 0 0 5 -9 L57 38 V12" fill="#e9f6ff" stroke="${INK}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M29 64 H71 L80 80 a6 6 0 0 1 -5 9 H25 a6 6 0 0 1 -5 -9Z" fill="#6fd38a" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <circle cx="42" cy="76" r="4" fill="#fff" stroke="${INK}" stroke-width="2"/>
+    <circle cx="56" cy="72" r="3" fill="#fff" stroke="${INK}" stroke-width="2"/>
+    <circle cx="50" cy="52" r="3.5" fill="#fff" stroke="${INK}" stroke-width="2"/></g>`,
+  sport: `<g>
+    <circle cx="50" cy="50" r="36" fill="#ff8a3d" stroke="${INK}" stroke-width="4"/>
+    <path d="M14 50 H86 M50 14 V86" stroke="${INK}" stroke-width="3.5" fill="none"/>
+    <path d="M25 24 C38 38 38 62 25 76 M75 24 C62 38 62 62 75 76" stroke="${INK}" stroke-width="3.5" fill="none"/>
+    <path d="M30 30 C33 26 37 24 41 23" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".6" fill="none"/></g>`,
+  music: `<g>
+    <path d="M34 72 V24 L78 14 V62" fill="none" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M34 24 L78 14 V26 L34 36Z" fill="${INK}"/>
+    <ellipse cx="26" cy="73" rx="11" ry="9" fill="#a46cf0" stroke="${INK}" stroke-width="4" transform="rotate(-18 26 73)"/>
+    <ellipse cx="70" cy="63" rx="11" ry="9" fill="#a46cf0" stroke="${INK}" stroke-width="4" transform="rotate(-18 70 63)"/>
+    <path d="M84 70 C88 66 94 68 92 74 C90 80 84 82 84 82 C84 82 78 80 76 74 C74 68 80 66 84 70Z" fill="#ef5470" stroke="${INK}" stroke-width="2.5"/></g>`
+};
+function iconSVG(key){ return `<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">${ICONS[key]}</svg>`; }
+</script>
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+
+/* ---------- workbook p.18: columns read right-to-left ---------- */
+const SUBJ = [
+  {k:'hebrew',  he:'עִבְרִית',     vav:'וְעִבְרִית'},
+  {k:'english', he:'אַנְגְּלִית',   vav:'וְאַנְגְּלִית'},
+  {k:'math',    he:'מָתֵמָטִיקָה', vav:'וּמָתֵמָטִיקָה'},
+  {k:'science', he:'מַדָּעִים',     vav:'וּמַדָּעִים'},
+  {k:'music',   he:'מוּזִיקָה',    vav:'וּמוּזִיקָה'},
+  {k:'sport',   he:'סְפּוֹרְט',     vav:'וּסְפּוֹרְט'}
+];
+/* ans: 1 = loves (heart), 0 = doesn't love (broken heart), in SUBJ order */
+const KIDS = [
+  {he:'דָּנִיֵּאל', en:'Daniel', col:'#e2506a', ans:[0,0,0,0,1,1], s:[
+    'שָׁלוֹם! אֲנִי דָּנִיֵּאל.', 'אֲנִי אוֹהֵב סְפּוֹרְט.', 'אֲנִי גַּם אוֹהֵב מוּזִיקָה.',
+    'אֲנִי לֹא אוֹהֵב עִבְרִית וְלֹא אוֹהֵב אַנְגְּלִית.', 'אֲנִי לֹא אוֹהֵב מָתֵמָטִיקָה.', 'אֲנִי לֹא אוֹהֵב מַדָּעִים.']},
+  {he:'רוֹן', en:'Ron', col:'#2a8bd0', ans:[1,0,1,1,0,0], s:[
+    'שָׁלוֹם! אֲנִי רוֹן.', 'אֲנִי אוֹהֵב עִבְרִית.', 'אֲנִי אוֹהֵב מָתֵמָטִיקָה וּמַדָּעִים.',
+    'אֲנִי לֹא אוֹהֵב אַנְגְּלִית.', 'אֲנִי לֹא אוֹהֵב מוּזִיקָה וְלֹא אוֹהֵב סְפּוֹרְט.']},
+  {he:'יוֹסִי', en:'Yosi', col:'#2f9d55', ans:[1,1,0,0,1,1], s:[
+    'שָׁלוֹם! אֲנִי יוֹסִי.', 'אֲנִי אוֹהֵב עִבְרִית וְאַנְגְּלִית.', 'אֲנִי גַּם אוֹהֵב מוּזִיקָה וּסְפּוֹרְט.',
+    'אֲנִי לֹא אוֹהֵב מָתֵמָטִיקָה.', 'אֲנִי לֹא אוֹהֵב מַדָּעִים.']},
+  {he:'שָׁרוֹן', en:'Sharon', col:'#a46cf0', ans:[1,0,0,1,1,0], s:[
+    'שָׁלוֹם! אֲנִי שָׁרוֹן.', 'אֲנִי אוֹהֶבֶת מוּזִיקָה.', 'אֲנִי אוֹהֶבֶת עִבְרִית וּמַדָּעִים.',
+    'אֲנִי לֹא אוֹהֶבֶת סְפּוֹרְט.', 'אֲנִי לֹא אוֹהֶבֶת אַנְגְּלִית וְלֹא אוֹהֶבֶת מָתֵמָטִיקָה.']},
+  {he:'גַּל', en:'Gal', col:'#ff8a3d', ans:[0,1,1,0,0,1], s:[
+    'שָׁלוֹם! אֲנִי גַּל.', 'אֲנִי אוֹהֵב מָתֵמָטִיקָה.', 'אֲנִי אוֹהֵב אַנְגְּלִית וּסְפּוֹרְט.',
+    'אֲנִי לֹא אוֹהֵב מוּזִיקָה.', 'אֲנִי לֹא אוֹהֵב עִבְרִית וְלֹא אוֹהֵב מַדָּעִים.']},
+  {he:'יוֹנִי', en:'Yoni', col:'#14a3a3', ans:[1,1,1,1,1,0], s:[
+    'שָׁלוֹם! אֲנִי יוֹנִי.', 'אֲנִי אוֹהֵב עִבְרִית, אַנְגְּלִית וּמָתֵמָטִיקָה.', 'אֲנִי גַּם אוֹהֵב מַדָּעִים וּמוּזִיקָה.',
+    'אֲנִי לֹא אוֹהֵב סְפּוֹרְט!']},
+  {he:'שָׂרָה', en:'Sara', col:'#d6457f', ans:[1,1,0,0,0,1], s:[
+    'שָׁלוֹם! אֲנִי שָׂרָה.', 'אֲנִי אוֹהֶבֶת סְפּוֹרְט.', 'אֲנִי אוֹהֶבֶת עִבְרִית וְאַנְגְּלִית.',
+    'אֲנִי לֹא אוֹהֶבֶת מָתֵמָטִיקָה.', 'אֲנִי לֹא אוֹהֶבֶת מַדָּעִים וְלֹא אוֹהֶבֶת מוּזִיקָה.']}
+];
+const ME = KIDS.length; /* row index of "אֲנִי" */
+window.LESSON_DATA = {SUBJ, KIDS};
+
+$('instr').innerHTML = `צַיְּרוּ ${iconSVG('love')} אוֹ ${iconSVG('broken')} לְיַד כָּל הֶגֵּד בְּהֶתְאֵם לַכָּתוּב`;
+$('legend').innerHTML = `<span>לוֹחֲצִים פַּעַם אַחַת: ${iconSVG('love')} אוֹהֵב</span><span>פַּעֲמַיִם: ${iconSVG('broken')} לֹא אוֹהֵב</span>`;
+
+/* ---------- build table ---------- */
+const thead = $('thead');
+SUBJ.forEach(s => { const th = document.createElement('th'); th.scope='col'; th.innerHTML = `<div class="subj">${iconSVG(s.k)}<span>${s.he}</span></div>`; thead.appendChild(th); });
+
+const tbody = $('tbody');
+const rows = [];            /* rows[r] = {tr, nameBtn, marks:[btn...]} */
+const state = [];           /* state[r][c] = null | 1 | 0 */
+[...KIDS, {he:'אֲנִי', en:'Me', me:true}].forEach((k, r) => {
+  const tr = document.createElement('tr'); if (k.me) tr.className = 'me';
+  const th = document.createElement('th'); th.scope = 'row';
+  const nb = document.createElement('button'); nb.type='button'; nb.className='name';
+  nb.innerHTML = `<span class="n">${r+1}.</span><span class="w">${k.he}</span>${k.me ? '' : '<span class="spk" aria-hidden="true">📖</span>'}`;
+  nb.setAttribute('aria-label', k.me ? 'אני' : 'הסיפור של ' + k.he);
+  nb.onclick = () => show(r);
+  th.appendChild(nb); tr.appendChild(th);
+  state[r] = SUBJ.map(() => null);
+  const marks = SUBJ.map((s, c) => {
+    const td = document.createElement('td');
+    const b = document.createElement('button'); b.type='button'; b.className='mark';
+    b.onclick = () => { setMark(r, c, state[r][c]===null ? 1 : state[r][c]===1 ? 0 : null); if (r !== ME) setActive(r, false); };
+    td.appendChild(b); tr.appendChild(td);
+    return b;
+  });
+  tbody.appendChild(tr);
+  rows.push({tr, nb, marks});
+  SUBJ.forEach((_, c) => drawMark(r, c));
+});
+
+function drawMark(r, c){
+  const b = rows[r].marks[c], v = state[r][c];
+  b.dataset.v = v===null ? '' : v;
+  b.innerHTML = v===1 ? iconSVG('love') : v===0 ? iconSVG('broken') : '';
+  const who = r===ME ? 'אני' : KIDS[r].en;
+  b.setAttribute('aria-label', `${who} – ${SUBJ[c].he}: ${v===1 ? 'אוהב' : v===0 ? 'לא אוהב' : 'ריק'}`);
+}
+function setMark(r, c, v){
+  state[r][c] = v;
+  rows[r].marks[c].classList.remove('ok','bad');
+  drawMark(r, c);
+  $('result').textContent = '';
+  if (r === ME) drawMine();
+}
+
+/* ---------- check / answers / clear ---------- */
+const CHEERS = ['כָּל הַכָּבוֹד!','מְצֻיָּן!','יֹפִי!','נֶהְדָּר!'];
+$('bCheck').onclick = () => {
+  let ok = 0, bad = 0, total = 0;
+  KIDS.forEach((k, r) => k.ans.forEach((a, c) => {
+    total++;
+    const b = rows[r].marks[c]; b.classList.remove('ok','bad');
+    if (state[r][c] === null) return;
+    void b.offsetWidth;
+    if (state[r][c] === a){ ok++; b.classList.add('ok'); } else { bad++; b.classList.add('bad'); }
+  }));
+  if (ok === total){
+    $('result').innerHTML = `<span class="he">${CHEERS[Math.floor(Math.random()*CHEERS.length)]} הַכֹּל נָכוֹן!</span>`;
+    burstAt($('tbl'), ['♥','♥','★','✓'], ['#ef5470','#f2b01e','#2f9d55','#e2506a'], 26);
+  } else {
+    $('result').innerHTML = `<span class="he">נָכוֹן: ${ok} · טָעוּת: ${bad} · עוֹד ${total-ok-bad} מִשְׁבְּצוֹת</span>`;
+    if (bad === 0 && ok) burstAt($('result'), ['♥','★'], ['#ef5470','#f2b01e'], 8);
+  }
+};
+const bAns = $('bAns');
+let saved = null;
+bAns.onclick = () => {
+  const on = bAns.getAttribute('aria-pressed') !== 'true';
+  bAns.setAttribute('aria-pressed', on); bAns.textContent = on ? 'הסתר תשובות' : 'הצג תשובות';
+  if (on){ saved = KIDS.map((k, r) => state[r].slice()); KIDS.forEach((k, r) => k.ans.forEach((a, c) => setMark(r, c, a))); $('bCheck').click(); }
+  else { KIDS.forEach((k, r) => saved[r].forEach((v, c) => setMark(r, c, v))); }
+};
+$('bClear').onclick = () => {
+  rows.forEach((row, r) => SUBJ.forEach((_, c) => setMark(r, c, null)));
+  if (bAns.getAttribute('aria-pressed') === 'true'){ bAns.setAttribute('aria-pressed', false); bAns.textContent = 'הצג תשובות'; }
+};
+
+/* ---------- story board ---------- */
+let active = -1;
+function setActive(r, scroll){
+  rows.forEach((row, i) => row.tr.classList.toggle('on', i === r));
+  if (r === active) return;
+  active = r;
+  stopSpeech();
+  $('storyEmpty').hidden = true;
+  $('storyBody').hidden = r === ME;
+  $('meBody').hidden = r !== ME;
+  if (r !== ME){
+    const k = KIDS[r];
+    $('sAv').textContent = k.he.replace(/[֑-ׇ]/g,'')[0];
+    $('sAv').style.background = k.col;
+    $('sName').textContent = k.he;
+    $('sEn').textContent = k.en;
+    $('sText').innerHTML = k.s.map((t, i) => `<span class="s" data-i="${i}">${t}</span>`).join(' ');
+    $('sText').querySelectorAll('.s').forEach(sp => sp.onclick = () => { mark(+sp.dataset.i); if (heVoice) speak([k.s[+sp.dataset.i]], +sp.dataset.i); });
+  } else drawMine();
+  if (scroll && matchMedia('(max-width:980px)').matches) $('story').scrollIntoView({block:'start', behavior:'smooth'});
+}
+function show(r){ setActive(r, true); }
+function mark(i){ $('sText').querySelectorAll('.s').forEach(sp => sp.classList.toggle('cur', +sp.dataset.i === i)); }
+$('bPrev').onclick = () => show((active - 1 + ME) % ME);
+$('bNext').onclick = () => show((active + 1) % ME);
+const bHide = $('bHide');
+bHide.onclick = () => { const on = $('sText').classList.toggle('hide'); bHide.setAttribute('aria-pressed', on); bHide.textContent = on ? 'הצג טקסט' : 'הסתר טקסט'; };
+
+/* ---------- speech: only with a Hebrew voice (Edge has one built in) ---------- */
+let heVoice = null, speaking = false;
+function findVoice(){
+  const vs = speechSynthesis.getVoices() || [];
+  heVoice = vs.find(v => /^(he|iw)/i.test(v.lang) && /natural|online/i.test(v.name)) || vs.find(v => /^(he|iw)/i.test(v.lang)) || null;
+  $('noVoice').hidden = !!heVoice;
+  $('bSay').disabled = !heVoice; $('bSayMe').disabled = !heVoice;
+}
+if ('speechSynthesis' in window){ findVoice(); speechSynthesis.onvoiceschanged = findVoice; setTimeout(findVoice, 1200); }
+else { $('noVoice').hidden = false; $('bSay').disabled = true; $('bSayMe').disabled = true; }
+function stopSpeech(){ if ('speechSynthesis' in window) speechSynthesis.cancel(); speaking = false; $('bSay').textContent = '🔊 הַשְׁמָעָה'; if ($('sText')) mark(-1); }
+function speak(parts, from = 0){
+  if (!heVoice) return;
+  speechSynthesis.cancel(); speaking = true; $('bSay').textContent = '■ עֲצִירָה';
+  parts.forEach((t, j) => {
+    const u = new SpeechSynthesisUtterance(t); u.voice = heVoice; u.lang = heVoice.lang; u.rate = .8;
+    u.onstart = () => mark(from + j);
+    if (j === parts.length - 1) u.onend = () => { speaking = false; $('bSay').textContent = '🔊 הַשְׁמָעָה'; setTimeout(() => { if (!speaking) mark(-1); }, 600); };
+    speechSynthesis.speak(u);
+  });
+}
+$('bSay').onclick = () => { if (speaking) stopSpeech(); else if (active >= 0 && active < ME) speak(KIDS[active].s); };
+
+/* ---------- "me" row → my own sentence ---------- */
+let fem = false;
+$('gM').onclick = () => { fem = false; $('gM').setAttribute('aria-pressed', true); $('gF').setAttribute('aria-pressed', false); drawMine(); };
+$('gF').onclick = () => { fem = true; $('gF').setAttribute('aria-pressed', true); $('gM').setAttribute('aria-pressed', false); drawMine(); };
+function list(idx){
+  const w = idx.map(i => SUBJ[i]);
+  if (w.length === 1) return w[0].he;
+  return w.slice(0, -1).map(s => s.he).join(', ') + ' ' + w[w.length - 1].vav;
+}
+function mineSentences(){
+  const love = fem ? 'אוֹהֶבֶת' : 'אוֹהֵב';
+  const yes = [], no = [];
+  state[ME].forEach((v, c) => { if (v === 1) yes.push(c); if (v === 0) no.push(c); });
+  const out = [];
+  if (yes.length) out.push(`אֲנִי ${love} ${list(yes)}.`);
+  if (no.length) out.push(`אֲנִי לֹא ${love} ${list(no)}.`);
+  return out;
+}
+function drawMine(){
+  const s = mineSentences();
+  $('mineText').innerHTML = s.length ? s.join(' ') : '<span style="opacity:.6">סַמְּנוּ לֵב אוֹ לֵב שָׁבוּר בַּשּׁוּרָה „אֲנִי"…</span>';
+}
+$('bSayMe').onclick = () => { const s = mineSentences(); if (heVoice && s.length){ speechSynthesis.cancel(); s.forEach(t => { const u = new SpeechSynthesisUtterance(t); u.voice = heVoice; u.lang = heVoice.lang; u.rate = .8; speechSynthesis.speak(u); }); } };
+drawMine();
+
+/* ---------- particles ---------- */
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function burstAt(el, glyphs, colors, n){
+  if (reduce) return;
+  const r = el.getBoundingClientRect(); const cx = r.left + r.width/2, cy = r.top + r.height/2;
+  for (let i = 0; i < n; i++){
+    const s = document.createElement('span'); s.className = 'fx';
+    s.textContent = glyphs[i % glyphs.length]; s.style.color = colors[i % colors.length]; s.style.fontSize = (18 + Math.random()*26) + 'px';
+    s.style.left = cx + 'px'; s.style.top = cy + 'px';
+    document.body.appendChild(s);
+    const a = Math.random()*Math.PI*2, d = 80 + Math.random()*170;
+    s.animate([
+      {transform:'translate(-50%,-50%) scale(.3)', opacity:1},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d}px), calc(-50% + ${Math.sin(a)*d - 40}px)) scale(1) rotate(${(Math.random()-.5)*120}deg)`, opacity:1, offset:.7},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d*1.1}px), calc(-50% + ${Math.sin(a)*d + 30}px)) scale(.8)`, opacity:0}
+    ], {duration:1100 + Math.random()*700, easing:'cubic-bezier(.2,.8,.3,1)'}).onfinish = () => s.remove();
+  }
+}
+})();
+</script>
+<script>function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}setNavH();window.addEventListener('resize',setNavH);</script>
+</body>
+</html>
