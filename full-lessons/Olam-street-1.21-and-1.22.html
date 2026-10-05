@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Olam Street 1.21 &amp; 1.22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+/* Layout: a lesson "workbook" — Tel Aviv map tour, a quick quiz, then a picture talk. */
+:root{
+  --bg:#fdf7ef; --surface:#ffffff; --ink:#23233a; --muted:#6b6880; --line:#eadfce;
+  --coral:#e2506a; --coral-soft:#fde3e7; --green:#2f9d55; --green-soft:#dcf2e3;
+  --sky:#2a8bd0; --sky-soft:#dcecfb; --gold:#f2b01e; --plate:#fff8ec; --shadow:0 2px 0 rgba(35,35,58,.08), 0 8px 24px rgba(35,35,58,.08);
+  --f-display:'Rubik', 'Segoe UI', Arial, sans-serif;
+  --f-he:'Noto Sans Hebrew', 'Arial Hebrew', 'Segoe UI', Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35); color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35); color-scheme:dark; }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--f-he); font-size:17px; line-height:1.55;}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:16px; padding-block:0 64px}
+.he{font-family:var(--f-he); direction:rtl; unicode-bidi:isolate}
+.en{font-family:var(--f-display); direction:ltr; unicode-bidi:isolate}
+svg{direction:ltr}
+button{font:inherit; color:inherit}
+:focus-visible{outline:3px solid var(--sky); outline-offset:3px; border-radius:8px}
+
+/* Header */
+.top{padding-block:28px 18px; display:flex; flex-wrap:wrap; gap:12px 24px; align-items:flex-end; justify-content:space-between}
+.crumb{font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 6px}
+h1{font-family:var(--f-he); font-size:clamp(28px,5vw,46px); line-height:1.05; margin:0; font-weight:800; text-wrap:balance}
+h1 .amp{color:var(--coral)}
+.top .he-title{font-size:clamp(20px,3vw,28px); color:var(--muted); margin:0}
+
+/* Step bar */
+.steps{position:sticky; top:calc(var(--navh,0px) + env(safe-area-inset-top,0px)); z-index:20; background:var(--bg); border-bottom:2px solid var(--line); margin-bottom:24px}
+.steps ol{list-style:none; display:flex; gap:8px; padding:10px 0; margin:0; overflow-x:auto}
+.steps a{display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; text-decoration:none; color:var(--ink); font-weight:600; white-space:nowrap; border:2px solid var(--line); background:var(--surface)}
+.steps a b{display:inline-grid; place-items:center; width:24px; height:24px; border-radius:50%; color:#fff; font-size:13px}
+.steps a[data-c="coral"] b{background:var(--coral)} .steps a[data-c="green"] b{background:var(--green)} .steps a[data-c="sky"] b{background:var(--sky)}
+.steps a:hover{border-color:var(--ink)}
+
+/* Section shell */
+section.step{margin-block:28px 48px; scroll-margin-top:calc(var(--navh,0px) + 70px)}
+.tag{display:inline-flex; align-items:center; gap:10px; padding-block:6px; padding-inline:8px 16px; border-radius:999px; font-weight:800; font-size:18px}
+.tag .num{background:var(--surface); border-radius:999px; padding:2px 10px; font-size:16px; font-family:var(--f-display); direction:ltr; unicode-bidi:isolate}
+.tag.coral{background:var(--coral-soft)} .tag.coral .num{color:var(--coral)}
+.tag.green{background:var(--green-soft)} .tag.green .num{color:var(--green)}
+.tag.sky{background:var(--sky-soft)} .tag.sky .num{color:var(--sky)}
+.step-head{display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; justify-content:space-between; margin-bottom:6px}
+.step-head .he{font-size:20px; color:var(--muted)}
+.lead{color:var(--muted); max-width:70ch; margin:4px 0 18px}
+
+.panel{background:var(--surface); border:2px solid var(--line); border-radius:20px; padding:18px; box-shadow:var(--shadow)}
+.toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px}
+.btn{border:2px solid var(--line); background:var(--surface); border-radius:12px; padding:8px 14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px}
+.btn:hover{border-color:var(--ink)}
+.btn[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.btn.primary{background:var(--coral); border-color:var(--coral); color:#fff}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.spacer{flex:1}
+
+/* 1.21 map tour */
+.tour{display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:20px; align-items:start}
+.map{background:var(--plate); border-radius:22px; padding:8px; border:2px solid var(--line)}
+.map svg{width:100%; height:auto; display:block; border-radius:16px}
+.pin{cursor:pointer}
+.pin circle.dot{transition:r .15s}
+.pin:hover circle.dot, .pin.on circle.dot{r:21}
+.pin.on circle.dot{fill:#e2506a}
+.pin.seen circle.dot{fill:#2f9d55}
+.pin.seen.on circle.dot{fill:#e2506a}
+.pin:focus{outline:none}
+.pin:focus-visible circle.dot{stroke:#2a8bd0; stroke-width:6}
+.spotlight .ring{animation:ring 1.4s ease-out infinite; transform-box:fill-box; transform-origin:center}
+@keyframes ring{from{transform:scale(.6); opacity:.9}to{transform:scale(1.8); opacity:0}}
+.info{position:sticky; top:calc(var(--navh,0px) + 76px)}
+.info .panel{padding:20px}
+.info-empty{text-align:center; color:var(--muted); padding:20px 6px}
+.info-empty .big{font-size:46px}
+.info-ico{width:min(170px,60%); aspect-ratio:1; margin:0 auto 6px; background:var(--plate); border-radius:50%; padding:20px; animation:pop .45s cubic-bezier(.2,1.5,.4,1)}
+.info-ico svg{width:100%; height:100%}
+@keyframes pop{from{transform:scale(.5); opacity:0}}
+.info-he{font-size:clamp(32px,4vw,46px); font-weight:800; text-align:center; line-height:1.25}
+.info-extra{text-align:center; font-size:22px; color:var(--muted); font-weight:600}
+.info-en{font-family:var(--f-display); direction:ltr; text-align:center; font-weight:800; font-size:20px; margin-top:4px}
+.info-fact{font-family:var(--f-display); direction:ltr; text-align:left; font-size:17px; line-height:1.55; background:var(--bg); border-radius:14px; padding:12px 14px; margin:12px 0}
+.info-fact.hide{filter:blur(8px); user-select:none}
+.progress{font-weight:700; color:var(--muted)}
+
+/* quiz */
+.quiz{max-width:760px; margin:0 auto}
+.q-head{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap}
+.q-dots{display:flex; gap:5px}
+.q-dots i{width:12px; height:12px; border-radius:50%; background:var(--line); display:block}
+.q-dots i.cur{background:var(--sky); transform:scale(1.25)} .q-dots i.y{background:var(--green)} .q-dots i.n{background:var(--coral)}
+.q-text{font-family:var(--f-display); direction:ltr; text-align:center; font-size:clamp(22px,3vw,30px); font-weight:800; margin:6px 0 4px}
+.q-text .he{font-family:var(--f-he); font-size:1.25em}
+.q-ico{width:120px; height:120px; margin:6px auto; background:var(--plate); border-radius:50%; padding:14px}
+.q-ico svg{width:100%; height:100%}
+.opts{display:grid; gap:10px; margin-top:12px}
+.opt{border:3px solid var(--line); background:var(--surface); border-radius:16px; padding:14px; font-family:var(--f-display); direction:ltr; font-size:21px; font-weight:700; cursor:pointer; text-align:center}
+.opt.heo{font-family:var(--f-he); font-size:26px; direction:rtl}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt.ok{border-color:var(--green); background:var(--green-soft)}
+.opt.bad{border-color:var(--coral); background:var(--coral-soft); animation:shake .4s}
+.opt:disabled{cursor:default}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.q-fb{min-height:46px; text-align:center; font-weight:800; font-size:22px; margin-top:10px}
+.q-end{text-align:center; padding:20px}
+.q-end .stars{font-size:52px; color:var(--gold); letter-spacing:6px}
+
+/* 1.22 picture talk */
+.pics{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+.pic{border:0; padding:0; background:var(--surface); border-radius:18px; overflow:hidden; cursor:pointer; box-shadow:var(--shadow); text-align:center; transition:transform .2s}
+.pic:hover{transform:translateY(-3px)}
+.pic svg{width:100%; height:auto; display:block}
+.pic .cap{display:block; padding:8px; font-size:22px; font-weight:800}
+.qs{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:20px}
+.qcard{border-radius:18px; padding:14px; display:flex; flex-direction:column; gap:8px}
+.qcard:nth-child(1){background:var(--sky-soft)} .qcard:nth-child(2){background:var(--coral-soft)} .qcard:nth-child(3){background:var(--green-soft)}
+.qcard .ic{font-size:34px; line-height:1}
+.qcard .qe{font-family:var(--f-display); direction:ltr; text-align:left; font-weight:800; font-size:19px}
+.qcard .qh{font-size:19px; font-weight:700}
+.qcard textarea{width:100%; min-height:110px; border:2px solid transparent; border-radius:12px; padding:10px; font:inherit; font-size:17px; background:var(--surface); color:var(--ink); resize:vertical}
+.qcard textarea:focus{border-color:var(--ink); outline:none}
+
+/* picture overlay */
+.big-pic{position:fixed; inset:0; z-index:10001; display:grid; place-items:center; padding:16px; background:rgba(25,24,35,.7)}
+.big-card{position:relative; width:min(1000px,100%); background:var(--surface); border-radius:24px; padding:14px; animation:pop .4s cubic-bezier(.2,1.4,.4,1)}
+.big-card svg{width:100%; height:auto; display:block; border-radius:14px; max-height:72vh}
+.big-row{display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap}
+.big-row .cap{font-size:28px; font-weight:800; flex:1; text-align:center}
+.xbtn{position:absolute; top:20px; inset-inline-end:20px; width:44px; height:44px; border-radius:50%; border:2px solid var(--line); background:var(--surface); cursor:pointer; font-size:20px; line-height:1}
+
+.fx{position:fixed; pointer-events:none; z-index:120; font-weight:800; font-family:var(--f-he); will-change:transform,opacity}
+
+@media (max-width:980px){
+  .tour{grid-template-columns:1fr}
+  .info{position:static}
+  .qs{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .pics{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important; transition:none!important} }
+</style>
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../full-lessons/index.html">📚 שיעורים מלאים</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../full-lessons/index.html'}">← חזרה</button></nav>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="crumb">שיעורים מלאים · רחוב העולם · יחידה 1</p>
+      <h1>רְחוֹב הָעוֹלָם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">1.21 <span class="amp">&amp;</span> 1.22</span></h1>
+    </div>
+    <p class="he he-title">תֵּל אָבִיב · עַמּוּדִים 19–20</p>
+  </header>
+
+  <nav class="steps" aria-label="שלבי השיעור">
+    <ol>
+      <li><a href="#s121" data-c="coral"><b>1</b>1.21 סִיּוּר בְּתֵל אָבִיב</a></li>
+      <li><a href="#squiz" data-c="sky"><b>2</b>חִידוֹן תֵּל אָבִיב</a></li>
+      <li><a href="#s122" data-c="green"><b>3</b>1.22 מָה רוֹאִים בַּתְּמוּנוֹת?</a></li>
+    </ol>
+  </nav>
+
+  <!-- ===== STEP 1: 1.21 ===== -->
+  <section class="step" id="s121">
+    <div class="step-head">
+      <span class="tag coral"><span class="num">1.21</span>תַּרְגִּיל תַּרְבּוּת</span>
+      <span class="en" style="font-size:20px; color:var(--muted); font-weight:700">Tel Aviv: Israel's Coolest City by the Sea!</span>
+    </div>
+    <p class="lead">מְטַיְּלִים בַּמַּפָּה שֶׁל תֵּל אָבִיב. לוֹחֲצִים עַל מִסְפָּר וְלוֹמְדִים מִלָּה חֲדָשָׁה.</p>
+    <div class="tour">
+      <div class="map" id="map"></div>
+      <aside class="info" aria-live="polite">
+        <div class="panel">
+          <div class="info-empty" id="infoEmpty">
+            <div class="big">📍</div>
+            <p style="margin:6px 0 12px; font-size:20px; font-weight:700">לוֹחֲצִים עַל מִסְפָּר בַּמַּפָּה</p>
+            <button class="btn primary" id="bTour" type="button">מַתְחִילִים סִיּוּר ◀</button>
+          </div>
+          <div id="infoBody" hidden>
+            <div class="toolbar" style="justify-content:space-between">
+              <span class="progress" id="infoNum"></span>
+              <button class="btn" id="bEng" type="button" aria-pressed="false">הסתר אנגלית</button>
+            </div>
+            <div class="info-ico" id="infoIco"></div>
+            <div class="info-he" id="infoHe" lang="he"></div>
+            <div class="info-extra" id="infoExtra" lang="he"></div>
+            <div class="info-en" id="infoEn"></div>
+            <div class="info-fact" id="infoFact" lang="en"></div>
+            <div class="toolbar" style="margin:0">
+              <button class="btn" id="bPrev" type="button">▶ הַקּוֹדֵם</button>
+              <span class="spacer"></span>
+              <button class="btn" id="bSay" type="button">🔊</button>
+              <span class="spacer"></span>
+              <button class="btn primary" id="bNext" type="button">הַבָּא ◀</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== STEP 2: quiz ===== -->
+  <section class="step" id="squiz">
+    <div class="step-head">
+      <span class="tag sky">חִידוֹן</span>
+      <span class="en" style="font-size:20px; color:var(--muted); font-weight:700">What do you remember about Tel Aviv?</span>
+    </div>
+    <p class="lead">עוֹנִים עַל הַשְּׁאֵלוֹת. יֵשׁ תְּשׁוּבָה אַחַת נְכוֹנָה.</p>
+    <div class="panel quiz" id="quiz"></div>
+  </section>
+
+  <!-- ===== STEP 3: 1.22 ===== -->
+  <section class="step" id="s122">
+    <div class="step-head">
+      <span class="tag green"><span class="num">1.22</span>תַּרְגִּיל תַּרְבּוּת</span>
+      <span class="he">מְיֻמָּנוּת דִּבּוּר</span>
+    </div>
+    <p class="lead">מִסְתַּכְּלִים בַּתְּמוּנוֹת וּמְדַבְּרִים. לוֹחֲצִים עַל תְּמוּנָה כְּדֵי לִרְאוֹת אוֹתָהּ גְּדוֹלָה. אֶת הַתְּשׁוּבוֹת שֶׁל הַכִּתָּה כּוֹתְבִים בַּכַּרְטִיסִים.</p>
+    <div class="pics" id="pics"></div>
+    <div class="qs" id="qs"></div>
+    <div class="toolbar" style="margin-top:12px">
+      <span class="spacer"></span>
+      <button class="btn" id="bClearNotes" type="button">נקה תשובות</button>
+    </div>
+  </section>
+</div>
+
+<div class="big-pic" id="bigPic" hidden role="dialog" aria-modal="true" aria-label="תמונה">
+  <div class="big-card">
+    <button class="xbtn" id="bigX" type="button" aria-label="סגור">✕</button>
+    <div id="bigSvg"></div>
+    <div class="big-row">
+      <button class="btn" id="bigPrev" type="button">▶ הַקּוֹדֶמֶת</button>
+      <span class="cap" id="bigCap" lang="he"></span>
+      <button class="btn" id="bigNext" type="button">הַבָּאָה ◀</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Hand-drawn Tel Aviv icons, each in a 120×120 box. Fixed illustration colors on a light plate. */
+const INK = '#2b2a3a';
+const SKIN = ['#f2c4a0','#c98d62','#8d5a3b','#f7d3b5'];
+function person(x, y, shirt, skin, s = 1, pose = 'stand'){
+  const arms = pose === 'up'
+    ? `<path d="M${x} ${y+10*s} L${x-9*s} ${y-4*s} M${x} ${y+10*s} L${x+9*s} ${y-4*s}" stroke="${skin}" stroke-width="${4*s}" stroke-linecap="round"/>`
+    : `<path d="M${x} ${y+10*s} L${x-8*s} ${y+22*s} M${x} ${y+10*s} L${x+8*s} ${y+22*s}" stroke="${skin}" stroke-width="${4*s}" stroke-linecap="round"/>`;
+  return `<g>${arms}
+    <path d="M${x-6*s} ${y+8*s} h${12*s} l${2*s} ${18*s} h-${16*s}Z" fill="${shirt}" stroke="${INK}" stroke-width="${2*s}" stroke-linejoin="round"/>
+    <path d="M${x-4*s} ${y+26*s} v${12*s} M${x+4*s} ${y+26*s} v${12*s}" stroke="${INK}" stroke-width="${4*s}" stroke-linecap="round"/>
+    <circle cx="${x}" cy="${y}" r="${7*s}" fill="${skin}" stroke="${INK}" stroke-width="${2*s}"/></g>`;
+}
+const T = {
+  sea: () => `<circle cx="60" cy="60" r="56" fill="#5fb6e8"/>
+    <circle cx="32" cy="30" r="12" fill="#ffd166" stroke="${INK}" stroke-width="3"/>
+    <path d="M62 24 V78" stroke="${INK}" stroke-width="4"/>
+    <path d="M65 28 L65 74 L94 74Z" fill="#ffd166" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M59 36 L59 74 L36 74Z" fill="#ef5470" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M30 80 H96 L86 94 H40Z" fill="#fff" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M14 104 q8 -7 16 0 t16 0 t16 0 t16 0 t16 0 t16 0" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>`,
+  beach: () => `<path d="M4 84 Q60 70 116 84 V112 H4Z" fill="#f4dca0" stroke="${INK}" stroke-width="3"/>
+    <path d="M26 40 V100" stroke="${INK}" stroke-width="4"/>
+    <path d="M4 46 Q26 14 48 46Z" fill="#ef5470" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M19 46 Q26 22 33 46" fill="#fff"/>
+    ${person(70, 48, '#3d8bf2', SKIN[1], 1, 'up')}
+    ${person(104, 52, '#ffc94a', SKIN[0])}
+    <circle cx="61" cy="40" r="7" fill="#a0522d" stroke="${INK}" stroke-width="2"/>
+    <circle cx="95" cy="72" r="6" fill="#a0522d" stroke="${INK}" stroke-width="2"/>
+    <circle cx="84" cy="32" r="4" fill="#fff" stroke="${INK}" stroke-width="2"/>`,
+  tayelet: () => `<path d="M0 98 C40 86 80 108 120 94" stroke="#e6b980" stroke-width="22" fill="none"/>
+    <path d="M0 98 C40 86 80 108 120 94" stroke="#fff" stroke-width="3" stroke-dasharray="8 8" fill="none"/>
+    <circle cx="30" cy="72" r="13" fill="none" stroke="${INK}" stroke-width="4"/><circle cx="64" cy="72" r="13" fill="none" stroke="${INK}" stroke-width="4"/>
+    <path d="M30 72 L44 50 L64 72 M44 50 H60 L64 72 M40 44 H50 M58 50 L56 40 H64" stroke="#e2506a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M84 78 H112 M110 78 L104 40 M96 40 H112" stroke="#2a8bd0" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <circle cx="88" cy="80" r="5" fill="${INK}"/><circle cx="110" cy="80" r="5" fill="${INK}"/>`,
+  towers: () => {
+    const tw = [[8,46,22,70,'#9cc7e8'],[34,14,28,102,'#d9e8f5'],[66,30,24,86,'#7fb0d9'],[94,54,20,62,'#eef3f8']];
+    let s = '';
+    tw.forEach(([x,y,w,h,c]) => {
+      s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${c}" stroke="${INK}" stroke-width="3"/>`;
+      for (let yy = y + 8; yy < y + h - 6; yy += 10) s += `<path d="M${x+5} ${yy} H${x+w-5}" stroke="#4d7fa8" stroke-width="2.5" opacity=".6"/>`;
+    });
+    return s + `<path d="M48 14 V4" stroke="${INK}" stroke-width="3"/><circle cx="48" cy="4" r="3" fill="#ef5470"/>
+      <path d="M0 116 H120" stroke="${INK}" stroke-width="4"/>`;
+  },
+  mural: () => `<rect x="6" y="16" width="108" height="92" rx="6" fill="#f6efe3" stroke="${INK}" stroke-width="3"/>
+    <circle cx="36" cy="44" r="16" fill="#ffd166" stroke="${INK}" stroke-width="3"/>
+    <path d="M10 84 q12 -14 24 0 t24 0 t24 0 t24 0 t6 0 V104 H10Z" fill="#3d8bf2" stroke="${INK}" stroke-width="3"/>
+    <path d="M86 30 C78 22 66 28 70 38 C72 44 80 50 86 56 C92 50 100 44 102 38 C106 28 94 22 86 30Z" fill="#ef5470" stroke="${INK}" stroke-width="3"/>
+    <path d="M52 60 l6 -12 l6 12 l-6 6Z" fill="#a46cf0" stroke="${INK}" stroke-width="2.5"/>
+    <path d="M100 100 l10 -22" stroke="#a0522d" stroke-width="5" stroke-linecap="round"/><path d="M98 104 l4 -8 l6 3Z" fill="#6fd38a" stroke="${INK}" stroke-width="2"/>`,
+  park: () => `<ellipse cx="60" cy="100" rx="58" ry="16" fill="#8fd38a" stroke="${INK}" stroke-width="3"/>
+    <rect x="22" y="56" width="10" height="40" fill="#a0522d" stroke="${INK}" stroke-width="3"/>
+    <circle cx="27" cy="44" r="22" fill="#4fbf6a" stroke="${INK}" stroke-width="3"/>
+    <ellipse cx="78" cy="86" rx="20" ry="11" fill="#c98d62" stroke="${INK}" stroke-width="3"/>
+    <circle cx="98" cy="72" r="11" fill="#c98d62" stroke="${INK}" stroke-width="3"/>
+    <path d="M100 64 l8 -8 l2 12Z" fill="#8a5a3b" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
+    <circle cx="101" cy="71" r="2" fill="${INK}"/><circle cx="108" cy="75" r="2.5" fill="${INK}"/>
+    <path d="M66 94 v10 M76 96 v10 M86 96 v10 M92 94 v10" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>
+    <path d="M58 84 q-10 -8 -6 -18" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <text x="62" y="36" font-size="22" fill="#a46cf0" font-family="Arial">♪</text><text x="84" y="24" font-size="20" fill="#ef5470" font-family="Arial">♫</text>`,
+  music: () => `<path d="M58 62 L96 14" stroke="#7a4325" stroke-width="10" stroke-linecap="round"/>
+    <path d="M90 8 l12 12" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="44" cy="80" r="26" fill="#ff8a3d" stroke="${INK}" stroke-width="4"/>
+    <circle cx="58" cy="58" r="18" fill="#ff8a3d" stroke="${INK}" stroke-width="4"/>
+    <circle cx="50" cy="70" r="8" fill="${INK}"/>
+    <path d="M30 92 L46 98" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>
+    <path d="M58 62 L96 14" stroke="#fff" stroke-width="1.5" opacity=".7"/>
+    <text x="10" y="34" font-size="26" fill="#a46cf0" font-family="Arial">♪</text><text x="86" y="62" font-size="24" fill="#ef5470" font-family="Arial">♫</text>`,
+  arena: () => `<path d="M8 100 Q60 26 112 100Z" fill="#ffd34d" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M22 82 Q60 40 98 82" stroke="#2a5cc7" stroke-width="6" fill="none"/>
+    <rect x="4" y="98" width="112" height="14" rx="3" fill="#2a5cc7" stroke="${INK}" stroke-width="3"/>
+    <circle cx="86" cy="30" r="18" fill="#ff8a3d" stroke="${INK}" stroke-width="3.5"/>
+    <path d="M68 30 H104 M86 12 V48 M74 17 C82 26 82 34 74 43 M98 17 C90 26 90 34 98 43" stroke="${INK}" stroke-width="2.5" fill="none"/>`,
+  jaffa: () => `<rect x="0" y="96" width="120" height="24" fill="#5fb6e8"/>
+    <path d="M10 100 Q60 30 118 100Z" fill="#e9d6b0" stroke="${INK}" stroke-width="3"/>
+    <rect x="30" y="70" width="20" height="26" fill="#e3c48f" stroke="${INK}" stroke-width="2.5"/>
+    <rect x="70" y="66" width="24" height="30" fill="#efd9ae" stroke="${INK}" stroke-width="2.5"/>
+    <path d="M36 96 v-10 a4 4 0 0 1 8 0 v10 M76 80 a4 4 0 0 1 8 0 v6 h-8Z" fill="#7a5a3a"/>
+    <rect x="52" y="30" width="16" height="50" fill="#f3e2bf" stroke="${INK}" stroke-width="2.5"/>
+    <path d="M50 30 L60 16 L70 30Z" fill="#c9a36a" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/>
+    <circle cx="60" cy="42" r="5" fill="#fff" stroke="${INK}" stroke-width="2"/><path d="M60 42 v-3 M60 42 h2" stroke="${INK}" stroke-width="1.5"/>
+    <path d="M6 104 H34 L28 112 H12Z" fill="#2a5cc7" stroke="${INK}" stroke-width="2.5"/><rect x="14" y="98" width="10" height="6" fill="#fff" stroke="${INK}" stroke-width="2"/>`,
+  icecream: () => `<path d="M42 58 L60 112 L78 58Z" fill="#e0a85a" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M48 70 L72 66 M52 82 L69 78 M56 94 L66 92 M50 62 L64 100 M70 62 L58 98" stroke="#a8742e" stroke-width="2"/>
+    <circle cx="50" cy="52" r="15" fill="#ff9fbf" stroke="${INK}" stroke-width="3"/>
+    <circle cx="72" cy="52" r="15" fill="#9fe3c4" stroke="${INK}" stroke-width="3"/>
+    <circle cx="61" cy="34" r="15" fill="#8a5132" stroke="${INK}" stroke-width="3"/>
+    <circle cx="64" cy="16" r="5" fill="#e2506a" stroke="${INK}" stroke-width="2"/>
+    <path d="M54 28 q4 -3 8 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>`
+};
+function tSVG(k){ return `<svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">${T[k]()}</svg>`; }
+</script>
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+
+/* ---------- 1.21: map stops (facts paraphrase the workbook text, p.19) ---------- */
+const STOPS = [
+  {k:'sea', he:'הַיָּם הַתִּיכוֹן', en:'The Mediterranean Sea', x:118, y:300, at:[60,230],
+   fact:"Tel Aviv sits right on the Mediterranean Sea. The weather is warm almost all year!"},
+  {k:'beach', he:'חוֹף הַיָּם', extra:'מַטְקוֹת', en:'The beach · matkot', x:330, y:130, at:[262,108],
+   fact:"The beach is like the city's backyard. After school, kids swim and play matkot — a noisy beach paddle game."},
+  {k:'tayelet', he:'הַטַּיֶּלֶת', en:'The Tayelet (boardwalk)', x:352, y:312, at:[300,282],
+   fact:"The Tayelet is a long boardwalk along the coast. People ride bikes and scooters on it."},
+  {k:'towers', he:'מִגְדָּלִים', en:'Towers · business & tech', x:600, y:44, at:[520,40],
+   fact:"Tel Aviv is Israel's business capital. Big companies and tech start-ups work in its tall towers."},
+  {k:'mural', he:'צִיּוּר קִיר', en:'Murals', x:452, y:262, at:[420,250],
+   fact:"Tel Aviv is big and colorful. Many building walls have murals painted on them."},
+  {k:'park', he:'פַּארְק', extra:'כֶּלֶב', en:'Park · dog', x:740, y:236, at:[690,230],
+   fact:"Music drifts out of the parks, and people walk their dogs at every hour of the day."},
+  {k:'music', he:'אֲרִיק אַיְינְשְׁטַיְין', en:'Arik Einstein', x:640, y:174, at:[560,150],
+   fact:"Arik Einstein was one of Israel's greatest singers, and he lived in Tel Aviv. You already heard one of his songs!"},
+  {k:'arena', he:'מַכַּבִּי תֵּל אָבִיב', extra:'כַּדּוּרְסַל', en:'Maccabi Tel Aviv · basketball', x:802, y:396, at:[730,380],
+   fact:"Maccabi Tel Aviv is a famous basketball team. You will read about it later in this unit!"},
+  {k:'jaffa', he:'יָפוֹ', extra:'נָמָל', en:'Jaffa (Yafo) · port', x:262, y:448, at:[200,430],
+   fact:"Right next to Tel Aviv is Jaffa — one of the oldest port cities on Earth. Its stone alleys are thousands of years old."},
+  {k:'icecream', he:'גְּלִידָה', en:'Ice cream', x:468, y:432, at:[420,420],
+   fact:"Old and new together: walk through ancient Jaffa, then grab ice cream in a brand-new shopping center — in one afternoon!"}
+];
+
+function mapSVG(){
+  const coast = 'M300 0 C285 120 300 220 280 320 C265 400 300 470 250 560';
+  const inner = 'M340 0 C325 120 345 220 322 320 C307 400 342 470 296 560';
+  let streets = '';
+  for (let x = 400; x < 900; x += 70) streets += `<path d="M${x} 0 V560" stroke="#e6dcc5" stroke-width="6"/>`;
+  for (let y = 40; y < 560; y += 80) streets += `<path d="M330 ${y} H900" stroke="#e6dcc5" stroke-width="6"/>`;
+  const waves = [[60,120],[160,200],[90,380],[180,470],[40,520]].map(([x,y]) => `<path d="M${x} ${y} q8 -6 16 0 t16 0 t16 0" stroke="#d6efff" stroke-width="4" fill="none" stroke-linecap="round"/>`).join('');
+  const pieces = STOPS.map(s => `<g transform="translate(${s.at[0]} ${s.at[1]})">${T[s.k]()}</g>`).join('');
+  const pins = STOPS.map((s,i) => `<g class="pin" data-i="${i}" tabindex="0" role="button" aria-label="${s.en}">
+      <circle class="ring" cx="${s.x}" cy="${s.y}" r="18" fill="none" stroke="#e2506a" stroke-width="4" opacity="0"/>
+      <circle class="dot" cx="${s.x}" cy="${s.y}" r="17" fill="#2a8bd0" stroke="#fff" stroke-width="4"/>
+      <text x="${s.x}" y="${s.y + 6}" text-anchor="middle" font-family="Rubik,Arial" font-weight="800" font-size="17" fill="#fff" pointer-events="none">${i+1}</text></g>`).join('');
+  return `<svg viewBox="0 0 900 560" role="img" aria-label="מפה של תל אביב">
+    <rect width="900" height="560" fill="#f3ead8"/>
+    ${streets}
+    <path d="${coast} H0 V0Z" fill="#5fb6e8"/>
+    <path d="M300 0 C285 120 300 220 280 320 C265 400 300 470 250 560 L296 560 C342 470 307 400 322 320 C345 220 325 120 340 0Z" fill="#f4dca0"/>
+    <path d="${inner}" stroke="#e6b980" stroke-width="12" fill="none"/>
+    <path d="${inner}" stroke="#fff" stroke-width="2.5" stroke-dasharray="10 10" fill="none"/>
+    ${waves}
+    <text x="140" y="80" text-anchor="middle" font-family="'Noto Sans Hebrew',Arial" font-weight="800" font-size="22" fill="#fff" direction="rtl">הַיָּם הַתִּיכוֹן</text>
+    <text x="620" y="345" text-anchor="middle" font-family="'Noto Sans Hebrew',Arial" font-weight="800" font-size="34" fill="#c9b99a" direction="rtl">תֵּל אָבִיב</text>
+    <g font-family="Rubik,Arial" font-weight="800" font-size="16" fill="#8a7d63"><text x="870" y="30" text-anchor="middle">N</text><path d="M870 38 V70 M862 48 L870 38 L878 48" stroke="#8a7d63" stroke-width="3" fill="none"/></g>
+    ${pieces}
+    ${pins}
+  </svg>`;
+}
+$('map').innerHTML = mapSVG();
+
+const pins = [...document.querySelectorAll('.pin')];
+let cur = -1;
+const seen = new Set();
+function openStop(i){
+  cur = (i + STOPS.length) % STOPS.length;
+  const s = STOPS[cur];
+  seen.add(cur);
+  pins.forEach((p,j) => { p.classList.toggle('on', j===cur); p.classList.toggle('seen', seen.has(j)); p.querySelector('.ring').setAttribute('opacity', j===cur ? '1' : '0'); p.classList.toggle('spotlight', j===cur); });
+  $('infoEmpty').hidden = true; $('infoBody').hidden = false;
+  $('infoNum').textContent = `${cur+1} / ${STOPS.length}`;
+  const ico = $('infoIco'); ico.innerHTML = tSVG(s.k); ico.style.animation='none'; void ico.offsetWidth; ico.style.animation='';
+  $('infoHe').textContent = s.he;
+  $('infoExtra').textContent = s.extra || '';
+  $('infoEn').textContent = s.en;
+  $('infoFact').textContent = s.fact;
+  say(s.he + (s.extra ? '. ' + s.extra : ''));
+  if (seen.size === STOPS.length && !openStop.done){ openStop.done = true; burstAt(ico, ['★','♥','★'], ['#f2b01e','#e2506a','#2a8bd0'], 18); }
+}
+pins.forEach(p => {
+  p.addEventListener('click', () => openStop(+p.dataset.i));
+  p.addEventListener('keydown', e => { if (e.key==='Enter' || e.key===' '){ e.preventDefault(); openStop(+p.dataset.i); } });
+});
+$('bTour').onclick = () => openStop(0);
+$('bNext').onclick = () => openStop(cur+1);
+$('bPrev').onclick = () => openStop(cur-1);
+$('bSay').onclick = () => { const s = STOPS[cur]; say(s.he + (s.extra ? '. ' + s.extra : ''), true); };
+const bEng = $('bEng');
+bEng.onclick = () => {
+  const hide = bEng.getAttribute('aria-pressed') !== 'true';
+  bEng.setAttribute('aria-pressed', hide); bEng.textContent = hide ? 'הצג אנגלית' : 'הסתר אנגלית';
+  $('infoFact').classList.toggle('hide', hide); $('infoEn').style.visibility = hide ? 'hidden' : '';
+};
+
+/* speech: only with a Hebrew voice */
+let heVoice = null;
+function findVoice(){
+  const vs = speechSynthesis.getVoices() || [];
+  heVoice = vs.find(v => /^(he|iw)/i.test(v.lang) && /natural|online/i.test(v.name)) || vs.find(v => /^(he|iw)/i.test(v.lang)) || null;
+  $('bSay').hidden = !heVoice;
+}
+if ('speechSynthesis' in window){ findVoice(); speechSynthesis.onvoiceschanged = findVoice; setTimeout(findVoice, 1200); } else $('bSay').hidden = true;
+let autoSay = false;
+function say(t, force){ if (!heVoice || (!force && !autoSay)) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = heVoice; u.lang = heVoice.lang; u.rate = .8; speechSynthesis.speak(u); }
+
+/* ---------- quiz ---------- */
+const QUIZ = [
+  {q:'Which sea is Tel Aviv on?', ico:'sea', a:['The Mediterranean Sea','The Red Sea','The Dead Sea']},
+  {q:'What is <span class="he">מַטְקוֹת</span>?', ico:'beach', a:['A beach paddle game','A kind of ice cream','A city bus']},
+  {q:'What is the Tayelet?', ico:'tayelet', a:['A long boardwalk by the sea','A big museum','A basketball team']},
+  {q:'Which very old port city is right next to Tel Aviv?', ico:'jaffa', a:['Jaffa (Yafo)','Eilat','London']},
+  {q:'Who was Arik Einstein?', ico:'music', a:['A famous Israeli singer','A basketball player','A scientist']},
+  {q:'Maccabi Tel Aviv is a famous ___ team.', ico:'arena', a:['basketball','swimming','chess']},
+  {q:'What can you see on many walls in Tel Aviv?', ico:'mural', a:['Murals (paintings)','Snow','Fish']},
+  {q:'What does <span class="he">גְּלִידָה</span> mean?', ico:'icecream', a:['Ice cream','Dog','Sea']},
+  {q:'Tel Aviv is Israel’s culture and ___ capital.', ico:'towers', a:['business','farming','skiing']},
+  {q:'What does <span class="he">הַיָּם</span> mean?', ico:'sea', a:['The sea','The park','The tower']}
+];
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+let Q = null;
+function startQuiz(){ Q = {order:shuffle(QUIZ.map((_,i)=>i)), i:0, ok:0, res:[]}; drawQ(); }
+function drawQ(){
+  const box = $('quiz');
+  if (Q.i >= Q.order.length){
+    const n = Q.order.length, s = Q.ok >= n-1 ? 3 : Q.ok >= n*0.6 ? 2 : 1;
+    box.innerHTML = `<div class="q-end"><div class="stars">${'★'.repeat(s)}${'☆'.repeat(3-s)}</div>
+      <div style="font-size:28px;font-weight:800">${Q.ok} מִתּוֹךְ ${n}</div>
+      <div style="font-size:24px;font-weight:700;margin:4px 0 14px">${s===3 ? 'מְצֻיָּן!' : s===2 ? 'כָּל הַכָּבוֹד!' : 'יֹפִי! עוֹד פַּעַם?'}</div>
+      <button class="btn primary" id="qAgain" type="button">↻ עוֹד פַּעַם</button></div>`;
+    $('qAgain').onclick = startQuiz;
+    if (s >= 2) burstAt(box, ['★','♥','✓'], ['#f2b01e','#e2506a','#2f9d55'], 22);
+    return;
+  }
+  const item = QUIZ[Q.order[Q.i]];
+  const opts = shuffle(item.a.map((t,j) => ({t, right:j===0})));
+  box.innerHTML = `<div class="q-head"><span class="progress">שְׁאֵלָה ${Q.i+1} / ${Q.order.length}</span>
+      <div class="q-dots">${Q.order.map((_,j) => `<i class="${j===Q.i ? 'cur' : ''} ${Q.res[j]===true ? 'y' : Q.res[j]===false ? 'n' : ''}"></i>`).join('')}</div></div>
+    <div class="q-ico">${tSVG(item.ico)}</div>
+    <div class="q-text">${item.q}</div>
+    <div class="opts">${opts.map((o,j) => `<button class="opt" type="button" data-r="${o.right ? 1 : 0}">${o.t}</button>`).join('')}</div>
+    <div class="q-fb" id="qFb" aria-live="polite"></div>`;
+  box.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    const right = b.dataset.r === '1';
+    box.querySelectorAll('.opt').forEach(x => { x.disabled = true; if (x.dataset.r === '1') x.classList.add('ok'); });
+    if (!right) b.classList.add('bad'); else { Q.ok++; burstAt(b, ['★','✓'], ['#f2b01e','#2f9d55'], 8); }
+    Q.res[Q.i] = right;
+    $('qFb').innerHTML = `<span style="color:${right ? 'var(--green)' : 'var(--coral)'}">${right ? 'נָכוֹן! כָּל הַכָּבוֹד!' : 'אוּפְּס! הַתְּשׁוּבָה הַנְּכוֹנָה בַּיָּרֹק.'}</span>
+      <div style="margin-top:8px"><button class="btn primary" id="qNext" type="button">הַבָּא ◀</button></div>`;
+    $('qNext').onclick = () => { Q.i++; drawQ(); };
+    $('qNext').focus({preventScroll:true});
+  });
+}
+startQuiz();
+
+/* ---------- 1.22: our own drawings of the four workbook scenes (p.20) ---------- */
+const SKY = `<defs><linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ec3f2"/><stop offset="1" stop-color="#d6eefc"/></linearGradient></defs>`;
+function scene(id, body){ return `<svg viewBox="0 0 400 260" role="img" aria-label="${id}">${SKY.replace(/skyG/g, 'sky'+id)}<rect width="400" height="260" fill="url(#sky${id})"/>${body}</svg>`; }
+function cityRow(x0, x1, base, hMin, hMax, seed, cols){
+  let s = '', x = x0, r = seed;
+  const rnd = () => (r = (r * 9301 + 49297) % 233280) / 233280;
+  while (x < x1){
+    const w = 10 + rnd()*18, h = hMin + rnd()*(hMax-hMin), c = cols[Math.floor(rnd()*cols.length)];
+    s += `<rect x="${x.toFixed(1)}" y="${(base-h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${c}" stroke="#55657a" stroke-width="1"/>`;
+    x += w + 1 + rnd()*3;
+  }
+  return s;
+}
+const PICS = [
+  {cap:'נְמַל יָפוֹ', svg:() => scene('a', `
+    ${cityRow(0, 170, 168, 8, 34, 7, ['#e8eef4','#cfd9e3','#dfe7ef'])}
+    <rect y="166" width="400" height="94" fill="#3f9bd6"/>
+    <path d="M170 168 Q250 80 400 70 V168Z" fill="#e3cfa5" stroke="#8a744c" stroke-width="2"/>
+    ${[[190,140,40,28],[232,120,46,48],[280,104,40,64],[322,92,50,76],[362,100,38,68]].map(([x,y,w,h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#ecd7a8" stroke="#8a744c" stroke-width="2"/>` +
+      `<path d="M${x+8} ${y+h-4} v-10 a5 5 0 0 1 10 0 v10 M${x+w-18} ${y+16} v-8 a4 4 0 0 1 8 0 v8Z" fill="#7a5a3a"/>`).join('')}
+    <rect x="300" y="30" width="20" height="66" fill="#f1dfb6" stroke="#8a744c" stroke-width="2"/>
+    <path d="M298 30 L310 10 L322 30Z" fill="#c9a36a" stroke="#8a744c" stroke-width="2"/>
+    <circle cx="310" cy="46" r="6" fill="#fff" stroke="#55657a" stroke-width="2"/>
+    <rect x="0" y="176" width="70" height="20" fill="#e9dfcf" stroke="#8a744c" stroke-width="2"/>
+    <g><path d="M200 200 H290 L276 222 H214Z" fill="#2a5cc7" stroke="${INK}" stroke-width="2.5"/><rect x="226" y="182" width="34" height="18" fill="#fff" stroke="${INK}" stroke-width="2"/><path d="M243 182 V160" stroke="${INK}" stroke-width="2.5"/></g>
+    <g><path d="M300 210 H352 L344 224 H308Z" fill="#fff" stroke="${INK}" stroke-width="2.5"/><path d="M300 214 H352" stroke="#2a8bd0" stroke-width="3"/></g>
+    <path d="M90 240 q10 -6 20 0 t20 0 M170 250 q10 -6 20 0 t20 0 M300 244 q10 -6 20 0 t20 0" stroke="#bfe4fb" stroke-width="3" fill="none"/>`)},
+  {cap:'כַּדּוּרְעָף בַּחוֹף', svg:() => scene('b', `
+    <rect x="40" y="20" width="56" height="150" fill="#f4f6f8" stroke="#8090a3" stroke-width="2"/>
+    <rect x="104" y="50" width="40" height="120" fill="#dfe7ef" stroke="#8090a3" stroke-width="2"/>
+    <rect x="250" y="10" width="46" height="160" fill="#9fc6e6" stroke="#6d8fb0" stroke-width="2"/>
+    <rect x="304" y="40" width="60" height="130" fill="#f4f6f8" stroke="#8090a3" stroke-width="2"/>
+    ${[40,250,304].map((x,i) => { let s=''; for (let y = (i===1?20:i===0?30:50); y < 160; y += 12) s += `<path d="M${x+6} ${y} H${x+(i===1?40:i===0?50:54)}" stroke="#7f95ad" stroke-width="2" opacity=".6"/>`; return s; }).join('')}
+    <path d="M180 170 V120" stroke="#8a5a3b" stroke-width="7"/><path d="M180 122 q-24 -10 -40 4 M180 122 q24 -12 40 2 M180 122 q-10 -20 -30 -22 M180 122 q12 -20 32 -20" stroke="#3f9a52" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <rect y="168" width="400" height="92" fill="#f1d39a"/>
+    <path d="M110 230 V150 M300 230 V150" stroke="${INK}" stroke-width="4"/>
+    <path d="M110 154 H300 V180 H110Z" fill="none" stroke="${INK}" stroke-width="2"/>
+    ${Array.from({length:18},(_,i)=>`<path d="M${120+i*10} 154 V180" stroke="${INK}" stroke-width="1" opacity=".5"/>`).join('')}
+    <path d="M110 167 H300" stroke="${INK}" stroke-width="1" opacity=".5"/>
+    ${person(150, 196, '#e2506a', SKIN[0], 1.4, 'up')}${person(90, 200, '#ffc94a', SKIN[2], 1.4)}
+    ${person(260, 196, '#3d8bf2', SKIN[1], 1.4, 'up')}${person(330, 200, '#6fd38a', SKIN[3], 1.4)}
+    <circle cx="206" cy="120" r="10" fill="#fff" stroke="${INK}" stroke-width="2.5"/><path d="M198 116 q8 6 16 0" stroke="#2a8bd0" stroke-width="2" fill="none"/>`)},
+  {cap:'תֵּל אָבִיב מִלְמַעְלָה', svg:() => scene('c', `
+    ${cityRow(120, 400, 120, 20, 90, 3, ['#e8eef4','#cfd9e3','#b9cbe0','#f4f6f8','#9fbcd9'])}
+    <rect x="0" y="118" width="400" height="142" fill="#e8dcc6"/>
+    ${(() => { let s=''; for (let y=128; y<240; y+=14) s += cityRow(90 + (y-128)*0.6, 400, y+10, 4, 12, y, ['#f2ece0','#e3d6c0','#d8cbb3','#f7f1e6']); return s; })()}
+    <path d="M0 150 C60 160 80 190 70 260 H0Z" fill="#3f9bd6"/>
+    <path d="M70 260 C80 190 60 160 0 150 V140 C70 150 96 186 88 260Z" fill="#f4dca0"/>
+    <path d="M10 200 q8 -5 16 0 t16 0 M6 236 q8 -5 16 0 t16 0" stroke="#bfe4fb" stroke-width="3" fill="none"/>
+    <path d="M0 140 C60 120 120 132 160 122" stroke="#fff" stroke-width="10" opacity=".5" fill="none"/>`)},
+  {cap:'בַּשּׁוּק', svg:() => scene('d', `
+    <rect width="400" height="260" fill="#f6e7cf"/>
+    <path d="M0 0 H400 V46 H0Z" fill="#e2506a"/>
+    ${Array.from({length:10},(_,i)=>`<path d="M${i*40} 0 h20 v46 h-20Z" fill="#fff"/><path d="M${i*40} 46 q10 14 20 0 q10 14 20 0" fill="${i%2 ? '#e2506a' : '#fff'}" stroke="#c23d55" stroke-width="1.5"/>`).join('')}
+    <rect x="140" y="150" width="260" height="110" fill="#b07a45" stroke="${INK}" stroke-width="3"/>
+    ${[[170,150,'#4b7d2a'],[220,150,'#2b2a3a'],[270,150,'#d9822b'],[320,150,'#c23d2a'],[370,150,'#e7c43a'],[195,186,'#8bb84a'],[245,186,'#7a4a2a'],[295,186,'#e0a85a'],[345,186,'#5a8f3a']].map(([x,y,c]) =>
+      `<ellipse cx="${x}" cy="${y}" rx="22" ry="9" fill="#d8d0c0" stroke="${INK}" stroke-width="2"/><ellipse cx="${x}" cy="${y-3}" rx="18" ry="7" fill="${c}"/>` +
+      Array.from({length:5},(_,j)=>`<circle cx="${x-12+j*6}" cy="${y-5+(j%2)*2}" r="2.5" fill="${c}" stroke="rgba(0,0,0,.25)" stroke-width="1"/>`).join('')).join('')}
+    ${person(335, 92, '#3d8bf2', SKIN[0], 1.7)}
+    ${person(60, 120, '#6fd38a', SKIN[1], 2.2)}${person(115, 140, '#a46cf0', SKIN[3], 1.7)}
+    <rect x="150" y="62" width="130" height="34" rx="8" fill="#fff8ec" stroke="${INK}" stroke-width="2.5"/>
+    <text x="215" y="87" text-anchor="middle" font-family="'Noto Sans Hebrew',Arial" font-weight="800" font-size="20" fill="${INK}" direction="rtl">זֵיתִים · תַּבְלִינִים</text>`)}
+];
+const picsEl = $('pics');
+PICS.forEach((p,i) => {
+  const b = document.createElement('button'); b.type='button'; b.className='pic';
+  b.innerHTML = p.svg() + `<span class="cap he">${p.cap}</span>`;
+  b.onclick = () => openPic(i);
+  picsEl.appendChild(b);
+});
+let pi = 0, lastFocus = null;
+function openPic(i){
+  if ($('bigPic').hidden) lastFocus = document.activeElement;
+  pi = (i + PICS.length) % PICS.length;
+  $('bigSvg').innerHTML = PICS[pi].svg().replace(/sky([a-d])/g, 'big$1');
+  $('bigCap').textContent = PICS[pi].cap;
+  $('bigPic').hidden = false; $('bigX').focus({preventScroll:true});
+}
+function closePic(){ $('bigPic').hidden = true; if (lastFocus) lastFocus.focus({preventScroll:true}); }
+$('bigX').onclick = closePic;
+$('bigPrev').onclick = () => openPic(pi-1);
+$('bigNext').onclick = () => openPic(pi+1);
+$('bigPic').addEventListener('click', e => { if (e.target === $('bigPic')) closePic(); });
+document.addEventListener('keydown', e => {
+  if ($('bigPic').hidden) return;
+  if (e.key==='Escape') closePic();
+  if (e.key==='ArrowLeft') openPic(pi+1);
+  if (e.key==='ArrowRight') openPic(pi-1);
+});
+
+/* questions from the workbook + class notes (kept in this browser only) */
+const QS = [
+  {ic:'👀', en:'What can you see in the images?', he:'מָה רוֹאִים בַּתְּמוּנוֹת?'},
+  {ic:'🤔', en:'What do you wonder about?', he:'מָה מְעַנְיֵן אוֹתָנוּ?'},
+  {ic:'⚖️', en:'How is your life similar or different from these images?', he:'מָה דּוֹמֶה וּמָה שׁוֹנֶה אֶצְלֵנוּ?'}
+];
+const store = {get(k){ try { return localStorage.getItem(k) || ''; } catch(e){ return ''; } }, set(k,v){ try { localStorage.setItem(k,v); } catch(e){} }};
+$('qs').innerHTML = QS.map((q,i) => `<div class="qcard"><span class="ic" aria-hidden="true">${q.ic}</span>
+  <span class="qe">${q.en}</span><span class="qh">${q.he}</span>
+  <textarea id="note${i}" aria-label="${q.en}" placeholder="כותבים כאן את התשובות של הכיתה…"></textarea></div>`).join('');
+QS.forEach((_,i) => { const t = $('note'+i); t.value = store.get('os122-note'+i); t.oninput = () => store.set('os122-note'+i, t.value); });
+$('bClearNotes').onclick = () => QS.forEach((_,i) => { $('note'+i).value = ''; store.set('os122-note'+i, ''); });
+
+/* ---------- particles ---------- */
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function burstAt(el, glyphs, colors, n){
+  if (reduce) return;
+  const r = el.getBoundingClientRect(); const cx = r.left + r.width/2, cy = r.top + r.height/2;
+  for (let i = 0; i < n; i++){
+    const s = document.createElement('span'); s.className = 'fx';
+    s.textContent = glyphs[i % glyphs.length]; s.style.color = colors[i % colors.length]; s.style.fontSize = (18 + Math.random()*26) + 'px';
+    s.style.left = cx + 'px'; s.style.top = cy + 'px';
+    document.body.appendChild(s);
+    const a = Math.random()*Math.PI*2, d = 80 + Math.random()*170;
+    s.animate([
+      {transform:'translate(-50%,-50%) scale(.3)', opacity:1},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d}px), calc(-50% + ${Math.sin(a)*d - 40}px)) scale(1) rotate(${(Math.random()-.5)*120}deg)`, opacity:1, offset:.7},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d*1.1}px), calc(-50% + ${Math.sin(a)*d + 30}px)) scale(.8)`, opacity:0}
+    ], {duration:1100 + Math.random()*700, easing:'cubic-bezier(.2,.8,.3,1)'}).onfinish = () => s.remove();
+  }
+}
+})();
+</script>
+<script>function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}setNavH();window.addEventListener('resize',setNavH);</script>
+</body>
+</html>
