@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>הכירו אותי! | משחקי עברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+/* A kid introduces themself; some facts are hidden. Students pick the missing words, with picture clues on demand. */
+:root{
+  --bg:#fdf7ef; --surface:#ffffff; --ink:#23233a; --muted:#6b6880; --line:#eadfce;
+  --green:#2f9d55; --green-soft:#dcf2e3; --red:#e2506a; --red-soft:#fde3e7; --sky:#2a8bd0; --sky-soft:#dcecfb;
+  --gold:#f2b01e; --gold-soft:#fff1cc; --plate:#fff8ec; --shadow:0 2px 0 rgba(35,35,58,.08), 0 8px 24px rgba(35,35,58,.08);
+  --boy:#2a8bd0; --girl:#d6457f;
+  --f-display:'Rubik', 'Segoe UI', Arial, sans-serif;
+  --f-he:'Noto Sans Hebrew', 'Arial Hebrew', 'Segoe UI', Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --green:#5fd283; --green-soft:#1d3a29; --red:#ff7088; --red-soft:#45252f; --sky:#62b4f0; --sky-soft:#1c3247;
+  --gold:#f7c24a; --gold-soft:#3d321a; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35); --boy:#62b4f0; --girl:#ff7fb0; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --green:#5fd283; --green-soft:#1d3a29; --red:#ff7088; --red-soft:#45252f; --sky:#62b4f0; --sky-soft:#1c3247;
+  --gold:#f7c24a; --gold-soft:#3d321a; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35); --boy:#62b4f0; --girl:#ff7fb0; color-scheme:dark; }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--f-he); font-size:17px; line-height:1.5}
+button{font:inherit; color:inherit}
+svg{direction:ltr}
+:focus-visible{outline:3px solid var(--sky); outline-offset:3px; border-radius:8px}
+.wrap{max-width:1180px; margin:0 auto; padding:0 16px 48px}
+
+/* top bar */
+.bar{position:sticky; top:var(--navh,0px); z-index:20; background:var(--bg); display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; padding:12px 0; border-bottom:2px solid var(--line); margin-bottom:18px}
+.bar h1{margin:0; font-size:clamp(24px,3.4vw,34px); font-weight:800; line-height:1.1}
+.bar .spacer{flex:1}
+.pills{display:inline-flex; gap:4px; background:var(--surface); border:2px solid var(--line); border-radius:14px; padding:3px}
+.pills button{border:0; background:transparent; border-radius:10px; padding:5px 12px; font-weight:700; cursor:pointer}
+.pills button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.btn{border:2px solid var(--line); background:var(--surface); border-radius:12px; padding:7px 14px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px}
+.btn:hover{border-color:var(--ink)}
+.btn[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.score{display:flex; align-items:center; gap:8px; font-weight:800; font-size:20px; font-family:var(--f-display)}
+.dots{display:flex; gap:5px; flex-wrap:wrap}
+.dots i{width:12px; height:12px; border-radius:50%; background:var(--line)}
+.dots i.on{background:var(--sky)} .dots i.done{background:var(--green)}
+
+/* game area */
+.game{display:grid; grid-template-columns:minmax(200px,300px) minmax(0,1fr); gap:22px; align-items:start}
+.kid{position:sticky; top:calc(var(--navh,0px) + 90px); background:var(--surface); border:2px solid var(--line); border-radius:24px; padding:16px 16px 10px; box-shadow:var(--shadow); text-align:center}
+.kid .fig{width:min(200px,100%); margin:0 auto}
+.kid .fig svg{width:100%; height:auto; display:block}
+.kid .fig.talk svg{animation:talk .45s ease-in-out 3}
+@keyframes talk{50%{transform:rotate(-2.5deg) translateY(-3px)}}
+.kid .nm{font-size:30px; font-weight:800; margin:6px 0 0}
+.kid .nm.b{color:var(--boy)} .kid .nm.g{color:var(--girl)}
+.kid .floor{height:16px; margin:-6px auto 0; width:70%; border-radius:50%; background:var(--line)}
+
+.intro{background:var(--surface); border:2px solid var(--line); border-radius:24px; padding:18px; box-shadow:var(--shadow)}
+.intro h2{margin:0 0 12px; font-size:22px; display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.lines{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px}
+.ln{border-radius:18px; padding:10px 14px; background:var(--plate); color:#2b2a3a; animation:in .45s cubic-bezier(.2,1.4,.4,1) both}
+.ln .say{display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px; font-size:clamp(22px,2.8vw,30px); font-weight:800; line-height:1.4}
+.ln .ic{font-size:26px; width:36px; text-align:center; flex:none}
+.ln .gap{display:inline-grid; place-items:center; min-width:110px; height:1.5em; padding:0 12px; border-radius:12px; border:3px dashed #b9ad97; color:#9b907c; font-size:.9em}
+.ln .got{color:var(--green); border-bottom:4px solid var(--green); padding:0 4px; animation:pop .4s cubic-bezier(.2,1.6,.4,1)}
+.ln.hid{background:var(--gold-soft); color:var(--ink); border:2px solid var(--gold)}
+.ln.hid .gap{border-color:var(--gold); color:var(--gold)}
+.ln.ok{background:var(--green-soft); color:var(--ink); border:2px solid var(--green)}
+.ln.ok .say{color:var(--ink)}
+.tools{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:10px}
+.opt{border:3px solid var(--line); background:var(--surface); color:var(--ink); border-radius:14px; padding:6px 16px; font-size:clamp(19px,2.2vw,23px); font-weight:800; cursor:pointer; transition:transform .15s}
+.opt:hover{transform:translateY(-2px); border-color:var(--ink)}
+.opt.bad{border-color:var(--red); background:var(--red-soft); animation:shake .4s}
+.opt[disabled]{opacity:.35; cursor:default; transform:none}
+.clue-btn{border:2px dashed var(--gold); background:transparent; color:var(--ink); border-radius:14px; padding:6px 14px; font-weight:800; cursor:pointer; margin-inline-start:auto}
+.clue-btn:hover{background:var(--gold-soft)}
+.clue{margin-top:10px; background:var(--surface); border:3px solid var(--gold); border-radius:18px; padding:10px; display:grid; grid-template-columns:minmax(0,260px) minmax(0,1fr); gap:12px; align-items:center; animation:pop .45s cubic-bezier(.2,1.5,.4,1)}
+.clue > div:first-child{max-width:340px; width:100%}
+.clue svg{width:100%; height:auto; display:block; border-radius:12px}
+.clue p{margin:0; font-size:20px; font-weight:700; color:var(--ink)}
+.clue .big{font-family:var(--f-display); font-size:30px; font-weight:800; direction:ltr; unicode-bidi:isolate}
+
+.done{margin-top:16px; background:var(--green-soft); border:3px solid var(--green); border-radius:20px; padding:16px; text-align:center; animation:pop .5s cubic-bezier(.2,1.5,.4,1)}
+.done h3{margin:0 0 6px; font-size:clamp(24px,3vw,32px)}
+.done p{margin:0 0 12px; font-size:20px; font-weight:700}
+.done .row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center}
+.big-btn{border:0; border-radius:16px; padding:12px 24px; font-size:22px; font-weight:800; cursor:pointer; color:#fff; background:var(--sky)}
+.big-btn.green{background:var(--green)}
+.big-btn.ghost{background:var(--surface); color:var(--ink); border:2px solid var(--line)}
+
+.end{max-width:620px; margin:30px auto; text-align:center; background:var(--surface); border:2px solid var(--line); border-radius:28px; padding:30px 20px; box-shadow:var(--shadow)}
+.end h2{font-size:clamp(32px,5vw,48px); margin:0 0 6px}
+.end .stars{font-size:46px; letter-spacing:6px; margin:6px 0}
+.end p{font-size:22px; font-weight:700; margin:0 0 18px}
+
+.start{max-width:760px; margin:20px auto; text-align:center; background:var(--surface); border:2px solid var(--line); border-radius:28px; padding:26px 20px; box-shadow:var(--shadow)}
+.start h2{font-size:clamp(30px,4.6vw,44px); margin:0 0 8px}
+.start p{font-size:20px; margin:0 0 14px}
+.start .demo{display:flex; justify-content:center; gap:18px; margin:6px 0 16px}
+.start .demo svg{width:110px; height:auto}
+.start .how{display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:0 0 18px; padding:0; list-style:none}
+.start .how li{background:var(--plate); color:#2b2a3a; border-radius:14px; padding:8px 14px; font-weight:700; font-size:18px}
+
+.fx{position:fixed; pointer-events:none; z-index:120; font-weight:800; will-change:transform,opacity}
+@keyframes pop{from{transform:scale(.5); opacity:0}}
+@keyframes in{from{transform:translateY(14px); opacity:0}}
+@keyframes shake{20%,60%{translate:-6px 0}40%,80%{translate:6px 0}}
+
+@media (max-width:760px){
+  .game{grid-template-columns:1fr}
+  .kid{position:static; display:grid; grid-template-columns:110px 1fr; align-items:center; text-align:start; gap:12px; padding:10px 14px}
+  .kid .floor{display:none}
+  .kid .fig{width:100%}
+  .clue{grid-template-columns:1fr}
+  .clue-btn{margin-inline-start:0}
+}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important; transition:none!important} }
+</style>
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../full-lessons/index.html">📚 שיעורים מלאים</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../games/index.html'}">← חזרה</button></nav>
+<div class="wrap">
+  <div class="bar">
+    <h1>הַכִּירוּ אוֹתִי! 👋</h1>
+    <span class="spacer"></span>
+    <div class="pills" role="group" aria-label="רמה" id="levels">
+      <button type="button" data-n="1">קַל</button>
+      <button type="button" data-n="2">בֵּינוֹנִי</button>
+      <button type="button" data-n="4">קָשֶׁה</button>
+    </div>
+    <button class="btn" type="button" id="voiceBtn" aria-pressed="false" hidden>🔊 קול</button>
+    <div class="dots" id="dots" aria-hidden="true"></div>
+    <div class="score">⭐ <span id="score">0</span></div>
+  </div>
+
+  <!-- start -->
+  <div class="start" id="start">
+    <h2>הַכִּירוּ אוֹתִי!</h2>
+    <div class="demo" id="demo"></div>
+    <p>יֶלֶד אוֹ יַלְדָּה מְסַפְּרִים עַל עַצְמָם. חֵלֶק מֵהַמִּלִּים חֲסֵרוֹת!</p>
+    <ul class="how">
+      <li>👀 קוֹרְאִים</li>
+      <li>🔍 רֶמֶז = תְּמוּנָה</li>
+      <li>👆 בּוֹחֲרִים אֶת הַמִּלָּה</li>
+      <li>🗣️ קוֹרְאִים הַכֹּל בְּקוֹל</li>
+    </ul>
+    <button class="big-btn green" type="button" id="go">מַתְחִילִים ◀</button>
+  </div>
+
+  <!-- game -->
+  <div class="game" id="game" hidden>
+    <aside class="kid">
+      <div class="fig" id="fig"></div>
+      <div>
+        <div class="floor"></div>
+        <p class="nm" id="kidName"></p>
+      </div>
+    </aside>
+    <div class="intro">
+      <h2><span id="roundTxt"></span></h2>
+      <ol class="lines" id="lines"></ol>
+      <div class="done" id="done" hidden>
+        <h3>כָּל הַכָּבוֹד! 🎉</h3>
+        <p>עַכְשָׁו תּוֹרְכֶם: קִרְאוּ אֶת כָּל הַהַצָּגָה בְּקוֹל.</p>
+        <div class="row">
+          <button class="big-btn ghost" type="button" id="readAll" hidden>🔊 שׁוֹמְעִים</button>
+          <button class="big-btn" type="button" id="next">הַבָּא ◀</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- end -->
+  <div class="end" id="end" hidden>
+    <h2>סִיַּמְתֶּם! 🏆</h2>
+    <div class="stars" id="endStars"></div>
+    <p id="endTxt"></p>
+    <button class="big-btn green" type="button" id="again">עוֹד פַּעַם ↺</button>
+  </div>
+</div>
+
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const rnd = a => a[Math.floor(Math.random() * a.length)];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const store = { get(k, d){ try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch(e){ return d; } }, set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} } };
+
+const YEAR = new Date().getFullYear();
+const ROUNDS = 8;
+
+/* ---------- words the class already knows ---------- */
+const NAMES = { m:['דָּן','רוֹן','יוֹסִי','יוֹנִי','דָּנִיֵּאל','גַּל'], f:['קֶרֶן','שָׂרָה','שָׁרוֹן'] };
+const CITIES = [
+  {k:'ny',  he:'נְיוּ יוֹרְק', in:'בִּנְיוּ יוֹרְק', note:'אַרְצוֹת הַבְּרִית'},
+  {k:'tlv', he:'תֵּל אָבִיב', in:'בְּתֵל אָבִיב', note:'יִשְׂרָאֵל'},
+  {k:'bos', he:'בּוֹסְטוֹן', in:'בְּבוֹסְטוֹן', note:'אַרְצוֹת הַבְּרִית'},
+  {k:'jaf', he:'יָפוֹ', in:'בְּיָפוֹ', note:'יִשְׂרָאֵל'}
+];
+const SUBJECTS = [
+  {k:'math', he:'מָתֵמָטִיקָה'}, {k:'eng', he:'אַנְגְּלִית'}, {k:'heb', he:'עִבְרִית'}, {k:'sci', he:'מַדָּעִים'},
+  {k:'music', he:'מוּזִיקָה'}, {k:'sport', he:'סְפּוֹרְט'}, {k:'art', he:'אָמָּנוּת'}
+];
+const HOBBIES = [
+  {k:'tennis', he:'טֶנִיס'}, {k:'sport', he:'סְפּוֹרְט'}, {k:'music', he:'מוּזִיקָה'}, {k:'art', he:'אָמָּנוּת'}, {k:'choc', he:'שׁוֹקוֹלָד'}
+];
+const LOOKS = {
+  m:[{skin:'#7a4a2e', hair:'#1f1a18', shirt:'#26262e', style:'curls'}, {skin:'#f2c4a0', hair:'#4a2c1a', shirt:'#3d8bf2', style:'short'},
+     {skin:'#c98d62', hair:'#1f1a17', shirt:'#2f9d55', style:'short'}, {skin:'#f7d3b5', hair:'#b0602a', shirt:'#f2b01e', style:'curls'}],
+  f:[{skin:'#e0a77f', hair:'#8a2b22', shirt:'#c7352f', style:'buns'}, {skin:'#8d5a3b', hair:'#1f1a18', shirt:'#a46cf0', style:'pony'},
+     {skin:'#f7d3b5', hair:'#d9a441', shirt:'#2a8bd0', style:'pony'}, {skin:'#c98d62', hair:'#3b2416', shirt:'#2f9d55', style:'buns'}]
+};
+
+/* ---------- drawings ---------- */
+function kidSVG(g, L){
+  const hairM = L.style === 'curls'
+    ? [[40,22],[50,15],[61,13],[72,15],[81,23],[36,32],[85,33]].map(([x,y]) => `<circle cx="${x}" cy="${y}" r="8" fill="${L.hair}"/>`).join('')
+    : `<path d="M34 40 Q34 12 60 12 Q86 12 86 40 Q76 26 60 26 Q44 26 34 40z" fill="${L.hair}"/>`;
+  const hairF = L.style === 'buns'
+    ? `<circle cx="40" cy="14" r="12" fill="${L.hair}" stroke="#2b2a3a" stroke-width="2"/><circle cx="80" cy="14" r="12" fill="${L.hair}" stroke="#2b2a3a" stroke-width="2"/>
+       <path d="M34 40 Q32 82 40 96 L46 50z M86 40 Q88 82 80 96 L74 50z" fill="${L.hair}"/>`
+    : `<path d="M84 30 Q104 40 98 80 Q94 96 86 100 Q92 70 80 44z" fill="${L.hair}" stroke="#2b2a3a" stroke-width="2"/>
+       <path d="M34 40 Q32 70 38 84 L46 50z" fill="${L.hair}"/>`;
+  const legs = g === 'm'
+    ? `<path d="M44 140 L42 214 H58 L60 160 L64 214 H80 L78 140z" fill="#5f7fbf" stroke="#2b2a3a" stroke-width="2"/>`
+    : `<path d="M38 140 L82 140 L88 168 L32 168z" fill="${L.shirt}" opacity=".85" stroke="#2b2a3a" stroke-width="2"/><path d="M46 166 L46 214 H58 V166z M62 166 V214 H74 L74 166z" fill="#2d2d33"/>`;
+  return `<svg viewBox="0 0 120 230" aria-hidden="true">
+    <path d="M40 214 h22 v10 h-26z M60 214 h22 l4 10 h-26z" fill="#3b3b44"/>
+    ${legs}
+    <path d="M32 84 Q60 74 88 84 L94 146 H26z" fill="${L.shirt}" stroke="#2b2a3a" stroke-width="2"/>
+    <path d="M32 88 Q20 120 30 150 M88 88 Q100 120 90 150" stroke="${L.shirt}" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <circle cx="30" cy="152" r="7" fill="${L.skin}"/><circle cx="90" cy="152" r="7" fill="${L.skin}"/>
+    <rect x="53" y="62" width="14" height="16" fill="${L.skin}"/>
+    ${g === 'f' ? hairF : ''}
+    <ellipse cx="60" cy="42" rx="25" ry="28" fill="${L.skin}" stroke="#2b2a3a" stroke-width="2"/>
+    ${g === 'm' ? hairM : `<path d="M36 38 Q44 14 60 16 Q76 14 84 38 Q70 26 60 30 Q50 26 36 38z" fill="${L.hair}"/>`}
+    <circle cx="51" cy="44" r="3" fill="#2b2a3a"/><circle cx="69" cy="44" r="3" fill="#2b2a3a"/>
+    <circle cx="46" cy="52" r="3" fill="#f2a0a0" opacity=".55"/><circle cx="74" cy="52" r="3" fill="#f2a0a0" opacity=".55"/>
+    <path d="M51 56 Q60 64 69 56" stroke="#2b2a3a" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`;
+}
+
+const FLAG = {
+  il:`<g><rect width="40" height="30" fill="#fff" stroke="#ccc"/><rect y="4" width="40" height="3.5" fill="#0038b8"/><rect y="22.5" width="40" height="3.5" fill="#0038b8"/>
+      <path d="M20 9 L25 17.5 H15Z M20 21 L15 12.5 H25Z" fill="none" stroke="#0038b8" stroke-width="1.6"/></g>`,
+  us:`<g>${Array.from({length:7},(_,i)=>`<rect y="${i*30/6.5}" width="40" height="${30/13}" fill="#b22234"/>`).join('')}<rect y="${30/13}" width="40" height="${30/13}" fill="#fff"/>
+      <rect width="18" height="16" fill="#3c3b6e"/>${Array.from({length:9},(_,i)=>`<circle cx="${3+(i%3)*6}" cy="${3+Math.floor(i/3)*5}" r="1.1" fill="#fff"/>`).join('')}</g>`
+};
+const flagAt = (k, x, y) => `<g transform="translate(${x} ${y})">${FLAG[k]}<rect width="40" height="30" fill="none" stroke="#2b2a3a" stroke-width="1.5"/></g>`;
+const PIN = (x, y) => `<g transform="translate(${x} ${y})"><path d="M0 0 C-12 -16 -10 -30 0 -30 C10 -30 12 -16 0 0z" fill="#e2506a" stroke="#2b2a3a" stroke-width="2"/><circle cy="-20" r="4.5" fill="#fff"/></g>`;
+
+const CLUE_ART = {
+  /* places */
+  ny:() => `<svg viewBox="0 0 240 160"><rect width="240" height="160" fill="#bfe3fa"/>
+    <path d="M0 160 V120 Q60 110 120 124 T240 118 V160z" fill="#5aa0d8"/>
+    <path d="M150 128 L158 40 L172 32 L180 40 L186 128z" fill="#c9b79a" stroke="#4b4f63" stroke-width="2"/><path d="M172 32 V10" stroke="#4b4f63" stroke-width="2.5"/>
+    <rect x="120" y="70" width="26" height="58" fill="#a8b8c8" stroke="#4b4f63" stroke-width="2"/><rect x="190" y="60" width="30" height="68" fill="#8aa1b8" stroke="#4b4f63" stroke-width="2"/>
+    <path d="M200 60 V40 L205 30 L210 40 V60" fill="#8fb8dc" stroke="#4b4f63" stroke-width="2"/>
+    <g transform="translate(58 30)"><rect x="-14" y="96" width="28" height="12" fill="#7fae9a" stroke="#2b2a3a" stroke-width="2"/><path d="M-9 96 L-6 40 H6 L9 96z" fill="#6fb39a" stroke="#2b2a3a" stroke-width="2"/>
+      <circle cy="32" r="8" fill="#6fb39a" stroke="#2b2a3a" stroke-width="2"/><path d="M-8 26 L-12 16 M-3 24 L-4 13 M3 24 L4 13 M8 26 L12 16" stroke="#2b2a3a" stroke-width="2"/>
+      <path d="M6 44 L20 4" stroke="#6fb39a" stroke-width="6" stroke-linecap="round"/><path d="M16 6 L24 -4 L22 8z" fill="#f2b01e" stroke="#2b2a3a" stroke-width="1.5"/></g>
+    ${flagAt('us', 8, 8)}</svg>`,
+  tlv:() => `<svg viewBox="0 0 240 160"><rect width="240" height="160" fill="#bfe3fa"/><circle cx="200" cy="30" r="16" fill="#ffd34d"/>
+    <path d="M0 0 H70 Q60 80 80 160 H0z" fill="#3c8fd0"/><path d="M70 0 Q60 80 80 160 H100 Q82 80 92 0z" fill="#f3dca6"/>
+    ${[[110,60,22],[136,40,20],[160,70,24],[188,50,22],[214,80,20]].map(([x,y,w]) => `<rect x="${x}" y="${y}" width="${w}" height="${160-y}" fill="#e6e1d8" stroke="#4b4f63" stroke-width="2"/>${Array.from({length:Math.floor((150-y)/14)},(_,i)=>`<rect x="${x+5}" y="${y+8+i*14}" width="${w-10}" height="5" fill="#8fb8dc"/>`).join('')}`).join('')}
+    <path d="M30 120 q10 -6 20 0 q10 -6 20 0" stroke="#fff" stroke-width="3" fill="none"/>
+    ${PIN(150, 36)}${flagAt('il', 8, 8)}</svg>`,
+  bos:() => `<svg viewBox="0 0 240 160"><rect width="240" height="160" fill="#dcecfb"/>
+    <path d="M40 112 Q40 56 120 52 Q200 56 200 112z" fill="#1f2a4d" stroke="#2b2a3a" stroke-width="3"/><path d="M40 112 H226 Q232 122 220 126 H40z" fill="#1f2a4d" stroke="#2b2a3a" stroke-width="3"/>
+    <circle cx="120" cy="52" r="5" fill="#c8102e"/>
+    <text x="120" y="102" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="#c8102e" stroke="#fff" stroke-width="1.5">B</text>
+    ${flagAt('us', 8, 8)}</svg>`,
+  jaf:() => `<svg viewBox="0 0 240 160"><rect width="240" height="160" fill="#fde7c4"/>
+    <path d="M0 120 H240 V160 H0z" fill="#3c8fd0"/>
+    <path d="M20 120 V90 Q40 80 60 90 V120z M150 120 V84 H200 V120z M190 84 Q200 60 214 84z" fill="#e8c99a" stroke="#4b4f63" stroke-width="2"/>
+    <rect x="96" y="40" width="40" height="80" fill="#e8c99a" stroke="#4b4f63" stroke-width="2.5"/><rect x="90" y="34" width="52" height="10" fill="#d4b07f" stroke="#4b4f63" stroke-width="2"/>
+    <path d="M102 34 L116 14 L130 34z" fill="#d4b07f" stroke="#4b4f63" stroke-width="2"/>
+    <circle cx="116" cy="64" r="11" fill="#fff" stroke="#4b4f63" stroke-width="2.5"/><path d="M116 64 V56 M116 64 H122" stroke="#2b2a3a" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M106 120 V96 Q116 86 126 96 V120" fill="#9c7a4c"/>
+    ${flagAt('il', 8, 8)}</svg>`,
+  /* school subjects on a board; hobbies at home */
+  board:inner => `<svg viewBox="0 0 240 160"><rect width="240" height="160" fill="#f4e3c3"/>
+    <rect x="14" y="14" width="212" height="124" rx="6" fill="#2f5d46" stroke="#8a5a2b" stroke-width="8"/>
+    <rect x="150" y="138" width="40" height="6" fill="#8a5a2b"/><rect x="160" y="133" width="14" height="5" fill="#fff"/>
+    <text x="120" y="34" text-anchor="middle" font-size="14" fill="#e9f3ec" font-family="Arial" opacity=".75">🏫</text>${inner}</svg>`,
+  home:inner => `<svg viewBox="0 0 240 160"><rect width="240" height="160" fill="#dff1ff"/>
+    <path d="M30 70 L120 14 L210 70z" fill="#e2506a" stroke="#2b2a3a" stroke-width="3"/><rect x="44" y="70" width="152" height="84" fill="#fff8ec" stroke="#2b2a3a" stroke-width="3"/>${inner}</svg>`
+};
+const SUBJ_IN = {
+  math:`<text x="120" y="96" text-anchor="middle" font-family="Rubik,Arial" font-size="44" fill="#fff" font-weight="700">2 + 3 = 5</text>`,
+  eng:`<text x="120" y="100" text-anchor="middle" font-family="Rubik,Arial" font-size="56" fill="#fff" font-weight="700">A B C</text>`,
+  heb:`<text x="120" y="100" text-anchor="middle" font-family="Noto Sans Hebrew,Arial" font-size="56" fill="#fff" font-weight="800" direction="rtl">א ב ג</text>`,
+  sci:`<g transform="translate(120 82)"><path d="M-12 -40 H12 M-8 -40 V-12 L-30 30 Q-32 38 -22 38 H22 Q32 38 30 30 L8 -12 V-40" fill="none" stroke="#fff" stroke-width="4"/>
+       <path d="M-24 22 L-19 12 H19 L24 22 Q26 32 18 32 H-18 Q-26 32 -24 22z" fill="#7fe3a8"/><circle cx="-4" cy="-22" r="4" fill="#7fe3a8"/><circle cx="6" cy="-32" r="3" fill="#7fe3a8"/></g>`,
+  music:`<g fill="#fff"><ellipse cx="96" cy="108" rx="13" ry="10"/><ellipse cx="150" cy="98" rx="13" ry="10"/><path d="M107 108 V50 L161 40 V98 H157 V52 L111 61 V108z"/></g>`,
+  sport:`<g transform="translate(120 84)"><circle r="34" fill="#fff" stroke="#fff" stroke-width="2"/><path d="M0 -14 L13 -4 L8 12 H-8 L-13 -4z" fill="#2b2a3a"/>
+       <path d="M0 -14 V-34 M13 -4 L32 -10 M8 12 L20 28 M-8 12 L-20 28 M-13 -4 L-32 -10" stroke="#2b2a3a" stroke-width="3"/></g>`,
+  art:`<g transform="translate(120 86)"><path d="M-40 0 C-40 -30 40 -34 42 -4 C44 20 20 18 14 12 C6 6 -2 30 -20 26 C-34 22 -40 14 -40 0z" fill="#f4e3c3" stroke="#fff" stroke-width="3"/>
+       <circle cx="-22" cy="-6" r="6" fill="#e2506a"/><circle cx="-4" cy="-16" r="6" fill="#f2b01e"/><circle cx="16" cy="-14" r="6" fill="#2a8bd0"/><circle cx="28" cy="2" r="6" fill="#2f9d55"/></g>`
+};
+const HOBBY_IN = {
+  tennis:`<g transform="translate(120 112)"><ellipse cx="-10" cy="-18" rx="20" ry="26" fill="none" stroke="#2a8bd0" stroke-width="6" transform="rotate(-30 -10 -18)"/>
+       <path d="M2 4 L18 30" stroke="#8a5a2b" stroke-width="8" stroke-linecap="round"/><circle cx="34" cy="-10" r="10" fill="#d7f04a" stroke="#2b2a3a" stroke-width="2"/></g>`,
+  sport:`<g transform="translate(100 118)"><circle r="22" fill="#fff" stroke="#2b2a3a" stroke-width="3"/><path d="M0 -9 L8 -2 L5 8 H-5 L-8 -2z" fill="#2b2a3a"/></g>
+       <path d="M140 132 Q140 112 156 110 L176 112 Q186 118 186 132z" fill="#2a8bd0" stroke="#2b2a3a" stroke-width="2.5"/><path d="M140 132 H188" stroke="#fff" stroke-width="5"/>`,
+  music:`<g transform="translate(120 114)"><path d="M-30 6 Q-30 -34 0 -34 Q30 -34 30 6" fill="none" stroke="#2b2a3a" stroke-width="6"/><rect x="-38" y="0" width="16" height="26" rx="6" fill="#e2506a" stroke="#2b2a3a" stroke-width="2.5"/><rect x="22" y="0" width="16" height="26" rx="6" fill="#e2506a" stroke="#2b2a3a" stroke-width="2.5"/></g>
+       <text x="176" y="104" font-size="26" fill="#2a8bd0">♪</text><text x="60" y="100" font-size="22" fill="#2a8bd0">♫</text>`,
+  art:`<g transform="translate(120 114)"><rect x="-34" y="-30" width="54" height="44" fill="#fff" stroke="#2b2a3a" stroke-width="2.5"/><path d="M-28 6 Q-14 -24 0 0 T14 -8" stroke="#e2506a" stroke-width="4" fill="none"/>
+       <circle cx="8" cy="-18" r="6" fill="#f2b01e"/><path d="M30 24 L48 -14" stroke="#8a5a2b" stroke-width="5" stroke-linecap="round"/><path d="M46 -12 L52 -24" stroke="#2a8bd0" stroke-width="7" stroke-linecap="round"/></g>`,
+  choc:`<g transform="translate(120 112)"><rect x="-40" y="-24" width="80" height="48" rx="6" fill="#6b3a1f" stroke="#2b2a3a" stroke-width="2.5"/>
+       ${[0,1,2,3].map(i => [0,1].map(j => `<rect x="${-36+i*19}" y="${-20+j*21}" width="16" height="18" rx="3" fill="#86502c"/>`).join('')).join('')}
+       <path d="M8 -24 H40 V24 H22z" fill="#c8102e" opacity=".9"/></g>`
+};
+function cakeSVG(birth){
+  return `<svg viewBox="0 0 240 160"><rect width="240" height="160" fill="#fdeef3"/>
+    <rect x="40" y="80" width="110" height="56" rx="8" fill="#f7b3c8" stroke="#2b2a3a" stroke-width="2.5"/><path d="M40 96 Q60 108 76 96 T112 96 T150 96" stroke="#fff" stroke-width="6" fill="none"/>
+    <rect x="34" y="132" width="122" height="8" rx="4" fill="#d9c7a8"/>
+    ${[62,84,106,128].map(x => `<rect x="${x}" y="56" width="7" height="24" fill="#2a8bd0"/><path d="M${x+3.5} 44 q-6 8 0 12 q6 -4 0 -12z" fill="#f2b01e"/>`).join('')}
+    <g transform="translate(166 30)"><rect width="62" height="70" rx="8" fill="#fff" stroke="#2b2a3a" stroke-width="2.5"/><rect width="62" height="18" rx="8" fill="#e2506a"/>
+      <text x="31" y="54" text-anchor="middle" font-family="Rubik,Arial" font-size="20" font-weight="700" fill="#23233a">${birth}</text></g></svg>`;
+}
+
+/* ---------- round builder ---------- */
+const FACTS = ['age','city','subj','hobby'];
+function makeRound(g, i){
+  const name = NAMES[g][i % NAMES[g].length];
+  const birth = YEAR - (9 + Math.floor(Math.random() * 5));     /* ages 9-13 */
+  const city = rnd(CITIES), subj = rnd(SUBJECTS);
+  let hobby; do { hobby = rnd(HOBBIES); } while (hobby.k === subj.k);
+  return { g, name, look: LOOKS[g][Math.floor(i / 2) % LOOKS[g].length], birth, age: YEAR - birth, city, subj, hobby };
+}
+function lineDefs(r){
+  const m = r.g === 'm';
+  const loves = m ? 'אוֹהֵב' : 'אוֹהֶבֶת';
+  return [
+    {k:'name', ic:'👋', pre:'שָׁלוֹם, קוֹרְאִים לִי', ans:r.name, post:'.'},
+    {k:'age', ic:'🎂', pre:`אֲנִי ${m ? 'בֶּן' : 'בַּת'}`, ans:String(r.age), post:'.',
+      opts:() => shuffle([r.age, ...shuffle([-2,-1,1,2]).slice(0,2).map(d => r.age + d)]).map(String),
+      clue:() => `${cakeSVG(r.birth)}`, note:() => `<p>שְׁנַת לֵידָה: <span class="big">${r.birth}</span></p><p>הַשָּׁנָה: <span class="big">${YEAR}</span></p><p style="font-size:16px; color:var(--muted)"><span class="big" style="font-size:20px">${YEAR} − ${r.birth} = ?</span></p>`},
+    {k:'city', ic:'🏙️', pre:`אֲנִי ${m ? 'גָּר' : 'גָּרָה'}`, ans:r.city.in, post:'.',
+      opts:() => shuffle([r.city, ...shuffle(CITIES.filter(c => c !== r.city)).slice(0,2)]).map(c => c.in),
+      clue:() => CLUE_ART[r.city.k](), note:() => `<p>📍 ${r.city.note}</p>`},
+    {k:'subj', ic:'📚', pre:`אֲנִי ${loves} אֶת שִׁעוּר`, ans:r.subj.he, post:'.',
+      opts:() => shuffle([r.subj, ...shuffle(SUBJECTS.filter(s => s !== r.subj)).slice(0,2)]).map(s => s.he),
+      clue:() => CLUE_ART.board(SUBJ_IN[r.subj.k]), note:() => `<p>🏫 בְּבֵית הַסֵּפֶר</p>`},
+    {k:'hobby', ic:'🏠', pre:`בַּבַּיִת אֲנִי ${loves}`, ans:r.hobby.he, post:'.',
+      opts:() => shuffle([r.hobby, ...shuffle(HOBBIES.filter(h => h !== r.hobby && h.k !== r.subj.k)).slice(0,2)]).map(h => h.he),
+      clue:() => CLUE_ART.home(HOBBY_IN[r.hobby.k]), note:() => `<p>🏠 בַּבַּיִת</p>`}
+  ];
+}
+
+/* ---------- speech: only with a Hebrew voice ---------- */
+let heVoice = null, voiceOn = store.get('hakiru-voice', true);
+function findVoice(){
+  const vs = speechSynthesis.getVoices() || [];
+  heVoice = vs.find(v => /^(he|iw)/i.test(v.lang) && /natural|online/i.test(v.name)) || vs.find(v => /^(he|iw)/i.test(v.lang)) || null;
+  $('voiceBtn').hidden = !heVoice; $('readAll').hidden = !heVoice;
+  $('voiceBtn').setAttribute('aria-pressed', voiceOn);
+}
+if ('speechSynthesis' in window){ findVoice(); speechSynthesis.onvoiceschanged = findVoice; setTimeout(findVoice, 1200); }
+function say(t){ if (!heVoice || !voiceOn || !t) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = heVoice; u.lang = heVoice.lang; u.rate = .8; speechSynthesis.speak(u); talk(); }
+$('voiceBtn').onclick = () => { voiceOn = !voiceOn; store.set('hakiru-voice', voiceOn); $('voiceBtn').setAttribute('aria-pressed', voiceOn); if (!voiceOn) speechSynthesis.cancel(); };
+function talk(){ const f = $('fig'); f.classList.remove('talk'); void f.offsetWidth; f.classList.add('talk'); }
+
+/* ---------- state ---------- */
+let hidden = store.get('hakiru-level', 2);
+let deck = [], idx = 0, score = 0, maxScore = 0;
+function setLevel(n){
+  hidden = n; store.set('hakiru-level', n);
+  $('levels').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.n === n));
+}
+$('levels').querySelectorAll('button').forEach(b => b.onclick = () => { setLevel(+b.dataset.n); if (!$('game').hidden) newGame(); });
+setLevel(hidden);
+
+$('demo').innerHTML = kidSVG('m', LOOKS.m[0]) + kidSVG('f', LOOKS.f[0]);
+
+function newGame(){
+  const gs = shuffle(Array.from({length:ROUNDS}, (_, i) => i % 2 ? 'f' : 'm'));
+  const cnt = {m:0, f:0};
+  deck = gs.map(g => makeRound(g, cnt[g]++));
+  idx = 0; score = 0; maxScore = 0;
+  $('score').textContent = 0;
+  $('start').hidden = true; $('end').hidden = true; $('game').hidden = false;
+  showRound();
+}
+function drawDots(){
+  $('dots').innerHTML = deck.map((_, i) => `<i class="${i < idx ? 'done' : i === idx ? 'on' : ''}"></i>`).join('');
+}
+
+function showRound(){
+  const r = deck[idx];
+  drawDots();
+  $('roundTxt').textContent = `${r.g === 'm' ? 'הוּא' : 'הִיא'} מְסַפֵּר${r.g === 'm' ? '' : 'ֶת'} עַל עַצְמ${r.g === 'm' ? 'וֹ' : 'ָהּ'} · ${idx + 1} / ${deck.length}`;
+  $('fig').innerHTML = kidSVG(r.g, r.look);
+  $('kidName').textContent = r.name; $('kidName').className = 'nm ' + (r.g === 'm' ? 'b' : 'g');
+  $('done').hidden = true;
+  const defs = lineDefs(r);
+  const hideSet = new Set(shuffle(FACTS).slice(0, hidden));
+  const ol = $('lines'); ol.innerHTML = '';
+  let left = hideSet.size;
+  maxScore += left * 2;
+  defs.forEach((d, n) => {
+    const li = document.createElement('li');
+    const isHid = hideSet.has(d.k);
+    li.className = 'ln' + (isHid ? ' hid' : '');
+    li.style.animationDelay = (n * .12) + 's';
+    li.innerHTML = `<div class="say"><span class="ic" aria-hidden="true">${d.ic}</span><span>${d.pre}</span>${isHid ? `<span><span class="gap">?</span>${d.post}</span>` : `<span>${d.ans}${d.post}</span>`}</div>`;
+    if (isHid){
+      let usedClue = false, missed = false;
+      const tools = document.createElement('div'); tools.className = 'tools';
+      d.opts().forEach(o => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.textContent = o;
+        b.onclick = () => {
+          if (o === d.ans){
+            const pts = (usedClue || missed) ? 1 : 2;
+            score += pts; $('score').textContent = score;
+            li.className = 'ln ok';
+            li.querySelector('.gap').outerHTML = `<span class="got">${d.ans}</span>`;
+            tools.remove(); li.querySelector('.clue')?.remove();
+            burstAt(li.querySelector('.got'), pts === 2 ? ['★','★','✓'] : ['★','✓'], ['#f2b01e','#2f9d55'], pts === 2 ? 12 : 7);
+            say(`${d.pre} ${d.ans}`);
+            if (--left === 0) finishRound(defs);
+          } else {
+            missed = true; b.classList.add('bad'); b.disabled = true;
+          }
+        };
+        tools.appendChild(b);
+      });
+      const cb = document.createElement('button'); cb.type = 'button'; cb.className = 'clue-btn'; cb.textContent = '🔍 רֶמֶז';
+      cb.onclick = () => {
+        usedClue = true; cb.remove();
+        const c = document.createElement('div'); c.className = 'clue';
+        c.innerHTML = `<div>${d.clue()}</div><div>${d.note()}</div>`;
+        li.appendChild(c);
+      };
+      tools.appendChild(cb);
+      li.appendChild(tools);
+    }
+    ol.appendChild(li);
+  });
+  /* the kid reads the known lines aloud */
+  setTimeout(() => say(defs.filter(d => !hideSet.has(d.k)).map(d => `${d.pre} ${d.ans}`).join('. ')), 500);
+  window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
+}
+function finishRound(defs){
+  $('done').hidden = false;
+  $('readAll').onclick = () => say(defs.map(d => `${d.pre} ${d.ans}`).join('. '));
+  $('next').textContent = idx === deck.length - 1 ? 'סִיּוּם 🏆' : 'הַבָּא ◀';
+  setTimeout(() => $('done').scrollIntoView({block:'nearest', behavior: reduce ? 'auto' : 'smooth'}), 300);
+}
+$('next').onclick = () => {
+  idx++;
+  if (idx < deck.length){ showRound(); return; }
+  drawDots();
+  $('game').hidden = true; $('end').hidden = false;
+  const pct = maxScore ? score / maxScore : 1;
+  $('endStars').textContent = pct > .85 ? '⭐⭐⭐' : pct > .6 ? '⭐⭐' : '⭐';
+  $('endTxt').textContent = `${score} מִתּוֹךְ ${maxScore} נְקֻדּוֹת`;
+  burstAt($('endStars'), ['★','✿','♥','✓'], ['#f2b01e','#e2506a','#2a8bd0','#2f9d55'], 30);
+};
+$('go').onclick = newGame;
+$('again').onclick = newGame;
+
+/* ---------- particles ---------- */
+function burstAt(el, glyphs, colors, n){
+  if (reduce || !el) return;
+  const r = el.getBoundingClientRect(); const cx = r.left + r.width/2, cy = r.top + r.height/2;
+  for (let i = 0; i < n; i++){
+    const s = document.createElement('span'); s.className = 'fx';
+    s.textContent = glyphs[i % glyphs.length]; s.style.color = colors[i % colors.length]; s.style.fontSize = (18 + Math.random()*22) + 'px';
+    s.style.left = cx + 'px'; s.style.top = cy + 'px';
+    document.body.appendChild(s);
+    const a = Math.random()*Math.PI*2, d = 60 + Math.random()*(n > 20 ? 240 : 120);
+    s.animate([
+      {transform:'translate(-50%,-50%) scale(.3)', opacity:1},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d}px), calc(-50% + ${Math.sin(a)*d - 40}px)) scale(1)`, opacity:1, offset:.7},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d*1.1}px), calc(-50% + ${Math.sin(a)*d + 30}px)) scale(.8)`, opacity:0}
+    ], {duration:1000 + Math.random()*600, easing:'cubic-bezier(.2,.8,.3,1)'}).onfinish = () => s.remove();
+  }
+}
+window.GAME = { get deck(){ return deck; }, get idx(){ return idx; }, newGame };
+})();
+</script>
+<script>function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}setNavH();window.addEventListener('resize',setNavH);</script>
+</body>
+</html>
