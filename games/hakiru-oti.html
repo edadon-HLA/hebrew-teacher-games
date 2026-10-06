@@ -49,7 +49,14 @@ svg{direction:ltr}
 .score{display:flex; align-items:center; gap:8px; font-weight:800; font-size:20px; font-family:var(--f-display)}
 .dots{display:flex; gap:5px; flex-wrap:wrap}
 .dots i{width:12px; height:12px; border-radius:50%; background:var(--line)}
-.dots i.on{background:var(--sky)} .dots i.done{background:var(--green)}
+.dots i.on{background:var(--sky)} .dots i.fin{background:var(--green)}
+
+.q{margin-top:14px; background:var(--surface); border:3px solid var(--line); border-radius:18px; padding:12px 14px; animation:in .45s cubic-bezier(.2,1.4,.4,1) both}
+.q.ok{border-color:var(--green); background:var(--green-soft)}
+.qt{margin:0 0 4px; font-size:clamp(21px,2.6vw,27px); font-weight:800; display:flex; gap:10px; align-items:center}
+.qn{flex:none; width:34px; height:34px; border-radius:50%; background:var(--sky); color:#fff; display:grid; place-items:center; font-family:var(--f-display); font-size:19px}
+.opt.right{border-color:var(--green); background:var(--green); color:#fff; opacity:1!important}
+.qbox{margin-top:6px}
 
 /* game area */
 .game{display:grid; grid-template-columns:minmax(200px,300px) minmax(0,1fr); gap:22px; align-items:start}
@@ -140,9 +147,8 @@ svg{direction:ltr}
     <h1>הַכִּירוּ אוֹתִי! 👋</h1>
     <span class="spacer"></span>
     <div class="pills" role="group" aria-label="רמה" id="levels">
-      <button type="button" data-n="1">קַל</button>
-      <button type="button" data-n="2">בֵּינוֹנִי</button>
-      <button type="button" data-n="4">קָשֶׁה</button>
+      <button type="button" data-n="1">קַל · עִם טֶקְסְט</button>
+      <button type="button" data-n="2">קָשֶׁה · בְּלִי טֶקְסְט</button>
     </div>
     <button class="btn" type="button" id="voiceBtn" aria-pressed="false" hidden>🔊 קול</button>
     <div class="dots" id="dots" aria-hidden="true"></div>
@@ -153,12 +159,12 @@ svg{direction:ltr}
   <div class="start" id="start">
     <h2>הַכִּירוּ אוֹתִי!</h2>
     <div class="demo" id="demo"></div>
-    <p>יֶלֶד אוֹ יַלְדָּה מְסַפְּרִים עַל עַצְמָם. חֵלֶק מֵהַמִּלִּים חֲסֵרוֹת!</p>
+    <p>יֶלֶד אוֹ יַלְדָּה מְסַפְּרִים עַל עַצְמָם. קוֹרְאִים אֶת הַטֶּקְסְט וְעוֹנִים עַל שָׁלוֹשׁ שְׁאֵלוֹת!</p>
     <ul class="how">
-      <li>👀 קוֹרְאִים</li>
+      <li>👀 קוֹרְאִים אֶת הַטֶּקְסְט</li>
+      <li>❓ עוֹנִים עַל שְׁאֵלוֹת</li>
+      <li>👆 בּוֹחֲרִים תְּשׁוּבָה</li>
       <li>🔍 רֶמֶז = תְּמוּנָה</li>
-      <li>👆 בּוֹחֲרִים אֶת הַמִּלָּה</li>
-      <li>🗣️ קוֹרְאִים הַכֹּל בְּקוֹל</li>
     </ul>
     <button class="big-btn green" type="button" id="go">מַתְחִילִים ◀</button>
   </div>
@@ -175,6 +181,8 @@ svg{direction:ltr}
     <div class="intro">
       <h2><span id="roundTxt"></span></h2>
       <ol class="lines" id="lines"></ol>
+      <div id="readRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px"><button class="big-btn ghost" type="button" id="hearText" hidden>🔊 שׁוֹמְעִים</button><button class="big-btn green" type="button" id="toQ">לַשְּׁאֵלוֹת ◀</button></div>
+      <div class="qbox" id="qbox" hidden></div>
       <div class="done" id="done" hidden>
         <h3>כָּל הַכָּבוֹד! 🎉</h3>
         <p>עַכְשָׁו תּוֹרְכֶם: קִרְאוּ אֶת כָּל הַהַצָּגָה בְּקוֹל.</p>
@@ -204,7 +212,7 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const store = { get(k, d){ try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch(e){ return d; } }, set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} } };
 
 const YEAR = new Date().getFullYear();
-const ROUNDS = 8;
+const ROUNDS = 6, QUESTIONS = 3;
 
 /* ---------- words the class already knows ---------- */
 const NAMES = { m:['דָּן','רוֹן','יוֹסִי','יוֹנִי','דָּנִיֵּאל','גַּל'], f:['קֶרֶן','שָׂרָה','שָׁרוֹן'] };
@@ -336,14 +344,20 @@ function cakeSVG(birth){
       <text x="31" y="54" text-anchor="middle" font-family="Rubik,Arial" font-size="20" font-weight="700" fill="#23233a">${birth}</text></g></svg>`;
 }
 
-/* ---------- round builder ---------- */
-const FACTS = ['age','city','subj','hobby'];
-function makeRound(g, i){
-  const name = NAMES[g][i % NAMES[g].length];
-  const birth = YEAR - (9 + Math.floor(Math.random() * 5));     /* ages 9-13 */
-  const city = rnd(CITIES), subj = rnd(SUBJECTS);
-  let hobby; do { hobby = rnd(HOBBIES); } while (hobby.k === subj.k);
-  return { g, name, look: LOOKS[g][Math.floor(i / 2) % LOOKS[g].length], birth, age: YEAR - birth, city, subj, hobby };
+/* ---------- students: fixed facts, so every question has one right answer ---------- */
+const C = k => CITIES.find(c => c.k === k), S = k => SUBJECTS.find(x => x.k === k), H = k => HOBBIES.find(x => x.k === k);
+const STUDENTS = [
+  {g:'m', name:'דָּן',       age:10, city:C('ny'),  subj:S('math'),  hobby:H('tennis')},
+  {g:'f', name:'קֶרֶן',      age:11, city:C('tlv'), subj:S('art'),    hobby:H('choc')},
+  {g:'m', name:'רוֹן',       age:12, city:C('bos'), subj:S('sport'),  hobby:H('music')},
+  {g:'f', name:'שָׂרָה',     age:9,  city:C('jaf'), subj:S('eng'),    hobby:H('art')},
+  {g:'m', name:'יוֹסִי',     age:13, city:C('tlv'), subj:S('sci'),    hobby:H('sport')},
+  {g:'f', name:'שָׁרוֹן',    age:10, city:C('ny'),  subj:S('music'),  hobby:H('tennis')},
+  {g:'m', name:'דָּנִיֵּאל', age:11, city:C('jaf'), subj:S('heb'),    hobby:H('choc')},
+  {g:'f', name:'מַיָּה',     age:12, city:C('bos'), subj:S('math'),   hobby:H('music')}
+];
+function makeRound(st, i){
+  return Object.assign({look: LOOKS[st.g][i % LOOKS[st.g].length], birth: YEAR - st.age}, st);
 }
 function lineDefs(r){
   const m = r.g === 'm';
@@ -351,15 +365,19 @@ function lineDefs(r){
   return [
     {k:'name', ic:'👋', pre:'שָׁלוֹם, קוֹרְאִים לִי', ans:r.name, post:'.'},
     {k:'age', ic:'🎂', pre:`אֲנִי ${m ? 'בֶּן' : 'בַּת'}`, ans:String(r.age), post:'.',
+      q:`${m ? 'בֶּן' : 'בַּת'} כַּמָּה ${r.name}?`,
       opts:() => shuffle([r.age, ...shuffle([-2,-1,1,2]).slice(0,2).map(d => r.age + d)]).map(String),
-      clue:() => `${cakeSVG(r.birth)}`, note:() => `<p>שְׁנַת לֵידָה: <span class="big">${r.birth}</span></p><p>הַשָּׁנָה: <span class="big">${YEAR}</span></p><p style="font-size:16px; color:var(--muted)"><span class="big" style="font-size:20px">${YEAR} − ${r.birth} = ?</span></p>`},
+      clue:() => cakeSVG(r.birth), note:() => `<p>שְׁנַת לֵידָה: <span class="big">${r.birth}</span></p><p>הַשָּׁנָה: <span class="big">${YEAR}</span></p><p><span class="big" style="font-size:20px">${YEAR} − ${r.birth} = ?</span></p>`},
     {k:'city', ic:'🏙️', pre:`אֲנִי ${m ? 'גָּר' : 'גָּרָה'}`, ans:r.city.in, post:'.',
+      q:`אֵיפֹה ${r.name} ${m ? 'גָּר' : 'גָּרָה'}?`,
       opts:() => shuffle([r.city, ...shuffle(CITIES.filter(c => c !== r.city)).slice(0,2)]).map(c => c.in),
       clue:() => CLUE_ART[r.city.k](), note:() => `<p>📍 ${r.city.note}</p>`},
     {k:'subj', ic:'📚', pre:`אֲנִי ${loves} אֶת שִׁעוּר`, ans:r.subj.he, post:'.',
+      q:`אֵיזֶה שִׁעוּר ${r.name} ${loves}?`,
       opts:() => shuffle([r.subj, ...shuffle(SUBJECTS.filter(s => s !== r.subj)).slice(0,2)]).map(s => s.he),
       clue:() => CLUE_ART.board(SUBJ_IN[r.subj.k]), note:() => `<p>🏫 בְּבֵית הַסֵּפֶר</p>`},
     {k:'hobby', ic:'🏠', pre:`בַּבַּיִת אֲנִי ${loves}`, ans:r.hobby.he, post:'.',
+      q:`מָה ${r.name} ${loves} בַּבַּיִת?`,
       opts:() => shuffle([r.hobby, ...shuffle(HOBBIES.filter(h => h !== r.hobby && h.k !== r.subj.k)).slice(0,2)]).map(h => h.he),
       clue:() => CLUE_ART.home(HOBBY_IN[r.hobby.k]), note:() => `<p>🏠 בַּבַּיִת</p>`}
   ];
@@ -379,86 +397,104 @@ $('voiceBtn').onclick = () => { voiceOn = !voiceOn; store.set('hakiru-voice', vo
 function talk(){ const f = $('fig'); f.classList.remove('talk'); void f.offsetWidth; f.classList.add('talk'); }
 
 /* ---------- state ---------- */
-let hidden = store.get('hakiru-level', 2);
+let level = store.get('hakiru-level', 1) === 2 ? 2 : 1;
 let deck = [], idx = 0, score = 0, maxScore = 0;
 function setLevel(n){
-  hidden = n; store.set('hakiru-level', n);
+  level = n; store.set('hakiru-level', n);
   $('levels').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.n === n));
 }
 $('levels').querySelectorAll('button').forEach(b => b.onclick = () => { setLevel(+b.dataset.n); if (!$('game').hidden) newGame(); });
-setLevel(hidden);
+setLevel(level);
 
 $('demo').innerHTML = kidSVG('m', LOOKS.m[0]) + kidSVG('f', LOOKS.f[0]);
 
 function newGame(){
-  const gs = shuffle(Array.from({length:ROUNDS}, (_, i) => i % 2 ? 'f' : 'm'));
-  const cnt = {m:0, f:0};
-  deck = gs.map(g => makeRound(g, cnt[g]++));
+  const half = ROUNDS / 2;
+  const pick = g => shuffle(STUDENTS.filter(x => x.g === g)).slice(0, half);
+  const ms = pick('m'), fs = pick('f'), mix = [];
+  for (let i = 0; i < half; i++) mix.push(ms[i], fs[i]);
+  deck = mix.map((st, i) => makeRound(st, Math.floor(Math.random() * 4) + i));
   idx = 0; score = 0; maxScore = 0;
   $('score').textContent = 0;
   $('start').hidden = true; $('end').hidden = true; $('game').hidden = false;
   showRound();
 }
 function drawDots(){
-  $('dots').innerHTML = deck.map((_, i) => `<i class="${i < idx ? 'done' : i === idx ? 'on' : ''}"></i>`).join('');
+  $('dots').innerHTML = deck.map((_, i) => `<i class="${i < idx ? 'fin' : i === idx ? 'on' : ''}"></i>`).join('');
 }
 
+/* each round: read the student's text, then answer a few multiple-choice questions */
 function showRound(){
   const r = deck[idx];
   drawDots();
   $('roundTxt').textContent = `${r.g === 'm' ? 'הוּא' : 'הִיא'} מְסַפֵּר${r.g === 'm' ? '' : 'ֶת'} עַל עַצְמ${r.g === 'm' ? 'וֹ' : 'ָהּ'} · ${idx + 1} / ${deck.length}`;
   $('fig').innerHTML = kidSVG(r.g, r.look);
   $('kidName').textContent = r.name; $('kidName').className = 'nm ' + (r.g === 'm' ? 'b' : 'g');
-  $('done').hidden = true;
+  $('done').hidden = true; $('qbox').hidden = true; $('qbox').innerHTML = '';
   const defs = lineDefs(r);
-  const hideSet = new Set(shuffle(FACTS).slice(0, hidden));
-  const ol = $('lines'); ol.innerHTML = '';
-  let left = hideSet.size;
-  maxScore += left * 2;
+  const ol = $('lines'); ol.innerHTML = ''; ol.hidden = false;
   defs.forEach((d, n) => {
     const li = document.createElement('li');
-    const isHid = hideSet.has(d.k);
-    li.className = 'ln' + (isHid ? ' hid' : '');
-    li.style.animationDelay = (n * .12) + 's';
-    li.innerHTML = `<div class="say"><span class="ic" aria-hidden="true">${d.ic}</span><span>${d.pre}</span>${isHid ? `<span><span class="gap">?</span>${d.post}</span>` : `<span>${d.ans}${d.post}</span>`}</div>`;
-    if (isHid){
-      let usedClue = false, missed = false;
-      const tools = document.createElement('div'); tools.className = 'tools';
-      d.opts().forEach(o => {
-        const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.textContent = o;
-        b.onclick = () => {
-          if (o === d.ans){
-            const pts = (usedClue || missed) ? 1 : 2;
-            score += pts; $('score').textContent = score;
-            li.className = 'ln ok';
-            li.querySelector('.gap').outerHTML = `<span class="got">${d.ans}</span>`;
-            tools.remove(); li.querySelector('.clue')?.remove();
-            burstAt(li.querySelector('.got'), pts === 2 ? ['★','★','✓'] : ['★','✓'], ['#f2b01e','#2f9d55'], pts === 2 ? 12 : 7);
-            say(`${d.pre} ${d.ans}`);
-            if (--left === 0) finishRound(defs);
-          } else {
-            missed = true; b.classList.add('bad'); b.disabled = true;
-          }
-        };
-        tools.appendChild(b);
-      });
-      const cb = document.createElement('button'); cb.type = 'button'; cb.className = 'clue-btn'; cb.textContent = '🔍 רֶמֶז';
-      cb.onclick = () => {
-        usedClue = true; cb.remove();
-        const c = document.createElement('div'); c.className = 'clue';
-        c.innerHTML = `<div>${d.clue()}</div><div>${d.note()}</div>`;
-        li.appendChild(c);
-      };
-      tools.appendChild(cb);
-      li.appendChild(tools);
-    }
+    li.className = 'ln'; li.style.animationDelay = (n * .12) + 's';
+    li.innerHTML = `<div class="say"><span class="ic" aria-hidden="true">${d.ic}</span><span>${d.pre}</span><span>${d.ans}${d.post}</span></div>`;
     ol.appendChild(li);
   });
-  /* the kid reads the known lines aloud */
-  setTimeout(() => say(defs.filter(d => !hideSet.has(d.k)).map(d => `${d.pre} ${d.ans}`).join('. ')), 500);
+  $('readRow').hidden = false; $('hearText').hidden = !heVoice;
+  const hear = () => say(defs.map(d => `${d.pre} ${d.ans}`).join('. '));
+  $('hearText').onclick = hear;
+  $('toQ').onclick = () => startQuestions(r, defs);
+  setTimeout(hear, 500);
   window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
 }
+function startQuestions(r, defs){
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  const qs = shuffle(defs.filter(d => d.q)).slice(0, QUESTIONS);
+  const box = $('qbox'); box.hidden = false; box.innerHTML = '';
+  $('readRow').hidden = true;
+  let peeked = false, left = qs.length;
+  maxScore += left * 2;
+  if (level === 2){                                 /* hard: the text is hidden, answer from memory */
+    $('lines').hidden = true;
+    const peek = document.createElement('button'); peek.type = 'button'; peek.className = 'btn'; peek.textContent = '👀 מַצִּיגִים אֶת הַטֶּקְסְט';
+    peek.onclick = () => { peeked = true; $('lines').hidden = false; peek.remove(); };
+    box.appendChild(peek);
+  }
+  qs.forEach((d, n) => {
+    const card = document.createElement('div'); card.className = 'q'; card.style.animationDelay = (n * .1) + 's';
+    card.innerHTML = `<p class="qt"><span class="qn">${n + 1}</span><span>${d.q}</span></p>`;
+    let usedClue = false, missed = false;
+    const tools = document.createElement('div'); tools.className = 'tools';
+    d.opts().forEach(o => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.textContent = o;
+      b.onclick = () => {
+        if (o === d.ans){
+          const pts = (usedClue || missed || peeked) ? 1 : 2;
+          score += pts; $('score').textContent = score;
+          card.classList.add('ok');
+          tools.querySelectorAll('.opt').forEach(x => { x.disabled = true; });
+          b.classList.add('right');
+          tools.querySelector('.clue-btn')?.remove(); card.querySelector('.clue')?.remove();
+          burstAt(b, pts === 2 ? ['★','★','✓'] : ['★','✓'], ['#f2b01e','#2f9d55'], pts === 2 ? 12 : 7);
+          say(`${d.pre} ${d.ans}`);
+          if (--left === 0) finishRound(defs);
+        } else { missed = true; b.classList.add('bad'); b.disabled = true; }
+      };
+      tools.appendChild(b);
+    });
+    const cb = document.createElement('button'); cb.type = 'button'; cb.className = 'clue-btn'; cb.textContent = '🔍 רֶמֶז';
+    cb.onclick = () => {
+      usedClue = true; cb.remove();
+      const c = document.createElement('div'); c.className = 'clue';
+      c.innerHTML = `<div>${d.clue()}</div><div>${d.note()}</div>`;
+      card.appendChild(c);
+    };
+    tools.appendChild(cb);
+    card.appendChild(tools);
+    box.appendChild(card);
+  });
+}
 function finishRound(defs){
+  $('lines').hidden = false;
   $('done').hidden = false;
   $('readAll').onclick = () => say(defs.map(d => `${d.pre} ${d.ans}`).join('. '));
   $('next').textContent = idx === deck.length - 1 ? 'סִיּוּם 🏆' : 'הַבָּא ◀';
