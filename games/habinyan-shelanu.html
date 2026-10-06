@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הַבִּנְיָן שֶׁלָּנוּ — עוֹלֶה וְיוֹרֵד</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:#f4f7fb;color:#172235;font-family:"Noto Sans Hebrew",Arial,sans-serif}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 18px;background:#1f608f;color:#fff}
+.top h1{margin:0;font-size:1.5rem}
+.score{font-size:1.2rem;font-weight:800;display:flex;gap:16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 18px 0}
+.tab{border:2px solid #1f608f;background:#fff;color:#172235;border-radius:999px;padding:8px 16px;font-size:1rem;cursor:pointer;font-family:inherit;font-weight:700}
+.tab.on{background:#1f608f;color:#fff}
+main{display:grid;grid-template-columns:minmax(310px,430px) 1fr;gap:18px;padding:18px;align-items:start;max-width:1250px;margin:auto}
+@media(max-width:820px){main{grid-template-columns:1fr}}
+.panel,.bwrap{background:#fff;border:1px solid #d9e1ea;border-radius:18px;padding:16px;box-shadow:0 5px 18px rgba(30,55,90,.07)}
+.bwrap{padding:12px}
+.roofbar{background:#e8590c;color:#fff;text-align:center;font-weight:800;border-radius:12px 12px 0 0;padding:6px}
+.building{position:relative;border:4px solid #e8590c;border-top:0;background:#fde68a}
+.row{display:grid;grid-template-columns:40px 60px 1fr 1fr;height:50px;border-top:2px solid rgba(0,0,0,.15)}
+.row:first-child{border-top:0}
+.fl{display:flex;align-items:center;justify-content:center;font-weight:800;background:rgba(0,0,0,.08)}
+.shaft{background:repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0 6px,transparent 6px 12px);border-inline:2px dashed rgba(0,0,0,.25)}
+.apt{display:flex;align-items:center;gap:5px;padding:2px 5px;margin:3px;border-radius:10px;background:#e0f2fe;color:#0c2a44;cursor:pointer;border:2px solid transparent;transition:.2s;min-width:0;overflow:hidden}
+.apt img{width:34px;height:34px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #fff;background:#cbd5e1}
+.apt .t{display:flex;flex-direction:column;line-height:1.15;font-size:.72rem;min-width:0}
+.apt .t b{font-size:.85rem}
+.apt .t span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.apt.from{background:#bfdbfe;border-color:#2563eb}
+.apt.to{background:#bbf7d0;border-color:#16a34a}
+.apt.ask{background:#fde68a;border-color:#d97706;animation:pulse 1s infinite alternate}
+@keyframes pulse{to{transform:scale(1.05)}}
+.mover{position:absolute;right:40px;width:60px;height:50px;display:flex;align-items:center;justify-content:center;transition:top 1.3s ease-in-out;pointer-events:none;z-index:2}
+.mover img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:3px solid #1f608f;background:#fff}
+.mover .badge{position:absolute;bottom:-2px;left:2px;font-size:1.3rem}
+.q{font-size:1.5rem;line-height:1.7;margin:0 0 8px;font-weight:700}
+.sub{font-size:1.25rem;margin:14px 0 8px;font-weight:800;color:#1f608f}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.big{font-family:inherit;font-size:1.5rem;font-weight:800;padding:12px 22px;border-radius:14px;border:3px solid #1f608f;background:#fff;color:#172235;cursor:pointer;min-width:90px}
+.big:hover:not(:disabled){background:#1f608f;color:#fff}
+.big.wrong{background:#dc2626;border-color:#dc2626;color:#fff;animation:shake .4s}
+.big.right{background:#16a34a;border-color:#16a34a;color:#fff}
+.big:disabled{cursor:default}
+.pbtn{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:1.15rem;padding:10px;min-width:120px}
+.pbtn img{width:90px;height:90px;border-radius:14px;object-fit:cover;background:#e2e8f0}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.msg{min-height:3.4em;font-size:1.3rem;margin:14px 0;font-weight:800;line-height:1.6}
+.msg.ok{color:#16a34a}.msg.bad{color:#dc2626}
+.next{font-family:inherit;font-size:1.2rem;padding:10px 24px;border-radius:12px;border:0;background:#1f608f;color:#fff;cursor:pointer;font-weight:800}
+.speak{border:0;background:#f59e0b;color:#fff;border-radius:50%;width:38px;height:38px;font-size:1.1rem;cursor:pointer;vertical-align:middle;margin-inline-start:8px}
+.keypad{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;max-width:420px;background:#374151;padding:14px;border-radius:16px}
+.key{font-family:inherit;font-size:1.5rem;font-weight:800;aspect-ratio:1;border-radius:50%;border:4px solid #9ca3af;background:#111827;color:#fbbf24;cursor:pointer}
+.key:hover{border-color:#fbbf24}
+.key.on{background:#fbbf24;color:#111827}
+.key.wrong{border-color:#dc2626;animation:shake .4s}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:14px}
+.card{border:3px solid #d9e1ea;border-radius:16px;padding:12px;text-align:center;cursor:pointer;background:#fff;color:#172235;font-family:inherit}
+.card:hover{border-color:#1f608f}
+.card .e{font-size:2.2rem}.card .h{font-size:1.4rem;font-weight:800}
+.who{display:flex;gap:14px;align-items:center;margin-top:12px;min-height:110px}
+.who img{width:100px;height:100px;border-radius:16px;object-fit:cover;border:3px solid #d9e5ef;background:#edf2f6}
+.hidenames .apt img,.hidenames .apt .t span{visibility:hidden}
+.opt{margin-top:10px;font-size:1rem;font-weight:700}
+.credits{max-width:1250px;margin:0 auto;padding:0 18px 24px;color:#5b687b;font-size:.85rem;direction:ltr;text-align:left}
+.credits summary{cursor:pointer;direction:rtl;text-align:right}
+</style>
+<style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}</style>
+</head>
+<body>
+<nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button></nav>
+<div class="top">
+  <h1>🏢 הַבִּנְיָן שֶׁלָּנוּ</h1>
+  <div class="score"><span>⭐ <span id="score">0</span></span><span>🔥 <span id="streak">0</span></span></div>
+</div>
+<div class="tabs" id="tabs"></div>
+<main>
+  <section class="bwrap" aria-label="בִּנְיָן">
+    <div class="roofbar">בִּנְיָן</div>
+    <div class="building" id="building"><div class="mover" id="mover"><img id="mimg" alt=""><span class="badge" id="mbadge">🛗</span></div></div>
+  </section>
+  <section class="panel" id="panel"></section>
+</main>
+<details class="credits"><summary>תְּמוּנוֹת / Photo credits</summary><div id="credits"></div></details>
+
+<script>
+const H = 50;
+const LET = ['א','ב'];
+/* [file, name with nikud, gender, photo credit] — photos live in ./ben-kama-photos/ (Wikimedia Commons) */
+const RES = [
+ ['lebron','לֶבְּרוֹן','m','Erik Drost · CC BY 2.0'],
+ ['serena','סֶרֵנָה','f','AndrewHenkelman · CC BY-SA 4.0'],
+ ['swift','טֵיילוֹר','f','iHeartRadioCA · CC BY 3.0'],
+ ['curry','סְטֵף','m','Clément Bardot · CC BY-SA 4.0'],
+ ['beyonce','בְּיוֹנְסֵה','f','Raph_PH · CC BY 2.0'],
+ ['obama','בָּרָק','m','Pete Souza, official White House photo · Public domain'],
+ ['zendaya','זֶנְדַּיָה','f','PhilipRomano · CC BY-SA 4.0'],
+ ['hanks','טוֹם','m','Raph_PH · CC BY 2.0'],
+ ['oprah','אוֹפְּרָה','f','US Embassy South Africa · Public domain'],
+ ['johnson','דְוֵיין','m','Harald Krichel · CC BY-SA 4.0'],
+ ['eilish','בִּילִי','f','Raph_PH · CC BY 4.0'],
+ ['phelps','מַיְקֶל','m','Agência Brasil · CC BY 2.0'],
+ ['grande','אַרִיאָנָה','f','Barbie Simons · CC BY 3.0'],
+ ['mrbeast','מִיסְטֶר בִּיסְט','m','Tyren Redd · CC BY 4.0'],
+ ['gomez','סֶלֶנָה','f','Frank Sun · CC BY-SA 4.0'],
+ ['smith','וִיל','m','TechCrunch · CC BY 2.0'],
+ ['rodrigo','אוֹלִיבְיָה','f','Raph_PH · CC BY 4.0'],
+ ['mars','בְּרוּנוֹ','m','slgckgc · CC BY 4.0'],
+ ['biles','סִימוֹן','f','Ocoudis · CC BY-SA 4.0'],
+ ['gaga','לֵידִי גָּאגָּא','f','Carlos M. Vazquez II · CC BY 2.0']
+];
+const people = RES.map((r,i)=>({img:r[0],he:r[1],g:r[2],floor:Math.floor(i/2)+1,letter:LET[i%2],id:(Math.floor(i/2)+1)+LET[i%2]}));
+const photo = p => `./ben-kama-photos/${p.img}.jpg`;
+const imgTag = (p,cls='') => `<img class="${cls}" src="${photo(p)}" alt="${p.he}" onerror="this.style.visibility='hidden'">`;
+document.getElementById('credits').innerHTML = RES.map(r=>`${r[0]}: ${r[3]}`).join('<br>') + '<br>Source: Wikimedia Commons';
+
+const rand = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=rand(0,i);[a[i],a[j]]=[a[j],a[i]];} return a; };
+const pick = a => a[rand(0,a.length-1)];
+
+/* ---------- Hebrew helpers ---------- */
+const live = p => p.g==='m' ? 'גָּר' : 'גָּרָה';
+const goes = p => p.g==='m' ? 'הוֹלֵךְ' : 'הוֹלֶכֶת';
+const pron = p => p.g==='m' ? 'הוּא' : 'הִיא';
+const wants = p => p.g==='m' ? 'רוֹצֶה' : 'רוֹצָה';
+const dirVerb = (p,up) => up ? (p.g==='m'?'עוֹלֶה':'עוֹלָה') : (p.g==='m'?'יוֹרֵד':'יוֹרֶדֶת');
+const floorsText = n => n===1 ? 'קוֹמָה אַחַת' : n===2 ? 'שְׁתֵּי קוֹמוֹת' : n+' קוֹמוֹת';
+const trText = t => t==='elevator' ? 'בַּמַּעֲלִית' : 'בַּמַּדְרֵגוֹת';
+const nbWord = p => p.g==='m' ? 'הַשָּׁכֵן' : 'הַשְּׁכֵנָה';
+
+/* ---------- speech ---------- */
+function say(t){
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t.replace(/[֑-ׇ]/g,'').replace(/([0-9]+)([אב])/g,'$1 $2'));
+    u.lang='he-IL'; u.rate=.85; speechSynthesis.speak(u);
+  }catch(e){}
+}
+const speakBtn = t => `<button class="speak" onclick='say(${JSON.stringify(t)})' title="🔊">🔊</button>`;
+
+/* ---------- building ---------- */
+const bEl = document.getElementById('building'), mover = document.getElementById('mover');
+function buildBuilding(){
+  for(let f=10; f>=1; f--){
+    const r = document.createElement('div'); r.className='row';
+    r.innerHTML = `<div class="fl">${f}</div><div class="shaft"></div>` +
+      LET.map(l=>{const p=people.find(x=>x.floor===f&&x.letter===l);
+        return `<div class="apt" data-id="${p.id}">${imgTag(p)}<div class="t"><b><bdi>${p.id}</bdi></b><span>${p.he}</span></div></div>`}).join('');
+    bEl.insertBefore(r, mover);
+  }
+  bEl.querySelectorAll('.apt').forEach(c=>c.onclick=()=>{ if(aptClick) aptClick(c.dataset.id); });
+}
+function moverTo(f, p, badge){
+  if(p!==undefined){ const mi=document.getElementById("mimg"); if(p){mi.src=photo(p);mi.style.visibility="visible";} else mi.style.visibility="hidden"; }
+  if(badge!==undefined) document.getElementById('mbadge').textContent = badge;
+  mover.style.top = ((10-f)*H)+'px';
+}
+function mark(map){
+  bEl.querySelectorAll('.apt').forEach(c=>c.className='apt');
+  for(const [id,cls] of Object.entries(map||{})){ const c=bEl.querySelector(`[data-id="${id}"]`); if(c) c.classList.add(cls); }
+}
+const floorMark = (f,cls) => { const m={}; LET.forEach(l=>m[f+l]=cls); return m; };
+
+/* ---------- score ---------- */
+let score=0, streak=0;
+function good(pts=10){ score+=pts; streak++; paint(); }
+function bad(){ streak=0; paint(); }
+function paint(){ document.getElementById('score').textContent=score; document.getElementById('streak').textContent=streak; }
+
+/* ---------- tabs ---------- */
+const MODES = [['learn','📖 לוֹמְדִים'],['g1','⬆️⬇️ עוֹלֶה אוֹ יוֹרֵד?'],['g2','🛗 בַּמַּעֲלִית'],['g3','🏠 שְׁכֵנִים']];
+let mode='learn', aptClick=null, tick=0;
+const tabs = document.getElementById('tabs');
+MODES.forEach(([k,t])=>{ const b=document.createElement('button'); b.className='tab'; b.textContent=t; b.dataset.k=k; b.onclick=()=>go(k); tabs.appendChild(b); });
+const P = document.getElementById('panel');
+const NEXT = '<button class="next" id="nb">שְׁאֵלָה הַבָּאָה ◀</button>';
+function go(k){
+  if(k!=='g3') bEl.classList.remove('hidenames');
+  mode=k; tick++; aptClick=null; try{speechSynthesis.cancel();}catch(e){}
+  tabs.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+  mark({});
+  ({learn:learn,g1:g1,g2:g2,g3:g3})[k]();
+}
+
+/* ================= LEARN ================= */
+function learn(){
+  const first = people[0];
+  moverTo(10, first, '🛗');
+  const words = [
+   ['🏢','בִּנְיָן'],['🚪','דִּירָה'],['🔢','קוֹמָה'],['👥','שָׁכֵן / שְׁכֵנָה'],
+   ['🛗','מַעֲלִית'],['🪜','מַדְרֵגוֹת'],['⬆️','עוֹלֶה'],['⬇️','יוֹרֵד / יוֹרֶדֶת']
+  ];
+  P.innerHTML = `<p class="q">לַחֲצוּ עַל הַמִּלִּים וְעַל הַדִּירוֹת כְּדֵי לִשְׁמֹעַ.</p>
+   <div class="who" id="who"></div>
+   <div class="cards">${words.map(w=>`<button class="card" onclick='say(${JSON.stringify(w[1].split(" / ")[0])})'><div class="e">${w[0]}</div><div class="h">${w[1]}</div></button>`).join('')}</div>`;
+  aptClick = id => {
+    const p = people.find(x=>x.id===id);
+    const t = `${p.he} ${live(p)} בְּקוֹמָה ${p.floor}, דִּירָה ${p.letter}.`;
+    mark({[id]:'ask'}); moverTo(p.floor, p, '🙋');
+    document.getElementById('who').innerHTML = `${imgTag(p)}<div class="q" style="margin:0">${t}${speakBtn(t)}</div>`;
+    say(t);
+  };
+}
+
+/* ================= GAME 1 : up or down ================= */
+function g1(){
+  let fa,fb; do{fa=rand(1,10);fb=rand(1,10);}while(fa===fb);
+  const a=pick(people.filter(p=>p.floor===fa)), b=pick(people.filter(p=>p.floor===fb));
+  const s = {up:b.floor>a.floor,d:Math.abs(b.floor-a.floor),tr:Math.random()<.5?'elevator':'stairs',my:0};
+  mark({[a.id]:'from',[b.id]:'to'});
+  moverTo(a.floor, a, s.tr==='elevator'?'🛗':'🪜');
+  const text = `${a.he} ${live(a)} בְּקוֹמָה ${a.floor}. ${b.he} ${live(b)} בְּקוֹמָה ${b.floor}. ${a.he} ${goes(a)} לְבַקֵּר אֶת ${b.he} ${trText(s.tr)}.`;
+  const my = tick;
+  P.innerHTML = `<div class="who">${imgTag(a)}<span style="font-size:2rem">${s.tr==='elevator'?'🛗':'🪜'} ➜</span>${imgTag(b)}</div>
+    <p class="q">${text}${speakBtn(text)}</p>
+    <div class="sub" id="sub">${a.he} ${a.g==='m'?'עוֹלֶה אוֹ יוֹרֵד':'עוֹלָה אוֹ יוֹרֶדֶת'}?</div>
+    <div class="btns" id="ans"></div><div class="msg" id="msg"></div><div id="nx"></div>`;
+  const ans=document.getElementById('ans'), msg=document.getElementById('msg'), sub=document.getElementById('sub');
+  [[true,'⬆️'],[false,'⬇️']].forEach(([up,ic])=>{
+    const bt=document.createElement('button'); bt.className='big'; bt.textContent=dirVerb(a,up)+' '+ic;
+    bt.onclick=()=>{
+      if(up===s.up){ bt.classList.add('right'); [...ans.children].forEach(x=>x.disabled=true);
+        msg.className='msg ok'; msg.textContent='נָכוֹן!'; say(dirVerb(a,up));
+        setTimeout(()=>{ if(my===tick) stage2(); },900);
+      } else { bt.classList.add('wrong'); s.my++; bad(); msg.className='msg bad'; msg.textContent='לֹא נָכוֹן, נַסּוּ שׁוּב.'; setTimeout(()=>bt.classList.remove('wrong'),450); }
+    };
+    ans.appendChild(bt);
+  });
+  function stage2(){
+    sub.textContent = `כַּמָּה קוֹמוֹת ${a.he} ${dirVerb(a,s.up)}?`;
+    msg.textContent=''; ans.innerHTML='';
+    const opts = new Set([s.d]);
+    const cand = shuffle([1,2,3,4,5,6,7,8,9].filter(x=>x!==s.d && Math.abs(x-s.d)<=3));
+    while(opts.size<4 && cand.length) opts.add(cand.pop());
+    shuffle([...opts]).forEach(n=>{
+      const bt=document.createElement('button'); bt.className='big'; bt.textContent=n;
+      bt.onclick=()=>{
+        if(n===s.d){
+          [...ans.children].forEach(x=>x.disabled=true); bt.classList.add('right');
+          moverTo(b.floor);
+          const full = `${a.he} ${dirVerb(a,s.up)} ${floorsText(s.d)} ${trText(s.tr)}.`;
+          msg.className='msg ok'; msg.innerHTML = `🎉 ${full} ${speakBtn(full)}`;
+          good(s.my?5:10); say(full);
+          document.getElementById('nx').innerHTML=NEXT; document.getElementById('nb').onclick=g1;
+        } else { bt.classList.add('wrong'); s.my++; bad(); msg.className='msg bad';
+          msg.textContent = `לֹא נָכוֹן. רֶמֶז: כַּמָּה קוֹמוֹת יֵשׁ בֵּין ${a.floor} לְבֵין ${b.floor}?`; setTimeout(()=>bt.classList.remove('wrong'),450); }
+      };
+      ans.appendChild(bt);
+    });
+  }
+}
+
+/* ================= GAME 2 : elevator ================= */
+function g2(){
+  const kind = pick(['visit','visit','rel']);
+  let a,b,s,t,prompt,spoken,okSentence;
+  if(kind==='visit'){
+    let fa,fb; do{fa=rand(1,10);fb=rand(1,10);}while(fa===fb);
+    a=pick(people.filter(p=>p.floor===fa)); b=pick(people.filter(p=>p.floor===fb));
+    s=a.floor; t=b.floor;
+    prompt = `${a.he} ${live(a)} בְּקוֹמָה ${a.floor}. ${pron(a)} ${wants(a)} לְבַקֵּר אֶת ${b.he}.<br>לַחֲצוּ עַל הַקּוֹמָה שֶׁל ${b.he} בַּמַּעֲלִית.`;
+    spoken = `${a.he} ${live(a)} בְּקוֹמָה ${a.floor}. ${pron(a)} ${wants(a)} לְבַקֵּר אֶת ${b.he}. לַחֲצוּ עַל הַקּוֹמָה שֶׁל ${b.he}.`;
+    mark({[a.id]:'from',[b.id]:'to'});
+    okSentence = `${b.he} ${live(b)} בְּקוֹמָה ${b.floor}. כָּל הַכָּבוֹד!`;
+  } else {
+    const up = Math.random()<.5; let d;
+    if(up){ s=rand(1,8); d=rand(1,10-s); t=s+d; } else { s=rand(3,10); d=rand(1,s-1); t=s-d; }
+    a=pick(people);
+    prompt = `אַתֶּם בְּקוֹמָה ${s}. ${up?'עֲלוּ':'רְדוּ'} ${floorsText(d)} בַּמַּעֲלִית.<br>עַל אֵיזוֹ קוֹמָה לוֹחֲצִים?`;
+    spoken = `אַתֶּם בְּקוֹמָה ${s}. ${up?'עֲלוּ':'רְדוּ'} ${floorsText(d)}. עַל אֵיזוֹ קוֹמָה לוֹחֲצִים?`;
+    mark(floorMark(s,'from'));
+    okSentence = `${up?'עוֹלִים':'יוֹרְדִים'} ${floorsText(d)} — קוֹמָה ${t}. כָּל הַכָּבוֹד!`;
+  }
+  moverTo(s, a, '🛗');
+  let done=false, my=tick, wrongs=0, back;
+  P.innerHTML = `<p class="q">${prompt}${speakBtn(spoken)}</p>
+    <div class="keypad" id="keys"></div><div class="msg" id="msg"></div><div id="nx"></div>`;
+  const keys=document.getElementById('keys'), msg=document.getElementById('msg');
+  for(let f=1;f<=10;f++){
+    const k=document.createElement('button'); k.className='key'; k.textContent=f;
+    k.onclick=()=>{
+      if(done) return; clearTimeout(back);
+      keys.querySelectorAll('.key').forEach(x=>x.classList.remove('on'));
+      k.classList.add('on'); moverTo(f);
+      if(f===t){ done=true; msg.className='msg ok'; msg.textContent='🛗 '+okSentence; good(wrongs?5:10);
+        mark(kind==='visit'?{[a.id]:'from',[b.id]:'to'}:floorMark(t,'to')); say(okSentence);
+        document.getElementById('nx').innerHTML=NEXT; document.getElementById('nb').onclick=g2;
+      } else { wrongs++; bad(); k.classList.add('wrong'); msg.className='msg bad';
+        msg.textContent = `זוֹ קוֹמָה ${f}. נַסּוּ שׁוּב!`;
+        back=setTimeout(()=>{ if(my!==tick||done) return; moverTo(s); k.classList.remove('on','wrong'); },1500); }
+    };
+    keys.appendChild(k);
+  }
+}
+
+/* ================= GAME 3 : neighbors ================= */
+function g3(){
+  const p = pick(people);
+  const nb = people.find(x=>x.floor===p.floor && x.id!==p.id);
+  const kind = pick(['where','neighbor','who']);
+  let q,spoken,opts,correct,full,asPhoto=false;
+  if(kind==='where'){
+    q=`בְּאֵיזוֹ דִּירָה ${live(p)} ${p.he}?`; spoken=q;
+    correct=p.id; opts=shuffle(people.filter(x=>x.id!==p.id)).slice(0,3).map(x=>x.id);
+    full=`${p.he} ${live(p)} בְּקוֹמָה ${p.floor}, דִּירָה ${p.letter}.`;
+    mark({}); moverTo(p.floor,p,'🙋');
+  } else if(kind==='neighbor'){
+    q=`מִי ${nbWord(nb)} שֶׁל ${p.he}?`; spoken=q; asPhoto=true;
+    correct=nb.id; opts=shuffle(people.filter(x=>x.floor!==p.floor)).slice(0,3).map(x=>x.id);
+    full=`${nb.he} ${live(nb)} בְּקוֹמָה ${p.floor}. ${nb.he} ${nbWord(nb)} שֶׁל ${p.he}.`;
+    mark({[p.id]:'ask'}); moverTo(p.floor,p,'🙋');
+  } else {
+    q=`מִי גָּר בְּדִירָה <bdi>${p.id}</bdi>?`; spoken=`מִי גָּר בְּדִירָה ${p.id}?`; asPhoto=true;
+    correct=p.id; opts=shuffle(people.filter(x=>x.id!==p.id)).slice(0,3).map(x=>x.id);
+    full=`${p.he} ${live(p)} בְּדִירָה ${p.letter} בְּקוֹמָה ${p.floor}.`;
+    mark({[p.id]:'ask'}); moverTo(p.floor,false,'❓');
+  }
+  const shown = kind==='who' ? '' : `<div class="who">${imgTag(p)}</div>`;
+  P.innerHTML = `${shown}<p class="q">${q}${speakBtn(spoken)}</p>
+    <label class="opt"><input type="checkbox" ${bEl.classList.contains('hidenames')?'checked':''} onchange="bEl.classList.toggle('hidenames',this.checked)"> 🙈 הַסְתֵּר אֶת הַשֵּׁמוֹת בַּבִּנְיָן (קָשֶׁה יוֹתֵר)</label>
+    <div class="btns" id="ans"></div><div class="msg" id="msg"></div><div id="nx"></div>`;
+  const ans=document.getElementById('ans'), msg=document.getElementById('msg');
+  let wr=0;
+  shuffle([correct,...opts]).forEach(o=>{
+    const bt=document.createElement('button');
+    if(asPhoto){ const x=people.find(y=>y.id===o); bt.className='big pbtn'; bt.innerHTML=`${imgTag(x)}<span>${x.he}</span>`; }
+    else { bt.className='big'; bt.innerHTML=`<bdi>${o}</bdi>`; }
+    bt.onclick=()=>{
+      if(o===correct){ [...ans.children].forEach(x=>x.disabled=true); bt.classList.add('right');
+        mark(kind==='neighbor'?{[p.id]:'from',[nb.id]:'to'}:{[p.id]:'to'});
+        msg.className='msg ok'; msg.innerHTML=`🎉 ${full} ${speakBtn(full)}`;
+        good(wr?5:10); say(full);
+        document.getElementById('nx').innerHTML=NEXT; document.getElementById('nb').onclick=g3;
+      } else { bt.classList.add('wrong'); wr++; bad(); msg.className='msg bad'; msg.textContent='לֹא נָכוֹן, נַסּוּ שׁוּב.'; setTimeout(()=>bt.classList.remove('wrong'),450); }
+    };
+    ans.appendChild(bt);
+  });
+}
+
+buildBuilding();
+go('learn');
+</script>
+</body>
+</html>
