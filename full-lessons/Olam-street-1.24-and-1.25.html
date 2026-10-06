@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Olam Street 1.24 & 1.25</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+/* Layout: 1.24 pair-talk question cards, 1.25 fill-in play + stage mode, then a game shortcut for review. */
+:root{
+  --bg:#fdf7ef; --surface:#ffffff; --ink:#23233a; --muted:#6b6880; --line:#eadfce;
+  --coral:#e2506a; --coral-soft:#fde3e7; --green:#2f9d55; --green-soft:#dcf2e3;
+  --sky:#2a8bd0; --sky-soft:#dcecfb; --gold:#f2b01e; --plate:#fff8ec; --shadow:0 2px 0 rgba(35,35,58,.08), 0 8px 24px rgba(35,35,58,.08);
+  --boy:#2a8bd0; --girl:#d6457f; --boy-soft:#dcecfb; --girl-soft:#fbe1ec;
+  --stage:#3a2f4d; --floor:#cfe5a0; --curtain:#b8323f;
+  --f-display:'Rubik', 'Segoe UI', Arial, sans-serif;
+  --f-he:'Noto Sans Hebrew', 'Arial Hebrew', 'Segoe UI', Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35);
+  --boy:#62b4f0; --girl:#ff7fb0; --boy-soft:#1c3247; --girl-soft:#43213a; --stage:#14111c; --floor:#5d7a3a; --curtain:#8e2531; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35);
+  --boy:#62b4f0; --girl:#ff7fb0; --boy-soft:#1c3247; --girl-soft:#43213a; --stage:#14111c; --floor:#5d7a3a; --curtain:#8e2531; color-scheme:dark; }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--f-he); font-size:17px; line-height:1.55;}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:16px; padding-block:0 64px}
+.he{font-family:var(--f-he); direction:rtl; unicode-bidi:isolate}
+.en{font-family:var(--f-display); direction:ltr; unicode-bidi:isolate}
+svg{direction:ltr}
+button,input{font:inherit; color:inherit}
+:focus-visible{outline:3px solid var(--sky); outline-offset:3px; border-radius:8px}
+
+/* Header */
+.top{padding-block:28px 18px; display:flex; flex-wrap:wrap; gap:12px 24px; align-items:flex-end; justify-content:space-between}
+.crumb{font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 6px}
+h1{font-family:var(--f-he); font-size:clamp(28px,5vw,46px); line-height:1.05; margin:0; font-weight:800; text-wrap:balance}
+.top .he-title{font-size:clamp(20px,3vw,28px); color:var(--muted); margin:0}
+
+/* Step bar */
+.steps{position:sticky; top:calc(var(--navh,0px) + env(safe-area-inset-top,0px)); z-index:20; background:var(--bg); border-bottom:2px solid var(--line); margin-bottom:24px}
+.steps ol{list-style:none; display:flex; gap:8px; padding:10px 0; margin:0; overflow-x:auto}
+.steps a{display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; text-decoration:none; color:var(--ink); font-weight:600; white-space:nowrap; border:2px solid var(--line); background:var(--surface)}
+.steps a b{display:inline-grid; place-items:center; width:24px; height:24px; border-radius:50%; color:#fff; font-size:13px}
+.steps a[data-c="coral"] b{background:var(--coral)} .steps a[data-c="green"] b{background:var(--green)} .steps a[data-c="sky"] b{background:var(--sky)}
+.steps a:hover{border-color:var(--ink)}
+
+/* Section shell */
+section.step{margin-block:28px 48px; scroll-margin-top:calc(var(--navh,0px) + 70px)}
+.tag{display:inline-flex; align-items:center; gap:10px; padding-block:6px; padding-inline:8px 16px; border-radius:999px; font-weight:800; font-size:18px}
+.tag .num{background:var(--surface); border-radius:999px; padding:2px 10px; font-size:16px; font-family:var(--f-display); direction:ltr; unicode-bidi:isolate}
+.tag.green{background:var(--green-soft)} .tag.green .num{color:var(--green)}
+.tag.sky{background:var(--sky-soft)} .tag.sky .num{color:var(--sky)}
+.step-head{display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; justify-content:space-between; margin-bottom:6px}
+.lead{font-size:clamp(19px,2.2vw,23px); font-weight:600; max-width:70ch; margin:10px 0 18px}
+h3{font-size:22px; margin:26px 0 10px}
+
+.panel{background:var(--surface); border:2px solid var(--line); border-radius:20px; padding:18px; box-shadow:var(--shadow)}
+.toolbar{display:flex; flex-wrap:wrap; gap:8px 10px; align-items:center; margin-bottom:16px}
+.btn{border:2px solid var(--line); background:var(--surface); border-radius:12px; padding:8px 14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px}
+.btn:hover{border-color:var(--ink)}
+.btn[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.btn.primary{background:var(--green); border-color:var(--green); color:#fff}
+.btn.big{font-size:20px; padding:12px 22px; border-radius:16px; font-weight:800}
+.spacer{flex:1}
+.lbl{font-weight:800}
+
+.gpick{display:inline-flex; gap:4px; background:var(--bg); border:2px solid var(--line); border-radius:14px; padding:3px}
+.gpick button{border:0; background:transparent; border-radius:10px; padding:4px 14px; font-weight:800; cursor:pointer}
+.gpick button[aria-pressed="true"]{background:var(--surface); box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.gpick button.b[aria-pressed="true"]{color:var(--boy)} .gpick button.g[aria-pressed="true"]{color:var(--girl)}
+
+.v.b{color:var(--boy)} .v.g{color:var(--girl)}
+.v{font-weight:800}
+
+/* ---------- 1.24 question cards ---------- */
+.qgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px}
+.qcard{background:var(--surface); border:2px solid var(--line); border-radius:22px; padding:16px 18px 14px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px; transition:border-color .2s, background .2s}
+.qcard.done{border-color:var(--green); background:linear-gradient(var(--green-soft),var(--surface) 70%)}
+.qtop{display:flex; align-items:center; gap:10px}
+.qn{display:inline-grid; place-items:center; width:34px; height:34px; border-radius:50%; background:var(--green); color:#fff; font-weight:800; font-family:var(--f-display); flex:none}
+.qicon{font-size:30px; line-height:1}
+.qtop .spacer{flex:1}
+.tick{border:2px solid var(--line); background:var(--surface); border-radius:999px; padding:4px 12px; font-weight:700; cursor:pointer; font-size:15px; color:var(--muted)}
+.qcard.done .tick{background:var(--green); border-color:var(--green); color:#fff}
+.q{position:relative; border:0; cursor:pointer; text-align:start; border-radius:20px; padding:12px 18px; font-size:clamp(22px,2.6vw,27px); font-weight:800; line-height:1.35; color:#fff; margin-bottom:8px}
+.q.b{background:var(--boy)} .q.g{background:var(--girl)}
+.q::after{content:''; position:absolute; bottom:-10px; inset-inline-start:26px; border:12px solid transparent; border-bottom:0}
+.q.b::after{border-top-color:var(--boy)} .q.g::after{border-top-color:var(--girl)}
+.q .who{display:block; font-size:14px; font-weight:600; opacity:.9}
+.hint{border:2px dashed var(--line); background:transparent; border-radius:12px; padding:6px 10px; font-weight:700; cursor:pointer; color:var(--muted); align-self:flex-start}
+.hint:hover{border-color:var(--ink); color:var(--ink)}
+.ans{background:var(--plate); color:#2b2a3a; border-radius:14px; padding:10px 14px; font-size:clamp(20px,2.3vw,24px); font-weight:800; animation:pop .4s cubic-bezier(.2,1.5,.4,1)}
+.ans .line{display:inline-block; min-width:90px; border-bottom:3px dashed currentColor; margin-inline:4px; opacity:.6}
+.ans .v.b{color:#1c6fae} .ans .v.g{color:#b2306a}
+.opts{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
+.opts span{background:#fff; border:2px solid #eadfce; border-radius:10px; padding:2px 10px; font-size:17px; font-weight:700}
+.prog{display:flex; align-items:center; gap:10px; font-weight:800}
+.prog .bar{width:160px; height:12px; background:var(--line); border-radius:999px; overflow:hidden}
+.prog .bar i{display:block; height:100%; width:0; background:var(--green); border-radius:999px; transition:width .4s}
+.pair{display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:center; background:var(--surface); border:2px solid var(--line); border-radius:18px; padding:10px 16px}
+.pair .arrow{font-size:28px; color:var(--muted)}
+.pair .p{display:flex; flex-direction:column; align-items:center; gap:4px; font-weight:800}
+.pair .p svg{width:56px; height:auto}
+
+/* ---------- 1.25 play ---------- */
+.cast{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-bottom:18px}
+.actor{background:var(--surface); border:3px solid var(--line); border-radius:22px; padding:14px 16px; box-shadow:var(--shadow); display:grid; grid-template-columns:auto minmax(0,1fr); gap:6px 16px; align-items:center}
+.actor.b{border-color:var(--boy); background:linear-gradient(var(--boy-soft),var(--surface) 60%)}
+.actor.g{border-color:var(--girl); background:linear-gradient(var(--girl-soft),var(--surface) 60%)}
+.actor .fig{grid-row:span 4; width:84px}
+.actor .fig svg{width:100%; height:auto; display:block}
+.actor h4{margin:0; font-size:22px; display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.field{display:flex; align-items:center; gap:8px; font-weight:700}
+.field span{min-width:62px}
+.field input{flex:1; min-width:0; border:2px solid var(--line); background:var(--bg); border-radius:12px; padding:6px 10px; font-size:18px; font-weight:700}
+.field input.age{flex:0 0 80px; text-align:center; font-family:var(--f-display)}
+
+.script{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px}
+.script li{display:grid; grid-template-columns:minmax(110px,auto) minmax(0,1fr); gap:6px 14px; align-items:baseline; font-size:clamp(21px,2.5vw,27px); font-weight:700; padding:8px 12px; border-radius:14px; cursor:pointer}
+.script li:hover{background:var(--bg)}
+.script .spk{font-size:.8em; font-weight:800}
+.script .spk.b{color:var(--boy)} .script .spk.g{color:var(--girl)}
+.fill{border-bottom:3px solid currentColor; padding:0 4px; font-weight:800; color:var(--green)}
+.fill.empty{color:var(--muted); display:inline-block; min-width:80px; border-bottom-style:dashed}
+.legend{display:flex; flex-wrap:wrap; gap:8px 16px; color:var(--muted); font-size:15px; margin:0 0 12px}
+.legend b{font-weight:800}
+
+/* stage */
+.stage{position:relative; background:radial-gradient(ellipse at 50% 30%, #5b4b78, var(--stage) 70%); border-radius:24px; overflow:hidden; padding:18px 16px 0; min-height:440px; color:#fff; box-shadow:var(--shadow)}
+.stage .curtain{position:absolute; top:0; bottom:0; width:12%; background:repeating-linear-gradient(90deg, var(--curtain) 0 14px, color-mix(in srgb, var(--curtain) 70%, #000) 14px 26px); z-index:3; transition:width .9s cubic-bezier(.6,0,.2,1)}
+.stage .curtain.r{right:0; border-radius:0 0 0 40px} .stage .curtain.l{left:0; border-radius:0 0 40px 0}
+.stage.closed .curtain{width:51%}
+.stage .valance{position:absolute; inset:0 0 auto 0; height:22px; background:var(--curtain); z-index:4; border-bottom:4px solid var(--gold)}
+.sbubble{position:relative; z-index:2; margin:22px auto 0; max-width:min(760px,78%); background:#fff; color:#23233a; border-radius:24px; padding:16px 22px; font-size:clamp(24px,3.4vw,40px); font-weight:800; line-height:1.35; text-align:center; min-height:2.6em; display:grid; place-items:center; box-shadow:0 6px 0 rgba(0,0,0,.15)}
+.sbubble .name{display:block; font-size:16px; font-weight:800; margin-bottom:2px}
+.sbubble::after{content:''; position:absolute; bottom:-18px; border:20px solid transparent; border-top-color:#fff; border-bottom:0}
+.sbubble.from-r::after{right:22%} .sbubble.from-l::after{left:22%}
+.sbubble .fill{color:#2f9d55}
+.sbubble.pop{animation:pop .35s cubic-bezier(.2,1.5,.4,1)}
+.floor{position:absolute; inset:auto 6% 18px 6%; height:90px; background:var(--floor); border-radius:50%; z-index:0}
+.actors{position:relative; z-index:1; display:flex; justify-content:space-between; align-items:flex-end; padding:24px 14% 26px; gap:20px}
+.actors .fig{width:clamp(90px,16vw,150px); transition:transform .3s, opacity .3s, filter .3s; opacity:.55; filter:saturate(.6)}
+.actors .fig svg{width:100%; height:auto; display:block}
+.actors .fig.on{opacity:1; filter:none; transform:translateY(-8px) scale(1.06)}
+.actors .fig.on svg{animation:talk .5s ease-in-out 2}
+@keyframes talk{50%{transform:rotate(-3deg)}}
+.stage-ctl{position:relative; z-index:7; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:center; padding:0 0 16px}
+.stage-ctl .btn{background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.35); color:#fff}
+.stage-ctl .btn:hover{border-color:#fff}
+.stage-ctl .btn.primary{background:var(--gold); border-color:var(--gold); color:#23233a}
+.dots{display:flex; gap:6px}
+.dots i{width:12px; height:12px; border-radius:50%; background:rgba(255,255,255,.3)}
+.dots i.on{background:var(--gold)}
+.bravo{position:absolute; inset:0; z-index:6; display:grid; place-items:center; background:rgba(20,15,30,.55); font-size:clamp(40px,7vw,80px); font-weight:800; color:var(--gold); text-shadow:0 4px 0 rgba(0,0,0,.3); animation:pop .5s cubic-bezier(.2,1.5,.4,1)}
+.bravo small{display:block; font-size:22px; color:#fff; text-align:center}
+
+/* game shortcut */
+.shortcut{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; align-items:center; text-decoration:none; color:var(--ink); background:var(--sky-soft); border:3px solid var(--sky); border-radius:24px; padding:20px 24px; transition:transform .2s}
+.shortcut:hover{transform:translateY(-3px)}
+.shortcut .t{font-size:clamp(22px,3vw,30px); font-weight:800; margin:0}
+.shortcut .go{background:var(--sky); color:#fff; font-weight:800; padding:12px 22px; border-radius:14px; white-space:nowrap}
+.shortcut .mini{display:flex; gap:8px}
+.shortcut .mini span{height:56px; padding:0 14px; border-radius:16px; display:grid; place-items:center; font-size:26px; font-weight:800; color:#fff}
+.shortcut .mini .b{background:#2a8bd0} .shortcut .mini .g{background:#d6457f}
+
+.fx{position:fixed; pointer-events:none; z-index:120; font-weight:800; font-family:var(--f-he); will-change:transform,opacity}
+@keyframes pop{from{transform:scale(.5); opacity:0}}
+
+@media (max-width:760px){
+  .cast{grid-template-columns:1fr}
+  .script li{grid-template-columns:1fr; gap:0}
+  .actors{padding-inline:13%}
+  .stage .curtain{width:9%}
+  .sbubble{max-width:100%}
+  .shortcut{grid-template-columns:1fr}
+}
+@media (max-width:420px){
+  .qgrid{grid-template-columns:1fr}
+  .actor{grid-template-columns:1fr}
+  .actor .fig{grid-row:auto; width:64px}
+}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important; transition:none!important} }
+</style>
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../full-lessons/index.html">📚 שיעורים מלאים</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../full-lessons/index.html'}">← חזרה</button></nav>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="crumb">שיעורים מלאים · רחוב העולם · יחידה 1</p>
+      <h1>רְחוֹב הָעוֹלָם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">1.24 &amp; 1.25</span></h1>
+    </div>
+    <p class="he he-title">שִׂיחָה וּמַחֲזֶה · עַמּוּדִים 21–22</p>
+  </header>
+
+  <nav class="steps" aria-label="שלבי השיעור">
+    <ol>
+      <li><a href="#s124" data-c="green"><b>1</b>1.24 שִׂיחָה בְּזוּגוֹת</a></li>
+      <li><a href="#s125" data-c="sky"><b>2</b>1.25 הַמַּחֲזֶה</a></li>
+      <li><a href="#sgame" data-c="sky"><b>3</b>מִשְׂחָק: בֶּן כַּמָּה? בַּת כַּמָּה?</a></li>
+    </ol>
+  </nav>
+
+  <!-- ===== STEP 1: 1.24 ===== -->
+  <section class="step" id="s124">
+    <div class="step-head">
+      <span class="tag green"><span class="num">1.24</span>תַּרְגִּיל מְסַכֵּם – דִּבּוּר</span>
+    </div>
+    <p class="lead">שִׂיחָה בְּזוּגוֹת (בֵּן וּבַת) עַל פִּי הַשְּׁאֵלוֹת הַבָּאוֹת:</p>
+
+    <div class="toolbar">
+      <div class="pair" id="pair"></div>
+      <span class="spacer"></span>
+      <button class="btn" id="swap" type="button">🔀 מַחְלִיפִים תַּפְקִידִים</button>
+      <button class="btn" id="allHints" type="button" aria-pressed="false">הצג את כל התשובות</button>
+      <div class="prog" aria-live="polite"><span id="progTxt">0 / 5</span><span class="bar"><i id="progBar"></i></span></div>
+    </div>
+    <div class="qgrid" id="qgrid"></div>
+  </section>
+
+  <!-- ===== STEP 2: 1.25 ===== -->
+  <section class="step" id="s125">
+    <div class="step-head">
+      <span class="tag sky"><span class="num">1.25</span>תַּרְגִּיל – אֲנִי / אַתָּה / אַתְּ: הַמַּחֲזֶה בֵּין הַתַּלְמִידִים</span>
+    </div>
+    <p class="lead">כָּל זוּג (בֵּן וּבַת) מַמְחִיזִים אֶת הַשִּׂיחָה שֶׁנִּהֲלוּ מֵהַתַּרְגִּיל הַקּוֹדֵם לְפִי הַשְּׁאֵלוֹת:</p>
+
+    <h3>1. מְמַלְּאִים אֶת הַפְּרָטִים</h3>
+    <div class="cast" id="cast"></div>
+
+    <h3>2. קוֹרְאִים אֶת הַשִּׂיחָה</h3>
+    <div class="panel">
+      <p class="legend"><span><b class="v b">כָּחֹל</b> = מְדַבְּרִים עִם בֵּן</span><span><b class="v g">וָרֹד</b> = מְדַבְּרִים עִם בַּת</span><span><b style="color:var(--green)">יָרֹק</b> = הַפְּרָטִים שֶׁלָּכֶם</span></p>
+      <ol class="script" id="script"></ol>
+    </div>
+
+    <h3>3. עַל הַבָּמָה 🎭</h3>
+    <div class="stage closed" id="stage">
+      <div class="valance"></div>
+      <div class="curtain r"></div><div class="curtain l"></div>
+      <div class="sbubble" id="sbubble">🎭</div>
+      <div class="floor"></div>
+      <div class="actors" id="actors"></div>
+      <div class="stage-ctl">
+        <button class="btn" id="sPrev" type="button">▶ הַקּוֹדֵם</button>
+        <button class="btn primary big" id="sNext" type="button">פּוֹתְחִים אֶת הַמָּסָךְ</button>
+        <div class="dots" id="dots"></div>
+        <button class="btn" id="sAgain" type="button">↺ מֵהַהַתְחָלָה</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STEP 3: game shortcut ===== -->
+  <section class="step" id="sgame">
+    <div class="step-head">
+      <span class="tag sky">מִשְׂחָק · חֲזָרָה</span>
+    </div>
+    <p class="lead">רוֹאִים אִישׁ מְפֻרְסָם אוֹ אִשָּׁה מְפֻרְסֶמֶת וְאֶת שְׁנַת הַלֵּידָה. בּוֹחֲרִים אֶת הַמִּשְׁפָּט הַנָּכוֹן: בֶּן אוֹ בַּת, וְכַמָּה?</p>
+    <a class="shortcut" href="../games/ben-kama.html">
+      <div>
+        <p class="t">בֶּן כַּמָּה? בַּת כַּמָּה?</p>
+        <p style="margin:0; font-size:20px; color:var(--muted)">🎂 שְׁנַת לֵידָה ← גִּיל</p>
+      </div>
+      <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap">
+        <div class="mini" aria-hidden="true"><span class="b">בֶּן</span><span class="g">בַּת</span></div>
+        <span class="go">לַמִּשְׂחָק ◀</span>
+      </div>
+    </a>
+  </section>
+</div>
+
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const store = {
+  get(k, d){ try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+};
+
+/* ---------- kids (drawn like the workbook pair) ---------- */
+function kid(g){
+  if (g === 'm') return `<svg viewBox="0 0 120 230" aria-hidden="true">
+    <path d="M42 214 h22 v10 h-26z M62 214 h22 l4 10 h-26z" fill="#3b3b44"/>
+    <path d="M44 140 L42 214 H58 L60 160 L64 214 H80 L78 140z" fill="#5f7fbf" stroke="#2b2a3a" stroke-width="2"/>
+    <path d="M30 84 Q60 72 90 84 L96 146 H24z" fill="#26262e" stroke="#2b2a3a" stroke-width="2"/>
+    <path d="M52 80 h16 v64 h-16z" fill="#f7f7f2"/>
+    <path d="M30 88 Q20 120 30 150 M90 88 Q100 120 90 150" stroke="#26262e" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <circle cx="30" cy="152" r="7" fill="#7a4a2e"/><circle cx="90" cy="152" r="7" fill="#7a4a2e"/>
+    <rect x="53" y="62" width="14" height="16" fill="#7a4a2e"/>
+    <ellipse cx="60" cy="42" rx="25" ry="28" fill="#7a4a2e" stroke="#2b2a3a" stroke-width="2"/>
+    ${[[40,22],[50,15],[61,13],[72,15],[81,23],[36,32],[85,33]].map(([x,y]) => `<circle cx="${x}" cy="${y}" r="8" fill="#1f1a18"/>`).join('')}
+    <circle cx="51" cy="44" r="3" fill="#1f1a18"/><circle cx="69" cy="44" r="3" fill="#1f1a18"/>
+    <path d="M52 56 Q60 62 68 56" stroke="#2b2a3a" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`;
+  return `<svg viewBox="0 0 120 230" aria-hidden="true">
+    <path d="M42 214 h20 v10 h-24z M62 214 h20 l4 10 h-24z" fill="#2a2a30"/>
+    <path d="M46 140 L44 214 H58 L60 162 L62 214 H76 L74 140z" fill="#2d2d33" stroke="#2b2a3a" stroke-width="2"/>
+    <path d="M38 84 Q60 76 82 84 L90 146 H30z" fill="#c7352f" stroke="#2b2a3a" stroke-width="2"/>
+    <path d="M52 112 a5 5 0 0 1 8 -4 a5 5 0 0 1 8 4 q0 6 -8 12 q-8 -6 -8 -12z" fill="#f5b7c0"/>
+    <path d="M38 88 Q26 120 32 150 M82 88 Q94 120 88 150" stroke="#e0a77f" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <rect x="54" y="62" width="12" height="16" fill="#e0a77f"/>
+    <circle cx="40" cy="14" r="12" fill="#8a2b22" stroke="#2b2a3a" stroke-width="2"/><circle cx="80" cy="14" r="12" fill="#8a2b22" stroke="#2b2a3a" stroke-width="2"/>
+    <path d="M34 40 Q32 82 40 96 L46 50z M86 40 Q88 82 80 96 L74 50z" fill="#8a2b22"/>
+    <ellipse cx="60" cy="42" rx="24" ry="27" fill="#e0a77f" stroke="#2b2a3a" stroke-width="2"/>
+    <path d="M36 38 Q44 14 60 16 Q76 14 84 38 Q70 26 60 30 Q50 26 36 38z" fill="#8a2b22"/>
+    <circle cx="51" cy="44" r="3" fill="#2b2a3a"/><circle cx="69" cy="44" r="3" fill="#2b2a3a"/>
+    <circle cx="46" cy="52" r="3" fill="#f2a0a0" opacity=".6"/><circle cx="74" cy="52" r="3" fill="#f2a0a0" opacity=".6"/>
+    <path d="M52 56 Q60 63 68 56" stroke="#2b2a3a" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`;
+}
+
+/* speech: only with a Hebrew voice */
+let heVoice = null;
+function findVoice(){
+  const vs = speechSynthesis.getVoices() || [];
+  heVoice = vs.find(v => /^(he|iw)/i.test(v.lang) && /natural|online/i.test(v.name)) || vs.find(v => /^(he|iw)/i.test(v.lang)) || null;
+}
+if ('speechSynthesis' in window){ findVoice(); speechSynthesis.onvoiceschanged = findVoice; setTimeout(findVoice, 1200); }
+function say(t){ if (!heVoice || !t) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = heVoice; u.lang = heVoice.lang; u.rate = .8; speechSynthesis.speak(u); }
+
+/* =========================================================
+   1.24 — pair talk (workbook p.21)
+   asker asks the partner; question form follows the partner's gender
+   ========================================================= */
+const QS = [
+  {icon:'👋',
+   q:{m:'שָׁלוֹם, אֵיךְ קוֹרְאִים <v>לְךָ</v>?', f:'שָׁלוֹם, אֵיךְ קוֹרְאִים <v>לָךְ</v>?'},
+   a:{m:'קוֹרְאִים לִי <l></l>.', f:'קוֹרְאִים לִי <l></l>.'}},
+  {icon:'🎂',
+   q:{m:'<v>בֶּן</v> כַּמָּה <v>אַתָּה</v>?', f:'<v>בַּת</v> כַּמָּה <v>אַתְּ</v>?'},
+   a:{m:'אֲנִי <v>בֶּן</v> <l></l>.', f:'אֲנִי <v>בַּת</v> <l></l>.'}},
+  {icon:'🏙️',
+   q:{m:'אֵיפֹה <v>אַתָּה גָּר</v>?', f:'אֵיפֹה <v>אַתְּ גָּרָה</v>?'},
+   a:{m:'אֲנִי <v>גָּר</v> בְּ<l></l>.', f:'אֲנִי <v>גָּרָה</v> בְּ<l></l>.'}},
+  {icon:'📚',
+   q:{m:'אֵיזֶה שִׁעוּר <v>אַתָּה אוֹהֵב</v> בְּבֵית הַסֵּפֶר?', f:'אֵיזֶה שִׁעוּר <v>אַתְּ אוֹהֶבֶת</v> בְּבֵית הַסֵּפֶר?'},
+   a:{m:'אֲנִי <v>אוֹהֵב</v> אֶת שִׁעוּר <l></l>.', f:'אֲנִי <v>אוֹהֶבֶת</v> אֶת שִׁעוּר <l></l>.'},
+   opts:['עִבְרִית','אַנְגְּלִית','מָתֵמָטִיקָה','מַדָּעִים','הִיסְטוֹרְיָה','סְפּוֹרְט','אָמָּנוּת','מוּזִיקָה']},
+  {icon:'🏠',
+   q:{m:'מָה <v>אַתָּה אוֹהֵב</v> לַעֲשׂוֹת בַּבַּיִת?', f:'מָה <v>אַתְּ אוֹהֶבֶת</v> לַעֲשׂוֹת בַּבַּיִת?'},
+   a:{m:'אֲנִי <v>אוֹהֵב</v> <l></l>.', f:'אֲנִי <v>אוֹהֶבֶת</v> <l></l>.'},
+   opts:['טֶנִיס','סְפּוֹרְט','מוּזִיקָה','אָמָּנוּת']}
+];
+const fmt = (s, g) => s.replace(/<v>(.*?)<\/v>/g, `<span class="v ${g==='m'?'b':'g'}">$1</span>`).replace(/<l><\/l>/g, '<span class="line"></span>');
+const plain = s => s.replace(/<[^>]+>/g, '');
+
+let partner = store.get('os124-partner', 'f');   /* who is being asked */
+let done = store.get('os124-done', []);
+const qgrid = $('qgrid');
+const opened = new Set();
+
+function drawPair(){
+  const asker = partner === 'm' ? 'f' : 'm';
+  const nm = g => g === 'm' ? 'בֵּן' : 'בַּת';
+  $('pair').innerHTML = `<div class="p">${kid(asker)}<span class="v ${asker==='m'?'b':'g'}">${asker==='m'?'שׁוֹאֵל':'שׁוֹאֶלֶת'}</span></div>
+    <span class="arrow">◀</span>
+    <div class="p">${kid(partner)}<span class="v ${partner==='m'?'b':'g'}">${partner==='m'?'עוֹנֶה':'עוֹנָה'}</span></div>`;
+}
+function drawQs(){
+  const g = partner, cls = g === 'm' ? 'b' : 'g', who = g === 'm' ? 'שׁוֹאֲלִים בֵּן 👦' : 'שׁוֹאֲלִים בַּת 👧';
+  const showAll = $('allHints').getAttribute('aria-pressed') === 'true';
+  qgrid.innerHTML = '';
+  QS.forEach((x, i) => {
+    const c = document.createElement('div');
+    c.className = 'qcard' + (done.includes(i) ? ' done' : '');
+    c.innerHTML = `<div class="qtop"><span class="qn">${i+1}</span><span class="qicon" aria-hidden="true">${x.icon}</span><span class="spacer"></span>
+        <button class="tick" type="button">${done.includes(i) ? '✓ שָׁאַלְנוּ' : 'שָׁאַלְנוּ?'}</button></div>
+      <button class="q ${cls}" type="button"><span class="who">${who}</span>${fmt(x.q[g], g).replace(/class="v [bg]"/g, '')}</button>
+      <button class="hint" type="button" ${showAll || opened.has(i) ? 'hidden' : ''}>אֵיךְ עוֹנִים? 💬</button>
+      <div class="ans" ${showAll || opened.has(i) ? '' : 'hidden'}>${fmt(x.a[g], g)}${x.opts ? `<div class="opts">${x.opts.map(o => `<span>${o}</span>`).join('')}</div>` : ''}</div>`;
+    const q = c.querySelector('.q'), h = c.querySelector('.hint'), a = c.querySelector('.ans'), t = c.querySelector('.tick');
+    q.onclick = () => { say(plain(x.q[g])); burstAt(q, ['?','?','!'], ['#f2b01e','#ffffff','#2f9d55'], 6); };
+    h.onclick = () => { opened.add(i); h.hidden = true; a.hidden = false; };
+    t.onclick = () => {
+      const k = done.indexOf(i);
+      if (k < 0){ done.push(i); burstAt(t, ['✓','★'], ['#2f9d55','#f2b01e'], 10); } else done.splice(k, 1);
+      store.set('os124-done', done); drawQs();
+    };
+    qgrid.appendChild(c);
+  });
+  $('progTxt').textContent = `${done.length} / ${QS.length}`;
+  $('progBar').style.width = (done.length / QS.length * 100) + '%';
+  if (done.length === QS.length) $('progTxt').textContent = 'כָּל הַכָּבוֹד! 🎉';
+}
+$('swap').onclick = () => {
+  partner = partner === 'm' ? 'f' : 'm'; store.set('os124-partner', partner);
+  done = []; store.set('os124-done', done); opened.clear();
+  drawPair(); drawQs();
+};
+$('allHints').onclick = () => {
+  const b = $('allHints'), on = b.getAttribute('aria-pressed') !== 'true';
+  b.setAttribute('aria-pressed', on); b.textContent = on ? 'הסתר את התשובות' : 'הצג את כל התשובות';
+  drawQs();
+};
+drawPair(); drawQs();
+
+/* =========================================================
+   1.25 — the play (workbook p.22)
+   ========================================================= */
+const DEF = [{g:'m', name:'', age:'', city:''}, {g:'f', name:'', age:'', city:''}];
+let cast = store.get('os125-cast', DEF);
+if (!Array.isArray(cast) || cast.length !== 2) cast = DEF;
+
+const castEl = $('cast');
+function drawCast(){
+  castEl.innerHTML = '';
+  cast.forEach((p, i) => {
+    const el = document.createElement('div');
+    const cls = p.g === 'm' ? 'b' : 'g';
+    el.className = 'actor ' + cls;
+    el.innerHTML = `<div class="fig">${kid(p.g)}</div>
+      <h4>${role(i)}
+        <span class="gpick" role="group" aria-label="בן או בת">
+          <button class="b" type="button" aria-pressed="${p.g==='m'}">בֵּן</button>
+          <button class="g" type="button" aria-pressed="${p.g==='f'}">בַּת</button>
+        </span></h4>
+      <label class="field"><span>שֵׁם:</span><input data-k="name" value="${esc(p.name)}" placeholder="…" autocomplete="off"></label>
+      <label class="field"><span>גִּיל:</span><input class="age" data-k="age" value="${esc(p.age)}" inputmode="numeric" maxlength="3" placeholder="…" autocomplete="off"></label>
+      <label class="field"><span>עִיר:</span><input data-k="city" value="${esc(p.city)}" placeholder="…" autocomplete="off"></label>`;
+    const [bm, bf] = el.querySelectorAll('.gpick button');
+    bm.onclick = () => { p.g = 'm'; save(); drawCast(); };
+    bf.onclick = () => { p.g = 'f'; save(); drawCast(); };
+    el.querySelectorAll('input').forEach(inp => inp.oninput = () => { p[inp.dataset.k] = inp.value.trim(); save(); drawScript(); drawStage(false); });
+    castEl.appendChild(el);
+  });
+  drawScript(); drawActors(); drawStage(false);
+}
+function save(){ store.set('os125-cast', cast); }
+const role = i => `${cast[i].g === 'm' ? 'תַּלְמִיד' : 'תַּלְמִידָה'} ${i+1}`;
+const spkName = i => cast[i].name ? `${role(i)} (${esc(cast[i].name)})` : role(i);
+
+/* g-aware pieces; colored by the gender of the person spoken to/about */
+const V = (g, m, f) => `<span class="v ${g==='m'?'b':'g'}">${g==='m'?m:f}</span>`;
+const F = v => v ? `<span class="fill">${esc(v)}</span>` : '<span class="fill empty">&nbsp;</span>';
+const B = v => v ? (/^[A-Za-z0-9]/.test(v) ? 'בְּ־' : 'בְּ') + F(v) : 'בְּ' + F('');
+function lines(){
+  const [A, Bp] = cast;
+  return [
+    {s:0, t:`הֵיי שָׁלוֹם, אֲנִי ${F(A.name)}, אֵיךְ קוֹרְאִים ${V(Bp.g,'לְךָ','לָךְ')}?`},
+    {s:1, t:`הַיי שָׁלוֹם, קוֹרְאִים לִי ${F(Bp.name)}, ${V(A.g,'בֶּן','בַּת')} כַּמָּה ${V(A.g,'אַתָּה','אַתְּ')}?`},
+    {s:0, t:`אֲנִי ${V(A.g,'בֶּן','בַּת')} ${F(A.age)}, ${V(Bp.g,'בֶּן','בַּת')} כַּמָּה ${V(Bp.g,'אַתָּה','אַתְּ')}?`},
+    {s:1, t:`אֲנִי ${V(Bp.g,'בֶּן','בַּת')} ${F(Bp.age)}, אֵיפֹה ${V(A.g,'אַתָּה גָּר','אַתְּ גָּרָה')}?`},
+    {s:0, t:`אֲנִי ${V(A.g,'גָּר','גָּרָה')} ${B(A.city)}, אֵיפֹה ${V(Bp.g,'אַתָּה גָּר','אַתְּ גָּרָה')}?`},
+    {s:1, t:`אֲנִי ${V(Bp.g,'גָּר','גָּרָה')} ${B(Bp.city)}.`}
+  ];
+}
+function drawScript(){
+  const el = $('script');
+  el.innerHTML = lines().map((l, i) => `<li data-i="${i}"><span class="spk ${cast[l.s].g==='m'?'b':'g'}">${spkName(l.s)}:</span><span>${l.t}</span></li>`).join('');
+  el.querySelectorAll('li').forEach(li => li.onclick = () => say(li.lastElementChild.textContent));
+}
+
+/* stage: line -1 = curtain closed, 0..5 = lines, 6 = bravo */
+let cur = -1;
+const stage = $('stage'), bubble = $('sbubble');
+function drawActors(){
+  $('actors').innerHTML = cast.map((p, i) => `<div class="fig" data-i="${i}">${kid(p.g)}</div>`).join('');
+}
+function drawStage(animate = true){
+  const L = lines();
+  stage.classList.toggle('closed', cur < 0);
+  stage.querySelector('.bravo')?.remove();
+  $('dots').innerHTML = L.map((_, i) => `<i class="${i <= cur ? 'on' : ''}"></i>`).join('');
+  $('sPrev').disabled = cur < 0;
+  $('actors').querySelectorAll('.fig').forEach(f => f.classList.remove('on'));
+  if (cur < 0){
+    bubble.className = 'sbubble'; bubble.innerHTML = '🎭';
+    $('sNext').textContent = 'פּוֹתְחִים אֶת הַמָּסָךְ';
+    return;
+  }
+  if (cur >= L.length){
+    bubble.className = 'sbubble'; bubble.innerHTML = '👏 👏 👏';
+    const b = document.createElement('div'); b.className = 'bravo';
+    b.innerHTML = `<div>בְּרָבוֹ! 👏<small>כָּל הַכָּבוֹד ${cast.map(p => esc(p.name)).filter(Boolean).join(' וְ') || 'לַשַּׂחְקָנִים'}!</small></div>`;
+    stage.appendChild(b);
+    if (animate) burstAt(stage, ['★','✿','♥','✓'], ['#f2b01e','#e2506a','#2a8bd0','#2f9d55'], 30);
+    $('sNext').textContent = 'עוֹד פַּעַם ↺';
+    return;
+  }
+  const l = L[cur];
+  const fig = $('actors').querySelector(`.fig[data-i="${l.s}"]`);
+  fig.classList.add('on');
+  /* RTL: student 1 stands on the right */
+  bubble.className = 'sbubble ' + (l.s === 0 ? 'from-r' : 'from-l');
+  bubble.innerHTML = `<div><span class="name v ${cast[l.s].g==='m'?'b':'g'}">${spkName(l.s)}</span>${l.t}</div>`;
+  if (animate){ void bubble.offsetWidth; bubble.classList.add('pop'); say(plain(l.t)); }
+  $('sNext').textContent = cur === L.length - 1 ? 'סוֹף! 👏' : 'הַבָּא ◀';
+}
+$('sNext').onclick = () => { const n = lines().length; cur = cur >= n ? -1 : cur + 1; drawStage(); };
+$('sPrev').onclick = () => { if (cur >= 0){ cur = Math.min(cur, lines().length) - 1; drawStage(); } };
+$('sAgain').onclick = () => { cur = -1; drawStage(); };
+stage.tabIndex = 0;
+stage.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft' || e.key === ' '){ e.preventDefault(); $('sNext').click(); }
+  if (e.key === 'ArrowRight'){ e.preventDefault(); $('sPrev').click(); }
+});
+drawCast();
+
+/* ---------- particles ---------- */
+function burstAt(el, glyphs, colors, n){
+  if (reduce) return;
+  const r = el.getBoundingClientRect(); const cx = r.left + r.width/2, cy = r.top + r.height/2;
+  for (let i = 0; i < n; i++){
+    const s = document.createElement('span'); s.className = 'fx';
+    s.textContent = glyphs[i % glyphs.length]; s.style.color = colors[i % colors.length]; s.style.fontSize = (18 + Math.random()*22) + 'px';
+    s.style.left = cx + 'px'; s.style.top = cy + 'px';
+    document.body.appendChild(s);
+    const a = Math.random()*Math.PI*2, d = 60 + Math.random()*(n > 20 ? 260 : 130);
+    s.animate([
+      {transform:'translate(-50%,-50%) scale(.3)', opacity:1},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d}px), calc(-50% + ${Math.sin(a)*d - 40}px)) scale(1)`, opacity:1, offset:.7},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d*1.1}px), calc(-50% + ${Math.sin(a)*d + 30}px)) scale(.8)`, opacity:0}
+    ], {duration:1000 + Math.random()*600, easing:'cubic-bezier(.2,.8,.3,1)'}).onfinish = () => s.remove();
+  }
+}
+})();
+</script>
+<script>function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}setNavH();window.addEventListener('resize',setNavH);</script>
+</body>
+</html>
