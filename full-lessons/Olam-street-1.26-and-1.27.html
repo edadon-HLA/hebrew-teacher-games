@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Olam Street 1.26 &amp; 1.27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+/* Layout: a lesson "workbook" — Maccabiah culture talk, sports words, basketball vs soccer, Maccabi Tel Aviv story, quiz. */
+:root{
+  --bg:#fdf7ef; --surface:#ffffff; --ink:#23233a; --muted:#6b6880; --line:#eadfce;
+  --coral:#e2506a; --coral-soft:#fde3e7; --green:#2f9d55; --green-soft:#dcf2e3;
+  --sky:#2a8bd0; --sky-soft:#dcecfb; --gold:#f2b01e; --gold-soft:#fbefc8; --plate:#fff8ec; --shadow:0 2px 0 rgba(35,35,58,.08), 0 8px 24px rgba(35,35,58,.08);
+  --orange:#e8742c; --orange-soft:#fde6d6; --pitch:#2f9d55; --pitch-soft:#dcf2e3;
+  --f-display:'Rubik', 'Segoe UI', Arial, sans-serif;
+  --f-he:'Noto Sans Hebrew', 'Arial Hebrew', 'Segoe UI', Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --gold-soft:#3d3420; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35);
+  --orange:#ff9a5a; --orange-soft:#45301f; --pitch:#5fd283; --pitch-soft:#1d3a29; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --gold-soft:#3d3420; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35);
+  --orange:#ff9a5a; --orange-soft:#45301f; --pitch:#5fd283; --pitch-soft:#1d3a29; color-scheme:dark; }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--f-he); font-size:17px; line-height:1.55;}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:16px; padding-block:0 64px}
+.he{font-family:var(--f-he); direction:rtl; unicode-bidi:isolate}
+.en{font-family:var(--f-display); direction:ltr; unicode-bidi:isolate}
+svg{direction:ltr}
+button,input,textarea{font:inherit; color:inherit}
+:focus-visible{outline:3px solid var(--sky); outline-offset:3px; border-radius:8px}
+
+/* Header */
+.top{padding-block:28px 18px; display:flex; flex-wrap:wrap; gap:12px 24px; align-items:flex-end; justify-content:space-between}
+.crumb{font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 6px}
+h1{font-family:var(--f-he); font-size:clamp(28px,5vw,46px); line-height:1.05; margin:0; font-weight:800; text-wrap:balance}
+h1 .amp{color:var(--coral)}
+.top .he-title{font-size:clamp(20px,3vw,28px); color:var(--muted); margin:0}
+
+/* Step bar */
+.steps{position:sticky; top:calc(var(--navh,0px) + env(safe-area-inset-top,0px)); z-index:20; background:var(--bg); border-bottom:2px solid var(--line); margin-bottom:24px}
+.steps ol{list-style:none; display:flex; gap:8px; padding:10px 0; margin:0; overflow-x:auto}
+.steps a{display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; text-decoration:none; color:var(--ink); font-weight:600; white-space:nowrap; border:2px solid var(--line); background:var(--surface)}
+.steps a b{display:inline-grid; place-items:center; width:24px; height:24px; border-radius:50%; color:#fff; font-size:13px}
+.steps a[data-c="coral"] b{background:var(--coral)} .steps a[data-c="green"] b{background:var(--green)} .steps a[data-c="sky"] b{background:var(--sky)} .steps a[data-c="gold"] b{background:var(--gold)}
+.steps a:hover{border-color:var(--ink)}
+
+/* Section shell */
+section.step{margin-block:28px 52px; scroll-margin-top:calc(var(--navh,0px) + 70px)}
+.tag{display:inline-flex; align-items:center; gap:10px; padding-block:6px; padding-inline:8px 16px; border-radius:999px; font-weight:800; font-size:18px}
+.tag .num{background:var(--surface); border-radius:999px; padding:2px 10px; font-size:16px; font-family:var(--f-display); direction:ltr; unicode-bidi:isolate}
+.tag.coral{background:var(--coral-soft)} .tag.coral .num{color:var(--coral)}
+.tag.green{background:var(--green-soft)} .tag.green .num{color:var(--green)}
+.tag.sky{background:var(--sky-soft)} .tag.sky .num{color:var(--sky)}
+.tag.gold{background:var(--gold-soft)} .tag.gold .num{color:#b7791f}
+.step-head{display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; justify-content:space-between; margin-bottom:6px}
+.step-head .sub{font-size:20px; color:var(--muted); font-weight:700}
+.lead{color:var(--muted); max-width:72ch; margin:4px 0 18px}
+h3{font-size:22px; margin:28px 0 10px}
+
+.panel{background:var(--surface); border:2px solid var(--line); border-radius:20px; padding:18px; box-shadow:var(--shadow)}
+.toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px}
+.btn{border:2px solid var(--line); background:var(--surface); border-radius:12px; padding:8px 14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px}
+.btn:hover{border-color:var(--ink)}
+.btn[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.btn.primary{background:var(--coral); border-color:var(--coral); color:#fff}
+.spacer{flex:1}
+.progress{font-weight:700; color:var(--muted)}
+
+/* English reading blocks */
+.read{font-family:var(--f-display); direction:ltr; text-align:left; font-size:clamp(18px,1.9vw,21px); line-height:1.6}
+.read h2{font-size:clamp(26px,3.4vw,38px); margin:0 0 8px; letter-spacing:.01em}
+.read p{margin:0 0 10px}
+.photo{width:100%; border-radius:18px; display:block; box-shadow:var(--shadow)}
+/* fact board: picture front, Hebrew + English back */
+.board-head{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin:22px 0 10px}
+.board-head h3{margin:0}
+.board{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; perspective:1200px}
+.ftile{border:0; padding:0; background:transparent; cursor:pointer; display:grid; text-align:center; min-height:190px; transform-style:preserve-3d; transition:transform .55s cubic-bezier(.3,1.3,.5,1); border-radius:20px}
+.ftile.open{transform:rotateY(180deg)}
+.ftile .face{grid-area:1/1; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:20px; padding:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; box-shadow:var(--shadow)}
+.ftile .front{background:var(--plate); border:3px solid; color:#2b2a3a; transition:transform .2s}
+.ftile:nth-child(4n+1) .front{border-color:var(--coral)} .ftile:nth-child(4n+2) .front{border-color:var(--sky)} .ftile:nth-child(4n+3) .front{border-color:var(--green)} .ftile:nth-child(4n+4) .front{border-color:var(--gold)}
+.ftile:hover:not(.open) .front{transform:translateY(-4px) rotate(-1deg)}
+.ftile .pic{font-size:clamp(54px,7vw,76px); line-height:1.1; font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif}
+.ftile .pic svg{width:clamp(70px,9vw,96px); height:auto; display:block}
+.ftile .qm{font-family:var(--f-display); font-weight:800; font-size:14px; color:#6b6880; background:#fff; border-radius:999px; padding:1px 10px; direction:ltr}
+.ftile .back{transform:rotateY(180deg); background:var(--surface); border:3px solid var(--ink); color:var(--ink)}
+.ftile .back .fh{font-size:clamp(18px,1.8vw,21px); font-weight:800; line-height:1.45; direction:rtl}
+.ftile .back .fe{font-family:var(--f-display); direction:ltr; font-size:15px; line-height:1.4; color:var(--muted)}
+
+/* discussion cards */
+.qs{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+.qcard{border-radius:18px; padding:14px; display:flex; flex-direction:column; gap:8px}
+.qcard:nth-child(4n+1){background:var(--sky-soft)} .qcard:nth-child(4n+2){background:var(--coral-soft)} .qcard:nth-child(4n+3){background:var(--green-soft)} .qcard:nth-child(4n+4){background:var(--gold-soft)}
+.qcard .qe{font-family:var(--f-display); direction:ltr; text-align:left; font-weight:800; font-size:19px; display:flex; gap:10px}
+.qcard .qe .n{flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:var(--surface); display:grid; place-items:center; font-size:16px}
+
+/* sports words */
+.sgrid{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:clamp(10px,1.6vw,18px); direction:rtl}
+.wcard{border:0; background:transparent; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; padding:10px 4px; border-radius:18px; transition:transform .2s, background .2s}
+.wcard:hover{transform:translateY(-4px) rotate(-1.5deg); background:var(--plate)}
+.wcard .ico{width:min(110px,100%); aspect-ratio:1; background:var(--plate); border-radius:24px; padding:12px; border:2px solid #2b2a3a14}
+.wcard .ico svg{width:100%; height:100%}
+.wcard .w{font-size:clamp(19px,2.2vw,26px); font-weight:700; text-align:center; line-height:1.25}
+.wcard.new .ico{border-color:var(--sky)}
+.newtag{font-size:12px; font-weight:800; color:#fff; background:var(--sky); border-radius:999px; padding:1px 8px; margin-top:-2px}
+
+/* my sport sentence */
+.mine{margin-top:18px; display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; background:var(--plate); color:#2b2a3a; border-radius:18px; padding:14px 18px}
+.mine .s{font-size:clamp(24px,3vw,34px); font-weight:800}
+.mine .s .slot{display:inline-block; min-width:120px; border-bottom:3px dashed #2b2a3a; text-align:center; color:#c2410c}
+.gpick{display:inline-flex; gap:4px; background:#fff; border-radius:12px; padding:3px}
+.gpick button{border:0; background:transparent; border-radius:9px; padding:2px 12px; font-weight:800; cursor:pointer; color:#2b2a3a}
+.gpick button[aria-pressed="true"]{background:#2b2a3a; color:#fff}
+.mine .hint{font-size:15px; color:#6b6880}
+
+/* basketball vs soccer */
+.vs{display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:16px; align-items:stretch}
+.vs .mid{display:grid; place-items:center; font-weight:800; font-size:28px; color:var(--muted)}
+.sport{border-radius:22px; padding:18px; display:flex; flex-direction:column; gap:10px}
+.sport.b{background:var(--orange-soft); border:3px solid var(--orange)}
+.sport.s{background:var(--pitch-soft); border:3px solid var(--pitch)}
+.sport .hd{display:flex; align-items:center; gap:14px}
+.sport .hd .ico{width:84px; height:84px; flex:0 0 auto; background:var(--plate); border-radius:20px; padding:8px}
+.sport .hd .ico svg{width:100%; height:100%}
+.sport h4{margin:0; font-size:clamp(30px,3.6vw,42px); line-height:1.1}
+.sport .eq{font-size:clamp(20px,2.2vw,26px); font-weight:700}
+.sport .eq .p{color:var(--muted); font-weight:600}
+.sport ul{list-style:none; margin:0; padding:0; display:grid; gap:6px}
+.sport li{display:flex; gap:10px; align-items:baseline; background:var(--surface); border-radius:12px; padding:8px 12px; flex-wrap:wrap}
+.sport li .k{color:var(--muted); font-weight:700; font-size:17px; min-width:130px}
+.sport li .v{font-size:20px; font-weight:800}
+
+/* sort game */
+.sorter{margin-top:18px}
+.sort-card{margin:6px auto 16px; width:min(420px,100%); min-height:120px; background:var(--surface); border:3px solid var(--ink); border-radius:22px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px; text-align:center; animation:pop .4s cubic-bezier(.2,1.5,.4,1)}
+.sort-card .w{font-size:clamp(30px,4.4vw,44px); font-weight:800; line-height:1.2}
+.sort-card .sc{color:var(--muted); font-weight:700; font-size:20px; font-family:var(--f-display); direction:ltr}
+.bins{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.bin{border-radius:20px; padding:14px; border:3px dashed; cursor:pointer; min-height:110px; display:flex; flex-direction:column; align-items:center; gap:6px; font-weight:800; font-size:clamp(22px,2.8vw,30px); background:var(--surface)}
+.bin svg{width:56px; height:56px}
+.bin.b{border-color:var(--orange)} .bin.s{border-color:var(--pitch)}
+.bin:hover{border-style:solid}
+.bin.ok{border-style:solid; background:var(--green-soft)}
+.bin.bad{border-style:solid; background:var(--coral-soft); animation:shake .4s}
+.bin .got{display:flex; flex-wrap:wrap; justify-content:center; gap:4px; font-size:14px; font-weight:700}
+.bin .got span{background:var(--plate); color:#2b2a3a; border-radius:8px; padding:1px 8px}
+.sort-msg{min-height:40px; text-align:center; font-weight:800; font-size:21px; margin-top:10px}
+@keyframes pop{from{transform:scale(.6); opacity:0}}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+/* 1.27 */
+.duo{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-bottom:16px}
+.duo figure{margin:0}
+.duo figcaption{font-family:var(--f-display); direction:ltr; text-align:left; color:var(--muted); font-size:15px; font-weight:600; margin-top:6px}
+.map-phrase{display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; background:var(--gold-soft); border:3px solid var(--gold); border-radius:22px; padding:16px 20px; margin:6px 0 16px}
+.map-phrase .he-big{font-size:clamp(30px,4.4vw,48px); font-weight:800; line-height:1.2}
+.map-phrase .en{font-size:20px; font-weight:700; color:var(--muted)}
+.timeline{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:8px 0 18px}
+.tl{background:var(--surface); border:2px solid var(--line); border-radius:16px; padding:12px 14px; font-family:var(--f-display); direction:ltr; text-align:left}
+.tl .y{font-size:15px; font-weight:800; color:#b7791f; text-transform:uppercase; letter-spacing:.05em}
+.tl p{margin:4px 0 0; font-size:17px; line-height:1.45}
+
+/* quiz */
+.quiz{max-width:760px; margin:0 auto}
+.q-head{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap}
+.q-dots{display:flex; gap:5px}
+.q-dots i{width:12px; height:12px; border-radius:50%; background:var(--line); display:block}
+.q-dots i.cur{background:var(--sky); transform:scale(1.25)} .q-dots i.y{background:var(--green)} .q-dots i.n{background:var(--coral)}
+.q-ico{width:110px; height:110px; margin:4px auto; background:var(--plate); border-radius:50%; padding:14px}
+.q-ico svg{width:100%; height:100%}
+.q-ask{text-align:center; font-size:20px; font-weight:700; color:var(--muted); margin:2px 0 6px}
+.q-ico.big{width:170px; height:170px; padding:22px}
+.q-word{text-align:center; font-size:clamp(40px,7vw,62px); font-weight:800; line-height:1.3; margin:10px 0 4px}
+.opts{display:grid; gap:10px; margin-top:12px}
+.opts.pics{grid-template-columns:repeat(3,minmax(0,1fr))}
+.opt{border:3px solid var(--line); background:var(--surface); border-radius:16px; padding:13px; font-size:28px; font-weight:800; cursor:pointer; text-align:center}
+.opt.pic{display:grid; place-items:center; padding:12px; background:var(--plate)}
+.opt.pic svg{width:min(120px,100%); height:auto; aspect-ratio:1}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt.ok{border-color:var(--green); background:var(--green-soft)}
+.opt.bad{border-color:var(--coral); background:var(--coral-soft); animation:shake .4s}
+.opt:disabled{cursor:default}
+.q-fb{min-height:46px; text-align:center; font-weight:800; font-size:22px; margin-top:10px}
+.q-end{text-align:center; padding:20px}
+.q-end .stars{font-size:52px; color:var(--gold); letter-spacing:6px}
+
+/* spotlight */
+.spot{position:fixed; inset:0; z-index:10001; display:grid; place-items:center; padding:16px; background:rgba(25,24,35,.55); backdrop-filter:blur(3px)}
+.spot-card{position:relative; width:min(560px,100%); max-height:100%; overflow:auto; background:var(--surface); border-radius:28px; padding:28px 20px 22px; text-align:center; box-shadow:0 30px 80px rgba(0,0,0,.35); animation:pop .45s cubic-bezier(.2,1.5,.4,1)}
+.spot-ico{width:min(230px,58vw); aspect-ratio:1; margin:0 auto; background:var(--plate); border-radius:50%; padding:30px}
+.spot-ico svg{width:100%; height:100%; animation:bob 1s ease-in-out 2}
+@keyframes bob{50%{transform:translateY(-10px) rotate(-4deg)}}
+.spot-word{font-size:clamp(42px,9vw,72px); font-weight:800; line-height:1.3; margin-top:10px}
+.spot-nav{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:14px}
+.xbtn{position:absolute; top:12px; inset-inline-end:12px; width:40px; height:40px; border-radius:50%; border:2px solid var(--line); background:var(--surface); cursor:pointer; font-size:20px; line-height:1}
+
+.fx{position:fixed; pointer-events:none; z-index:10002; font-weight:800; font-family:var(--f-he); will-change:transform,opacity}
+
+@media (max-width:980px){
+  .board{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .sgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .vs{grid-template-columns:1fr}
+  .vs .mid{font-size:22px}
+  .timeline{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .qs, .duo{grid-template-columns:1fr}
+  .board{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sport li .k{min-width:0; width:100%}
+}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important; transition:none!important} }
+</style>
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../full-lessons/index.html">📚 שיעורים מלאים</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../full-lessons/index.html'}">← חזרה</button></nav>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="crumb">שיעורים מלאים · רחוב העולם · יחידה 1</p>
+      <h1>רְחוֹב הָעוֹלָם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">1.26 <span class="amp">&amp;</span> 1.27</span></h1>
+    </div>
+    <p class="he he-title">הַמַּכַּבִּיָּה · סְפּוֹרְט · עַמּוּדִים 23–24</p>
+  </header>
+
+  <nav class="steps" aria-label="שלבי השיעור">
+    <ol>
+      <li><a href="#s126" data-c="coral"><b>1</b>1.26 הַמַּכַּבִּיָּה</a></li>
+      <li><a href="#ssports" data-c="green"><b>2</b>עַנְפֵי סְפּוֹרְט</a></li>
+      <li><a href="#svs" data-c="sky"><b>3</b>כַּדּוּרְסַל אוֹ כַּדּוּרֶגֶל?</a></li>
+      <li><a href="#s127" data-c="gold"><b>4</b>1.27 אֲנַחְנוּ עַל הַמַּפָּה!</a></li>
+      <li><a href="#squiz" data-c="sky"><b>5</b>חִידוֹן</a></li>
+    </ol>
+  </nav>
+
+  <!-- ===== STEP 1: 1.26 ===== -->
+  <section class="step" id="s126">
+    <div class="step-head">
+      <span class="tag coral"><span class="num">1.26</span>תַּרְגִּיל תַּרְבּוּת</span>
+      <span class="sub en">Culture Exercise</span>
+    </div>
+    <div class="panel">
+      <div class="read">
+        <h2>The Maccabiah Games</h2>
+        <p>The Maccabiah Games are a big international sports event held in Israel every four years. There are summer and winter sports, and athletes come from all over the world to compete.</p>
+      </div>
+      <img class="photo" src="./olam-1.26-maccabiah.jpg" alt="Athletes with flags at the Maccabiah opening ceremony" loading="lazy">
+    </div>
+    <div class="board-head">
+      <h3>לוּחַ הָעֻבְדּוֹת 🔍</h3>
+      <span class="lead" style="margin:0">לוֹחֲצִים עַל תְּמוּנָה – מָה הָעֻבְדָּה?</span>
+      <span class="spacer"></span>
+      <span class="progress" id="factHud"></span>
+      <button class="btn" id="factReset" type="button">↻ סוֹגְרִים הַכֹּל</button>
+    </div>
+    <div class="board" id="board"></div>
+    <h3 class="en" style="text-align:left">Let's talk</h3>
+    <div class="qs" id="qs126"></div>
+  </section>
+
+  <!-- ===== STEP 2: sports words ===== -->
+  <section class="step" id="ssports">
+    <div class="step-head">
+      <span class="tag green">עַנְפֵי סְפּוֹרְט</span>
+    </div>
+    <p class="lead">לוֹחֲצִים עַל סְפּוֹרְט וְרוֹאִים אֶת הַמִּלָּה גְּדוֹלָה. אַרְבַּע הַמִּלִּים הָרִאשׁוֹנוֹת מֵהַסֵּפֶר, וְהַשְּׁאָר מִלִּים חֲדָשׁוֹת.</p>
+    <div class="toolbar">
+      <button class="btn" id="bTour" type="button">עוֹבְרִים עַל כָּל הַמִּלִּים ◀</button>
+    </div>
+    <div class="sgrid" id="sgrid"></div>
+    <div class="mine" id="mine">
+      <span class="gpick" role="group" aria-label="אוהב או אוהבת">
+        <button type="button" id="gM" aria-pressed="true">אוֹהֵב</button>
+        <button type="button" id="gF" aria-pressed="false">אוֹהֶבֶת</button>
+      </span>
+      <span class="s" id="mineS"></span>
+      <span class="hint">← בּוֹחֲרִים סְפּוֹרְט לְמַעְלָה</span>
+    </div>
+  </section>
+
+  <!-- ===== STEP 3: basketball vs soccer ===== -->
+  <section class="step" id="svs">
+    <div class="step-head">
+      <span class="tag sky">כַּדּוּרְסַל אוֹ כַּדּוּרֶגֶל?</span>
+    </div>
+    <p class="lead">שְׁנֵי סוּגֵי סְפּוֹרְט עִם כַּדּוּר. מָה דּוֹמֶה וּמָה שׁוֹנֶה?</p>
+    <div class="vs" id="vs"></div>
+
+    <div class="panel sorter">
+      <div class="toolbar">
+        <strong style="font-size:20px">מִשְׂחָק: לְאָן זֶה שַׁיָּךְ?</strong>
+        <span class="spacer"></span>
+        <span class="progress" id="sortHud"></span>
+        <button class="btn" id="sortAgain" type="button">↻ מֵהַהַתְחָלָה</button>
+      </div>
+      <div id="sortCard"></div>
+      <div class="bins" id="bins"></div>
+      <div class="sort-msg" id="sortMsg" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ===== STEP 4: 1.27 ===== -->
+  <section class="step" id="s127">
+    <div class="step-head">
+      <span class="tag gold"><span class="num">1.27</span>תַּרְגִּיל זִהוּי – מָה בַּתְּמוּנָה?</span>
+      <span class="sub">כַּדּוּרְסַל – מַכַּבִּי ת״א</span>
+    </div>
+    <div class="panel">
+      <div class="duo">
+        <figure><img class="photo" src="./olam-1.26-maccabi-team.jpg" alt="Maccabi Tel Aviv basketball players in yellow" loading="lazy"><figcaption>Maccabi Tel Aviv today — the team plays in yellow.</figcaption></figure>
+        <figure><img class="photo" src="./olam-1.26-maccabi-1977.jpg" alt="1977 newspaper: Maccabi Tel Aviv wins the European Cup" loading="lazy"><figcaption>1977 newspaper: "Maccabi Tel Aviv won the European Champions Cup!"</figcaption></figure>
+      </div>
+      <div class="map-phrase">
+        <span class="he-big">אֲנַחְנוּ עַל הַמַּפָּה!</span>
+        <span class="en">"We are on the map!"</span>
+        <span class="spacer"></span>
+        <button class="btn spk" id="saySlogan" type="button">🔊</button>
+      </div>
+      <div class="read">
+        <p><b>Maccabi Tel Aviv</b> is one of Israel's most famous basketball teams. In 1977 the team won the <b>European Champions Cup</b> — the most important club trophy in Europe.</p>
+        <p>The team was led by <b>Tal Brody</b>, a legendary player who was born in America and moved to Israel. After a huge win, he said the famous words <b>"We are on the map!"</b> — Israel had shown the whole world what it could do.</p>
+        <p>For Israel, this was much more than a game. It was a moment of national pride that people still remember today.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl"><span class="y">The team</span><p>Maccabi Tel Aviv — basketball, yellow shirts, from Tel Aviv.</p></div>
+        <div class="tl"><span class="y">The hero</span><p>Tal Brody — American-Israeli, the team's leader.</p></div>
+        <div class="tl"><span class="y">1977</span><p>European champions! "We are on the map!"</p></div>
+      </div>
+    </div>
+    <h3 class="en" style="text-align:left">Questions</h3>
+    <div class="qs" id="qs127"></div>
+  </section>
+
+  <!-- ===== STEP 5: quiz ===== -->
+  <section class="step" id="squiz">
+    <div class="step-head">
+      <span class="tag sky">חִידוֹן</span>
+      <span class="sub">תְּמוּנָה ⇄ מִלָּה</span>
+    </div>
+    <div class="panel quiz" id="quiz"></div>
+  </section>
+</div>
+
+<div class="spot" id="spot" hidden role="dialog" aria-modal="true" aria-label="מילה">
+  <div class="spot-card" id="spotCard">
+    <button class="xbtn" id="spotX" type="button" aria-label="סגור">✕</button>
+    <div class="spot-ico" id="spotIco"></div>
+    <div class="spot-word" id="spotWord" lang="he"></div>
+    <div class="spot-nav">
+      <button class="btn" id="spotPrev" type="button">▶ הַקּוֹדֵם</button>
+      <button class="btn spk" id="spotSay" type="button">🔊</button>
+      <button class="btn" id="spotNext" type="button">הַבָּא ◀</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Hand-drawn sports icons (viewBox 0 0 100 100). Fixed illustration colors on a light plate. */
+const INK = '#2b2a3a';
+const ICONS = {
+  basketball: `<rect x="50" y="8" width="44" height="28" rx="3" fill="#fff" stroke="${INK}" stroke-width="3.5"/>
+    <rect x="62" y="18" width="20" height="12" fill="none" stroke="#e8742c" stroke-width="3"/>
+    <path d="M58 40 H86" stroke="#e8742c" stroke-width="5" stroke-linecap="round"/>
+    <path d="M60 41 L64 58 H80 L84 41 M66 41 L68 58 M72 41 V58 M78 41 L76 58 M61 48 H83" stroke="${INK}" stroke-width="1.8" fill="none"/>
+    <circle cx="34" cy="66" r="24" fill="#f08a2c" stroke="${INK}" stroke-width="4"/>
+    <path d="M10 66 H58 M34 42 V90 M17 49 C26 58 26 74 17 83 M51 49 C42 58 42 74 51 83" stroke="${INK}" stroke-width="3" fill="none"/>`,
+  soccer: `<path d="M44 16 H96 V70 H44Z" fill="#fff" stroke="${INK}" stroke-width="4"/>
+    ${[54,64,74,84].map(x=>`<path d="M${x} 16 V70" stroke="#9aa7b8" stroke-width="1.6"/>`).join('')}
+    ${[26,36,46,56].map(y=>`<path d="M44 ${y} H96" stroke="#9aa7b8" stroke-width="1.6"/>`).join('')}
+    <path d="M0 92 H100" stroke="#3f9a52" stroke-width="8"/>
+    <circle cx="30" cy="66" r="22" fill="#fff" stroke="${INK}" stroke-width="4"/>
+    <path d="M30 56 L38 62 L35 72 H25 L22 62Z" fill="${INK}"/>
+    <path d="M30 56 V44 M38 62 L50 58 M35 72 L42 82 M25 72 L18 82 M22 62 L10 58" stroke="${INK}" stroke-width="2.5"/>`,
+  swimming: `<circle cx="38" cy="40" r="13" fill="#f2c4a0" stroke="${INK}" stroke-width="3.5"/>
+    <path d="M25 38 a13 13 0 0 1 26 0Z" fill="#ef5470" stroke="${INK}" stroke-width="3.5"/>
+    <rect x="28" y="40" width="9" height="6" rx="3" fill="#62b4f0" stroke="${INK}" stroke-width="2"/><rect x="40" y="40" width="9" height="6" rx="3" fill="#62b4f0" stroke="${INK}" stroke-width="2"/>
+    <path d="M52 50 C62 28 82 26 92 40" stroke="#f2c4a0" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M52 50 C62 28 82 26 92 40" stroke="${INK}" stroke-width="2" fill="none" stroke-linecap="round" opacity=".4"/>
+    <path d="M4 60 q8 -7 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 V100 H4Z" fill="#5fb6e8" stroke="${INK}" stroke-width="3"/>
+    <path d="M12 80 q8 -6 16 0 t16 0 M54 86 q8 -6 16 0 t16 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+  cycling: `<circle cx="26" cy="66" r="18" fill="none" stroke="${INK}" stroke-width="5"/><circle cx="76" cy="66" r="18" fill="none" stroke="${INK}" stroke-width="5"/>
+    <circle cx="26" cy="66" r="3" fill="${INK}"/><circle cx="76" cy="66" r="3" fill="${INK}"/>
+    <path d="M26 66 L44 36 H68 L76 66 M44 36 L52 66 L68 36 M40 28 H52 M66 36 L64 24 H74" stroke="#e2506a" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="52" cy="66" r="5" fill="#fff" stroke="${INK}" stroke-width="3"/>`,
+  dancing: `<circle cx="50" cy="18" r="9" fill="#c98d62" stroke="${INK}" stroke-width="3"/>
+    <path d="M50 28 L46 50" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>
+    <path d="M48 30 L30 14 M48 32 L70 22" stroke="#c98d62" stroke-width="5" stroke-linecap="round"/>
+    <path d="M46 44 L26 76 H66Z" fill="#a46cf0" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M38 76 L32 94 M54 76 L66 90" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>
+    <text x="72" y="52" font-size="22" fill="#ef5470" font-family="Arial">♪</text><text x="14" y="50" font-size="20" fill="#2a8bd0" font-family="Arial">♫</text>`,
+  tennis: `<g transform="rotate(-35 50 50)">
+      <rect x="45" y="58" width="10" height="36" rx="4" fill="#3d3d4f" stroke="${INK}" stroke-width="3"/>
+      <ellipse cx="50" cy="34" rx="22" ry="28" fill="#fff" stroke="#2a8bd0" stroke-width="7"/>
+      ${[-12,-6,0,6,12].map(d=>`<path d="M${50+d} 9 V59" stroke="#2a8bd0" stroke-width="1.5" opacity=".6"/>`).join('')}
+      ${[-18,-9,0,9,18].map(d=>`<path d="M30 ${34+d} H70" stroke="#2a8bd0" stroke-width="1.5" opacity=".6"/>`).join('')}
+    </g>
+    <circle cx="78" cy="76" r="12" fill="#d7f24a" stroke="${INK}" stroke-width="3"/><path d="M68 70 q10 6 20 0 M68 82 q10 -6 20 0" stroke="#fff" stroke-width="2.5" fill="none"/>`,
+  volleyball: `<path d="M4 74 H96" stroke="${INK}" stroke-width="3"/><rect x="4" y="74" width="92" height="16" fill="none" stroke="${INK}" stroke-width="2"/>
+    ${[16,28,40,52,64,76,88].map(x=>`<path d="M${x} 74 V90" stroke="${INK}" stroke-width="1.2" opacity=".6"/>`).join('')}
+    <circle cx="50" cy="38" r="28" fill="#fff" stroke="${INK}" stroke-width="4"/>
+    <path d="M50 10 C40 28 42 46 56 64 M24 28 C40 30 56 40 64 60 M76 30 C60 34 46 44 30 58" stroke="${INK}" stroke-width="3" fill="none"/>
+    <path d="M50 10 C40 28 42 46 56 64 C66 58 74 48 77 36 C66 30 56 22 50 10Z" fill="#ffd166" opacity=".7"/>`,
+  running: `<path d="M18 62 C18 50 30 44 40 46 L58 52 C66 54 74 56 84 62 C92 66 92 76 84 78 H24 C18 78 16 70 18 62Z" fill="#2a8bd0" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M16 74 H90 V82 H20 C16 82 14 78 16 74Z" fill="#fff" stroke="${INK}" stroke-width="3.5"/>
+    <path d="M40 52 l6 -8 M48 54 l6 -8 M56 56 l6 -8" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <path d="M4 40 H24 M8 30 H30 M2 50 H14" stroke="#9aa7b8" stroke-width="4" stroke-linecap="round"/>`,
+  gymnastics: `<path d="M8 8 H92" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
+    <path d="M30 8 V56 M70 8 V56" stroke="#a0522d" stroke-width="4"/>
+    <circle cx="30" cy="68" r="12" fill="none" stroke="#f2b01e" stroke-width="6"/><circle cx="70" cy="68" r="12" fill="none" stroke="#f2b01e" stroke-width="6"/>
+    <circle cx="30" cy="68" r="12" fill="none" stroke="${INK}" stroke-width="1.5"/><circle cx="70" cy="68" r="12" fill="none" stroke="${INK}" stroke-width="1.5"/>`,
+  judo: `<path d="M14 40 H86 V56 H14Z" fill="#2b2a3a" stroke="${INK}" stroke-width="3"/>
+    <path d="M42 36 H58 V60 H42Z" fill="#3d3d4f" stroke="#fff" stroke-width="2"/>
+    <path d="M44 58 L34 92 L44 94 L52 60 M56 58 L66 92 L56 94 L48 60" fill="#2b2a3a" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M14 34 C30 20 70 20 86 34" stroke="#e9eef5" stroke-width="10" fill="none"/>
+    <path d="M14 34 C30 20 70 20 86 34" stroke="${INK}" stroke-width="2" fill="none"/>`,
+  medal: `<path d="M30 6 L44 40 M70 6 L56 40" stroke="#2a5cc7" stroke-width="10" stroke-linecap="round"/>
+    <path d="M30 6 L44 40 M70 6 L56 40" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="50" cy="60" r="26" fill="#f2b01e" stroke="${INK}" stroke-width="4"/>
+    <path d="M50 44 L58 58 H42Z M50 76 L42 62 H58Z" fill="none" stroke="#2a5cc7" stroke-width="3" stroke-linejoin="round"/>`,
+  map: `<path d="M10 22 L36 12 L64 22 L90 12 V78 L64 88 L36 78 L10 88Z" fill="#dff1ff" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M36 12 V78 M64 22 V88" stroke="${INK}" stroke-width="2.5" opacity=".5"/>
+    <path d="M50 26 C40 26 34 34 34 42 C34 54 50 70 50 70 C50 70 66 54 66 42 C66 34 60 26 50 26Z" fill="#e2506a" stroke="${INK}" stroke-width="3.5"/>
+    <circle cx="50" cy="42" r="6" fill="#fff"/>`
+};
+function iconSVG(k){ return `<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">${ICONS[k]}</svg>`; }
+</script>
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+
+/* ---------- discussion questions (workbook pp.23–24) — for class talk, no typing ---------- */
+const Q126 = [
+  'Why do you think the Maccabiah Games are important for Israel?',
+  'How do international events like the Maccabiah Games help connect people from different countries?',
+  'If you could participate in the Maccabiah Games, which sport would you choose and why?',
+  'How are the Maccabiah Games similar to or different from the Olympics?'
+];
+const Q127 = [
+  "Why was Maccabi Tel Aviv's victory in the European Champions Cup so significant for Israel?",
+  'What famous phrase did Tal Brody say after the team’s victory, and what did it mean for Israeli basketball?'
+];
+function qCards(el, list){
+  el.innerHTML = list.map((q,i) => `<div class="qcard"><span class="qe"><span class="n">${i+1}</span><span>${q}</span></span></div>`).join('');
+}
+qCards($('qs126'), Q126);
+qCards($('qs127'), Q127);
+
+/* ---------- speech: only with a Hebrew voice ---------- */
+let heVoice = null;
+function findVoice(){
+  const vs = speechSynthesis.getVoices() || [];
+  heVoice = vs.find(v => /^(he|iw)/i.test(v.lang) && /natural|online/i.test(v.name)) || vs.find(v => /^(he|iw)/i.test(v.lang)) || null;
+  document.querySelectorAll('.spk').forEach(b => b.hidden = !heVoice);
+}
+if ('speechSynthesis' in window){ findVoice(); speechSynthesis.onvoiceschanged = findVoice; setTimeout(findVoice, 1200); }
+else document.querySelectorAll('.spk').forEach(b => b.hidden = true);
+function say(t){ if (!heVoice) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = heVoice; u.lang = heVoice.lang; u.rate = .8; speechSynthesis.speak(u); }
+$('saySlogan').onclick = () => say('אֲנַחְנוּ עַל הַמַּפָּה!');
+
+/* ---------- fact board: a picture hints at the fact; click flips it (Hebrew + English) ---------- */
+const FLAG = `<svg viewBox="0 0 110 80" aria-hidden="true"><rect x="1" y="1" width="108" height="78" rx="6" fill="#fff" stroke="#2b2a3a" stroke-width="2"/><rect x="1" y="9" width="108" height="11" fill="#1f4fbf"/><rect x="1" y="60" width="108" height="11" fill="#1f4fbf"/><path d="M55 26 L66 45 H44Z M55 54 L44 35 H66Z" fill="none" stroke="#1f4fbf" stroke-width="3.5" stroke-linejoin="round"/></svg>`;
+const FACTS = [
+  {p:'🗓️', he:'הַמַּכַּבִּיָּה הִיא כָּל אַרְבַּע שָׁנִים.', en:'The Maccabiah is held every four years.'},
+  {p:FLAG, he:'הַמַּכַּבִּיָּה תָּמִיד בְּיִשְׂרָאֵל.', en:'The Maccabiah always takes place in Israel.'},
+  {p:'🏖️', he:'הַמַּכַּבִּיָּה הָרִאשׁוֹנָה הָיְתָה בְּתֵל אָבִיב, בִּשְׁנַת 1932.', en:'The first Maccabiah was in Tel Aviv, in 1932.'},
+  {p:'🐎', he:'בִּשְׁנַת 1932 רֹאשׁ הָעִיר מֵאִיר דִּיזֶנְגּוֹף רָכַב עַל סוּס לָבָן בַּטֶּקֶס.', en:'In 1932, Tel Aviv mayor Meir Dizengoff rode a white horse at the opening ceremony.'},
+  {p:'🕎', he:'הַשֵּׁם "מַכַּבִּיָּה" בָּא מֵהַמַּכַּבִּים – הַגִּבּוֹרִים שֶׁל חֲנֻכָּה.', en:'The name "Maccabiah" comes from the Maccabees – the heroes of Hanukkah.'},
+  {p:'✡️', he:'קוֹרְאִים לַמַּכַּבִּיָּה "הָאוֹלִימְפְּיָאדָה הַיְּהוּדִית".', en:'People call the Maccabiah "the Jewish Olympics".'},
+  {p:'🌍', he:'בַּמַּכַּבִּיָּה יֵשׁ בְּעֵרֶךְ 10,000 סְפּוֹרְטַאִים מִיּוֹתֵר מִ־60 אֲרָצוֹת.', en:'About 10,000 athletes from more than 60 countries take part.'},
+  {p:'💡', he:'יוֹסֵף יְקוּתִיאֵלִי חָשַׁב עַל הָרַעְיוֹן כְּשֶׁהָיָה בֶּן 15.', en:'Yosef Yekutieli came up with the idea when he was only 15.'},
+  {p:'🏊', he:'מַארְק סְפִּיץ שָׂחָה בַּמַּכַּבִּיָּה, וְאַחַר כָּךְ זָכָה בְּ־7 מֶדַלְיוֹת זָהָב בָּאוֹלִימְפְּיָאדָה.', en:'Swimmer Mark Spitz competed in the Maccabiah, and later won 7 Olympic gold medals.'},
+  {p:'👧👴', he:'יֵשׁ סְפּוֹרְטַאִים צְעִירִים וְגַם סְפּוֹרְטַאִים מְבֻגָּרִים.', en:'There are young athletes and older athletes too.'},
+  {p:'🥇', he:'הַמְּנַצְּחִים מְקַבְּלִים מֶדַלְיָה: זָהָב, כֶּסֶף אוֹ אָרָד.', en:'Winners get a medal: gold, silver or bronze.'},
+  {p:'🏟️', he:'טֶקֶס הַפְּתִיחָה הוּא בְּאִצְטַדְיוֹן טֶדִי בִּירוּשָׁלַיִם.', en:'The opening ceremony is held at Teddy Stadium in Jerusalem.'}
+];
+const board = $('board');
+FACTS.forEach((f,i) => {
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'ftile'; b.setAttribute('aria-pressed','false');
+  b.innerHTML = `<span class="face front"><span class="pic">${f.p}</span><span class="qm">${i+1} ?</span></span>
+    <span class="face back"><span class="fh">${f.he}</span><span class="fe">${f.en}</span></span>`;
+  b.onclick = () => {
+    const open = b.classList.toggle('open'); b.setAttribute('aria-pressed', open);
+    if (open){ say(f.he); setTimeout(() => burstAt(b, ['★','●'], ['#f2b01e','#e2506a','#2a8bd0'], 8), 250); }
+    factHud();
+  };
+  board.appendChild(b);
+});
+function factHud(){ $('factHud').textContent = `${board.querySelectorAll('.ftile.open').length} / ${FACTS.length}`; }
+$('factReset').onclick = () => { board.querySelectorAll('.ftile').forEach(b => { b.classList.remove('open'); b.setAttribute('aria-pressed','false'); }); factHud(); };
+factHud();
+
+/* ---------- sports words: first four from the workbook (p.23, right-to-left), then new ones ---------- */
+const SPORTS = [
+  {k:'basketball', he:'כַּדּוּרְסַל'},
+  {k:'swimming', he:'שְׂחִיָּה'},
+  {k:'cycling', he:'רְכִיבָה עַל אוֹפַנַּיִם'},
+  {k:'dancing', he:'רִקּוּד'},
+  {k:'soccer', he:'כַּדּוּרֶגֶל', nu:1},
+  {k:'tennis', he:'טֶנִיס', nu:1},
+  {k:'volleyball', he:'כַּדּוּרְעָף', nu:1},
+  {k:'running', he:'רִיצָה', nu:1},
+  {k:'gymnastics', he:'הִתְעַמְּלוּת', nu:1},
+  {k:'judo', he:'גּ׳וּדוֹ', nu:1}
+];
+const sgrid = $('sgrid');
+SPORTS.forEach((s,i) => {
+  const b = document.createElement('button'); b.type='button'; b.className = 'wcard' + (s.nu ? ' new' : '');
+  b.innerHTML = `<span class="ico">${iconSVG(s.k)}</span><span class="w">${s.he}</span>${s.nu ? '<span class="newtag">חָדָשׁ</span>' : ''}`;
+  b.onclick = () => { pickSport(i); openSpot(i); };
+  sgrid.appendChild(b);
+});
+$('bTour').onclick = () => openSpot(0);
+
+/* my sport: אֲנִי אוֹהֵב / אוֹהֶבֶת ___ */
+let fem = false, mySport = -1;
+function drawMine(){
+  const love = fem ? 'אוֹהֶבֶת' : 'אוֹהֵב';
+  $('mineS').innerHTML = `אֲנִי ${love} <span class="slot">${mySport >= 0 ? SPORTS[mySport].he : '…'}</span>`;
+}
+function pickSport(i){ mySport = i; drawMine(); }
+$('gM').onclick = () => { fem = false; $('gM').setAttribute('aria-pressed', true); $('gF').setAttribute('aria-pressed', false); drawMine(); };
+$('gF').onclick = () => { fem = true; $('gF').setAttribute('aria-pressed', true); $('gM').setAttribute('aria-pressed', false); drawMine(); };
+$('mineS').onclick = () => { if (mySport >= 0) say(`אֲנִי ${fem ? 'אוֹהֶבֶת' : 'אוֹהֵב'} ${SPORTS[mySport].he}`); };
+drawMine();
+
+/* spotlight */
+const spot = $('spot');
+let si = 0, lastFocus = null;
+function openSpot(i){
+  if (spot.hidden) lastFocus = document.activeElement;
+  si = (i + SPORTS.length) % SPORTS.length;
+  const s = SPORTS[si];
+  spot.hidden = false;
+  const card = $('spotCard'); card.style.animation='none'; void card.offsetWidth; card.style.animation='';
+  $('spotIco').innerHTML = iconSVG(s.k);
+  $('spotWord').textContent = s.he;
+  setTimeout(() => burstAt($('spotIco'), ['★','●','★'], ['#f2b01e','#e8742c','#2a8bd0'], 14), 200);
+  say(s.he);
+  $('spotX').focus({preventScroll:true});
+}
+function closeSpot(){ spot.hidden = true; if (lastFocus) lastFocus.focus({preventScroll:true}); }
+$('spotX').onclick = closeSpot;
+$('spotPrev').onclick = () => openSpot(si-1);
+$('spotNext').onclick = () => openSpot(si+1);
+$('spotSay').onclick = () => say(SPORTS[si].he);
+spot.addEventListener('click', e => { if (e.target === spot) closeSpot(); });
+document.addEventListener('keydown', e => {
+  if (spot.hidden) return;
+  if (e.key === 'Escape') closeSpot();
+  if (e.key === 'ArrowLeft') openSpot(si+1);
+  if (e.key === 'ArrowRight') openSpot(si-1);
+});
+
+/* ---------- basketball vs soccer ---------- */
+const VS = [
+  {c:'b', k:'basketball', he:'כַּדּוּרְסַל', parts:['כַּדּוּר','סַל'],
+   rows:[['בְּכָל קְבוּצָה','5 שַׂחְקָנִים'],['מְשַׂחֲקִים עִם','יָדַיִם 🙌'],['הַכַּדּוּר נִכְנָס לַ…','סַל'],['בְּיִשְׂרָאֵל','מַכַּבִּי תֵּל אָבִיב']]},
+  {c:'s', k:'soccer', he:'כַּדּוּרֶגֶל', parts:['כַּדּוּר','רֶגֶל'],
+   rows:[['בְּכָל קְבוּצָה','11 שַׂחְקָנִים'],['מְשַׂחֲקִים עִם','רַגְלַיִם 🦶'],['הַכַּדּוּר נִכְנָס לַ…','שַׁעַר – גּוֹל!'],['בָּעוֹלָם','גְּבִיעַ הָעוֹלָם 🏆']]}
+];
+$('vs').innerHTML = VS.map((v,i) => `${i ? '<div class="mid">אוֹ</div>' : ''}<div class="sport ${v.c}">
+  <div class="hd"><span class="ico">${iconSVG(v.k)}</span><h4>${v.he}</h4></div>
+  <div class="eq">${v.parts[0]} <span class="p">+</span> ${v.parts[1]} <span class="p">=</span> ${v.he}</div>
+  <ul>${v.rows.map(r => `<li><span class="k">${r[0]}</span><span class="v">${r[1]}</span></li>`).join('')}</ul></div>`).join('');
+
+/* sort game: which sport does it belong to? */
+const ITEMS = [
+  {he:'סַל', c:'b'}, {he:'שַׁעַר', c:'s'},
+  {he:'יָדַיִם', c:'b'}, {he:'רַגְלַיִם', c:'s'},
+  {he:'5 שַׂחְקָנִים', c:'b'}, {he:'11 שַׂחְקָנִים', c:'s'},
+  {he:'שׁוֹעֵר', c:'s'}, {he:'גּוֹל', c:'s'},
+  {he:'טַל בְּרוֹדִי', c:'b'}, {he:'מֶסִּי', c:'s'},
+  {he:'3 נְקֻדּוֹת', c:'b'}, {he:'מַכַּבִּי ת״א 1977', c:'b'}
+];
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+let S = null;
+function startSort(){
+  S = {order:shuffle(ITEMS), i:0, ok:0, bad:0};
+  $('bins').innerHTML = VS.map(v => `<button class="bin ${v.c}" type="button" data-c="${v.c}">${iconSVG(v.k)}<span>${v.he}</span><span class="got"></span></button>`).join('');
+  $('bins').querySelectorAll('.bin').forEach(b => b.onclick = () => drop(b));
+  drawSort();
+}
+function drawSort(){
+  $('sortHud').textContent = `${Math.min(S.i+1, S.order.length)} / ${S.order.length} · ✓ ${S.ok} · ✕ ${S.bad}`;
+  if (S.i >= S.order.length){
+    $('sortCard').innerHTML = `<div class="sort-card"><span class="w">${S.bad === 0 ? 'מְצֻיָּן! 🏆' : 'כָּל הַכָּבוֹד!'}</span><span class="sc">${S.ok} / ${S.order.length}</span></div>`;
+    burstAt($('sortCard'), ['🏀','⚽','★'], ['#e8742c','#2f9d55','#f2b01e'], 22);
+    return;
+  }
+  const it = S.order[S.i];
+  $('sortCard').innerHTML = `<div class="sort-card"><span class="w">${it.he}</span></div>`;
+  $('sortMsg').textContent = '';
+}
+function drop(b){
+  if (!S || S.i >= S.order.length) return;
+  const it = S.order[S.i];
+  b.classList.remove('ok','bad'); void b.offsetWidth;
+  if (b.dataset.c === it.c){
+    S.ok++; b.classList.add('ok');
+    b.querySelector('.got').insertAdjacentHTML('beforeend', `<span>${it.he}</span>`);
+    burstAt(b, ['★','✓'], ['#f2b01e','#2f9d55'], 8);
+    $('sortMsg').innerHTML = '<span style="color:var(--green)">נָכוֹן!</span>';
+    S.i++; setTimeout(() => { b.classList.remove('ok'); drawSort(); }, 650);
+  } else {
+    S.bad++; b.classList.add('bad');
+    $('sortMsg').innerHTML = '<span style="color:var(--coral)">נַסּוּ שׁוּב!</span>';
+    $('sortHud').textContent = `${S.i+1} / ${S.order.length} · ✓ ${S.ok} · ✕ ${S.bad}`;
+  }
+}
+$('sortAgain').onclick = startSort;
+startSort();
+
+/* ---------- quiz: Hebrew only — picture → word and word → picture, alternating ---------- */
+let Q = null;
+function startQuiz(){
+  Q = {items:shuffle(SPORTS.map((_,i)=>i)).map((k,j) => ({k, t: j % 2 ? 'w2p' : 'p2w'})), i:0, ok:0, res:[]};
+  drawQ();
+}
+function drawQ(){
+  const box = $('quiz');
+  const n = Q.items.length;
+  if (Q.i >= n){
+    const s = Q.ok >= n-1 ? 3 : Q.ok >= n*0.6 ? 2 : 1;
+    box.innerHTML = `<div class="q-end"><div class="stars">${'★'.repeat(s)}${'☆'.repeat(3-s)}</div>
+      <div style="font-size:28px;font-weight:800">${Q.ok} מִתּוֹךְ ${n}</div>
+      <div style="font-size:24px;font-weight:700;margin:4px 0 14px">${s===3 ? 'מְצֻיָּן!' : s===2 ? 'כָּל הַכָּבוֹד!' : 'יֹפִי! עוֹד פַּעַם?'}</div>
+      <button class="btn primary" id="qAgain" type="button">↻ עוֹד פַּעַם</button></div>`;
+    $('qAgain').onclick = startQuiz;
+    if (s >= 2) burstAt(box, ['★','🏀','⚽'], ['#f2b01e','#e8742c','#2f9d55'], 22);
+    return;
+  }
+  const it = Q.items[Q.i], ans = SPORTS[it.k];
+  const opts = shuffle([it.k, ...shuffle(SPORTS.map((_,i)=>i).filter(i => i !== it.k)).slice(0,2)]);
+  const body = it.t === 'p2w'
+    ? `<div class="q-ask">מָה בַּתְּמוּנָה? בּוֹחֲרִים אֶת הַמִּלָּה.</div>
+       <div class="q-ico big">${iconSVG(ans.k)}</div>
+       <div class="opts">${opts.map(k => `<button class="opt" type="button" data-r="${k===it.k ? 1 : 0}">${SPORTS[k].he}</button>`).join('')}</div>`
+    : `<div class="q-ask">אֵיזוֹ תְּמוּנָה? בּוֹחֲרִים אֶת הַתְּמוּנָה.</div>
+       <div class="q-word">${ans.he}</div>
+       <div class="opts pics">${opts.map((k,j) => `<button class="opt pic" type="button" data-r="${k===it.k ? 1 : 0}" aria-label="תְּמוּנָה ${j+1}">${iconSVG(SPORTS[k].k)}</button>`).join('')}</div>`;
+  box.innerHTML = `<div class="q-head"><span class="progress">שְׁאֵלָה ${Q.i+1} / ${n}</span>
+      <div class="q-dots">${Q.items.map((_,j) => `<i class="${j===Q.i ? 'cur' : ''} ${Q.res[j]===true ? 'y' : Q.res[j]===false ? 'n' : ''}"></i>`).join('')}</div></div>
+    ${body}
+    <div class="q-fb" id="qFb" aria-live="polite"></div>`;
+  box.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    const right = b.dataset.r === '1';
+    box.querySelectorAll('.opt').forEach(x => { x.disabled = true; if (x.dataset.r === '1') x.classList.add('ok'); });
+    if (!right) b.classList.add('bad'); else { Q.ok++; burstAt(b, ['★','✓'], ['#f2b01e','#2f9d55'], 8); }
+    Q.res[Q.i] = right;
+    say(ans.he);
+    $('qFb').innerHTML = `<span style="color:${right ? 'var(--green)' : 'var(--coral)'}">${right ? 'נָכוֹן! כָּל הַכָּבוֹד!' : 'אוּפְּס! הַתְּשׁוּבָה הַנְּכוֹנָה בַּיָּרֹק.'}</span>
+      <div style="margin-top:8px"><button class="btn primary" id="qNext" type="button">הַבָּא ◀</button></div>`;
+    $('qNext').onclick = () => { Q.i++; drawQ(); };
+    $('qNext').focus({preventScroll:true});
+  });
+}
+startQuiz();
+
+/* ---------- particles ---------- */
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function burstAt(el, glyphs, colors, n){
+  if (reduce || !el) return;
+  const r = el.getBoundingClientRect(); const cx = r.left + r.width/2, cy = r.top + r.height/2;
+  for (let i = 0; i < n; i++){
+    const s = document.createElement('span'); s.className = 'fx';
+    s.textContent = glyphs[i % glyphs.length]; s.style.color = colors[i % colors.length]; s.style.fontSize = (16 + Math.random()*24) + 'px';
+    s.style.left = cx + 'px'; s.style.top = cy + 'px';
+    document.body.appendChild(s);
+    const a = Math.random()*Math.PI*2, d = 70 + Math.random()*150;
+    s.animate([
+      {transform:'translate(-50%,-50%) scale(.3)', opacity:1},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d}px), calc(-50% + ${Math.sin(a)*d - 40}px)) scale(1)`, opacity:1, offset:.7},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d*1.1}px), calc(-50% + ${Math.sin(a)*d + 30}px)) scale(.8)`, opacity:0}
+    ], {duration:1000 + Math.random()*600, easing:'cubic-bezier(.2,.8,.3,1)'}).onfinish = () => s.remove();
+  }
+}
+})();
+</script>
+<script>function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}setNavH();window.addEventListener('resize',setNavH);</script>
+</body>
+</html>
