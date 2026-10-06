@@ -75,8 +75,15 @@ section.step{margin-block:28px 48px; scroll-margin-top:calc(var(--navh,0px) + 70
 
 /* ================= THE SHOW ================= */
 #show{scroll-margin-top:calc(var(--navh,0px) + 70px)}
-#show:fullscreen{background:var(--bg); padding:16px; overflow:auto; display:flex; flex-direction:column; justify-content:center}
-#show:fullscreen .stage-wrap{width:min(100%, calc((100vh - 250px) * 1000 / 560)); margin-inline:auto}
+#show:fullscreen,#show.fakefs{background:var(--bg); padding:10px 12px; overflow:auto; display:flex; flex-direction:column; justify-content:center}
+#show.fakefs{position:fixed; inset:0; z-index:10000; border-radius:0; border:0}
+.autobar{height:6px; background:var(--line); border-radius:3px; overflow:hidden; margin-top:8px}
+.autobar i{display:block; height:100%; width:0; background:var(--green)}
+#voiceSel{max-width:220px; font-size:14px}
+#show:fullscreen .stage-wrap,#show.fakefs .stage-wrap{width:min(100%, calc((100dvh - 200px) * 1000 / 560)); margin-inline:auto}
+#show:fullscreen .cap,#show.fakefs .cap{font-size:clamp(18px,3.4vh,34px); min-height:2.4em; padding-top:8px}
+#show:fullscreen .tools,#show.fakefs .tools{margin-top:6px}
+#show:fullscreen .story,#show.fakefs .story{display:none}
 .stage-wrap{position:relative; container-type:inline-size; aspect-ratio:1000/560; border-radius:18px; overflow:hidden; background:#1d2550; border:3px solid #23233a}
 .stage{position:absolute; inset:0; width:100%; height:100%; display:block}
 
@@ -303,6 +310,7 @@ section.step{margin-block:28px 48px; scroll-margin-top:calc(var(--navh,0px) + 70
         </div>
       </div>
 
+      <div class="autobar" id="autoBar" hidden><i></i></div>
       <div class="cap" id="cap" aria-live="polite"><div class="txt" id="capTxt"></div><div class="listen">👂 מַקְשִׁיבִים לַמּוֹרָה…</div></div>
 
       <div class="ctrl">
@@ -312,8 +320,8 @@ section.step{margin-block:28px 48px; scroll-margin-top:calc(var(--navh,0px) + 70
       </div>
       <div class="tools">
         <button class="btn" type="button" id="txtBtn" aria-pressed="false">🙈 הסתרת טקסט</button>
-        <button class="btn" type="button" id="autoBtn" aria-pressed="false">⏯ הצגה אוטומטית</button>
-        <button class="btn" type="button" id="voiceBtn" aria-pressed="false">🔊 הקראה</button>
+        <button class="btn" type="button" id="autoBtn" aria-pressed="false">▶ הצגה אוטומטית</button>
+        <button class="btn" type="button" id="voiceBtn" aria-pressed="false">🔊 הקראה</button><select class="btn" id="voiceSel" aria-label="בחירת קול" hidden></select>
         <button class="btn" type="button" id="storyBtn" aria-pressed="false">📖 כל הסיפור</button>
         <button class="btn" type="button" id="fsBtn">⛶ מסך מלא</button>
       </div>
@@ -662,7 +670,7 @@ function go(i, animate){
   }
   setTimeout(() => { if (g === gen) overlayFor(i, to); }, forward ? moveMs : 50);
   caption(i); refreshUI(); speak(sc);
-  if (auto) scheduleAuto(moveMs + Math.max(3800, sc.t.split(' ').length * 520), sc);
+  if (auto) scheduleAuto(moveMs + (voiceOn && heVoice && !sc.sep ? 4000 + sc.t.split(' ').length * 900 : Math.max(3800, sc.t.split(' ').length * 520)));
 }
 
 /* curtain */
@@ -674,7 +682,7 @@ function openShow(at){
   else { cur = -1; go(at, false); }
 }
 function endShow(){
-  ++gen; clearTimeout(autoTimer); ended = true; wrapEl.classList.remove('opened'); ov.innerHTML = '';
+  ++gen; if (auto) setAuto(false); ended = true; wrapEl.classList.remove('opened'); ov.innerHTML = '';
   $('#ctH').textContent = '👏 סוֹף 👏';
   $('#ctP').textContent = 'עַכְשָׁו – תַּרְגִּיל ב';
   $('#ctRow').innerHTML = '<button class="btn big" type="button" id="againBtn">↺ שׁוּב</button><a class="btn big" href="#s-order">לְתַרְגִּיל ב ◀</a>';
@@ -708,28 +716,77 @@ function refreshUI(){
 function toggle(btn, fn){ btn.onclick = () => { const on = btn.getAttribute('aria-pressed') !== 'true'; btn.setAttribute('aria-pressed', on); fn(on); }; }
 toggle($('#txtBtn'), on => $('#cap').classList.toggle('hid', on));
 toggle($('#storyBtn'), on => $('#story').hidden = !on);
-let auto = false;
-toggle($('#autoBtn'), on => { auto = on; clearTimeout(autoTimer); if (on) { if (!wrapEl.classList.contains('opened') || ended) openShow(); else scheduleAuto(1500, SCENES[cur]); } });
-function scheduleAuto(ms, sc){
-  clearTimeout(autoTimer); if (!auto) return;
-  if (voiceOn && heVoice) { pendingAuto = true; return; }
-  autoTimer = setTimeout(next, ms);
-}
-$('#fsBtn').onclick = () => { const el = $('#show'); document.fullscreenElement ? document.exitFullscreen() : el.requestFullscreen && el.requestFullscreen(); };
 
-/* voice */
-let heVoice = null, voiceOn = false, pendingAuto = false;
-function findVoice(){ const vs = speechSynthesis.getVoices() || []; heVoice = vs.find(v => /^he|^iw/i.test(v.lang)) || null; $('#voiceBtn').disabled = !heVoice; $('#voiceBtn').title = heVoice ? '' : 'אין קול עברי בדפדפן הזה'; }
+/* automatic show: a timer always runs (so it never stalls); the voice, when on, can only make it sooner */
+let auto = false;
+const autoBtn = $('#autoBtn'), autoBar = $('#autoBar');
+function setAuto(on){
+  auto = on; autoBtn.setAttribute('aria-pressed', on);
+  autoBtn.textContent = on ? '⏸ עצירת ההצגה' : '▶ הצגה אוטומטית';
+  clearTimeout(autoTimer); autoBar.hidden = !on;
+  if (!on) return;
+  if (!wrapEl.classList.contains('opened') || ended) openShow(); else scheduleAuto(1200);
+}
+autoBtn.onclick = () => setAuto(!auto);
+function scheduleAuto(ms){
+  clearTimeout(autoTimer); if (!auto) return;
+  autoTimer = setTimeout(next, ms);
+  const i = autoBar.firstElementChild;
+  i.style.transition = 'none'; i.style.width = '0%'; i.getBoundingClientRect();
+  i.style.transition = `width ${ms}ms linear`; i.style.width = '100%';
+}
+
+/* full screen: real full screen where the browser allows it, otherwise (iPhone, embedded preview) fill the window */
+const showEl = $('#show'), fsBtn = $('#fsBtn');
+const realFs = () => document.fullscreenElement || document.webkitFullscreenElement;
+const inFs = () => !!realFs() || showEl.classList.contains('fakefs');
+function fsLabel(){ fsBtn.textContent = inFs() ? '✕ יציאה ממסך מלא' : '⛶ מסך מלא'; }
+async function enterFs(){
+  const req = showEl.requestFullscreen || showEl.webkitRequestFullscreen;
+  if (req) {
+    try { const p = req.call(showEl); if (p && p.catch) p.catch(() => {}); } catch (e) {}
+    for (let k = 0; k < 8 && !realFs(); k++) await sleep(100);
+    if (realFs()) { try { screen.orientation.lock('landscape').catch(() => {}); } catch (e) {} fsLabel(); return; }
+  }
+  showEl.classList.add('fakefs'); document.documentElement.style.overflow = 'hidden'; fsLabel();
+}
+function exitFs(){
+  if (realFs()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  showEl.classList.remove('fakefs'); document.documentElement.style.overflow = ''; fsLabel();
+}
+fsBtn.onclick = () => inFs() ? exitFs() : enterFs();
+document.addEventListener('fullscreenchange', fsLabel); document.addEventListener('webkitfullscreenchange', fsLabel);
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && showEl.classList.contains('fakefs')) exitFs(); });
+
+/* voice: prefer the clearer (mostly female) voices — Hila (Edge), Carmit (Apple), Google (Android) — over Windows' Asaf */
+let heVoice = null, voiceOn = false, utter = null;
+const voiceSel = $('#voiceSel');
+const vRank = v => /hila/i.test(v.name) ? 0 : /carmit/i.test(v.name) ? 1 : /google/i.test(v.name) ? 2 : /natural|neural|online|enhanced|premium/i.test(v.name) ? 3 : /asaf/i.test(v.name) ? 9 : 5;
+function findVoice(){
+  const vs = (speechSynthesis.getVoices() || []).filter(v => /^(he|iw)/i.test(v.lang)).sort((a, b) => vRank(a) - vRank(b));
+  let saved = null; try { saved = localStorage.getItem('niflaot-voice'); } catch (e) {}
+  heVoice = vs.find(v => v.name === saved) || vs[0] || null;
+  voiceSel.innerHTML = vs.map(v => `<option>${v.name}</option>`).join('');
+  if (heVoice) voiceSel.value = heVoice.name;
+  voiceSel.hidden = vs.length < 2;
+  $('#voiceBtn').disabled = !heVoice; $('#voiceBtn').title = heVoice ? '' : 'אין קול עברי בדפדפן הזה';
+}
+voiceSel.onchange = () => {
+  heVoice = speechSynthesis.getVoices().find(v => v.name === voiceSel.value) || heVoice;
+  try { localStorage.setItem('niflaot-voice', heVoice.name); } catch (e) {}
+  if (voiceOn && cur >= 0 && !ended) speak(SCENES[cur]);
+};
 if ('speechSynthesis' in window) { findVoice(); speechSynthesis.onvoiceschanged = findVoice; setTimeout(findVoice, 1200); } else $('#voiceBtn').disabled = true;
 toggle($('#voiceBtn'), on => { voiceOn = on; if (!on) speechSynthesis.cancel(); else if (cur >= 0 && !ended) speak(SCENES[cur]); });
 function speak(sc){
   if (!voiceOn || !heVoice) return;
-  speechSynthesis.cancel();
-  if (sc.sep) { if (auto) autoTimer = setTimeout(next, 3000); return; }
-  const u = new SpeechSynthesisUtterance(sc.t.replace(/[״"*]/g, '')); u.voice = heVoice; u.lang = heVoice.lang; u.rate = .8;
+  speechSynthesis.cancel(); speechSynthesis.resume();
+  if (sc.sep) return;
+  const text = sc.t.replace(/[״"*]/g, '').replace(/\.\.\./g, ',').replace(/\s+/g, ' ');
+  utter = new SpeechSynthesisUtterance(text); utter.voice = heVoice; utter.lang = heVoice.lang; utter.rate = .85;
   const myGen = gen;
-  u.onend = () => { if (auto && myGen === gen) autoTimer = setTimeout(next, 1800); };
-  speechSynthesis.speak(u);
+  utter.onend = () => { if (auto && myGen === gen) scheduleAuto(1500); };
+  speechSynthesis.speak(utter);
 }
 
 /* keyboard: in RTL, left = next */
