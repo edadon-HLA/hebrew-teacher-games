@@ -54,10 +54,11 @@ svg.ic{width:1em;height:1em;vertical-align:-.12em}
 .site-nav a:hover,.site-nav button:hover{background:#f1f4f9}
 .site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
 .site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
-@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}</style>
+@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
+</style>
 </head>
 <body>
-<nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button></nav>
+<nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
 <h1>יש מקום בתיק? 🎒</h1>
 <div class="wrap">
   <div class="center" id="center">
@@ -176,6 +177,15 @@ $("lhouse").addEventListener("click",function(e){
 })();
 $("again").onclick=start;
 start();
+</script>
+<script id="fs-script">
+(function(){var b=document.getElementById("fsBtn"),d=document,e=d.documentElement;
+var req=e.requestFullscreen||e.webkitRequestFullscreen,ex=d.exitFullscreen||d.webkitExitFullscreen;
+if(!b||!req){return}b.hidden=false;
+function on(){return d.fullscreenElement||d.webkitFullscreenElement}
+function lbl(){b.textContent=on()?"✕ יציאה ממסך מלא":"⛶ מסך מלא"}
+b.addEventListener("click",function(){if(on()){ex.call(d)}else{req.call(e)}});
+d.addEventListener("fullscreenchange",lbl);d.addEventListener("webkitfullscreenchange",lbl);})();
 </script>
 </body>
 </html>
