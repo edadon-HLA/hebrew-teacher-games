@@ -118,7 +118,7 @@ main{flex:1; display:flex; flex-direction:column; align-items:center; gap:14px; 
 <body>
 <nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../games/index.html'}">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
 <header class="bar">
-  <h1>אֲנִי אוֹהֵב? <span class="he">כֵּן אוֹ לֹא</span></h1>
+  <h1>אֲנִי אוֹהֵב/ת? <span class="he">כֵּן אוֹ לֹא</span></h1>
   <span class="spacer"></span>
   <div class="dots" id="dots" aria-label="התקדמות"></div>
   <span class="score" id="score">⭐ 0</span>
@@ -142,7 +142,7 @@ main{flex:1; display:flex; flex-direction:column; align-items:center; gap:14px; 
 
 <div class="overlay" id="start">
   <div class="panel">
-    <h2>אֲנִי אוֹהֵב?</h2>
+    <h2>אֲנִי אוֹהֵב/ת?</h2>
     <div class="he t">כֵּן אוֹ לֹא</div>
     <p>הַקְשִׁיבוּ לַמִּשְׁפָּט. הִסְתַּכְּלוּ בַּתְּמוּנָה.<br>הַאִם הַתְּמוּנָה מַתְאִימָה לַמִּשְׁפָּט?</p>
     <div class="how"><span><b style="background:var(--yes)">✓</b>מַתְאִים</span><span><b style="background:var(--no)">✕</b>לֹא מַתְאִים</span></div>
@@ -263,7 +263,7 @@ const ITEMS = [
 ];
 const SUBJ = [
   {he:'אֲנִי', en:'I', pos:'love', neg:"don't love"},
-  {he:'הַתַּלְמִיד', en:'The student', pos:'loves', neg:"doesn't love"}
+  {he:'הַתַּלְמִיד', heF:'הַתַּלְמִידָה', en:'The student', pos:'loves', neg:"doesn't love"}
 ];
 const LOOKS = [
   {shirt:'#3d8bf2', hair:'#4a2c1a', skin:'#f2c4a0'},
@@ -288,14 +288,15 @@ function makeDeck(){
       if (kind === 'neg') pPos = !sPos;
       else { do { pItem = rnd(ITEMS); } while (pItem === item); }
     }
-    return {subj, item, sPos, pItem, pPos, truth, kind, look:rnd(LOOKS)};
+    const girl = Math.random() < .5;
+    return {subj, item, sPos, pItem, pPos, truth, kind, girl, look:rnd(LOOKS)};
   });
 }
 
 /* ---------- drawing ---------- */
 const INK2 = '#2b2a3a';
 const HEART = 'M50 84 C20 62 10 46 14 32 C18 18 36 14 50 30 C64 14 82 18 86 32 C90 46 80 62 50 84Z';
-function kidSVG(love, L){
+function kidSVG(love, L, girl){
   const eyes = love
     ? `<path d="M93 118 Q101 108 109 118 M131 118 Q139 108 147 118" stroke="${INK2}" stroke-width="5" fill="none" stroke-linecap="round"/>
        <circle cx="88" cy="136" r="8" fill="#ff8fa3" opacity=".6"/><circle cx="152" cy="136" r="8" fill="#ff8fa3" opacity=".6"/>`
@@ -312,11 +313,13 @@ function kidSVG(love, L){
        <path d="M160 212 C140 236 100 240 74 226" stroke="${L.shirt}" stroke-width="20" fill="none" stroke-linecap="round"/>
        <circle cx="168" cy="222" r="10" fill="${L.skin}" stroke="${INK2}" stroke-width="3.5"/><circle cx="72" cy="226" r="10" fill="${L.skin}" stroke="${INK2}" stroke-width="3.5"/>`;
   return `<g class="kid ${love ? 'love' : 'dislike'}"><g class="bob">
+    ${girl ? `<path d="M60 120 C42 170 44 226 64 246 L176 246 C196 226 198 170 180 120Z" fill="${L.hair}" stroke="${INK2}" stroke-width="4" stroke-linejoin="round"/>` : ''}
     <path d="M62 290 C62 214 84 192 120 192 C156 192 178 214 178 290Z" fill="${L.shirt}" stroke="${INK2}" stroke-width="4"/>
     <rect x="108" y="168" width="24" height="28" fill="${L.skin}" stroke="${INK2}" stroke-width="4"/>
     <circle cx="68" cy="126" r="10" fill="${L.skin}" stroke="${INK2}" stroke-width="4"/><circle cx="172" cy="126" r="10" fill="${L.skin}" stroke="${INK2}" stroke-width="4"/>
     <circle cx="120" cy="124" r="52" fill="${L.skin}" stroke="${INK2}" stroke-width="4"/>
     <path d="M68 120 C64 74 96 60 122 64 C150 62 178 82 172 120 C158 98 140 92 122 98 C104 92 84 100 68 120Z" fill="${L.hair}" stroke="${INK2}" stroke-width="4" stroke-linejoin="round"/>
+    ${girl ? `<g transform="translate(150 72)"><path d="M0 0 L-16 -12 L-16 12Z M0 0 L16 -12 L16 12Z" fill="#ef5470" stroke="${INK2}" stroke-width="3.5" stroke-linejoin="round"/><circle r="5" fill="#ef5470" stroke="${INK2}" stroke-width="3.5"/></g>` : ''}
     ${eyes}${mouth}${arms}
     ${love ? '' : `<g class="grr"><path d="M58 70 l-12 -8 M54 84 l-14 0 M184 70 l12 -8" stroke="${INK2}" stroke-width="4" stroke-linecap="round"/></g>`}
   </g></g>`;
@@ -345,7 +348,7 @@ function sceneSVG(r){
     <ellipse cx="300" cy="282" rx="80" ry="10" fill="#e5cfaf"/>
     <ellipse cx="120" cy="288" rx="78" ry="9" fill="#e5cfaf"/>
     <g class="item ${r.pPos ? 'love' : 'dislike'}"><g transform="translate(238 140) scale(1.25)"><g class="inner">${ICONS[r.pItem.k]}</g></g></g>
-    ${kidSVG(r.pPos, r.look)}
+    ${kidSVG(r.pPos, r.look, r.girl)}
     ${bubbleSVG(r.pPos)}
     ${floatHearts(r.pPos)}
   </svg>`;
@@ -359,7 +362,10 @@ function say(t){ if (!heVoice || !voiceOn) return; speechSynthesis.cancel(); con
 
 /* ---------- game flow ---------- */
 let deck = [], i = 0, score = 0, results = [], answered = false, textOn = true;
-function sentenceText(r){ return `${r.subj.he}${r.sPos ? '' : ' לֹא'} אוֹהֵב ${r.item.he}.`; }
+function sentenceText(r){
+  const subj = (r.girl && r.subj.heF) || r.subj.he;
+  return `${subj}${r.sPos ? '' : ' לֹא'} ${r.girl ? 'אוֹהֶבֶת' : 'אוֹהֵב'} ${r.item.he}.`;
+}
 function drawDots(){
   $('dots').innerHTML = deck.map((_,j) => `<i class="${j===i && !answered ? 'cur' : ''} ${results[j]===true ? 'y' : results[j]===false ? 'n' : ''}"></i>`).join('');
   $('score').textContent = `⭐ ${score}`;
@@ -390,7 +396,7 @@ function answer(saidYes){
   const fr = $('fbR');
   fr.className = 'r ' + (right ? 'y' : 'n');
   fr.textContent = right ? 'נָכוֹן! כָּל הַכָּבוֹד!' : 'אוּפְּס! לֹא הַפַּעַם';
-  const pHe = `הוּא${r.pPos ? '' : ' לֹא'} אוֹהֵב ${r.pItem.he}.`;
+  const pHe = `${r.girl ? 'הִיא' : 'הוּא'}${r.pPos ? '' : ' לֹא'} ${r.girl ? 'אוֹהֶבֶת' : 'אוֹהֵב'} ${r.pItem.he}.`;
   let why;
   if (r.truth) why = `הַתְּמוּנָה מַתְאִימָה לַמִּשְׁפָּט.`;
   else if (r.kind === 'neg') why = `בַּתְּמוּנָה: <b>${pHe}</b> שִׂימוּ לֵב לַמִּלָּה <b>לֹא</b>!`;
