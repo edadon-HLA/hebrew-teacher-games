@@ -38,15 +38,15 @@ h1{margin:0 0 8px;font-size:clamp(25px,4vw,40px)}
 </style></head>
 <body><nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
 <header>
-<h1>🧠 משחק זיכרון – מילים ותמונות</h1>
-<div class="subtitle">התאימו כל מילה לתמונה המתאימה</div>
-<div class="info">זוגות שנמצאו: <strong id="pairs">0</strong> / 10</div>
+<h1>🧠 מִשְׂחַק זִכָּרוֹן – מִלִּים וּתְמוּנוֹת</h1>
+<div class="subtitle">הַתְאִימוּ כָּל מִלָּה לַתְּמוּנָה הַמַּתְאִימָה</div>
+<div class="info">זוּגוֹת שֶׁנִּמְצְאוּ: <strong id="pairs">0</strong> / 10</div>
 <div class="controls">
-<button class="control" id="newGame" type="button">🔄 משחק חדש</button>
-<button class="control" id="soundButton" type="button">🔊 צליל: פעיל</button>
+<button class="control" id="newGame" type="button">🔄 מִשְׂחָק חָדָשׁ</button>
+<button class="control" id="soundButton" type="button">🔊 צְלִיל: פָּעִיל</button>
 </div>
 </header>
-<main id="game" aria-label="משחק זיכרון"></main>
+<main id="game" aria-label="מִשְׂחַק זִכָּרוֹן"></main>
 <div id="message" aria-live="polite"></div>
 
 <script>
@@ -109,7 +109,7 @@ function makeCard(d){
   card.dataset.id=d.id;
   card.dataset.type=d.type;
   const n=game.children.length+1;
-  card.setAttribute("aria-label","קלף מספר "+n);
+  card.setAttribute("aria-label","קֶלֶף מִסְפָּר "+n);
   const num=document.createElement("span");
   num.className="num";
   num.textContent=n;
@@ -132,7 +132,7 @@ function makeCard(d){
     if(typeof d.value==="string" && d.value.startsWith("data:image/")){
       const img=document.createElement("img");
       img.src=d.value;
-      img.alt="תמונה";
+      img.alt="תְּמוּנָה";
       pic.appendChild(img);
     }else{
       pic.textContent=d.value;
@@ -164,7 +164,7 @@ function flip(card){
     if(soundOn) beep(760,.12);
     first=null; second=null; busy=false;
     if(found===pairs.length){
-      message.textContent="🎉 כל הכבוד! מצאתם את כל הזוגות!";
+      message.textContent="🎉 כָּל הַכָּבוֹד! מְצָאתֶם אֶת כָּל הַזּוּגוֹת!";
       if(soundOn){setTimeout(()=>beep(900,.12),100);setTimeout(()=>beep(1100,.18),230)}
     }
   }else{
@@ -190,7 +190,7 @@ function beep(freq,duration){
 newGameButton.addEventListener("click",render);
 soundButton.addEventListener("click",()=>{
   soundOn=!soundOn;
-  soundButton.textContent=soundOn?"🔊 צליל: פעיל":"🔇 צליל: כבוי";
+  soundButton.textContent=soundOn?"🔊 צְלִיל: פָּעִיל":"🔇 צְלִיל: כָּבוּי";
 });
 render();
 })();

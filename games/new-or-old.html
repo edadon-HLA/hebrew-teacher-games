@@ -53,42 +53,42 @@
 <body><nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
 <div class="game">
   <div class="top">
-    <h1>חדש או ישן?</h1>
-    <div class="subtitle">הסתכלו על התמונה ובחרו את המילה המתאימה.</div>
+    <h1>חָדָשׁ אוֹ יָשָׁן?</h1>
+    <div class="subtitle">הִסְתַּכְּלוּ עַל הַתְּמוּנָה וּבִחֲרוּ אֶת הַמִּלָּה הַמַּתְאִימָה.</div>
     <div class="score">
-      <div class="pill">⭐ ניקוד: <span id="score">0</span></div>
-      <div class="pill">שאלה <span id="num">1</span> מתוך <span id="total">12</span></div>
+      <div class="pill">⭐ נִקּוּד: <span id="score">0</span></div>
+      <div class="pill">שְׁאֵלָה <span id="num">1</span> מִתּוֹךְ <span id="total">12</span></div>
     </div>
   </div>
 
   <div class="card">
     <div class="progress"><div class="bar" id="bar"></div></div>
-    <div class="object" id="object" aria-label="תמונה של חפץ"></div>
+    <div class="object" id="object" aria-label="תְּמוּנָה שֶׁל חֵפֶץ"></div>
     <div class="buttons">
-      <button class="new" data-answer="new">חדש</button>
-      <button class="oldbtn" data-answer="old">ישן</button>
+      <button class="new" data-answer="new">חָדָשׁ</button>
+      <button class="oldbtn" data-answer="old">יָשָׁן</button>
     </div>
     <div class="message" id="message" aria-live="polite"></div>
-    <button class="next" id="next">המשך ➜</button>
+    <button class="next" id="next">הֶמְשֵׁךְ ➜</button>
     <br>
-    <button class="restart" id="restart">התחל מחדש</button>
+    <button class="restart" id="restart">הַתְחֵל מֵחָדָשׁ</button>
   </div>
 </div>
 
 <script>
 const items = [
-  {emoji:"🚗", type:"new", label:"מכונית חדשה"},
-  {emoji:"🚲", type:"old", label:"אופניים ישנים", old:true},
-  {emoji:"📱", type:"new", label:"טלפון חדש"},
-  {emoji:"📺", type:"old", label:"טלוויזיה ישנה", old:true},
-  {emoji:"👟", type:"new", label:"נעליים חדשות"},
-  {emoji:"📻", type:"old", label:"רדיו ישן", old:true},
-  {emoji:"🧸", type:"new", label:"דובי חדש"},
-  {emoji:"⌚", type:"old", label:"שעון ישן", old:true},
-  {emoji:"💻", type:"new", label:"מחשב חדש"},
-  {emoji:"📷", type:"old", label:"מצלמה ישנה", old:true},
-  {emoji:"🎒", type:"new", label:"תיק חדש"},
-  {emoji:"☎️", type:"old", label:"טלפון ישן", old:true}
+  {emoji:"🚗", type:"new", label:"מְכוֹנִית חֲדָשָׁה"},
+  {emoji:"🚲", type:"old", label:"אוֹפַנַּיִם יְשָׁנִים", old:true},
+  {emoji:"📱", type:"new", label:"טֶלֶפוֹן חָדָשׁ"},
+  {emoji:"📺", type:"old", label:"טֶלֶוִיזְיָה יְשָׁנָה", old:true},
+  {emoji:"👟", type:"new", label:"נַעֲלַיִם חֲדָשׁוֹת"},
+  {emoji:"📻", type:"old", label:"רָדִיו יָשָׁן", old:true},
+  {emoji:"🧸", type:"new", label:"דֻּבִּי חָדָשׁ"},
+  {emoji:"⌚", type:"old", label:"שָׁעוֹן יָשָׁן", old:true},
+  {emoji:"💻", type:"new", label:"מַחְשֵׁב חָדָשׁ"},
+  {emoji:"📷", type:"old", label:"מַצְלֵמָה יְשָׁנָה", old:true},
+  {emoji:"🎒", type:"new", label:"תִּיק חָדָשׁ"},
+  {emoji:"☎️", type:"old", label:"טֶלֶפוֹן יָשָׁן", old:true}
 ];
 
 let order=[], index=0, score=0, answered=false;
@@ -115,10 +115,10 @@ function choose(answer){
   const item=order[index];
   if(answer===item.type){
     score++; $("score").textContent=score;
-    $("message").textContent="כל הכבוד! ⭐";
+    $("message").textContent="כָּל הַכָּבוֹד! ⭐";
     $("message").className="message correct";
   }else{
-    $("message").textContent="כמעט! התשובה היא: "+(item.type==="new"?"חדש":"ישן");
+    $("message").textContent="כִּמְעַט! הַתְּשׁוּבָה הִיא: "+(item.type==="new"?"חָדָשׁ":"יָשָׁן");
     $("message").className="message wrong";
   }
   document.querySelectorAll("[data-answer]").forEach(b=>b.disabled=true);
@@ -132,7 +132,7 @@ function next(){
   }else{
     $("object").innerHTML='<div style="font-size:90px">🎉</div>';
     $("bar").style.width="100%";
-    $("message").textContent=`סיימתם! קיבלתם ${score} מתוך ${order.length} ⭐`;
+    $("message").textContent=`סִיַּמְתֶּם! קִבַּלְתֶּם ${score} מִתּוֹךְ ${order.length} ⭐`;
     $("message").className="message correct";
     $("next").style.display="none";
     document.querySelectorAll("[data-answer]").forEach(b=>b.disabled=true);

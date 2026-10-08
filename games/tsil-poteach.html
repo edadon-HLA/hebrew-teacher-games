@@ -92,60 +92,60 @@ h1{font-family:'Suez One',sans-serif; font-weight:400; font-size:2rem; margin:6p
 </style></head>
 <body><nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
 
-<h1>🔊 צליל פותח</h1>
-<div class="sub">מה הצליל הראשון במילה? לחצו על האות המתאימה</div>
+<h1>🔊 צְלִיל פּוֹתֵחַ</h1>
+<div class="sub">מָה הַצְּלִיל הָרִאשׁוֹן בַּמִּלָּה? לִחְצוּ עַל הָאוֹת הַמַּתְאִימָה</div>
 
 <div id="setup" class="panel">
-  <div class="row"><strong>בחרו אותיות ללימוד:</strong>
+  <div class="row"><strong>בַּחֲרוּ אוֹתִיּוֹת לְלִמּוּד:</strong>
     <div>
-      <button class="btn ghost" onclick="selectAll(true)" style="padding:6px 12px;font-size:.85rem;">בחר הכל</button>
-      <button class="btn ghost" onclick="selectAll(false)" style="padding:6px 12px;font-size:.85rem;">נקה</button>
+      <button class="btn ghost" onclick="selectAll(true)" style="padding:6px 12px;font-size:.85rem;">בְּחַר הַכֹּל</button>
+      <button class="btn ghost" onclick="selectAll(false)" style="padding:6px 12px;font-size:.85rem;">נַקֵּה</button>
     </div>
   </div>
   <div id="lettersGrid" class="letters-grid"></div>
 
   <div class="toggle-wrap">
     <div id="modeSwitch" class="switch" onclick="toggleMode()"><div class="knob"></div></div>
-    <span id="modeLabel">מצב קל — לחיצה על האות</span>
+    <span id="modeLabel">מָצָב קַל — לְחִיצָה עַל הָאוֹת</span>
   </div>
 
   <div class="toggle-wrap">
     <div id="wordSwitch" class="switch on" onclick="toggleWord()"><div class="knob"></div></div>
-    <span>להציג את שם התמונה (עם ניקוד) מתחת לתמונה</span>
+    <span>לְהַצִּיג אֶת שֵׁם הַתְּמוּנָה (עִם נִקּוּד) מִתַּחַת לַתְּמוּנָה</span>
   </div>
 
   <div class="toggle-wrap">
     <div id="voiceSwitch" class="switch on" onclick="toggleVoice()"><div class="knob"></div></div>
-    <span>🔊 הקראת המילה בקול</span>
-    <input id="volRange" type="range" min="0" max="100" value="90" aria-label="עוצמת קול" style="width:110px;direction:ltr;accent-color:var(--purple);" oninput="setVol(this.value)">
+    <span>🔊 הַקְרָאַת הַמִּלָּה בְּקוֹל</span>
+    <input id="volRange" type="range" min="0" max="100" value="90" aria-label="עוֹצְמַת קוֹל" style="width:110px;direction:ltr;accent-color:var(--purple);" oninput="setVol(this.value)">
   </div>
 
   <div class="toggle-wrap">
     <div id="teamSwitch" class="switch" onclick="toggleTeamMode()"><div class="knob"></div></div>
-    <span>תחרות קבוצתית</span>
+    <span>תַּחֲרוּת קְבוּצָתִית</span>
   </div>
 
   <div id="teamConfig" class="hidden" style="border-top:2px dashed #ccc; margin-top:6px; padding-top:12px;">
-    <div class="row"><strong>מספר קבוצות:</strong>
+    <div class="row"><strong>מִסְפָּר קְבוּצוֹת:</strong>
       <div id="teamCountRow" class="team-row"></div>
     </div>
     <div id="teamColorsWrap"></div>
-    <div class="row" style="margin-top:10px;"><strong>זמן לשאלה (שניות):</strong>
+    <div class="row" style="margin-top:10px;"><strong>זְמַן לַשְּׁאֵלָה (שְׁנִיּוֹת):</strong>
       <div id="timeRow" class="team-row"></div>
     </div>
-    <div class="row" style="margin-top:6px;"><strong>מספר שאלות בתחרות:</strong>
+    <div class="row" style="margin-top:6px;"><strong>מִסְפָּר שְׁאֵלוֹת בַּתַּחֲרוּת:</strong>
       <div id="qCountRow" class="team-row"></div>
     </div>
   </div>
 
   <div style="margin-top:14px;">
-    <button class="btn" id="startBtn" onclick="startGame()">התחילו לשחק</button>
+    <button class="btn" id="startBtn" onclick="startGame()">הַתְחִילוּ לְשַׂחֵק</button>
   </div>
 </div>
 
 <div id="game" class="card-area hidden">
   <div class="top-actions">
-    <button class="btn ghost" style="padding:6px 14px;" onclick="backToSetup()">⚙️ הגדרות</button>
+    <button class="btn ghost" style="padding:6px 14px;" onclick="backToSetup()">⚙️ הַגְדָּרוֹת</button>
     <div class="score hidden" id="freeScoreWrap">🌟 <span id="scoreVal">0</span></div>
   </div>
   <div id="teamBanner" class="team-banner hidden"></div>
@@ -154,18 +154,18 @@ h1{font-family:'Suez One',sans-serif; font-weight:400; font-size:2rem; margin:6p
   <div class="creature-card">
     <div class="emoji" id="cardEmoji">🦁</div>
     <div class="word-label" id="wordLabel"></div>
-    <button class="say-btn" id="sayBtn" onclick="sayWord()" aria-label="השמעת המילה">🔊 שמעו את המילה</button>
+    <button class="say-btn" id="sayBtn" onclick="sayWord()" aria-label="הַשְׁמָעַת הַמִּלָּה">🔊 שִׁמְעוּ אֶת הַמִּלָּה</button>
   </div>
   <div id="options" class="options letters"></div>
   <div class="feedback" id="feedback"></div>
-  <button class="btn secondary hidden" id="nextBtn" onclick="nextCard()">הבא ⟵</button>
+  <button class="btn secondary hidden" id="nextBtn" onclick="nextCard()">הַבָּא ⟵</button>
 </div>
 
 <div id="standingsScreen" class="card-area hidden">
   <div class="standings">
-    <h2 style="font-family:'Varela Round',sans-serif;">🏆 התוצאות הסופיות</h2>
+    <h2 style="font-family:'Varela Round',sans-serif;">🏆 הַתּוֹצָאוֹת הַסּוֹפִיּוֹת</h2>
     <div id="standingsList"></div>
-    <button class="btn" style="margin-top:14px;" onclick="backToSetup()">שחקו שוב</button>
+    <button class="btn" style="margin-top:14px;" onclick="backToSetup()">שַׂחֲקוּ שׁוּב</button>
   </div>
 </div>
 
@@ -217,7 +217,7 @@ function selectAll(on){ selected = new Set(on?ALL_LETTERS:[]); document.querySel
 function toggleMode(){
   hardMode = !hardMode;
   document.getElementById('modeSwitch').classList.toggle('on', hardMode);
-  document.getElementById('modeLabel').textContent = hardMode ? "מצב קשה — בחירת השם המלא מתוך אפשרויות" : "מצב קל — לחיצה על האות";
+  document.getElementById('modeLabel').textContent = hardMode ? "מָצָב קָשֶׁה — בְּחִירַת הַשֵּׁם הַמָּלֵא מִתּוֹךְ אֶפְשָׁרֻיּוֹת" : "מָצָב קַל — לְחִיצָה עַל הָאוֹת";
 }
 
 let showWord = true, voiceOn = true, vol = .9;
@@ -249,7 +249,7 @@ function toggleTeamMode(){
   teamMode = !teamMode;
   document.getElementById('teamSwitch').classList.toggle('on', teamMode);
   document.getElementById('teamConfig').classList.toggle('hidden', !teamMode);
-  document.getElementById('startBtn').textContent = teamMode ? "התחילו תחרות" : "התחילו לשחק";
+  document.getElementById('startBtn').textContent = teamMode ? "הַתְחִילוּ תַּחֲרוּת" : "הַתְחִילוּ לְשַׂחֵק";
   if(teamMode) buildTeamConfig();
 }
 
@@ -280,7 +280,7 @@ function buildTeamColors(){
   const wrap = document.getElementById('teamColorsWrap'); wrap.innerHTML='';
   for(let i=0;i<numTeams;i++){
     const row=document.createElement('div'); row.className='team-row';
-    const label=document.createElement('span'); label.textContent='קבוצה '+(i+1)+':'; row.appendChild(label);
+    const label=document.createElement('span'); label.textContent='קְבוּצָה '+(i+1)+':'; row.appendChild(label);
     PALETTE.forEach(c=>{
       const sw=document.createElement('div'); sw.className='swatch'+(teamColors[i]===c?' on':''); sw.style.background=c;
       sw.onclick=()=>{ teamColors[i]=c; row.querySelectorAll('.swatch').forEach(s=>s.classList.remove('on')); sw.classList.add('on'); };
@@ -297,9 +297,9 @@ function flatPool(letterSet){
 }
 
 function startGame(){
-  if(selected.size < 2){ alert('בחרו לפחות 2 אותיות'); return; }
+  if(selected.size < 2){ alert('בַּחֲרוּ לְפָחוֹת 2 אוֹתִיּוֹת'); return; }
   pool = flatPool(selected);
-  if(pool.length < 2){ alert('נדרשות יותר אותיות עם מילים'); return; }
+  if(pool.length < 2){ alert('נִדְרָשׁוֹת יוֹתֵר אוֹתִיּוֹת עִם מִלִּים'); return; }
   document.getElementById('setup').classList.add('hidden');
   document.getElementById('standingsScreen').classList.add('hidden');
   document.getElementById('game').classList.remove('hidden');
@@ -326,7 +326,7 @@ function renderScoreboard(){
   const sb = document.getElementById('scoreboard'); sb.innerHTML='';
   teamScores.forEach((s,i)=>{
     const p=document.createElement('div'); p.className='score-pill'; p.style.background=teamColors[i];
-    p.textContent = 'קבוצה '+(i+1)+': '+s; sb.appendChild(p);
+    p.textContent = 'קְבוּצָה '+(i+1)+': '+s; sb.appendChild(p);
   });
 }
 
@@ -339,7 +339,7 @@ function nextCard(){
   if(teamMode){
     const banner = document.getElementById('teamBanner');
     banner.style.background = teamColors[curTeam];
-    banner.textContent = '🎯 תור קבוצה ' + (curTeam+1);
+    banner.textContent = '🎯 תּוֹר קְבוּצָה ' + (curTeam+1);
   }
 
   const candidates = pool.filter(p=> pool.length===1 || p.w !== (lastWord && lastWord.w));
@@ -386,7 +386,7 @@ function timeoutAnswer(){
   document.querySelectorAll('.opt-btn').forEach(b=>{ b.onclick=null;
     if((!hardMode && b.textContent===current.l) || (hardMode && b.textContent===current.w)) b.classList.add('correct');
   });
-  const fb=document.getElementById('feedback'); fb.textContent='נגמר הזמן! ⏰ התשובה: '+current.l+' ('+current.w+')'; fb.style.color='var(--coral)';
+  const fb=document.getElementById('feedback'); fb.textContent='נִגְמַר הַזְּמַן! ⏰ הַתְּשׁוּבָה: '+current.l+' ('+current.w+')'; fb.style.color='var(--coral)';
   showLabel(true);
   qAsked++; curTeam=(curTeam+1)%numTeams;
   document.getElementById('nextBtn').classList.remove('hidden');
@@ -397,10 +397,10 @@ function check(isCorrect, btn){
   document.querySelectorAll('.opt-btn').forEach(b=>b.onclick=null);
   const fb = document.getElementById('feedback');
   if(isCorrect){
-    btn.classList.add('correct'); fb.textContent='כל הכבוד! 🎉'; fb.style.color='var(--mint)';
+    btn.classList.add('correct'); fb.textContent='כָּל הַכָּבוֹד! 🎉'; fb.style.color='var(--mint)';
     if(teamMode){ teamScores[curTeam]++; renderScoreboard(); } else { score++; document.getElementById('scoreVal').textContent=score; }
   } else {
-    btn.classList.add('wrong'); fb.textContent = `לא בדיוק... זו ${current.l} (${current.w})`; fb.style.color='var(--coral)';
+    btn.classList.add('wrong'); fb.textContent = `לֹא בְּדִיּוּק... זוֹ ${current.l} (${current.w})`; fb.style.color='var(--coral)';
   }
   showLabel(true);
   if(teamMode){ qAsked++; curTeam=(curTeam+1)%numTeams; }
@@ -414,7 +414,7 @@ function showStandings(){
   const ranked = teamScores.map((s,i)=>({i,s})).sort((a,b)=>b.s-a.s);
   ranked.forEach((r,idx)=>{
     const row=document.createElement('div'); row.className='standing-row'; row.style.background=teamColors[r.i];
-    row.textContent = (idx===0?'🏆 ':'') + 'קבוצה '+(r.i+1)+' — '+r.s+' נקודות';
+    row.textContent = (idx===0?'🏆 ':'') + 'קְבוּצָה '+(r.i+1)+' — '+r.s+' נְקֻדּוֹת';
     list.appendChild(row);
   });
 }

@@ -55,17 +55,17 @@ header{display:flex;justify-content:space-between;align-items:center;font-size:2
 </style></head>
 <body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../games/index.html'}">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
 <main>
-<header><span>בית ספר 🏫</span><span id="score"></span></header>
+<header><span>בֵּית סֵפֶר 🏫</span><span id="score"></span></header>
 <section class="stage">
-  <div class="col"><div id="map"></div><div class="big">🏠</div><small>בית</small></div>
+  <div class="col"><div id="map"></div><div class="big">🏠</div><small>בַּיִת</small></div>
   <div class="walker" id="walker"><div class="bubble" id="bubble"></div><div class="kid" id="kid"></div><div class="name" id="nm"></div></div>
-  <div class="col"><div class="big">🏫</div><small>בית ספר</small></div>
+  <div class="col"><div class="big">🏫</div><small>בֵּית סֵפֶר</small></div>
 </section>
 <section class="panel">
   <p class="q" id="q"></p><p class="en" id="en"></p>
   <div class="opts" id="opts"></div>
   <div class="fb" id="fb"></div>
-  <button class="next" id="next" hidden>הבא ◀</button>
+  <button class="next" id="next" hidden>הַבָּא ◀</button>
 </section>
 </main>
 <script>
@@ -73,15 +73,15 @@ const $=id=>document.getElementById(id);
 const pick=a=>a[Math.random()*a.length|0];
 const shuffle=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
 const B=[
- {he:'מנהטן',pre:'במנהטן',p:'96,46 104,54 108,64 105,80 99,100 93,118 84,133 77,131 82,112 84,92 88,72 91,58',l:[68,92],a:'end'},
- {he:'ברונקס',pre:'בברונקס',p:'92,30 100,14 128,8 152,20 156,40 142,52 120,50 104,54 96,46',l:[126,34]},
- {he:'קווינס',pre:'בקווינס',p:'112,62 132,54 158,56 178,66 190,80 188,102 172,112 160,128 138,134 120,120 110,100 110,80',l:[152,92]},
- {he:'ברוקלין',pre:'בברוקלין',p:'90,132 100,122 120,120 138,134 160,128 156,150 140,166 116,174 96,168 84,152',l:[120,152]},
- {he:'סטטן איילנד',pre:'בסטטן איילנד',p:'26,150 44,140 62,144 68,162 60,184 40,190 26,176',l:[46,164]}
+ {he:'מַנְהֶטֶן',pre:'בְּמַנְהֶטֶן',p:'96,46 104,54 108,64 105,80 99,100 93,118 84,133 77,131 82,112 84,92 88,72 91,58',l:[68,92],a:'end'},
+ {he:'בְּרוֹנְקְס',pre:'בִּבְרוֹנְקְס',p:'92,30 100,14 128,8 152,20 156,40 142,52 120,50 104,54 96,46',l:[126,34]},
+ {he:'קְווִינְס',pre:'בִּקְווִינְס',p:'112,62 132,54 158,56 178,66 190,80 188,102 172,112 160,128 138,134 120,120 110,100 110,80',l:[152,92]},
+ {he:'בְּרוּקְלִין',pre:'בִּבְרוּקְלִין',p:'90,132 100,122 120,120 138,134 160,128 156,150 140,166 116,174 96,168 84,152',l:[120,152]},
+ {he:'סְטֶטֶן אַיְלֶנְד',pre:'בִּסְטֶטֶן אַיְלֶנְד',p:'26,150 44,140 62,144 68,162 60,184 40,190 26,176',l:[46,164]}
 ];
-const O=[{he:'כובע',en:'hat',e:'🧢'},{he:'ספר',en:'book',e:'📕'},{he:'תיק',en:'bag',e:'🎒'},{he:'כדור',en:'ball',e:'⚽'},{he:'שעון',en:'watch',e:'⌚'},{he:'טלפון',en:'phone',e:'📱'}];
-const F=[{he:'פיצה',e:'🍕'},{he:'תפוח',e:'🍎'},{he:'גלידה',e:'🍦'},{he:'בננה',e:'🍌'},{he:'עוגה',e:'🍰'},{he:'המבורגר',e:'🍔'}];
-const M=['דני','יוסי','נועם','איתי'],G=['נועה','מיכל','שירה','תמר'];
+const O=[{he:'כּוֹבַע',d:'הַכּוֹבַע',en:'hat',e:'🧢'},{he:'סֵפֶר',d:'הַסֵּפֶר',en:'book',e:'📕'},{he:'תִּיק',d:'הַתִּיק',en:'bag',e:'🎒'},{he:'כַּדּוּר',d:'הַכַּדּוּר',en:'ball',e:'⚽'},{he:'שָׁעוֹן',d:'הַשָּׁעוֹן',en:'watch',e:'⌚'},{he:'טֶלֶפוֹן',d:'הַטֶּלֶפוֹן',en:'phone',e:'📱'}];
+const F=[{he:'פִּיצָה',e:'🍕'},{he:'תַּפּוּחַ',e:'🍎'},{he:'גְּלִידָה',e:'🍦'},{he:'בָּנָנָה',e:'🍌'},{he:'עוּגָה',e:'🍰'},{he:'הַמְבּוּרְגֶר',e:'🍔'}];
+const M=['דָּנִי','יוֹסִי','נֹעַם','אִיתַי'],G=['נֹעָה','מִיכַל','שִׁירָה','תָּמָר'];
 let R,score=0,total=0,streak=0,missed=false,answered=false,lastT='';
 
 function mapSvg(b){
@@ -120,18 +120,18 @@ function buildQ(){
   const types=['go','live3','live1','like'];if(R.obj)types.push('state','state');
   let t;do{t=pick(types)}while(t===lastT&&types.length>1);lastT=t;
   let q,en,o;
-  if(t==='go'){q=`לאן ${n} ${g?'הולכת':'הולך'}?`;en=`Where is ${n} walking?`;
-    o=[{t:'לבית ספר',ok:R.dest==='school'},{t:'הביתה',ok:R.dest==='home'}];}
-  else if(t==='live3'){q=`איפה ${n} ${g?'גרה':'גר'}?`;en=`Where does ${n} live?`;
+  if(t==='go'){q=`לְאָן ${n} ${g?'הוֹלֶכֶת':'הוֹלֵךְ'}?`;en=`Where is ${n} walking?`;
+    o=[{t:'לְבֵית סֵפֶר',ok:R.dest==='school'},{t:'הַבַּיְתָה',ok:R.dest==='home'}];}
+  else if(t==='live3'){q=`אֵיפֹה ${n} ${g?'גָּרָה':'גָּר'}?`;en=`Where does ${n} live?`;
     o=B.map(x=>({t:x.pre,ok:x===R.b}));}
-  else if(t==='live1'){q=`מה ${n} אומר${g?'ת':''}?`;en=`What does ${n} say?`;
-    const v=(f,b)=>`אני ${f?'גרה':'גר'} ${b.pre}`,ot=pick(B.filter(x=>x!==R.b));
+  else if(t==='live1'){q=`מָה ${n} ${g?'אוֹמֶרֶת':'אוֹמֵר'}?`;en=`What does ${n} say?`;
+    const v=(f,b)=>`אֲנִי ${f?'גָּרָה':'גָּר'} ${b.pre}`,ot=pick(B.filter(x=>x!==R.b));
     o=shuffle([{t:v(g,R.b),ok:true},{t:v(!g,R.b)},{t:v(g,ot)},{t:v(!g,ot)}]);}
-  else if(t==='like'){q=`מה ${n} אוהב${g?'ת':''}?`;en=`What does ${n} like?`;
+  else if(t==='like'){q=`מָה ${n} ${g?'אוֹהֶבֶת':'אוֹהֵב'}?`;en=`What does ${n} like?`;
     const pool=R.obj?O:F;
     o=shuffle([R.it,...shuffle(pool.filter(x=>x!==R.it)).slice(0,3)]).map(x=>({t:`${x.e} ${x.he}`,ok:x===R.it}));}
-  else{q=`ה${R.it.he} חדש או ישן?`;en=`Is the ${R.it.en} new or old?`;
-    o=[{t:'חדש',ok:R.st==='new'},{t:'ישן',ok:R.st==='old'}];}
+  else{q=`${R.it.d} חָדָשׁ אוֹ יָשָׁן?`;en=`Is the ${R.it.en} new or old?`;
+    o=[{t:'חָדָשׁ',ok:R.st==='new'},{t:'יָשָׁן',ok:R.st==='old'}];}
   $('q').textContent=q;$('en').textContent=en;$('fb').textContent='';$('next').hidden=true;
   missed=false;answered=false;
   const box=$('opts');box.innerHTML='';
@@ -140,9 +140,9 @@ function buildQ(){
 function ans(x,b){
   if(answered)return;
   if(x.ok){answered=true;total++;if(!missed){score++;streak++}
-    b.classList.add('ok');$('fb').textContent='כל הכבוד! 🎉';$('next').hidden=false;
+    b.classList.add('ok');$('fb').textContent='כָּל הַכָּבוֹד! 🎉';$('next').hidden=false;
     document.querySelectorAll('.opt').forEach(e=>e.disabled=true);}
-  else{missed=true;streak=0;b.classList.add('no');b.disabled=true;$('fb').textContent='לא בדיוק, נסו שוב 🙂';}
+  else{missed=true;streak=0;b.classList.add('no');b.disabled=true;$('fb').textContent='לֹא בְּדִיּוּק, נַסּוּ שׁוּב 🙂';}
   score_();
 }
 $('next').onclick=newRound;

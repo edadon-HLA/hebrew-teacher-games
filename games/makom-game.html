@@ -59,21 +59,21 @@ svg.ic{width:1em;height:1em;vertical-align:-.12em}
 </head>
 <body>
 <nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
-<h1>יש מקום בתיק? 🎒</h1>
+<h1>יֵשׁ מָקוֹם בַּתִּיק? 🎒</h1>
 <div class="wrap">
   <div class="center" id="center">
-    <div id="item" role="img" aria-label="פריט"></div>
+    <div id="item" role="img" aria-label="פָּרִיט"></div>
     <div id="word"></div>
     <div id="size"></div>
-    <div class="btns"><button class="act" id="tobag">🎒 לתיק</button><button class="act" id="tohouse">🏠 לבית</button></div>
+    <div class="btns"><button class="act" id="tobag">🎒 לַתִּיק</button><button class="act" id="tohouse">🏠 לַבַּיִת</button></div>
   </div>
   <div id="msg" aria-live="polite"></div>
   <div class="stage" id="stage">
-    <div class="zone" id="zbag"><h2>🎒 התיק</h2><small id="room"></small><div class="grid" id="grid"></div></div>
-    <div class="zone" id="zhouse"><h2>🏠 הבית</h2><small id="hcount"></small><div class="house-items" id="lhouse"></div></div>
+    <div class="zone" id="zbag"><h2>🎒 הַתִּיק</h2><small id="room"></small><div class="grid" id="grid"></div></div>
+    <div class="zone" id="zhouse"><h2>🏠 הַבַּיִת</h2><small id="hcount"></small><div class="house-items" id="lhouse"></div></div>
   </div>
-  <p class="hint">גררו את הפריט לתיק או לבית (או לחצו על הכפתורים). לחצו על פריט בתיק כדי להעביר אותו לבית, ועל פריט בבית כדי להעביר אותו לתיק.</p>
-  <div id="done"><h2>כל הכבוד! 🎉</h2><p>סידרתם את כל הפריטים. אפשר עדיין להעביר פריטים בין התיק לבית.</p><button id="again">משחק חדש</button></div>
+  <p class="hint">גִּרְרוּ אֶת הַפָּרִיט לַתִּיק אוֹ לַבַּיִת (אוֹ לִחְצוּ עַל הַכַּפְתּוֹרִים). לִחְצוּ עַל פָּרִיט בַּתִּיק כְּדֵי לְהַעֲבִיר אוֹתוֹ לַבַּיִת, וְעַל פָּרִיט בַּבַּיִת כְּדֵי לְהַעֲבִיר אוֹתוֹ לַתִּיק.</p>
+  <div id="done"><h2>כָּל הַכָּבוֹד! 🎉</h2><p>סִדַּרְתֶּם אֶת כָּל הַפְּרִיטִים. אֶפְשָׁר עֲדַיִן לְהַעֲבִיר פְּרִיטִים בֵּין הַתִּיק לַבַּיִת.</p><button id="again">מִשְׂחָק חָדָשׁ</button></div>
 </div>
 <script>
 var CAP=12;
@@ -94,17 +94,17 @@ function used(){return bag.reduce(function(s,x){return s+x.s},0)}
 function col(x){return"hsl("+((x.id*47)%360)+",70%,72%)"}
 function say(t,c){var m=$("msg");m.textContent=t;m.className=c||""}
 function shake(el){el.classList.remove("shake");void el.offsetWidth;el.classList.add("shake")}
-function sq(n){return n===1?"ריבוע אחד":n+" ריבועים"}
+function sq(n){return n===1?"רִבּוּעַ אֶחָד":n+" רִבּוּעִים"}
 function render(){
   var u=used(),g="";
   bag.forEach(function(x){
     for(var k=0;k<x.s;k++)
-      g+='<button class="cell on" data-id="'+x.id+'" style="background:'+col(x)+'" aria-label="'+x.w+' - להעביר לבית">'+(k===0?x.e:"")+'</button>';
+      g+='<button class="cell on" data-id="'+x.id+'" style="background:'+col(x)+'" aria-label="'+x.w+' - לְהַעֲבִיר לַבַּיִת">'+(k===0?x.e:"")+'</button>';
   });
   for(var k=u;k<CAP;k++)g+='<div class="cell"></div>';
   $("grid").innerHTML=g;
-  $("room").textContent=u>=CAP?"התיק מלא!":"נשאר מקום ל-"+sq(CAP-u);
-  $("hcount").textContent=house.length?"":"ריק";
+  $("room").textContent=u>=CAP?"הַתִּיק מָלֵא!":"נִשְׁאַר מָקוֹם לְ-"+sq(CAP-u);
+  $("hcount").textContent=house.length?"":"רֵיק";
   $("lhouse").innerHTML=house.map(function(x){
     return'<button class="chip" data-id="'+x.id+'"><span class="em">'+x.e+'</span>'+x.w+' <small>('+x.s+')</small></button>'}).join("");
   var c=$("lhouse");
@@ -115,7 +115,7 @@ function showItem(){
   $("center").style.display="";
   it.innerHTML=cur.e;it.style.transform="";it.classList.remove("drag");
   $("word").textContent=cur.w;
-  var h="תופס "+sq(cur.s)+": ";
+  var h="תּוֹפֵס "+sq(cur.s)+": ";
   for(var k=0;k<Math.min(cur.s,CAP);k++)h+="<i></i>";
   if(cur.s>CAP)h+=" +";
   $("size").innerHTML=h;
@@ -126,22 +126,23 @@ function next(){
   if(!cur)say("","");
 }
 function start(){
-  var id=0;deck=shuffle(ITEMS.map(function(a){return{e:a[0],w:a[1],s:a[2],id:id++}}));
-  bag=[];house=[];render();say("מה עושים עם הפריט? יש מקום בתיק?","");next();
+  var DEF={"תַּפּוּחַ":"הַתַּפּוּחַ","בָּנָנָה":"הַבָּנָנָה","כּוֹס":"הַכּוֹס","עִפָּרוֹן":"הָעִפָּרוֹן","מַזְלֵג":"הַמַּזְלֵג","טֶלֶפוֹן":"הַטֶּלֶפוֹן","סֵפֶר":"הַסֵּפֶר","נַעַל":"הַנַּעַל","מְנוֹרָה":"הַמְּנוֹרָה","כַּדּוּר":"הַכַּדּוּר","דֻּבִּי":"הַדֻּבִּי","סִיר":"הַסִּיר","טֶלֶוִיזְיָה":"הַטֶּלֶוִיזְיָה","מְקָרֵר":"הַמְּקָרֵר","תַּנּוּר":"הַתַּנּוּר","סַפָּה":"הַסַּפָּה","מִטָּה":"הַמִּטָּה","כִּסֵּא":"הַכִּסֵּא","דֶּלֶת":"הַדֶּלֶת","מִקְלַחַת":"הַמִּקְלַחַת"};
+  var id=0;deck=shuffle(ITEMS.map(function(a){return{e:a[0],w:a[1],d:DEF[a[1]]||("הַ"+a[1]),f:{"בָּנָנָה":1,"מְנוֹרָה":1,"טֶלֶוִיזְיָה":1,"מִטָּה":1,"סַפָּה":1,"דֶּלֶת":1,"מִקְלַחַת":1,"נַעַל":1}[a[1]]===1,s:a[2],id:id++}}));
+  bag=[];house=[];render();say("מָה עוֹשִׂים עִם הַפָּרִיט? יֵשׁ מָקוֹם בַּתִּיק?","");next();
 }
 function find(arr,id){for(var i=0;i<arr.length;i++)if(arr[i].id===id)return i;return-1}
 function toBag(x){
   if(used()+x.s>CAP){
     shake($("zbag"));
-    say(x.s>CAP?"ה"+x.w+" גדול מדי לתיק. שימו אותו בבית.":"אין מקום ל"+x.w+" בתיק (צריך "+sq(x.s)+", נשאר "+sq(CAP-used())+"). שימו בבית, או הוציאו משהו מהתיק.","bad");
+    say(x.s>CAP?x.d+(x.f?" גְּדוֹלָה מִדַּי לַתִּיק. שִׂימוּ אוֹתָהּ בַּבַּיִת.":" גָּדוֹל מִדַּי לַתִּיק. שִׂימוּ אוֹתוֹ בַּבַּיִת."):"אֵין מָקוֹם ל"+x.d.slice(1)+" בַּתִּיק (צָרִיךְ "+sq(x.s)+", נִשְׁאָר "+sq(CAP-used())+"). שִׂימוּ בַּבַּיִת, אוֹ הוֹצִיאוּ מַשֶּׁהוּ מֵהַתִּיק.","bad");
     return false}
   bag.push(x);
-  say(used()>=CAP?"התיק מלא! עכשיו כל פריט חדש צריך ללכת לבית.":"נכנס לתיק: "+x.w+".","good");
+  say(used()>=CAP?"הַתִּיק מָלֵא! עַכְשָׁיו כָּל פָּרִיט חָדָשׁ צָרִיךְ לָלֶכֶת לַבַּיִת.":"נִכְנַס לַתִּיק: "+x.w+".","good");
   return true}
 function drop(target){
   if(!cur||busy)return;
   if(target==="bag"){if(!toBag(cur)){var it=$("item");it.style.transform="";shake(it);return}}
-  else{house.push(cur);say(cur.w+" בבית.","good")}
+  else{house.push(cur);say(cur.w+" בַּבַּיִת.","good")}
   render();busy=true;setTimeout(next,500);
 }
 $("tobag").onclick=function(){drop("bag")};
@@ -149,7 +150,7 @@ $("tohouse").onclick=function(){drop("house")};
 $("grid").addEventListener("click",function(e){
   var b=e.target.closest(".cell.on");if(!b)return;
   var i=find(bag,+b.dataset.id);if(i<0)return;
-  var x=bag.splice(i,1)[0];house.push(x);say(x.w+" עבר לבית. יש עכשיו יותר מקום בתיק.","good");render();
+  var x=bag.splice(i,1)[0];house.push(x);say(x.w+" עָבַר לַבַּיִת. יֵשׁ עַכְשָׁיו יוֹתֵר מָקוֹם בַּתִּיק.","good");render();
 });
 $("lhouse").addEventListener("click",function(e){
   var b=e.target.closest(".chip");if(!b)return;

@@ -114,9 +114,9 @@ main{flex:1; display:flex; flex-direction:column; align-items:center; gap:16px; 
 <header class="bar">
   <h1>בֶּן כַּמָּה? בַּת כַּמָּה?</h1>
   <span class="spacer"></span>
-  <div class="dots" id="dots" aria-label="התקדמות"></div>
+  <div class="dots" id="dots" aria-label="הִתְקַדְּמוּת"></div>
   <span class="score" id="score">⭐ 0</span>
-  <button class="tog" id="tVoice" type="button" aria-pressed="false" hidden>קול: כבוי</button>
+  <button class="tog" id="tVoice" type="button" aria-pressed="false" hidden>קוֹל: כָּבוּי</button>
 </header>
 
 <main>
@@ -124,7 +124,7 @@ main{flex:1; display:flex; flex-direction:column; align-items:center; gap:16px; 
   <div class="person" id="person"></div>
   <div class="ask"><span class="b">בֶּן כַּמָּה?</span> <span class="g">בַּת כַּמָּה?</span></div>
   <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:center">
-    <button class="hint" id="bHint" type="button">💡 רמז: חשבון</button>
+    <button class="hint" id="bHint" type="button">💡 רֶמֶז: חֶשְׁבּוֹן</button>
     <span class="calc" id="calc" hidden></span>
   </div>
   <div class="answers" id="answers"></div>
@@ -140,7 +140,7 @@ main{flex:1; display:flex; flex-direction:column; align-items:center; gap:16px; 
     <h2>בֶּן כַּמָּה? בַּת כַּמָּה?</h2>
     <p>רוֹאִים אִישׁ מְפֻרְסָם אוֹ אִשָּׁה מְפֻרְסֶמֶת וְאֶת שְׁנַת הַלֵּידָה.<br>בּוֹחֲרִים אֶת הַמִּשְׁפָּט הַנָּכוֹן!</p>
     <div class="how"><span><span class="bn">בֶּן</span> = 👦</span><span><span class="bt">בַּת</span> = 👧</span></div>
-    <p style="font-size:14px; margin-top:0">למורה: הגיל מחושב לפי השנה הנוכחית (השנה פחות שנת הלידה).</p>
+    <p style="font-size:14px; margin-top:0">לַמּוֹרֶה: הַגִּיל מְחֻשָּׁב לְפִי הַשָּׁנָה הַנּוֹכְחִית (הַשָּׁנָה פָּחוֹת שְׁנַת הַלֵּדָה).</p>
     <button class="go" id="bStart" type="button">מַתְחִילִים ◀</button>
   </div>
 </div>
@@ -161,25 +161,25 @@ const ROUNDS = 10;
 /* g: 'm' = בֶּן, 'f' = בַּת. Birth years checked against public records.
    img: ./ben-kama-photos/<img>.jpg, from Wikimedia Commons (cr = photographer · license, f = Commons file name). */
 const PEOPLE = [
-  {he:'מסי', en:'Lionel Messi', y:1987, g:'m', ic:'⚽', img:'messi', cr:'Bryan Berlin · CC BY-SA 4.0', f:'Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg'},
-  {he:'רונאלדו', en:'Cristiano Ronaldo', y:1985, g:'m', ic:'⚽', img:'ronaldo', cr:'Bryan Berlin · CC BY-SA 4.0', f:'Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_(cropped).jpg'},
-  {he:'אמבפה', en:'Kylian Mbappé', y:1998, g:'m', ic:'⚽', img:'mbappe', cr:'Bryan Berlin · CC BY-SA 4.0', f:'Kylian_Mbappe_France_v_Senegal_16_June_2026-391_(cropped).jpg'},
-  {he:'לברון ג\'יימס', en:'LeBron James', y:1984, g:'m', ic:'🏀', img:'lebron', cr:'Erik Drost · CC BY 2.0', f:'LeBron_James_(51959977144)_(cropped2).jpg'},
-  {he:'סטף קרי', en:'Stephen Curry', y:1988, g:'m', ic:'🏀', img:'curry', cr:'Clément Bardot · CC BY-SA 4.0', f:'Stephen_Curry,_Olympic_Games_2024_(cropped).jpg'},
-  {he:'דני אבדיה', en:'Deni Avdija', y:2001, g:'m', ic:'🏀', img:'avdija', cr:'All-Pro Reels · CC BY-SA 2.0', f:'Deni_Avdija_2022_(52380408867)_(cropped).jpg'},
-  {he:'מייקל פלפס', en:'Michael Phelps', y:1985, g:'m', ic:'🏊', img:'phelps', cr:'Agência Brasil · CC BY 2.0', f:'Michael_Phelps_Rio_Olympics_2016.jpg'},
-  {he:'מיסטר ביסט', en:'MrBeast', y:1998, g:'m', ic:'📹', img:'mrbeast', cr:'Tyren Redd · CC BY 4.0', f:'MrBeast_in_2026_(cropped_4).png'},
-  {he:'טום הולנד', en:'Tom Holland', y:1996, g:'m', ic:'🕷️', img:'holland', cr:'PhilipRomano · CC BY-SA 4.0', f:'TomHolland-byPhilipRomano.jpg'},
-  {he:'אד שירן', en:'Ed Sheeran', y:1991, g:'m', ic:'🎸', img:'sheeran', cr:'Harald Krichel · CC BY-SA 3.0', f:'Ed_Sheeran-6886_(cropped).jpg'},
-  {he:'טיילור סוויפט', en:'Taylor Swift', y:1989, g:'f', ic:'🎤', img:'swift', cr:'iHeartRadioCA · CC BY 3.0', f:'Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_(3).png'},
-  {he:'בילי אייליש', en:'Billie Eilish', y:2001, g:'f', ic:'🎤', img:'eilish', cr:'Raph_PH · CC BY 4.0', f:'BillieEilishO2140725-39_-_54665577407_(cropped).jpg'},
-  {he:'אוליביה רודריגו', en:'Olivia Rodrigo', y:2003, g:'f', ic:'🎤', img:'rodrigo', cr:'Raph_PH · CC BY 4.0', f:'Glasto2025-546_(cropped)_2.jpg'},
-  {he:'אריאנה גרנדה', en:'Ariana Grande', y:1993, g:'f', ic:'🎤', img:'grande', cr:'Barbie Simons · CC BY 3.0', f:'Ariana_Grande_promoting_Wicked_(2024).jpg'},
-  {he:'סלינה גומז', en:'Selena Gomez', y:1992, g:'f', ic:'🎬', img:'gomez', cr:'Frank Sun · CC BY-SA 4.0', f:'Selena_Gomez_at_the_2024_Toronto_International_Film_Festival_10_(cropped).jpg'},
-  {he:'זנדאיה', en:'Zendaya', y:1996, g:'f', ic:'🎬', img:'zendaya', cr:'PhilipRomano · CC BY-SA 4.0', f:'Zendaya-byPhilipRomano.jpg'},
-  {he:'גל גדות', en:'Gal Gadot', y:1985, g:'f', ic:'🎬', img:'gadot', cr:'Gage Skidmore · CC BY-SA 3.0', f:'Gal_Gadot_by_Gage_Skidmore_3.jpg'},
-  {he:'סימון ביילס', en:'Simone Biles', y:1997, g:'f', ic:'🤸', img:'biles', cr:'Ocoudis · CC BY-SA 4.0', f:'Simone_Biles_National_Team_2024.jpg'},
-  {he:'סרינה ויליאמס', en:'Serena Williams', y:1981, g:'f', ic:'🎾', img:'serena', cr:'AndrewHenkelman · CC BY-SA 4.0', f:'Serena-Smiling-2020.png'}
+  {he:'מֶסִּי', en:'Lionel Messi', y:1987, g:'m', ic:'⚽', img:'messi', cr:'Bryan Berlin · CC BY-SA 4.0', f:'Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg'},
+  {he:'רוֹנָאלְדּוֹ', en:'Cristiano Ronaldo', y:1985, g:'m', ic:'⚽', img:'ronaldo', cr:'Bryan Berlin · CC BY-SA 4.0', f:'Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_(cropped).jpg'},
+  {he:'אֶמְבָּפֶּה', en:'Kylian Mbappé', y:1998, g:'m', ic:'⚽', img:'mbappe', cr:'Bryan Berlin · CC BY-SA 4.0', f:'Kylian_Mbappe_France_v_Senegal_16_June_2026-391_(cropped).jpg'},
+  {he:'לֶבְּרוֹן ג\'יֵימְס', en:'LeBron James', y:1984, g:'m', ic:'🏀', img:'lebron', cr:'Erik Drost · CC BY 2.0', f:'LeBron_James_(51959977144)_(cropped2).jpg'},
+  {he:'סְטֵף קָרִי', en:'Stephen Curry', y:1988, g:'m', ic:'🏀', img:'curry', cr:'Clément Bardot · CC BY-SA 4.0', f:'Stephen_Curry,_Olympic_Games_2024_(cropped).jpg'},
+  {he:'דָּנִי אַבְדִּיָּה', en:'Deni Avdija', y:2001, g:'m', ic:'🏀', img:'avdija', cr:'All-Pro Reels · CC BY-SA 2.0', f:'Deni_Avdija_2022_(52380408867)_(cropped).jpg'},
+  {he:'מַיְקֶל פֶלְפְּס', en:'Michael Phelps', y:1985, g:'m', ic:'🏊', img:'phelps', cr:'Agência Brasil · CC BY 2.0', f:'Michael_Phelps_Rio_Olympics_2016.jpg'},
+  {he:'מִיסְטֶר בִּיסְט', en:'MrBeast', y:1998, g:'m', ic:'📹', img:'mrbeast', cr:'Tyren Redd · CC BY 4.0', f:'MrBeast_in_2026_(cropped_4).png'},
+  {he:'טוֹם הוֹלַנְד', en:'Tom Holland', y:1996, g:'m', ic:'🕷️', img:'holland', cr:'PhilipRomano · CC BY-SA 4.0', f:'TomHolland-byPhilipRomano.jpg'},
+  {he:'אֶד שִׁירָן', en:'Ed Sheeran', y:1991, g:'m', ic:'🎸', img:'sheeran', cr:'Harald Krichel · CC BY-SA 3.0', f:'Ed_Sheeran-6886_(cropped).jpg'},
+  {he:'טֵיילוֹר סְוִויפְט', en:'Taylor Swift', y:1989, g:'f', ic:'🎤', img:'swift', cr:'iHeartRadioCA · CC BY 3.0', f:'Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_(3).png'},
+  {he:'בִּילִי אַיְלִישׁ', en:'Billie Eilish', y:2001, g:'f', ic:'🎤', img:'eilish', cr:'Raph_PH · CC BY 4.0', f:'BillieEilishO2140725-39_-_54665577407_(cropped).jpg'},
+  {he:'אוֹלִיבְיָה רוֹדְרִיגוֹ', en:'Olivia Rodrigo', y:2003, g:'f', ic:'🎤', img:'rodrigo', cr:'Raph_PH · CC BY 4.0', f:'Glasto2025-546_(cropped)_2.jpg'},
+  {he:'אַרִיאָנָה גְּרַנְדֶה', en:'Ariana Grande', y:1993, g:'f', ic:'🎤', img:'grande', cr:'Barbie Simons · CC BY 3.0', f:'Ariana_Grande_promoting_Wicked_(2024).jpg'},
+  {he:'סֶלֶנָה גּוֹמֶז', en:'Selena Gomez', y:1992, g:'f', ic:'🎬', img:'gomez', cr:'Frank Sun · CC BY-SA 4.0', f:'Selena_Gomez_at_the_2024_Toronto_International_Film_Festival_10_(cropped).jpg'},
+  {he:'זֶנְדַּיָּה', en:'Zendaya', y:1996, g:'f', ic:'🎬', img:'zendaya', cr:'PhilipRomano · CC BY-SA 4.0', f:'Zendaya-byPhilipRomano.jpg'},
+  {he:'גַּל גָּדוֹת', en:'Gal Gadot', y:1985, g:'f', ic:'🎬', img:'gadot', cr:'Gage Skidmore · CC BY-SA 3.0', f:'Gal_Gadot_by_Gage_Skidmore_3.jpg'},
+  {he:'סִימוֹן בַּיְלְס', en:'Simone Biles', y:1997, g:'f', ic:'🤸', img:'biles', cr:'Ocoudis · CC BY-SA 4.0', f:'Simone_Biles_National_Team_2024.jpg'},
+  {he:'סֶרֵנָה וִילְיַמְס', en:'Serena Williams', y:1981, g:'f', ic:'🎾', img:'serena', cr:'AndrewHenkelman · CC BY-SA 4.0', f:'Serena-Smiling-2020.png'}
 ];
 const photo = p => `./ben-kama-photos/${p.img}.jpg`;
 window.GAME_DATA = {PEOPLE, YEAR};
@@ -280,7 +280,7 @@ function start(){ deck = makeDeck(); deck.forEach(r => { new Image().src = photo
 $('bStart').onclick = start;
 $('bAgain').onclick = start;
 $('bNext').onclick = next;
-$('tVoice').onclick = () => { voiceOn = !voiceOn; $('tVoice').setAttribute('aria-pressed', voiceOn); $('tVoice').textContent = 'קול: ' + (voiceOn ? 'פועל' : 'כבוי'); };
+$('tVoice').onclick = () => { voiceOn = !voiceOn; $('tVoice').setAttribute('aria-pressed', voiceOn); $('tVoice').textContent = 'קוֹל: ' + (voiceOn ? 'פּוֹעֵל' : 'כָּבוּי'); };
 document.addEventListener('keydown', e => {
   if (!$('start').hidden || !$('end').hidden) return;
   if (['1','2','3','4'].includes(e.key) && !answered) answer(+e.key - 1);

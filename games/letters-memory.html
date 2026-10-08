@@ -40,16 +40,16 @@ button.secondary{background:#fff;color:#172033;border:1px solid #d8deea}
 </style></head>
 <body><nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
 <div class="wrap">
-<h1>משחק זיכרון: דפוס ↔ כתב</h1>
-<div class="sub">בחרו את האותיות שיופיעו במשחק, ואז מצאו את הזוגות.</div>
+<h1>מִשְׂחַק זִכָּרוֹן: דְּפוּס ↔ כְּתָב</h1>
+<div class="sub">בַּחֲרוּ אֶת הָאוֹתִיּוֹת שֶׁיּוֹפִיעוּ בַּמִּשְׂחָק, וְאָז מִצְאוּ אֶת הַזּוּגוֹת.</div>
 <div class="panel">
-  <div style="font-size:22px;font-weight:800">בחרו את האותיות למשחק</div>
-  <div style="font-size:15px;color:#788397;margin-top:4px">כל אות שתבחרו תופיע פעמיים: פעם בדפוס ופעם בכתב.</div>
+  <div style="font-size:22px;font-weight:800">בַּחֲרוּ אֶת הָאוֹתִיּוֹת לַמִּשְׂחָק</div>
+  <div style="font-size:15px;color:#788397;margin-top:4px">כָּל אוֹת שֶׁתִּבְחֲרוּ תּוֹפִיעַ פַּעֲמַיִם: פַּעַם בִּדְפוּס וּפַעַם בִּכְתָב.</div>
   <div id="picker" class="picker"></div>
   <div class="actions">
-    <button class="action secondary" id="all">בחר הכול</button>
-    <button class="action secondary" id="none">נקה הכול</button>
-    <button class="action" id="start">התחל משחק</button>
+    <button class="action secondary" id="all">בְּחַר הַכֹּל</button>
+    <button class="action secondary" id="none">נַקֵּה הַכֹּל</button>
+    <button class="action" id="start">הַתְחֵל מִשְׂחָק</button>
   </div>
   <div id="status" class="status"></div>
   <div id="game" class="board"></div>
@@ -66,23 +66,23 @@ letters.forEach(l=>{
 });
 function updatePicker(){
  [...picker.children].forEach((b,i)=>{const yes=selected.has(letters[i]);b.classList.toggle('selected',yes);b.setAttribute('aria-pressed',String(yes))});
- status.textContent=selected.size?`נבחרו ${selected.size} אותיות.`:'בחרו לפחות אות אחת.';
+ status.textContent=selected.size?`נִבְחֲרוּ ${selected.size} אוֹתִיּוֹת.`:'בַּחֲרוּ לְפָחוֹת אוֹת אַחַת.';
 }
 document.getElementById('all').onclick=()=>{selected=new Set(letters);updatePicker()};
 document.getElementById('none').onclick=()=>{selected.clear();game.innerHTML='';updatePicker()};
 document.getElementById('start').onclick=startGame;
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function startGame(){
- if(!selected.size){status.textContent='בחרו לפחות אות אחת כדי להתחיל.';return}
+ if(!selected.size){status.textContent='בַּחֲרוּ לְפָחוֹת אוֹת אַחַת כְּדֵי לְהַתְחִיל.';return}
  first=second=null;locked=false;score=0;game.innerHTML='';
  const cards=[];
  [...selected].forEach((letter,i)=>{cards.push({letter,type:'print',id:i+'p'});cards.push({letter,type:'script',id:i+'s'})});
  shuffle(cards).forEach(data=>{
   const c=document.createElement('div');c.className='card '+data.type;c.dataset.letter=data.letter;c.dataset.type=data.type;
-  c.innerHTML='<div class="inner"><div class="face back">?</div><div class="face front"><div class="letter">'+data.letter+'</div><div class="label">'+(data.type==='print'?'דפוס':'כתב')+'</div></div><span class="num">'+(game.children.length+1)+'</span></div>';
+  c.innerHTML='<div class="inner"><div class="face back">?</div><div class="face front"><div class="letter">'+data.letter+'</div><div class="label">'+(data.type==='print'?'דְּפוּס':'כְּתָב')+'</div></div><span class="num">'+(game.children.length+1)+'</span></div>';
   c.addEventListener('click',()=>flip(c));game.appendChild(c);
  });
- status.textContent=`מצאו ${selected.size} זוגות.`;
+ status.textContent=`מִצְאוּ ${selected.size} זוּגוֹת.`;
 }
 function flip(c){
  if(locked||c.classList.contains('open')||c.classList.contains('matched'))return;
@@ -92,12 +92,12 @@ function flip(c){
  const match=first.dataset.letter===second.dataset.letter&&first.dataset.type!==second.dataset.type;
  if(match){
   first.classList.add('matched');second.classList.add('matched');score++;
-  status.textContent=`מצוין! ${score} מתוך ${selected.size} זוגות.`;
+  status.textContent=`מְצֻיָּן! ${score} מִתּוֹךְ ${selected.size} זוּגוֹת.`;
   first=second=null;locked=false;
-  if(score===selected.size)status.textContent='כל הכבוד! מצאתם את כל הזוגות! 🏆';
+  if(score===selected.size)status.textContent='כָּל הַכָּבוֹד! מְצָאתֶם אֶת כָּל הַזּוּגוֹת! 🏆';
  }else{
-  status.textContent='לא אותו זוג — נסו שוב.';
-  setTimeout(()=>{first.classList.remove('open');second.classList.remove('open');first=second=null;locked=false;status.textContent=`מצאו ${selected.size} זוגות.`},850);
+  status.textContent='לֹא אוֹתוֹ זוּג — נַסּוּ שׁוּב.';
+  setTimeout(()=>{first.classList.remove('open');second.classList.remove('open');first=second=null;locked=false;status.textContent=`מִצְאוּ ${selected.size} זוּגוֹת.`},850);
  }
 }
 updatePicker();

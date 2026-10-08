@@ -45,11 +45,11 @@ h1{font-size:clamp(32px,6vw,54px);margin:4px 0}
 <body><nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
 <div class="wrap">
 <header>
-<h1>🏢 בניין השכנים</h1>
-<div class="subtitle">לומדים: בית • בניין • קומה • דירה • שכן / שכנה</div>
-<div style="font-size:13px;color:#64748b;margin-top:4px">📸 תמונות אמיתיות מ-Wikimedia Commons</div>
+<h1>🏢 בִּנְיַן הַשְּׁכֵנִים</h1>
+<div class="subtitle">לוֹמְדִים: בַּיִת • בִּנְיָן • קוֹמָה • דִּירָה • שָׁכֵן / שְׁכֵנָה</div>
+<div style="font-size:13px;color:#64748b;margin-top:4px">📸 תְּמוּנוֹת אֲמִתִּיּוֹת מִ-Wikimedia Commons</div>
 <div class="words">
-<span class="word">🏠 בית</span><span class="word">🏢 בניין</span><span class="word">🔢 קומה</span><span class="word">🚪 דירה</span><span class="word">👋 שכן / שכנה</span>
+<span class="word">🏠 בַּיִת</span><span class="word">🏢 בִּנְיָן</span><span class="word">🔢 קוֹמָה</span><span class="word">🚪 דִּירָה</span><span class="word">👋 שָׁכֵן / שְׁכֵנָה</span>
 </div>
 </header>
 
@@ -61,20 +61,20 @@ h1{font-size:clamp(32px,6vw,54px);margin:4px 0}
 </section>
 
 <section class="questionCard">
-<div class="score">⭐ ניקוד: <span id="score">0</span></div>
+<div class="score">⭐ נִקּוּד: <span id="score">0</span></div>
 <div class="qCount" id="qCount"></div>
 <div class="question" id="question"></div>
 <div class="options" id="options"></div>
 <div class="feedback" id="feedback" aria-live="polite"></div>
-<button class="next" id="next">לשאלה הבאה ➜</button>
+<button class="next" id="next">לַשְּׁאֵלָה הַבָּאָה ➜</button>
 <br>
-<button class="restart" id="restart">התחל מחדש</button>
+<button class="restart" id="restart">הַתְחֵל מֵחָדָשׁ</button>
 </section>
 </div>
 </div>
 
 <script>
-const people = [{"name": "ברונו מארס", "en": "Bruno Mars", "floor": 1, "apt": "#1", "img": "https://upload.wikimedia.org/wikipedia/commons/3/39/Bruno_Mars_portrait.jpg"}, {"name": "אנג'לינה ג'ולי", "en": "Angelina Jolie", "floor": 1, "apt": "#2", "img": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Angelina_Jolie-643531.jpg"}, {"name": "טיילור סוויפט", "en": "Taylor Swift", "floor": 2, "apt": "#3", "img": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Taylor_Swift_2019_by_Glenn_Francis_%28cropped%29.jpg"}, {"name": "ברק אובמה", "en": "Barack Obama", "floor": 2, "apt": "#4", "img": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Official_portrait_of_Barack_Obama.jpg"}, {"name": "לאונרדו דיקפריו", "en": "Leonardo DiCaprio", "floor": 3, "apt": "#5", "img": "https://upload.wikimedia.org/wikipedia/commons/9/96/Leonardo_Dicaprio_Cannes_2019_2.jpg"}, {"name": "ביונסה", "en": "Beyoncé", "floor": 3, "apt": "#6", "img": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Beyonce_cropped.jpg"}, {"name": "ליאונל מסי", "en": "Lionel Messi", "floor": 4, "apt": "#7", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Lionel_Messi_in_2018.jpg"}, {"name": "אדל", "en": "Adele", "floor": 4, "apt": "#8", "img": "https://upload.wikimedia.org/wikipedia/commons/8/85/Adele_in_Munich_Germany_3_August_2024.jpg"}, {"name": "דוויין ג'ונסון", "en": "Dwayne Johnson", "floor": 5, "apt": "#9", "img": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Dwayne_The_Rock_Johnson_2009_portrait.jpg"}, {"name": "אמה ווטסון", "en": "Emma Watson", "floor": 5, "apt": "#10", "img": "https://upload.wikimedia.org/wikipedia/commons/0/08/Emma_Watson.jpg"}];
+const people = [{"name": "בְּרוּנוֹ מַרְס", "en": "Bruno Mars", "floor": 1, "apt": "#1", "img": "https://upload.wikimedia.org/wikipedia/commons/3/39/Bruno_Mars_portrait.jpg"}, {"name": "אַנְג'לִינָה ג'וֹלִי", "en": "Angelina Jolie", "floor": 1, "apt": "#2", "img": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Angelina_Jolie-643531.jpg"}, {"name": "טֵיילוֹר סְוִויפְט", "en": "Taylor Swift", "floor": 2, "apt": "#3", "img": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Taylor_Swift_2019_by_Glenn_Francis_%28cropped%29.jpg"}, {"name": "בָּרָק אוֹבָּמָה", "en": "Barack Obama", "floor": 2, "apt": "#4", "img": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Official_portrait_of_Barack_Obama.jpg"}, {"name": "לֵאוֹנַרְדוֹ דִיקַפְּרִיוֹ", "en": "Leonardo DiCaprio", "floor": 3, "apt": "#5", "img": "https://upload.wikimedia.org/wikipedia/commons/9/96/Leonardo_Dicaprio_Cannes_2019_2.jpg"}, {"name": "בְּיוֹנְסֶה", "en": "Beyoncé", "floor": 3, "apt": "#6", "img": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Beyonce_cropped.jpg"}, {"name": "לִיאוֹנֶל מֶסִי", "en": "Lionel Messi", "floor": 4, "apt": "#7", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Lionel_Messi_in_2018.jpg"}, {"name": "אֲדֵל", "en": "Adele", "floor": 4, "apt": "#8", "img": "https://upload.wikimedia.org/wikipedia/commons/8/85/Adele_in_Munich_Germany_3_August_2024.jpg"}, {"name": "דְוֵויין ג'וֹנְסוֹן", "en": "Dwayne Johnson", "floor": 5, "apt": "#9", "img": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Dwayne_The_Rock_Johnson_2009_portrait.jpg"}, {"name": "אֶמָּה ווֹטְסוֹן", "en": "Emma Watson", "floor": 5, "apt": "#10", "img": "https://upload.wikimedia.org/wikipedia/commons/0/08/Emma_Watson.jpg"}];
 let questions=[], qIndex=0, score=0, answered=false;
 
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -86,9 +86,9 @@ function makeQuestions(){
   for(let f=1;f<=5;f++){
     const residents=byFloor(f);
     qs.push({
-      q:`מי גר בקומה ${f}?`,
+      q:`מִי גָּר בְּקוֹמָה ${f}?`,
       answers:residents.map(x=>x.name),
-      correct:residents.map(x=>x.name).join(" ו-"),
+      correct:residents.map(x=>x.name).join(" וְ-"),
       kind:"person"
     });
   }
@@ -97,7 +97,7 @@ function makeQuestions(){
   people.forEach(p=>{
     const neighbor=people.find(x=>x.floor===p.floor && x.apt!==p.apt);
     qs.push({
-      q:`מי השכן/השכנה של ${p.name}?`,
+      q:`מִי הַשָּׁכֵן/הַשְּׁכֵנָה שֶׁל ${p.name}?`,
       answers:[neighbor.name],
       correct:neighbor.name,
       kind:"person"
@@ -108,13 +108,13 @@ function makeQuestions(){
   for(let f=1;f<=5;f++){
     const residents=byFloor(f);
     qs.push({
-      q:`מי שכן/ה של ${residents[0].name}?`,
+      q:`מִי שָׁכֵן/ה שֶׁל ${residents[0].name}?`,
       answers:[residents[1].name],
       correct:residents[1].name,
       kind:"person"
     });
     qs.push({
-      q:`מי שכן/ה של ${residents[1].name}?`,
+      q:`מִי שָׁכֵן/ה שֶׁל ${residents[1].name}?`,
       answers:[residents[0].name],
       correct:residents[0].name,
       kind:"person"
@@ -123,13 +123,13 @@ function makeQuestions(){
 
   people.forEach(p=>{
     qs.push({
-      q:`באיזו קומה גר/ה ${p.name}?`,
+      q:`בְּאֵיזוֹ קוֹמָה גָּר/ה ${p.name}?`,
       answers:[String(p.floor)],
       correct:String(p.floor),
       kind:"floor"
     });
     qs.push({
-      q:`מי גר/ה בדירה ${p.apt}?`,
+      q:`מִי גָּר/ה בְּדִירָה ${p.apt}?`,
       answers:[p.name],
       correct:p.name,
       kind:"person"
@@ -141,9 +141,9 @@ function makeQuestions(){
     for(let j=i+1;j<people.length;j++){
       if(people[i].floor===people[j].floor){
         qs.push({
-          q:`${people[i].name} ו-${people[j].name} הם...`,
-          answers:["שכנים","בני משפחה","מורים","חברים"],
-          correct:"שכנים",
+          q:`${people[i].name} וְ-${people[j].name} הֵם...`,
+          answers:["שְׁכֵנִים","בְּנֵי מִשְׁפָּחָה","מוֹרִים","חֲבֵרִים"],
+          correct:"שְׁכֵנִים",
           kind:"concept"
         });
       }
@@ -156,11 +156,11 @@ function building(){
  const b=document.getElementById("building");
  for(let f=5;f>=1;f--){
    const row=document.createElement("div");row.className="floor";
-   const fn=document.createElement("div");fn.className="floorNum";fn.textContent=`קומה ${f}`;
+   const fn=document.createElement("div");fn.className="floorNum";fn.textContent=`קוֹמָה ${f}`;
    row.appendChild(fn);
    byFloor(f).forEach(p=>{
      const a=document.createElement("div");a.className="apt";
-     a.innerHTML=`<div class="aptNo">${p.apt}</div><img class="personImg" src="${p.img}" alt="תמונה של ${p.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="photoFallback" aria-hidden="true" style="display:none">📷</div><div class="personName">${p.name}</div>`;
+     a.innerHTML=`<div class="aptNo">${p.apt}</div><img class="personImg" src="${p.img}" alt="תְּמוּנָה שֶׁל ${p.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="photoFallback" aria-hidden="true" style="display:none">📷</div><div class="personName">${p.name}</div>`;
      row.appendChild(a);
    });
    b.appendChild(row);
@@ -177,7 +177,7 @@ function makeOptions(correct, kind){
 function render(){
  answered=false;
  const item=questions[qIndex];
- document.getElementById("qCount").textContent=`שאלה ${qIndex+1} מתוך ${questions.length}`;
+ document.getElementById("qCount").textContent=`שְׁאֵלָה ${qIndex+1} מִתּוֹךְ ${questions.length}`;
  document.getElementById("question").textContent=item.q;
  document.getElementById("feedback").textContent="";
  document.getElementById("next").style.display="none";
@@ -206,8 +206,8 @@ function answer(btn,opt,item){
  if(answered)return;
  answered=true;
  const ok=item.answers.includes(opt);
- if(ok){score++;document.getElementById("score").textContent=score;btn.classList.add("correct");document.getElementById("feedback").textContent="נכון! 🎉";document.getElementById("feedback").style.color="#15803d";}
- else{btn.classList.add("wrong");document.getElementById("feedback").textContent=`לא בדיוק. התשובה היא: ${item.correct}`;document.getElementById("feedback").style.color="#b91c1c";
+ if(ok){score++;document.getElementById("score").textContent=score;btn.classList.add("correct");document.getElementById("feedback").textContent="נָכוֹן! 🎉";document.getElementById("feedback").style.color="#15803d";}
+ else{btn.classList.add("wrong");document.getElementById("feedback").textContent=`לֹא בְּדִיּוּק. הַתְּשׁוּבָה הִיא: ${item.correct}`;document.getElementById("feedback").style.color="#b91c1c";
    document.querySelectorAll(".option").forEach(b=>{if(item.answers.includes(b.textContent))b.classList.add("correct")});
  }
  document.querySelectorAll(".option").forEach(b=>b.disabled=true);
@@ -217,9 +217,9 @@ function next(){
  qIndex++;
  if(qIndex<questions.length)render();
  else{
-  document.getElementById("question").innerHTML=`סיימתם! 🎉<br>קיבלתם ${score} מתוך ${questions.length}`;
+  document.getElementById("question").innerHTML=`סִיַּמְתֶּם! 🎉<br>קִבַּלְתֶּם ${score} מִתּוֹךְ ${questions.length}`;
   document.getElementById("options").innerHTML="";
-  document.getElementById("feedback").textContent="עבודה מצוינת!";
+  document.getElementById("feedback").textContent="עֲבוֹדָה מְצֻיֶּנֶת!";
   document.getElementById("next").style.display="none";
  }
 }
