@@ -103,6 +103,9 @@ body.noen .en{display:none}
 .ans .tok{background:var(--brand);color:#fff}
 .scene{max-width:580px;margin:12px auto;border-radius:20px;overflow:hidden;border:5px solid #fff;box-shadow:0 8px 22px #0003;background:#cfe9f6}
 .scene svg{display:block;width:100%;height:auto}
+.scene img{display:block;width:100%;aspect-ratio:400/260;object-fit:cover;background:#cfe9f6}
+.credit{text-align:center;font-size:12px;color:var(--muted);margin:-4px 0 8px;direction:ltr;unicode-bidi:isolate}
+.credit a{color:inherit}
 .endbox{text-align:center;padding:26px 10px}
 .stars{font-size:64px;letter-spacing:6px;color:var(--gold)}
 .endbox h2{font-size:34px;margin:8px 0}
@@ -162,6 +165,7 @@ body.noen .en{display:none}
 </div>
 
 <script src="cities-data.js"></script>
+<script src="cities/photos.js"></script>
 <script>(function(){var id=new URLSearchParams(location.search).get('c')||'';if(/^[a-z0-9-]+$/.test(id))document.write('<script src="cities/'+id+'.js"><\/script>');})();</script>
 <script>
 (() => {
@@ -370,6 +374,8 @@ function sceneSVG(pic){
 window.__sceneSVG = sceneSVG;   /* handy for checking all pictures in one gallery */
 (() => { const d = document.createElement('div'); d.innerHTML = SCENE_DEFS; document.body.prepend(d.firstElementChild); })();
 
+/* a real photo if we have one for this place, otherwise the drawn picture */
+const scenePhoto = it => ((window.PLACE_PHOTOS || {})[id] || {})[L.places.indexOf(it)];
 function renderPlaces(root){
   const items = shuffle(L.places); let i = 0, ok = 0, mistakes = 0; const res = [];
   const draw = () => {
@@ -378,9 +384,10 @@ function renderPlaces(root){
     const opts = shuffle([it.he, ...shuffle(L.places.filter(p => p !== it)).slice(0, 3).map(p => p.he)]);
     root.innerHTML = `<div class="h2">📷 מָה הַמָּקוֹם?</div>${tr({ en: 'Look at the picture. What place is it?' })}
       <div class="progress">${items.map((_, k) => `<i class="${k === i ? 'cur' : res[k] === true ? 'y' : res[k] === false ? 'n' : ''}"></i>`).join('')}</div>
-      <div class="scene">${sceneSVG(it.pic)}</div>
+      <div class="scene" id="scene">${scenePhoto(it) ? `<img src="cities/img/${scenePhoto(it).f}" alt="תמונה של המקום">` : sceneSVG(it.pic)}</div>${scenePhoto(it) ? `<div class="credit">📷 ${scenePhoto(it).a} · <a href="${scenePhoto(it).p}" target="_blank" rel="noopener">${scenePhoto(it).l}</a> · Wikimedia Commons</div>` : ''}
       <div class="opts" id="opts"></div><div class="fb" id="fb"></div><div id="why"></div>
       <div style="text-align:center"><button class="btn big" id="nx" type="button" hidden>${i === items.length - 1 ? 'לַתּוֹצָאוֹת ✓' : 'הַבָּא ◀'}</button></div>`;
+    const imgEl = document.querySelector('#scene img'); if (imgEl) imgEl.onerror = () => { $('scene').innerHTML = sceneSVG(it.pic); const c = document.querySelector('.credit'); if (c) c.remove(); };
     const box = $('opts');
     opts.forEach((o, idx) => {
       const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.textContent = o;
