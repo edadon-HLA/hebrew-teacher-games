@@ -164,9 +164,9 @@ body.noen .en{display:none}
   <div class="foot"><button class="btn ghost" id="prevStep" type="button">▶ הַשָּׁלָב הַקּוֹדֵם</button><button class="btn" id="nextStep" type="button">הַשָּׁלָב הַבָּא ◀</button></div>
 </div>
 
-<script src="cities-data.js"></script>
-<script src="cities/photos.js"></script>
-<script>(function(){var id=new URLSearchParams(location.search).get('c')||'';if(/^[a-z0-9-]+$/.test(id))document.write('<script src="cities/'+id+'.js"><\/script>');})();</script>
+<script src="cities-data.js?v=1791901652"></script>
+<script src="cities/photos.js?v=1791901652"></script>
+<script>(function(){var id=new URLSearchParams(location.search).get('c')||'';if(/^[a-z0-9-]+$/.test(id))document.write('<script src="cities/'+id+'.js?v=1791901652"><\/script>');})();</script>
 <script>
 (() => {
 'use strict';
@@ -384,7 +384,7 @@ function renderPlaces(root){
     const opts = shuffle([it.he, ...shuffle(L.places.filter(p => p !== it)).slice(0, 3).map(p => p.he)]);
     root.innerHTML = `<div class="h2">📷 מָה הַמָּקוֹם?</div>${tr({ en: 'Look at the picture. What place is it?' })}
       <div class="progress">${items.map((_, k) => `<i class="${k === i ? 'cur' : res[k] === true ? 'y' : res[k] === false ? 'n' : ''}"></i>`).join('')}</div>
-      <div class="scene" id="scene">${scenePhoto(it) ? `<img src="cities/img/${scenePhoto(it).f}" alt="תמונה של המקום">` : sceneSVG(it.pic)}</div>${scenePhoto(it) ? `<div class="credit">📷 ${scenePhoto(it).a} · <a href="${scenePhoto(it).p}" target="_blank" rel="noopener">${scenePhoto(it).l}</a> · Wikimedia Commons</div>` : ''}
+      <div class="scene" id="scene">${scenePhoto(it) ? `<img src="cities/img/${scenePhoto(it).f}?v=1791901652" alt="תמונה של המקום">` : sceneSVG(it.pic)}</div>${scenePhoto(it) ? `<div class="credit">📷 ${scenePhoto(it).a} · <a href="${scenePhoto(it).p}" target="_blank" rel="noopener">${scenePhoto(it).l}</a> · Wikimedia Commons</div>` : ''}
       <div class="opts" id="opts"></div><div class="fb" id="fb"></div><div id="why"></div>
       <div style="text-align:center"><button class="btn big" id="nx" type="button" hidden>${i === items.length - 1 ? 'לַתּוֹצָאוֹת ✓' : 'הַבָּא ◀'}</button></div>`;
     const imgEl = document.querySelector('#scene img'); if (imgEl) imgEl.onerror = () => { $('scene').innerHTML = sceneSVG(it.pic); const c = document.querySelector('.credit'); if (c) c.remove(); };
