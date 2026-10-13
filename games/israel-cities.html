@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ערים בישראל | משחקי עברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+:root{
+  --bg:#eef6fb; --card:#fff; --ink:#1d2b3a; --muted:#5c6b7c; --line:#d6e4ee; --brand:#2a6fb0; --brand-dark:#1d5489;
+  --sea:#cfe9f6; --north:#8fd18a; --coast:#c4a6ee; --shfela:#f2d57a; --negev:#f0b27a; --star:#f2b01e;
+  --f:'Rubik','Noto Sans Hebrew',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);line-height:1.45}
+.wrap{max-width:1250px;margin:0 auto;padding:14px 16px 40px}
+header.top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin:6px 0 14px}
+header.top h1{margin:0;font-size:clamp(26px,4vw,40px);font-weight:800}
+header.top .sub{color:var(--muted);font-size:17px;flex:1 1 280px}
+.langtog{margin-inline-start:auto;font:600 14px var(--f);border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;color:var(--ink)}
+.layout{display:grid;grid-template-columns:minmax(300px,.8fr) 1.2fr;gap:18px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 6px 20px #1b28420d}
+.mapcard{padding:10px;position:sticky;top:64px}
+.mapbox{position:relative;width:100%;height:min(74vh,720px);min-height:420px;border-radius:14px;background:linear-gradient(180deg,#d9eefa,#bfe0f3);overflow:hidden}
+.mapbox svg{width:100%;height:100%;display:block}
+.region{cursor:pointer;transition:filter .2s,opacity .3s}
+.region:hover,.region:focus{filter:brightness(1.08) saturate(1.15);outline:none}
+.region.dim{opacity:.35}
+.rlabel{font-family:var(--f);font-weight:800;fill:#1d2b3a;paint-order:stroke;stroke:rgba(255,255,255,.85);stroke-width:4px;stroke-linejoin:round;pointer-events:none;transition:opacity .3s}
+.sealabel{font-family:var(--f);font-weight:600;fill:#4a86a8;font-style:italic;pointer-events:none;transition:opacity .3s}
+.cities{transition:opacity .35s}
+.city{cursor:pointer}
+.city .dot{fill:#fff;stroke:var(--brand-dark);}
+.city.ready .dot{fill:var(--star);stroke:#8a5a00}
+.city .ring{fill:none;stroke:var(--star);opacity:.0}
+.city.ready .ring{animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{0%{opacity:.9;transform:scale(.6)}100%{opacity:0;transform:scale(2.2)}}
+.city .ring{transform-box:fill-box;transform-origin:center}
+.city text{font-family:var(--f);font-weight:800;fill:#14202c;paint-order:stroke;stroke:rgba(255,255,255,.92);stroke-linejoin:round}
+.city:hover .dot,.city:focus .dot{fill:#ffe08a}
+.city:focus{outline:none}
+.hint{position:absolute;inset-inline:0;bottom:8px;text-align:center;font-size:15px;font-weight:600;color:#245;pointer-events:none}
+.hint span{background:rgba(255,255,255,.88);padding:5px 12px;border-radius:999px}
+.regbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.regbtn{flex:1 1 40%;font:700 15px var(--f);padding:9px 10px;border-radius:12px;border:2px solid transparent;color:#14202c;cursor:pointer}
+.regbtn[data-r=north]{background:var(--north)} .regbtn[data-r=coast]{background:var(--coast)}
+.regbtn[data-r=shfela]{background:var(--shfela)} .regbtn[data-r=negev]{background:var(--negev)}
+.regbtn.on{border-color:#14202c}
+.panel{padding:20px 22px 24px;min-height:420px}
+.panel h2{margin:0 0 4px;font-size:clamp(24px,3vw,34px);font-weight:800}
+.panel .en{color:var(--muted);font-size:15px;unicode-bidi:plaintext}
+.lead{font-size:clamp(19px,2.2vw,24px);margin:10px 0 16px}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.fact{background:#f5faff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start}
+.fact .ic{font-size:30px;line-height:1}
+.fact .lbl{font-size:14px;color:var(--muted);font-weight:600}
+.fact .lbl .en{margin-inline-start:.6em;font-weight:400}
+.en,.ven{unicode-bidi:plaintext}
+.fact .val{font-size:19px;font-weight:700}
+.fact .ven{font-size:13px;color:var(--muted)}
+.chip{display:inline-block;padding:3px 12px;border-radius:999px;font-weight:700;font-size:15px;color:#14202c}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 6px}
+.citybtn{font:800 20px var(--f);display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:14px;border:2px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+.citybtn:hover{border-color:var(--brand);background:#f0f7fd}
+.citybtn.soon{color:#8a97a6}
+.citybtn small{font:600 12px var(--f);color:#fff;background:var(--brand);border-radius:999px;padding:2px 8px}
+.citybtn.soon small{background:#a9b6c3}
+.btn{font:700 16px var(--f);border:0;border-radius:12px;padding:10px 16px;background:var(--brand);color:#fff;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--brand-dark);border:2px solid var(--brand)}
+.sectitle{margin:22px 0 8px;font-size:20px;font-weight:800}
+.picker{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
+.picker label{font-weight:800;font-size:18px}
+.picker select{font:600 18px var(--f);padding:9px 12px;border-radius:12px;border:2px solid var(--line);min-width:220px;background:#fff;color:var(--ink)}
+.toast{position:fixed;inset-inline:0;bottom:24px;margin:0 auto;width:fit-content;max-width:90vw;background:#1d2b3a;color:#fff;padding:12px 20px;border-radius:14px;font-weight:700;font-size:18px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99999;text-align:center}
+.toast.show{opacity:1}
+body.noen .en,body.noen .ven{display:none}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.mapcard{position:static}.mapbox{height:62vh;min-height:360px}}
+@media (prefers-reduced-motion:reduce){.city.ready .ring{animation:none}}
+</style>
+<style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
+</style></head>
+</head>
+<body>
+<nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
+<div class="wrap">
+  <header class="top">
+    <h1>🗺️ עָרִים בְּיִשְׂרָאֵל</h1>
+    <div class="sub">לַחֲצוּ עַל אֵזוֹר בַּמַּפָּה, וְאַחַר כָּךְ בְּחַרוּ עִיר.<span class="en"><br>Click an area on the map, then choose a city.</span></div>
+    <button class="langtog" id="langtog" type="button" aria-pressed="true">English: on</button>
+  </header>
+
+  <div class="layout">
+    <section class="card mapcard" aria-label="מפת ישראל">
+      <div class="mapbox" id="mapbox">
+        <svg id="map" viewBox="0 0 380 990" role="group" aria-label="מפת ישראל עם ארבעה אזורים" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="hint" id="hint"><span>לַחֲצוּ עַל אֵזוֹר</span></div>
+      </div>
+      <div class="regbtns" id="regbtns"></div>
+    </section>
+
+    <section class="card panel" id="panel" aria-live="polite"></section>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="cities-data.js"></script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const SVGNS = 'http://www.w3.org/2000/svg';
+const REG = Object.fromEntries(REGIONS.map(r => [r.id, r]));
+const hasLesson = id => !!(window.CITY_LESSONS && CITY_LESSONS[id]);
+
+/* ---------- projection (lat/lon → map units) ---------- */
+const S = 240, LON0 = 34.1, LAT0 = 33.45, K = Math.cos(31.5 * Math.PI / 180);
+const px = lon => (lon - LON0) * K * S;
+const py = lat => (LAT0 - lat) * S;
+const P = pts => pts.map(p => [px(p[0]), py(p[1])]);
+const lineD = pts => 'M' + P(pts).map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L') + 'Z';
+function smoothD(pts){               /* closed, softly rounded outline */
+  const q = P(pts), n = q.length, mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  let m = mid(q[n - 1], q[0]), d = 'M' + m[0].toFixed(1) + ' ' + m[1].toFixed(1);
+  for (let i = 0; i < n; i++){ const p = q[i], m2 = mid(p, q[(i + 1) % n]);
+    d += 'Q' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ' ' + m2[0].toFixed(1) + ' ' + m2[1].toFixed(1); }
+  return d + 'Z';
+}
+
+/* One neutral silhouette of the country: no inner lines, no neighbours, no names of other places. [lon, lat] */
+const OUTLINE = [[35.10,33.09],[35.30,33.08],[35.43,33.09],[35.50,33.17],[35.58,33.28],[35.70,33.27],[35.80,33.30],[35.86,33.18],
+  [35.84,33.00],[35.80,32.86],[35.70,32.75],[35.65,32.69],[35.57,32.55],[35.55,32.30],[35.54,32.05],[35.55,31.80],[35.56,31.60],
+  [35.52,31.30],[35.43,31.05],[35.32,30.85],[35.19,30.60],[35.15,30.30],[35.12,29.95],[35.03,29.70],[34.99,29.56],[34.95,29.49],
+  [34.89,29.49],[34.76,29.85],[34.60,30.30],[34.45,30.75],[34.33,31.05],[34.25,31.25],[34.35,31.42],[34.47,31.55],[34.56,31.68],
+  [34.64,31.80],[34.72,31.96],[34.76,32.07],[34.79,32.17],[34.84,32.33],[34.88,32.46],[34.92,32.60],[34.94,32.72],[34.96,32.81],
+  [35.02,32.80],[35.05,32.88],[35.07,32.94],[35.09,33.02]];
+const KINNERET = [[35.55,32.89],[35.62,32.85],[35.65,32.78],[35.60,32.71],[35.53,32.73],[35.50,32.81]];
+const DEADSEA = [[35.46,31.77],[35.54,31.74],[35.53,31.50],[35.50,31.30],[35.44,31.08],[35.40,31.15],[35.38,31.40],[35.39,31.62]];
+
+/* The four areas are bands over the silhouette (clipped to it). */
+const AREAS = {
+  north:  { poly: [[34.0,32.58],[36.2,32.58],[36.2,33.7],[34.0,33.7]],
+            box: [34.88, 32.52, 35.95, 33.36], label: [35.34, 33.20, 'הַצָּפוֹן'] },
+  coast:  { poly: [[33.9,32.58],[34.96,32.58],[34.80,31.45],[33.9,31.45]],
+            box: [34.20, 31.40, 35.10, 32.66], label: [34.44, 32.27, 'מִישׁוֹר', 'הַחוֹף'] },
+  shfela: { poly: [[34.96,32.58],[36.2,32.58],[36.2,31.45],[34.80,31.45]],
+            box: [34.78, 31.40, 35.70, 32.60], label: [35.28, 32.30, 'הַשְּׁפֵלָה'] },
+  negev:  { poly: [[33.9,31.45],[36.2,31.45],[36.2,29.1],[33.9,29.1]],
+            box: [34.20, 29.40, 35.62, 31.50], label: [34.93, 30.55, 'הַנֶּגֶב'] }
+};
+
+/* ---------- build the map ---------- */
+const svg = $('map');
+const el = (name, attrs = {}, parent = svg) => { const e = document.createElementNS(SVGNS, name); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+
+const defs = el('defs');
+const clip = el('clipPath', { id: 'clipIL' }, defs);
+el('path', { d: smoothD(OUTLINE) }, clip);
+/* soft shadow under the country */
+el('path', { d: smoothD(OUTLINE), fill: '#000', opacity: .12, transform: 'translate(3 4)' });
+const g = el('g', { 'clip-path': 'url(#clipIL)' });
+const regionEls = {};
+for (const id in AREAS){
+  const a = AREAS[id];
+  const path = el('path', { d: lineD(a.poly), fill: REG[id].color, stroke: '#fff', 'stroke-width': 2, class: 'region', tabindex: 0, role: 'button',
+    'aria-label': REG[id].he + ' — ' + REG[id].en, 'data-r': id }, g);
+  path.addEventListener('click', () => selectRegion(id));
+  path.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); selectRegion(id); } });
+  regionEls[id] = path;
+}
+el('path', { d: lineD(KINNERET), fill: '#8fd0ee', stroke: '#5aa9d1', 'stroke-width': 1.5, 'pointer-events': 'none' }, g);
+el('path', { d: lineD(DEADSEA), fill: '#8fd0ee', stroke: '#5aa9d1', 'stroke-width': 1.5, 'pointer-events': 'none' }, g);
+el('path', { d: smoothD(OUTLINE), fill: 'none', stroke: '#2f6f94', 'stroke-width': 2.2, 'stroke-linejoin': 'round', 'pointer-events': 'none' });
+
+/* labels: areas + water */
+const labels = el('g', { id: 'labels' });
+for (const id in AREAS){
+  const [lon, lat, l1, l2] = AREAS[id].label;
+  const t = el('text', { x: px(lon), y: py(lat), 'text-anchor': 'middle', class: 'rlabel', 'font-size': 21, 'data-r': id }, labels);
+  if (l2){ el('tspan', { x: px(lon), dy: '0' }, t).textContent = l1; el('tspan', { x: px(lon), dy: '1.15em' }, t).textContent = l2; }
+  else t.textContent = l1;
+}
+const sea = (lon, lat, txt, size = 14) => { const t = el('text', { x: px(lon), y: py(lat), 'text-anchor': 'middle', class: 'sealabel', 'font-size': size }, labels); t.textContent = txt; };
+sea(34.20, 32.62, 'הַיָּם הַתִּיכוֹן', 15);
+sea(35.56, 32.93, 'הַכִּנֶּרֶת', 10);
+sea(34.90, 29.38, 'מִפְרַץ אֵילַת', 12);
+
+/* cities layer (visible only after zooming into an area) */
+const cityLayer = el('g', { class: 'cities', id: 'cityLayer', opacity: 0, 'pointer-events': 'none' });
+const cityEls = {};
+CITIES.forEach(c => {
+  const gg = el('g', { class: 'city' + (hasLesson(c.id) ? ' ready' : ''), tabindex: -1, role: 'link', 'data-id': c.id, 'data-r': c.region,
+    'aria-label': c.he + ' — ' + c.en }, cityLayer);
+  const x = px(c.lon), y = py(c.lat);
+  const ring = el('circle', { class: 'ring', cx: x, cy: y, r: 7, 'stroke-width': 2 }, gg);
+  const dot = el('circle', { class: 'dot', cx: x, cy: y, r: 6, 'stroke-width': 2 }, gg);
+  const txt = el('text', { x: x + (c.side === 'l' ? -11 : 11), y: y + 5 + (c.dy || 0), 'text-anchor': c.side === 'l' ? 'start' : 'end', 'font-size': 14, 'stroke-width': 4 }, gg);
+  txt.textContent = c.he;
+  gg.addEventListener('click', () => openCity(c));
+  gg.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openCity(c); } });
+  cityEls[c.id] = { g: gg, dot, ring, txt, x, y, c };
+});
+
+/* ---------- zoom ---------- */
+const FULL = { x: -10, y: -8, w: 400, h: 1000 };                     /* whole country */
+let view = { ...FULL }, anim = 0;
+const aspect = () => { const b = $('mapbox').getBoundingClientRect(); return b.width / Math.max(b.height, 1); };
+function fit(box){                                                   /* box in map units → viewBox with the container's aspect */
+  const a = aspect(); let { x, y, w, h } = box;
+  if (w / h < a){ const nw = h * a; x -= (nw - w) / 2; w = nw; } else { const nh = w / a; y -= (nh - h) / 2; h = nh; }
+  return { x, y, w, h };
+}
+function areaBox(id){ const [l0, a0, l1, a1] = AREAS[id].box; const x0 = px(l0), x1 = px(l1), y0 = py(a1), y1 = py(a0);
+  const padX = (x1 - x0) * .06, padY = (y1 - y0) * .06; return { x: x0 - padX, y: y0 - padY, w: x1 - x0 + 2 * padX, h: y1 - y0 + 2 * padY }; }
+function applyView(v){
+  svg.setAttribute('viewBox', `${v.x.toFixed(2)} ${v.y.toFixed(2)} ${v.w.toFixed(2)} ${v.h.toFixed(2)}`);
+  const u = v.w / 100;                                              /* 1% of the visible width – keeps dots and names the same size on screen */
+  Object.values(cityEls).forEach(o => {
+    o.dot.setAttribute('r', (u * 1.5).toFixed(2)); o.dot.setAttribute('stroke-width', (u * 0.5).toFixed(2));
+    o.ring.setAttribute('r', (u * 1.7).toFixed(2)); o.ring.setAttribute('stroke-width', (u * 0.45).toFixed(2));
+    o.txt.setAttribute('font-size', (u * 4.6).toFixed(2)); o.txt.setAttribute('stroke-width', (u * 1.4).toFixed(2));
+    const off = u * 2.4, c = o.c;
+    o.txt.setAttribute('x', (o.x + (c.side === 'l' ? -off : off)).toFixed(2)); o.txt.setAttribute('y', (o.y + u * 1.6 + (c.dy || 0) * u * 0.25).toFixed(2));
+  });
+}
+function animateTo(target, ms = 750){
+  cancelAnimationFrame(anim);
+  const from = { ...view }, t0 = performance.now();
+  const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const step = now => {
+    const t = reduce ? 1 : Math.min(1, (now - t0) / ms), e = ease(t);
+    view = { x: from.x + (target.x - from.x) * e, y: from.y + (target.y - from.y) * e, w: from.w + (target.w - from.w) * e, h: from.h + (target.h - from.h) * e };
+    applyView(view); if (t < 1) anim = requestAnimationFrame(step);
+  };
+  anim = requestAnimationFrame(step);
+}
+
+/* ---------- state + panel ---------- */
+let current = null;
+const en = (t, tag = 'div', cls = 'en') => t ? `<${tag} class="${cls}">${t}</${tag}>` : '';
+function selectRegion(id){
+  current = id;
+  Object.entries(regionEls).forEach(([k, e]) => e.classList.toggle('dim', k !== id));
+  document.querySelectorAll('.regbtn').forEach(b => b.classList.toggle('on', b.dataset.r === id));
+  labels.style.opacity = 0;
+  cityLayer.setAttribute('opacity', 1); cityLayer.setAttribute('pointer-events', 'all');
+  Object.values(cityEls).forEach(o => { const on = o.g.dataset.r === id; o.g.style.display = on ? '' : 'none'; o.g.setAttribute('tabindex', on ? 0 : -1); });
+  $('hint').firstElementChild.textContent = 'לַחֲצוּ עַל עִיר';
+  animateTo(fit(areaBox(id)));
+  renderRegion(id);
+  if (window.innerWidth <= 900) $('panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function backToAll(){
+  current = null;
+  Object.values(regionEls).forEach(e => e.classList.remove('dim'));
+  document.querySelectorAll('.regbtn').forEach(b => b.classList.remove('on'));
+  labels.style.opacity = 1;
+  cityLayer.setAttribute('opacity', 0); cityLayer.setAttribute('pointer-events', 'none');
+  Object.values(cityEls).forEach(o => o.g.setAttribute('tabindex', -1));
+  $('hint').firstElementChild.textContent = 'לַחֲצוּ עַל אֵזוֹר';
+  animateTo(fit(FULL));
+  renderIsrael();
+}
+function cityButtons(list){
+  return `<div class="chips">` + list.map(c => `<button class="citybtn ${hasLesson(c.id) ? '' : 'soon'}" data-id="${c.id}" type="button"><span>${c.emoji}</span><span>${c.he}</span>
+      <small>${hasLesson(c.id) ? 'שִׁעוּר' : 'בְּקָרוֹב'}</small></button>`).join('') + `</div>`;
+}
+function pickerHTML(){
+  const opts = REGIONS.map(r => `<optgroup label="${r.he}">` + CITIES.filter(c => c.region === r.id)
+    .map(c => `<option value="${c.id}">${c.he} — ${c.en}${hasLesson(c.id) ? '' : '  (בקרוב)'}</option>`).join('') + `</optgroup>`).join('');
+  return `<div class="picker"><label for="citySel">בְּחַר עִיר מֵהָרְשִׁימָה:</label>
+    <select id="citySel"><option value="">— —</option>${opts}</select>
+    <button class="btn" id="goCity" type="button">לַשִּׁעוּר ◀</button></div>`;
+}
+function bindPanel(){
+  document.querySelectorAll('.citybtn').forEach(b => b.addEventListener('click', () => openCity(CITIES.find(c => c.id === b.dataset.id))));
+  const back = $('backAll'); if (back) back.addEventListener('click', backToAll);
+  const go = $('goCity'); if (go) go.addEventListener('click', () => { const c = CITIES.find(c => c.id === $('citySel').value); if (c) openCity(c); else toast('בְּחַרוּ עִיר מֵהָרְשִׁימָה'); });
+}
+function renderIsrael(){
+  $('panel').innerHTML = `
+    <h2>🗺️ יִשְׂרָאֵל — מַבָּט כְּלָלִי</h2>${en('Israel — an overview', 'div')}
+    <p class="lead">יִשְׂרָאֵל הִיא מְדִינָה קְטַנָּה עִם אַרְבָּעָה אֵזוֹרִים: הַצָּפוֹן, מִישׁוֹר הַחוֹף, הַשְּׁפֵלָה וְהַנֶּגֶב. בְּכָל אֵזוֹר יֵשׁ עָרִים אַחֵרוֹת.
+      ${en('Israel is a small country with four areas: the North, the Coastal Plain, the Shfela and the Negev. Each area has different cities.', 'div')}</p>
+    <div class="facts">${ISRAEL_FACTS.map(f => `<div class="fact"><div class="ic">${f.icon}</div><div><div class="lbl">${f.label.he}${en(f.label.en, 'span', 'en ven')}</div>
+      <div class="val">${f.value.he}</div>${en(f.value.en, 'div', 'ven')}</div></div>`).join('')}</div>
+    <div class="sectitle">👆 לַחֲצוּ עַל אֵזוֹר בַּמַּפָּה</div>
+    <div class="chips">${REGIONS.map(r => `<button class="chip regpick" data-r="${r.id}" style="background:${r.color};border:0;cursor:pointer" type="button">${r.icon} ${r.he}</button>`).join('')}</div>
+    ${pickerHTML()}`;
+  document.querySelectorAll('.regpick').forEach(b => b.addEventListener('click', () => selectRegion(b.dataset.r)));
+  bindPanel(); syncEn();
+}
+function renderRegion(id){
+  const r = REG[id], list = CITIES.filter(c => c.region === id);
+  $('panel').innerHTML = `
+    <div><span class="chip" style="background:${r.color}">${r.icon} אֵזוֹר</span></div>
+    <h2>${r.he}</h2>${en(r.en, 'div')}
+    <p class="lead">${r.blurb.he}${en(r.blurb.en, 'div')}</p>
+    <div class="facts">${r.facts.map(f => `<div class="fact"><div class="ic">${f.icon}</div><div><div class="val">${f.he}</div>${en(f.en, 'div', 'ven')}</div></div>`).join('')}</div>
+    <div class="sectitle">🏙️ עָרִים בָּאֵזוֹר — בְּחַרוּ עִיר</div>${cityButtons(list)}
+    <div style="margin-top:14px"><button class="btn ghost" id="backAll" type="button">▶ חֲזָרָה לְכָל הַמַּפָּה</button></div>
+    ${pickerHTML()}`;
+  bindPanel(); syncEn();
+}
+
+/* ---------- opening a city ---------- */
+let toastT = 0;
+function toast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
+function openCity(c){
+  if (!c) return;
+  if (hasLesson(c.id)) location.href = 'city-lesson.html?c=' + encodeURIComponent(c.id);
+  else toast('הַשִּׁעוּר עַל ' + c.he + ' יִהְיֶה בְּקָרוֹב 🙂');
+}
+
+/* ---------- English toggle (remembered) ---------- */
+let showEn = true;
+try { showEn = localStorage.getItem('cities.en') !== '0'; } catch (e) {}
+function syncEn(){ document.body.classList.toggle('noen', !showEn); const b = $('langtog'); b.textContent = 'English: ' + (showEn ? 'on' : 'off'); b.setAttribute('aria-pressed', showEn); }
+$('langtog').addEventListener('click', () => { showEn = !showEn; try { localStorage.setItem('cities.en', showEn ? '1' : '0'); } catch (e) {} syncEn(); });
+
+/* ---------- boot ---------- */
+$('regbtns').innerHTML = REGIONS.map(r => `<button class="regbtn" data-r="${r.id}" type="button">${r.icon} ${r.he}</button>`).join('');
+document.querySelectorAll('.regbtn').forEach(b => b.addEventListener('click', () => selectRegion(b.dataset.r)));
+svg.addEventListener('click', e => { if (e.target === svg && current) backToAll(); });
+let rz = 0; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { view = fit(current ? areaBox(current) : FULL); applyView(view); }, 120); });
+view = fit(FULL); applyView(view); renderIsrael();
+/* deep link: israel-cities.html#north etc. */
+const hash = location.hash.slice(1); if (AREAS[hash]) selectRegion(hash);
+})();
+</script>
+<script id="fs-script">
+(function(){var b=document.getElementById("fsBtn"),d=document,e=d.documentElement;
+var req=e.requestFullscreen||e.webkitRequestFullscreen,ex=d.exitFullscreen||d.webkitExitFullscreen;
+if(!b||!req){return}b.hidden=false;
+function on(){return d.fullscreenElement||d.webkitFullscreenElement}
+function lbl(){b.textContent=on()?"✕ יציאה ממסך מלא":"⛶ מסך מלא"}
+b.addEventListener("click",function(){if(on()){ex.call(d)}else{req.call(e)}});
+d.addEventListener("fullscreenchange",lbl);d.addEventListener("webkitfullscreenchange",lbl);})();
+</script>
+</body>
+</html>

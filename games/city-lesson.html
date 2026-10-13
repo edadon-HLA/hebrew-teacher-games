@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שיעור על עיר | משחקי עברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+:root{
+  --bg:#eef6fb; --card:#fff; --ink:#1d2b3a; --muted:#5c6b7c; --line:#d6e4ee; --brand:#2a6fb0; --brand-dark:#1d5489;
+  --good:#2f9d55; --good-soft:#dcf2e3; --bad:#e2506a; --bad-soft:#fde3e7; --gold:#f2b01e; --accent:#7c5cd6;
+  --f:'Rubik','Noto Sans Hebrew',Arial,sans-serif;
+  --t1:#e2506a; --t2:#2a8bd0; --t3:#2f9d55; --t4:#e08a1e;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);line-height:1.45}
+.wrap{max-width:1150px;margin:0 auto;padding:12px 16px 40px}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:6px 0 12px}
+.bar a.back{font:700 15px var(--f);text-decoration:none;color:var(--brand-dark);background:#fff;border:2px solid var(--brand);border-radius:12px;padding:8px 14px}
+.ttl{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ttl h1{margin:0;font-size:clamp(28px,4.5vw,46px);font-weight:800}
+.ttl .em{font-size:clamp(30px,4vw,44px)}
+.chip{display:inline-block;padding:3px 12px;border-radius:999px;font-weight:700;font-size:15px;color:#14202c}
+.langtog{margin-inline-start:auto;font:600 14px var(--f);border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;color:var(--ink)}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.step{flex:1 1 150px;font:700 16px var(--f);border:2px solid var(--line);background:#fff;border-radius:14px;padding:10px 12px;cursor:pointer;color:var(--ink);display:flex;align-items:center;gap:8px;justify-content:center;text-align:center}
+.step .n{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#e8f0f7;font-size:14px;flex:none}
+.step.on{background:var(--brand);color:#fff;border-color:var(--brand)} .step.on .n{background:#fff;color:var(--brand-dark)}
+.step.done .n{background:var(--good);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 6px 20px #1b28420d;padding:20px 22px}
+.en{color:var(--muted);font-size:15px;unicode-bidi:plaintext}
+body.noen .en{display:none}
+.h2{font-size:clamp(22px,3vw,30px);font-weight:800;margin:0 0 2px}
+.instr{margin:0 0 14px}
+.btn{font:700 17px var(--f);border:0;border-radius:12px;padding:11px 20px;background:var(--brand);color:#fff;cursor:pointer}
+.btn:hover{background:var(--brand-dark)}
+.btn.ghost{background:#fff;color:var(--brand-dark);border:2px solid var(--brand)} .btn.ghost:hover{background:#eef6fd}
+.btn.big{font-size:21px;padding:14px 28px}
+.btn:disabled{opacity:.45;cursor:default}
+.foot{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+/* ----- learn ----- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px}
+.stat{background:#f5faff;border:1px solid var(--line);border-radius:14px;padding:10px 14px;display:flex;gap:10px;align-items:center}
+.stat .ic{font-size:28px}.stat .l{font-size:13px;color:var(--muted);font-weight:600}.stat .v{font-size:18px;font-weight:800}
+.slide{display:grid;grid-template-columns:auto 1fr;gap:6px 26px;align-items:center;min-height:250px}
+.slide .big{font-size:clamp(80px,13vw,150px);line-height:1;text-align:center;min-width:140px}
+.slide h2{margin:0;font-size:clamp(26px,3.5vw,38px);font-weight:800;color:var(--brand-dark)}
+.slide .tx{font-size:clamp(24px,3.2vw,36px);line-height:1.5;margin:6px 0}
+.slide .en{font-size:clamp(15px,1.6vw,19px)}
+.dots{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:14px 0 4px}
+.dots button{width:14px;height:14px;border-radius:50%;border:0;background:#cfdce8;padding:0;cursor:pointer}
+.dots button.on{background:var(--brand);transform:scale(1.35)}
+.slidenav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+@media(max-width:700px){.slide{grid-template-columns:1fr;text-align:center}}
+
+/* ----- memory ----- */
+.mhead{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-bottom:10px}
+.mhead .score{font-size:20px;font-weight:800}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:820px;margin:0 auto}
+.mcard{position:relative;border:4px solid var(--brand);border-radius:16px;background:#fff;padding:0;cursor:pointer;min-height:clamp(96px,17vh,150px);overflow:hidden;font-family:var(--f);box-shadow:0 3px 8px #0002}
+.mcard:hover:not(.matched):not(.open){transform:scale(1.03)}
+.mcard .face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:6px;text-align:center}
+.mcard .back{background:linear-gradient(135deg,#3f93d9,#2a6fb0);color:#fff;font-size:clamp(36px,6vw,60px);font-weight:800}
+.mcard .front{display:none;background:#fff}
+.mcard.open .back,.mcard.matched .back{display:none}
+.mcard.open .front,.mcard.matched .front{display:flex}
+.mcard .word{font-size:clamp(20px,2.7vw,32px);font-weight:800;line-height:1.25}
+.mcard .pic{font-size:clamp(46px,7vw,78px);line-height:1}
+.mcard.matched{border-color:var(--good);background:var(--good-soft);cursor:default}.mcard.matched .front{background:var(--good-soft)}
+.mcard.nomatch{animation:shake .4s}
+.num{position:absolute;top:5px;right:5px;z-index:3;min-width:34px;height:34px;padding:0 6px;border-radius:17px;background:var(--gold);color:#14202c;border:3px solid #14202c;font-size:20px;font-weight:800;line-height:28px;text-align:center;pointer-events:none}
+.mcard.matched .num{background:#b7f0c6}
+.factbar{min-height:78px;margin:16px auto 0;max-width:820px;border-radius:16px;padding:12px 18px;background:#fff8e1;border:2px dashed #e9c35a;text-align:center;font-size:clamp(20px,2.6vw,28px);font-weight:700}
+.factbar .en{font-weight:400}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@media(max-width:560px){.mgrid{grid-template-columns:repeat(3,1fr);gap:8px}}
+
+/* ----- cloze / order ----- */
+.progress{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.progress i{width:26px;height:10px;border-radius:6px;background:#d6e4ee}
+.progress i.cur{background:var(--brand)} .progress i.y{background:var(--good)} .progress i.n{background:#e9a8b4}
+.sentence{font-size:clamp(28px,4.2vw,48px);font-weight:700;line-height:1.5;text-align:center;margin:14px 0 4px;padding:10px 6px}
+.gap{display:inline-block;min-width:3.2em;border-bottom:5px dashed #9bb7cf;color:var(--good);padding:0 .25em;text-align:center}
+.gap.ok{border-bottom-style:solid;border-bottom-color:var(--good)}
+.sentence .en{display:block;font-weight:400;margin-top:4px}
+.opts{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.opt{font:700 clamp(22px,3vw,32px) var(--f);min-width:170px;padding:14px 22px;border-radius:16px;border:3px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+.opt:hover:not(:disabled){border-color:var(--brand);background:#f0f7fd}
+.opt.ok{background:var(--good);border-color:var(--good);color:#fff}
+.opt.no{background:var(--bad-soft);border-color:var(--bad);color:#8a2b3d;text-decoration:line-through;animation:shake .4s}
+.fb{min-height:36px;text-align:center;font-size:24px;font-weight:800;margin:6px 0}
+.fb.ok{color:var(--good)}.fb.no{color:var(--bad)}
+.tray,.ans{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;min-height:76px;padding:12px;border-radius:16px}
+.ans{background:#f5faff;border:3px dashed #9bb7cf;margin:14px 0}
+.ans.ok{background:var(--good-soft);border-color:var(--good);border-style:solid}
+.ans.bad{animation:shake .4s;border-color:var(--bad)}
+.tok{font:700 clamp(22px,3vw,34px) var(--f);padding:10px 18px;border-radius:14px;border:3px solid var(--brand);background:#fff;color:var(--ink);cursor:pointer}
+.tok:hover{background:#eef6fd}
+.ans .tok{background:var(--brand);color:#fff}
+.endbox{text-align:center;padding:26px 10px}
+.stars{font-size:64px;letter-spacing:6px;color:var(--gold)}
+.endbox h2{font-size:34px;margin:8px 0}
+
+/* ----- trivia ----- */
+.setup{display:grid;gap:18px}
+.setup .grp{background:#f5faff;border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.setup .grp b{display:block;font-size:19px;margin-bottom:8px}
+.setup .grp b .en{margin-inline-start:.7em;font-weight:400}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{font:700 18px var(--f);padding:10px 18px;border-radius:12px;border:2px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+.seg button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.teamnames{display:flex;flex-wrap:wrap;gap:10px}
+.teamnames label{display:flex;align-items:center;gap:8px;font-weight:700}
+.teamnames input{font:700 18px var(--f);padding:8px 12px;border-radius:10px;border:2px solid var(--line);width:170px}
+.dot{display:inline-block;width:14px;height:14px;border-radius:50%}
+.tbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;align-items:stretch}
+.team{flex:1 1 140px;border:3px solid var(--line);background:#fff;border-radius:16px;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:800;font-size:19px;opacity:.6}
+.team.cur{opacity:1;box-shadow:0 0 0 4px #fff,0 0 0 8px currentColor;transform:translateY(-2px)}
+.team .pts{font-size:26px}
+.qmeta{display:flex;justify-content:space-between;gap:10px;font-weight:700;color:var(--muted);margin:4px 0 6px}
+.timer{height:12px;border-radius:8px;background:#dbe8f2;overflow:hidden;margin:6px 0 12px}
+.timer i{display:block;height:100%;width:100%;background:var(--good);transform-origin:right;transition:background .3s}
+.timer i.low{background:var(--bad)}
+.q{font-size:clamp(28px,4vw,46px);font-weight:800;text-align:center;line-height:1.35;margin:8px 0 2px}
+.q .en{display:block;font-size:clamp(15px,1.6vw,19px);font-weight:400;margin-top:2px}
+.qopts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.qopt{font:700 clamp(21px,2.7vw,30px) var(--f);padding:16px 18px;border-radius:16px;border:3px solid var(--line);background:#fff;cursor:pointer;color:var(--ink);text-align:start;display:flex;gap:12px;align-items:center}
+.qopt .k{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#e8f0f7;font-size:17px;flex:none}
+.qopt:hover:not(:disabled){border-color:var(--brand);background:#f0f7fd}
+.qopt.ok{background:var(--good);border-color:var(--good);color:#fff}.qopt.ok .k{background:#fff;color:var(--good)}
+.qopt.no{background:var(--bad-soft);border-color:var(--bad);color:#8a2b3d}
+.qopt:disabled{cursor:default}
+.why{background:#fff8e1;border:2px dashed #e9c35a;border-radius:14px;padding:10px 16px;font-size:clamp(18px,2.2vw,24px);font-weight:700;text-align:center;margin-bottom:12px}
+.why .en{font-weight:400}
+.rank{max-width:520px;margin:12px auto;display:grid;gap:8px}
+.rank div{display:flex;justify-content:space-between;align-items:center;background:#f5faff;border:2px solid var(--line);border-radius:14px;padding:10px 16px;font-size:22px;font-weight:800}
+.rank div.win{background:#fff4c9;border-color:var(--gold)}
+@media(max-width:640px){.qopts{grid-template-columns:1fr}}
+.msg{text-align:center;padding:50px 10px}.msg h2{font-size:34px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
+</style></head>
+</head>
+<body>
+<nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
+<div class="wrap" id="app">
+  <div class="bar">
+    <a class="back" href="israel-cities.html">▶ חֲזָרָה לַמַּפָּה</a>
+    <div class="ttl"><span class="em" id="cEmoji"></span><h1 id="cName">…</h1><span class="chip" id="cRegion"></span></div>
+    <button class="langtog" id="langtog" type="button" aria-pressed="true">English: on</button>
+  </div>
+  <div class="steps" id="steps" role="tablist"></div>
+  <main class="card" id="stage" aria-live="polite"></main>
+  <div class="foot"><button class="btn ghost" id="prevStep" type="button">▶ הַשָּׁלָב הַקּוֹדֵם</button><button class="btn" id="nextStep" type="button">הַשָּׁלָב הַבָּא ◀</button></div>
+</div>
+
+<script src="cities-data.js"></script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const tr = o => o ? `<div class="en">${o.en || ''}</div>` : '';
+
+/* ---------- which city? ---------- */
+const id = new URLSearchParams(location.search).get('c') || '';
+const META = CITIES.find(c => c.id === id);
+const L = window.CITY_LESSONS[id];
+const REGION = META && REGIONS.find(r => r.id === META.region);
+if (!META || !L){
+  document.title = 'שיעור על עיר | משחקי עברית';
+  if (META){ $('cName').textContent = META.he; $('cEmoji').textContent = META.emoji; }
+  $('steps').remove(); document.querySelector('.foot').remove();
+  $('stage').innerHTML = META
+    ? `<div class="msg"><div style="font-size:70px">🚧</div><h2>הַשִּׁעוּר עַל ${META.he} יִהְיֶה בְּקָרוֹב</h2><div class="en">The lesson about ${META.en} is coming soon.</div><p><a class="btn" style="text-decoration:none;display:inline-block" href="israel-cities.html#${META.region}">▶ חֲזָרָה לַמַּפָּה</a></p></div>`
+    : `<div class="msg"><div style="font-size:70px">🗺️</div><h2>לֹא מָצָאנוּ אֶת הָעִיר הַזּוֹ</h2><p><a class="btn" style="text-decoration:none;display:inline-block" href="israel-cities.html">▶ לַמַּפָּה</a></p></div>`;
+  return;
+}
+document.title = META.en + ' | משחקי עברית';
+$('cName').textContent = L.title.he;
+$('cEmoji').textContent = META.emoji;
+$('cRegion').textContent = REGION.icon + ' ' + REGION.he; $('cRegion').style.background = REGION.color;
+
+/* ---------- English toggle ---------- */
+let showEn = true; try { showEn = localStorage.getItem('cities.en') !== '0'; } catch (e) {}
+const syncEn = () => { document.body.classList.toggle('noen', !showEn); const b = $('langtog'); b.textContent = 'English: ' + (showEn ? 'on' : 'off'); b.setAttribute('aria-pressed', showEn); };
+$('langtog').onclick = () => { showEn = !showEn; try { localStorage.setItem('cities.en', showEn ? '1' : '0'); } catch (e) {} syncEn(); };
+syncEn();
+
+/* ---------- steps ---------- */
+const STEPS = [
+  { key: 'learn',  he: 'הַכִּירוּ אֶת הָעִיר', render: renderLearn },
+  { key: 'memory', he: 'מִשְׂחַק זִכָּרוֹן',   render: renderMemory },
+  { key: 'cloze',  he: 'הַשְׁלִימוּ',          render: renderCloze },
+  { key: 'order',  he: 'סַדְּרוּ אֶת הַמִּשְׁפָּט', render: renderOrder },
+  { key: 'quiz',   he: 'טְרִיוִיָּה וְתַחֲרוּת', render: renderQuiz }
+];
+const done = new Set(); let step = 0, keyHandler = null, timerId = 0;
+$('steps').innerHTML = STEPS.map((s, i) => `<button class="step" data-i="${i}" type="button" role="tab"><span class="n">${i + 1}</span>${s.he}</button>`).join('');
+$('steps').addEventListener('click', e => { const b = e.target.closest('.step'); if (b) go(+b.dataset.i); });
+$('prevStep').onclick = () => go(step - 1);
+$('nextStep').onclick = () => go(step + 1);
+function go(i){
+  if (i < 0 || i >= STEPS.length) return;
+  clearInterval(timerId); keyHandler = null; step = i;
+  document.querySelectorAll('.step').forEach((b, k) => { b.classList.toggle('on', k === i); b.classList.toggle('done', done.has(STEPS[k].key) && k !== i); });
+  $('prevStep').style.visibility = i === 0 ? 'hidden' : 'visible';
+  $('nextStep').style.visibility = i === STEPS.length - 1 ? 'hidden' : 'visible';
+  STEPS[i].render($('stage'));
+  syncEn(); scrollTo({ top: 0 });
+}
+document.addEventListener('keydown', e => { if (keyHandler && !/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) keyHandler(e); });
+const finish = key => { done.add(key); document.querySelectorAll('.step')[STEPS.findIndex(s => s.key === key)]; };
+const starsFor = (ok, total) => { const r = ok / total; return r >= .9 ? 3 : r >= .6 ? 2 : 1; };
+const starsHTML = n => '★'.repeat(n) + '☆'.repeat(3 - n);
+
+/* ======================= 1. learn ======================= */
+function renderLearn(root){
+  let i = 0;
+  const stats = L.stats.map(s => `<div class="stat"><div class="ic">${s.icon}</div><div><div class="l">${s.label.he}<span class="en"> · ${s.label.en}</span></div><div class="v">${s.value.he}</div>${tr(s.value)}</div></div>`).join('');
+  root.innerHTML = `<div class="stats">${stats}</div><div id="slide" class="slide"></div><div class="dots" id="dots"></div>
+    <div class="slidenav"><button class="btn ghost" id="sPrev" type="button">▶ הַקּוֹדֵם</button><button class="btn" id="sNext" type="button">הַבָּא ◀</button></div>`;
+  const draw = () => {
+    const s = L.slides[i];
+    $('slide').innerHTML = `<div class="big">${s.icon}</div><div><h2>${s.title.he}${showEn ? ` <span class="en">· ${s.title.en}</span>` : ''}</h2><div class="tx">${s.text.he}</div>${tr(s.text)}</div>`;
+    $('dots').innerHTML = L.slides.map((_, k) => `<button type="button" class="${k === i ? 'on' : ''}" aria-label="${k + 1}" data-k="${k}"></button>`).join('');
+    $('sPrev').style.visibility = i === 0 ? 'hidden' : 'visible';
+    $('sNext').textContent = i === L.slides.length - 1 ? 'סִיּוּם ✓' : 'הַבָּא ◀';
+    if (i === L.slides.length - 1) finish('learn');
+  };
+  const next = () => { if (i < L.slides.length - 1){ i++; draw(); } else go(1); };
+  const prev = () => { if (i > 0){ i--; draw(); } };
+  $('sNext').onclick = next; $('sPrev').onclick = prev;
+  $('dots').onclick = e => { const b = e.target.closest('button'); if (b){ i = +b.dataset.k; draw(); } };
+  keyHandler = e => { if (e.key === 'ArrowLeft'){ e.preventDefault(); next(); } else if (e.key === 'ArrowRight'){ e.preventDefault(); prev(); } };
+  draw();
+}
+
+/* ======================= 2. memory ======================= */
+function renderMemory(root){
+  const pairs = L.memory;
+  root.innerHTML = `<div class="mhead"><div><div class="h2">🧠 מִשְׂחַק זִכָּרוֹן</div>${tr({ en: 'Match each word with its picture. Say the number of the card you want!' })}</div>
+    <div class="score">זוּגוֹת: <span id="found">0</span> / ${pairs.length} &nbsp;·&nbsp; מְהָלָכִים: <span id="moves">0</span></div>
+    <button class="btn ghost" id="again" type="button" style="margin-inline-start:auto">🔄 מִשְׂחָק חָדָשׁ</button></div>
+    <div class="mgrid" id="mgrid"></div><div class="factbar" id="factbar"><span class="en">Find the pairs — a fact will appear here.</span></div>`;
+  let first = null, busy = false, found = 0, moves = 0;
+  const grid = $('mgrid');
+  const build = () => {
+    grid.innerHTML = ''; found = 0; moves = 0; first = null; busy = false;
+    $('found').textContent = 0; $('moves').textContent = 0;
+    $('factbar').innerHTML = `<span>🔎 מִצְאוּ אֶת הַזּוּגוֹת — כָּאן יוֹפִיעַ מֵידָע עַל הָעִיר</span>${tr({ en: 'Find the pairs — a fact about the city will appear here.' })}`;
+    const cards = shuffle(pairs.flatMap((p, k) => [{ k, t: 'w', v: p.he }, { k, t: 'p', v: p.pic }]));
+    cards.forEach((d, n) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'mcard'; b.dataset.k = d.k; b.dataset.t = d.t;
+      b.setAttribute('aria-label', 'קֶלֶף מִסְפָּר ' + (n + 1));
+      b.innerHTML = `<span class="face back">?</span><span class="face front">${d.t === 'w' ? `<span class="word">${d.v}</span>` : `<span class="pic">${d.v}</span>`}</span><span class="num">${n + 1}</span>`;
+      b.onclick = () => flip(b); grid.appendChild(b);
+    });
+  };
+  const flip = c => {
+    if (busy || c.classList.contains('open') || c.classList.contains('matched')) return;
+    c.classList.add('open');
+    if (!first){ first = c; return; }
+    const second = c; busy = true; moves++; $('moves').textContent = moves;
+    if (first.dataset.k === second.dataset.k && first.dataset.t !== second.dataset.t){
+      const p = pairs[+first.dataset.k];
+      [first, second].forEach(x => { x.classList.remove('open'); x.classList.add('matched'); });
+      found++; $('found').textContent = found;
+      $('factbar').innerHTML = `<div>${p.fact.he}</div>${tr(p.fact)}`;
+      first = null; busy = false;
+      if (found === pairs.length){ finish('memory');
+        $('factbar').innerHTML = `<div>🎉 כָּל הַכָּבוֹד! מְצָאתֶם אֶת כָּל הַזּוּגוֹת בְּ־${moves} מְהָלָכִים!</div>${tr({ en: 'Well done! You found all the pairs.' })}`; syncEn(); }
+      syncEn();
+    } else {
+      const a = first, b = second;
+      setTimeout(() => { a.classList.remove('open'); b.classList.remove('open'); a.classList.add('nomatch'); b.classList.add('nomatch');
+        setTimeout(() => { a.classList.remove('nomatch'); b.classList.remove('nomatch'); }, 420); first = null; busy = false; }, 950);
+    }
+  };
+  $('again').onclick = build; build();
+}
+
+/* ======================= 3. cloze ======================= */
+function renderCloze(root){
+  const items = shuffle(L.cloze); let i = 0, ok = 0, mistakes = 0; const res = [];
+  const draw = () => {
+    if (i >= items.length) return end();
+    const it = items[i], right = it.options[0]; mistakes = 0;
+    root.innerHTML = `<div class="h2">✏️ הַשְׁלִימוּ אֶת הַמִּשְׁפָּט</div>${tr({ en: 'Choose the word that completes the sentence.' })}
+      <div class="progress">${items.map((_, k) => `<i class="${k === i ? 'cur' : res[k] === true ? 'y' : res[k] === false ? 'n' : ''}"></i>`).join('')}</div>
+      <div class="sentence">${it.he.replace('___', '<span class="gap" id="gap">&nbsp;</span>')}${tr(it)}</div>
+      <div class="opts" id="opts"></div><div class="fb" id="fb"></div>
+      <div style="text-align:center"><button class="btn big" id="nx" type="button" hidden>הַבָּא ◀</button></div>`;
+    const box = $('opts');
+    shuffle(it.options).forEach(o => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.textContent = o;
+      b.onclick = () => {
+        if (o === right){
+          b.classList.add('ok'); $('gap').textContent = o; $('gap').classList.add('ok');
+          box.querySelectorAll('button').forEach(x => x.disabled = true);
+          $('fb').className = 'fb ok'; $('fb').textContent = mistakes ? 'נָכוֹן! 👍' : 'נָכוֹן! כָּל הַכָּבוֹד! 🎉';
+          res[i] = mistakes === 0; if (mistakes === 0) ok++; $('nx').hidden = false; $('nx').focus({ preventScroll: true });
+        } else { b.classList.add('no'); b.disabled = true; mistakes++; $('fb').className = 'fb no'; $('fb').textContent = 'לֹא בְּדִיּוּק — נַסּוּ שׁוּב'; }
+      };
+      box.appendChild(b);
+    });
+    $('nx').onclick = () => { i++; draw(); };
+    keyHandler = e => { if ((e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowLeft') && !$('nx').hidden){ e.preventDefault(); $('nx').click(); } };
+    syncEn();
+  };
+  const end = () => { finish('cloze'); keyHandler = null; const s = starsFor(ok, items.length);
+    root.innerHTML = `<div class="endbox"><div class="stars">${starsHTML(s)}</div><h2>${ok} מִתּוֹךְ ${items.length}</h2>
+      <div>${s === 3 ? 'מְצֻיָּן!' : s === 2 ? 'כָּל הַכָּבוֹד!' : 'יֹפִי! עוֹד פַּעַם?'}</div><br>
+      <div class="row" style="justify-content:center"><button class="btn ghost" id="re" type="button">↻ עוֹד פַּעַם</button><button class="btn" id="nxs" type="button">לַשָּׁלָב הַבָּא ◀</button></div></div>`;
+    $('re').onclick = () => renderCloze(root); $('nxs').onclick = () => go(step + 1); };
+  draw();
+}
+
+/* ======================= 4. order ======================= */
+function renderOrder(root){
+  const items = shuffle(L.order); let i = 0, ok = 0, mistakes = 0; const res = [];
+  const draw = () => {
+    if (i >= items.length) return end();
+    const it = items[i], words = it.he.split(' '); mistakes = 0;
+    let toks = words.map((w, k) => ({ w, k })), tries = 0;
+    do { toks = shuffle(toks); tries++; } while (words.length > 1 && toks.every((t, k) => t.k === k) && tries < 10);
+    let line = [];
+    root.innerHTML = `<div class="h2">🧩 סַדְּרוּ אֶת הַמִּלִּים</div>${tr({ en: 'Click the words in the right order to build the sentence.' })}
+      <div class="progress">${items.map((_, k) => `<i class="${k === i ? 'cur' : res[k] === true ? 'y' : res[k] === false ? 'n' : ''}"></i>`).join('')}</div>
+      <div class="ans" id="ans"></div><div class="tray" id="tray"></div><div class="fb" id="fb"></div>
+      <div style="text-align:center" class="row"><button class="btn ghost" id="reset" type="button">↺ הַתְחִילוּ מֵחָדָשׁ</button><button class="btn big" id="nx" type="button" hidden>הַבָּא ◀</button></div>`;
+    const paint = () => {
+      $('ans').innerHTML = ''; $('tray').innerHTML = '';
+      line.forEach(t => { const b = document.createElement('button'); b.type = 'button'; b.className = 'tok'; b.textContent = t.w; b.onclick = () => { if (!$('nx').hidden) return; line = line.filter(x => x !== t); paint(); }; $('ans').appendChild(b); });
+      toks.filter(t => !line.includes(t)).forEach(t => { const b = document.createElement('button'); b.type = 'button'; b.className = 'tok'; b.textContent = t.w; b.onclick = () => { line.push(t); paint(); check(); }; $('tray').appendChild(b); });
+    };
+    const check = () => {
+      if (line.length !== words.length) return;
+      if (line.map(t => t.w).join(' ') === it.he){
+        $('ans').classList.add('ok'); $('fb').className = 'fb ok'; $('fb').innerHTML = (mistakes ? 'נָכוֹן! 👍' : 'נָכוֹן! כָּל הַכָּבוֹד! 🎉') + tr(it);
+        res[i] = mistakes === 0; if (mistakes === 0) ok++; $('nx').hidden = false; $('reset').hidden = true; $('nx').focus({ preventScroll: true }); syncEn();
+      } else {
+        mistakes++; $('ans').classList.add('bad'); $('fb').className = 'fb no'; $('fb').textContent = 'לֹא בְּדִיּוּק — נַסּוּ שׁוּב';
+        setTimeout(() => { $('ans').classList.remove('bad'); line = []; paint(); }, 800);
+      }
+    };
+    $('reset').onclick = () => { line = []; $('fb').textContent = ''; paint(); };
+    $('nx').onclick = () => { i++; draw(); };
+    keyHandler = e => { if ((e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowLeft') && !$('nx').hidden){ e.preventDefault(); $('nx').click(); } };
+    paint(); syncEn();
+  };
+  const end = () => { finish('order'); keyHandler = null; const s = starsFor(ok, items.length);
+    root.innerHTML = `<div class="endbox"><div class="stars">${starsHTML(s)}</div><h2>${ok} מִתּוֹךְ ${items.length}</h2>
+      <div>${s === 3 ? 'מְצֻיָּן!' : s === 2 ? 'כָּל הַכָּבוֹד!' : 'יֹפִי! עוֹד פַּעַם?'}</div><br>
+      <div class="row" style="justify-content:center"><button class="btn ghost" id="re" type="button">↻ עוֹד פַּעַם</button><button class="btn" id="nxs" type="button">לַשָּׁלָב הַבָּא ◀</button></div></div>`;
+    $('re').onclick = () => renderOrder(root); $('nxs').onclick = () => go(step + 1); };
+  draw();
+}
+
+/* ======================= 5. trivia + tournament ======================= */
+const TEAM_COLORS = ['var(--t1)', 'var(--t2)', 'var(--t3)', 'var(--t4)'];
+const cfg = { mode: 'solo', teams: 2, count: 8, per: 3, time: 0, names: ['קְבוּצָה 1', 'קְבוּצָה 2', 'קְבוּצָה 3', 'קְבוּצָה 4'] };
+function renderQuiz(root){
+  const N = L.quiz.length;
+  const maxPer = k => Math.max(1, Math.floor(N / k));
+  const setup = () => {
+    keyHandler = null;
+    const soloCounts = [5, 8, N].filter((v, k, a) => v <= N && a.indexOf(v) === k);
+    const per = [2, 3, 4, 5].filter(v => v <= maxPer(cfg.teams)); if (!per.length) per.push(maxPer(cfg.teams));
+    if (!per.includes(cfg.per)) cfg.per = per[per.length - 1];
+    if (!soloCounts.includes(cfg.count)) cfg.count = soloCounts[soloCounts.length - 1];
+    root.innerHTML = `<div class="h2">🏆 טְרִיוִיָּה</div>${tr({ en: 'Test what you learned! Play alone or as a team tournament.' })}
+      <div class="setup" style="margin-top:12px">
+        <div class="grp"><b>אֵיךְ מְשַׂחֲקִים?<span class="en"> · How to play</span></b>
+          <div class="seg" id="mode"><button type="button" data-v="solo" class="${cfg.mode === 'solo' ? 'on' : ''}">🙋 כֻּלָּם יַחַד / שַׂחְקָן אֶחָד</button><button type="button" data-v="team" class="${cfg.mode === 'team' ? 'on' : ''}">🏅 תַּחֲרוּת קְבוּצוֹת</button></div></div>
+        ${cfg.mode === 'team' ? `<div class="grp"><b>כַּמָּה קְבוּצוֹת?<span class="en"> · How many teams</span></b>
+          <div class="seg" id="teams">${[2, 3, 4].map(v => `<button type="button" data-v="${v}" class="${cfg.teams === v ? 'on' : ''}">${v}</button>`).join('')}</div>
+          <div class="teamnames" style="margin-top:10px">${Array.from({ length: cfg.teams }, (_, k) => `<label><span class="dot" style="background:${TEAM_COLORS[k]}"></span><input data-k="${k}" value="${cfg.names[k]}" maxlength="18" aria-label="שם קבוצה ${k + 1}"></label>`).join('')}</div></div>
+        <div class="grp"><b>שְׁאֵלוֹת לְכָל קְבוּצָה<span class="en"> · Questions per team</span></b>
+          <div class="seg" id="per">${per.map(v => `<button type="button" data-v="${v}" class="${cfg.per === v ? 'on' : ''}">${v}</button>`).join('')}</div></div>`
+        : `<div class="grp"><b>כַּמָּה שְׁאֵלוֹת?<span class="en"> · How many questions</span></b>
+          <div class="seg" id="count">${soloCounts.map(v => `<button type="button" data-v="${v}" class="${cfg.count === v ? 'on' : ''}">${v}</button>`).join('')}</div></div>`}
+        <div class="grp"><b>⏱️ זְמַן לְכָל שְׁאֵלָה<span class="en"> · Time per question</span></b>
+          <div class="seg" id="time">${[[0, 'בְּלִי טַיְמֶר'], [15, '15 שְׁנִיּוֹת'], [25, '25 שְׁנִיּוֹת'], [40, '40 שְׁנִיּוֹת']].map(([v, t]) => `<button type="button" data-v="${v}" class="${cfg.time === v ? 'on' : ''}">${t}</button>`).join('')}</div></div>
+        <div><button class="btn big" id="start" type="button">▶ מַתְחִילִים!</button></div>
+      </div>`;
+    const seg = (sid, key, again) => { const e = $(sid); if (e) e.onclick = ev => { const b = ev.target.closest('button'); if (!b) return; cfg[key] = b.dataset.v === 'solo' || b.dataset.v === 'team' ? b.dataset.v : +b.dataset.v; if (again) setup(); else { e.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); } }; };
+    seg('mode', 'mode', true); seg('teams', 'teams', true); seg('per', 'per', false); seg('count', 'count', false); seg('time', 'time', false);
+    root.querySelectorAll('.teamnames input').forEach(inp => inp.oninput = () => { cfg.names[+inp.dataset.k] = inp.value.trim() || ('קְבוּצָה ' + (+inp.dataset.k + 1)); });
+    $('start').onclick = play; syncEn();
+  };
+
+  const play = () => {
+    const team = cfg.mode === 'team', k = team ? cfg.teams : 1;
+    const total = team ? cfg.per * k : cfg.count;
+    const qs = shuffle(L.quiz).slice(0, total).map(q => ({ q: q.q, why: q.why, right: q.options[0], opts: shuffle(q.options) }));
+    const pts = Array(k).fill(0), correctCount = Array(k).fill(0);
+    let n = 0, answered = false, left = 0, t0 = 0;
+    const show = () => {
+      if (n >= qs.length) return results();
+      const cur = n % k, q = qs[n]; answered = false;
+      root.innerHTML = `${team ? `<div class="tbar">${pts.map((p, t) => `<div class="team ${t === cur ? 'cur' : ''}" style="color:${TEAM_COLORS[t]}"><span style="color:var(--ink)"><span class="dot" style="background:${TEAM_COLORS[t]}"></span> ${cfg.names[t]}</span><span class="pts">${p}</span></div>`).join('')}</div>` : ''}
+        <div class="qmeta"><span>שְׁאֵלָה ${n + 1} מִתּוֹךְ ${qs.length}</span>${team ? `<span style="color:${TEAM_COLORS[cur]}">תּוֹר: ${cfg.names[cur]}</span>` : `<span>⭐ ${pts[0]}</span>`}</div>
+        ${cfg.time ? `<div class="timer"><i id="tbarfill"></i></div>` : ''}
+        <div class="q">${q.q.he}${tr(q.q)}</div>
+        <div class="qopts" id="qopts"></div>
+        <div id="why"></div>
+        <div style="text-align:center"><button class="btn big" id="nx" type="button" hidden>${n === qs.length - 1 ? 'לַתּוֹצָאוֹת 🏆' : 'הַשְּׁאֵלָה הַבָּאָה ◀'}</button></div>`;
+      const box = $('qopts');
+      q.opts.forEach((o, idx) => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'qopt'; b.dataset.o = o;
+        b.innerHTML = `<span class="k">${idx + 1}</span><span>${o}</span>`; b.onclick = () => pick(o, b); box.appendChild(b);
+      });
+      $('nx').onclick = () => { n++; show(); };
+      keyHandler = e => {
+        if (!answered && /^[1-4]$/.test(e.key)){ const b = box.children[+e.key - 1]; if (b) b.click(); }
+        else if (answered && (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowLeft')){ e.preventDefault(); $('nx').click(); }
+      };
+      clearInterval(timerId);
+      if (cfg.time){ left = cfg.time; t0 = performance.now(); const fill = $('tbarfill');
+        timerId = setInterval(() => { const el = (performance.now() - t0) / 1000, frac = Math.max(0, 1 - el / cfg.time);
+          fill.style.transform = `scaleX(${frac})`; fill.classList.toggle('low', frac < .3);
+          if (frac <= 0){ clearInterval(timerId); reveal(null); } }, 100); }
+      syncEn();
+    };
+    const pick = (o, btn) => { if (answered) return; reveal(o, btn); };
+    const reveal = (o) => {
+      if (answered) return; answered = true; clearInterval(timerId);
+      const cur = n % k, q = qs[n], ok = o === q.right;
+      $('qopts').querySelectorAll('button').forEach(b => { b.disabled = true; if (b.dataset.o === q.right) b.classList.add('ok'); else if (b.dataset.o === o) b.classList.add('no'); });
+      if (ok){ pts[cur]++; correctCount[cur]++; }
+      $('why').innerHTML = `<div class="why">${o === null ? '⏰ נִגְמַר הַזְּמַן! ' : ok ? '✅ נָכוֹן! ' : '❌ '}${q.why.he}${tr(q.why)}</div>`;
+      $('nx').hidden = false; $('nx').focus({ preventScroll: true }); syncEn();
+    };
+    const results = () => {
+      finish('quiz'); keyHandler = null; clearInterval(timerId);
+      let body;
+      if (team){
+        const order = pts.map((p, t) => ({ t, p })).sort((a, b) => b.p - a.p), top = order[0].p;
+        const winners = order.filter(x => x.p === top);
+        body = `<div style="font-size:64px">🏆</div><h2>${winners.length > 1 ? 'תֵּיקוּ! ' + winners.map(w => cfg.names[w.t]).join(' + ') : 'הַמְנַצַּחַת: ' + cfg.names[winners[0].t]}</h2>
+          <div class="rank">${order.map(x => `<div class="${x.p === top ? 'win' : ''}"><span><span class="dot" style="background:${TEAM_COLORS[x.t]}"></span> ${cfg.names[x.t]}</span><span dir="ltr">${x.p} / ${cfg.per}</span></div>`).join('')}</div>`;
+      } else { const s = starsFor(pts[0], qs.length);
+        body = `<div class="stars">${starsHTML(s)}</div><h2>${pts[0]} מִתּוֹךְ ${qs.length}</h2><div>${s === 3 ? 'מְצֻיָּן!' : s === 2 ? 'כָּל הַכָּבוֹד!' : 'יֹפִי! עוֹד פַּעַם?'}</div>`; }
+      root.innerHTML = `<div class="endbox">${body}<br><div class="row" style="justify-content:center"><button class="btn ghost" id="again" type="button">↻ מִשְׂחָק חָדָשׁ</button><button class="btn" id="cfgb" type="button">⚙️ הַגְדָּרוֹת</button></div></div>`;
+      $('again').onclick = play; $('cfgb').onclick = setup; syncEn();
+    };
+    show();
+  };
+  setup();
+}
+
+go(0);
+})();
+</script>
+<script id="fs-script">
+(function(){var b=document.getElementById("fsBtn"),d=document,e=d.documentElement;
+var req=e.requestFullscreen||e.webkitRequestFullscreen,ex=d.exitFullscreen||d.webkitExitFullscreen;
+if(!b||!req){return}b.hidden=false;
+function on(){return d.fullscreenElement||d.webkitFullscreenElement}
+function lbl(){b.textContent=on()?"✕ יציאה ממסך מלא":"⛶ מסך מלא"}
+b.addEventListener("click",function(){if(on()){ex.call(d)}else{req.call(e)}});
+d.addEventListener("fullscreenchange",lbl);d.addEventListener("webkitfullscreenchange",lbl);})();
+</script>
+</body>
+</html>
