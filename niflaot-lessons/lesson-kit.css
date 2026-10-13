@@ -106,3 +106,33 @@ h1{margin:2px 0 0;font:800 clamp(30px,5vw,46px)/1.15 var(--f-display)}
 .big-n{display:inline-grid;place-items:center;min-width:44px;height:44px;border-radius:50%;background:#7a4cc2;color:#fff;font:800 24px var(--f-display)}
 @media(max-width:640px){.wcard{grid-template-columns:1fr}.blank{min-width:100px}}
 @media (prefers-reduced-motion:reduce){.hot .dot{animation:none}}
+
+/* dragging words */
+.chip{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}
+.chip.dragging{opacity:.3}
+.chip.ghost{position:fixed;z-index:10000;pointer-events:none;transform:translate(-50%,-60%) rotate(-3deg);box-shadow:0 10px 24px rgba(0,0,0,.25);opacity:1;background:#fff8e6;border-color:var(--gold)}
+.blank.hot-drop{border-color:var(--gold);background:var(--gold-soft);transform:scale(1.05)}
+.blank.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.bankbox{background:#f5faff;border:2px dashed #9bb7cf;border-radius:16px;margin-top:10px;padding:10px 14px!important}
+.exlabel{display:inline-block;min-width:34px;font-weight:800;color:var(--coral)}
+.blank{min-width:110px}
+.sent .blank{margin-block:2px}
+
+/* real picture with hot spots */
+.imgscene{position:relative;max-width:820px;margin:0 auto;border-radius:20px;overflow:hidden;border:4px solid #fff;box-shadow:var(--shadow);line-height:0}
+.imgscene img{display:block;width:100%;height:auto}
+.hotb{position:absolute;transform:translate(-50%,-50%);width:15%;aspect-ratio:1;max-width:96px;border-radius:50%;border:4px dashed transparent;background:transparent;cursor:pointer;padding:0}
+.hotb:hover,.hotb:focus-visible,.hotb.on{border-color:var(--gold);background:rgba(242,176,30,.18)}
+.hotb .pin{position:absolute;top:-6px;inset-inline-end:-6px;width:26px;height:26px;border-radius:50%;background:var(--gold);border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3);animation:pulse 1.8s ease-in-out infinite}
+.hotb.seen .pin{background:var(--green);animation:none}
+.hotb .pin::after{content:'?';position:absolute;inset:0;display:grid;place-items:center;font:800 14px var(--f-display);color:#fff;line-height:1}
+.hotb.seen .pin::after{content:'✓'}
+
+/* exercise 11 layout: questions + the picture from the book */
+.ex11{display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start}
+.ex11 img{width:100%;height:auto;border-radius:14px}
+@media(max-width:700px){.ex11{grid-template-columns:1fr}.ex11 img{max-width:280px;margin:0 auto;display:block}}
+.numtable td,.numtable th{font-size:22px}
+.rule{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;background:#f3ecff;border:2px solid #7a4cc2;border-radius:18px;padding:12px 16px;margin-bottom:14px}
+.rule b{color:#7a4cc2}.rule .big{font:800 34px var(--f-display);color:#7a4cc2;margin:0 8px}
