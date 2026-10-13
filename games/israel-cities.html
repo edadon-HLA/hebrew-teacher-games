@@ -10,7 +10,7 @@
 <style>
 :root{
   --bg:#eef6fb; --card:#fff; --ink:#1d2b3a; --muted:#5c6b7c; --line:#d6e4ee; --brand:#2a6fb0; --brand-dark:#1d5489;
-  --sea:#cfe9f6; --north:#8fd18a; --coast:#c4a6ee; --shfela:#f2d57a; --negev:#f0b27a; --star:#f2b01e;
+  --north:#8fd18a; --coast:#f4a6c0; --shfela:#f5dd7e; --judea:#b8a0e0; --negev:#f0b27a; --star:#f2b01e;
   --f:'Rubik','Noto Sans Hebrew',Arial,sans-serif;
 }
 *{box-sizing:border-box}
@@ -20,44 +20,50 @@ header.top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin:6
 header.top h1{margin:0;font-size:clamp(26px,4vw,40px);font-weight:800}
 header.top .sub{color:var(--muted);font-size:17px;flex:1 1 280px}
 .langtog{margin-inline-start:auto;font:600 14px var(--f);border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;color:var(--ink)}
-.layout{display:grid;grid-template-columns:minmax(300px,.8fr) 1.2fr;gap:18px;align-items:start}
+.layout{display:grid;grid-template-columns:minmax(320px,.9fr) 1.1fr;gap:18px;align-items:start}
 .card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 6px 20px #1b28420d}
 .mapcard{padding:10px;position:sticky;top:64px}
-.mapbox{position:relative;width:100%;height:min(74vh,720px);min-height:420px;border-radius:14px;background:linear-gradient(180deg,#d9eefa,#bfe0f3);overflow:hidden}
+.mapbox{position:relative;width:100%;height:min(76vh,760px);min-height:440px;border-radius:14px;overflow:hidden;background:#bfe0f3;box-shadow:inset 0 0 40px #2a6fb04d}
 .mapbox svg{width:100%;height:100%;display:block}
-.region{cursor:pointer;transition:filter .2s,opacity .3s}
-.region:hover,.region:focus{filter:brightness(1.08) saturate(1.15);outline:none}
-.region.dim{opacity:.35}
-.rlabel{font-family:var(--f);font-weight:800;fill:#1d2b3a;paint-order:stroke;stroke:rgba(255,255,255,.85);stroke-width:4px;stroke-linejoin:round;pointer-events:none;transition:opacity .3s}
-.sealabel{font-family:var(--f);font-weight:600;fill:#4a86a8;font-style:italic;pointer-events:none;transition:opacity .3s}
+.region{cursor:pointer;transition:filter .2s,opacity .35s}
+.region:hover,.region:focus{filter:brightness(1.1) saturate(1.2);outline:none}
+.region.dim{opacity:.38}
+.fadeable{transition:opacity .35s}
+.rlabel{font-family:var(--f);font-weight:800;fill:#1d2b3a;paint-order:stroke;stroke:rgba(255,255,255,.9);stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+.sealabel{font-family:var(--f);font-weight:600;fill:#3d7fa3;font-style:italic;pointer-events:none;paint-order:stroke;stroke:rgba(255,255,255,.55);stroke-width:3px}
+.deco{font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif;pointer-events:none;filter:drop-shadow(0 1px 1px #0003)}
 .cities{transition:opacity .35s}
 .city{cursor:pointer}
-.city .dot{fill:#fff;stroke:var(--brand-dark);}
-.city.ready .dot{fill:var(--star);stroke:#8a5a00}
-.city .ring{fill:none;stroke:var(--star);opacity:.0}
+.city .pin{fill:#fff;stroke:#1d5489;filter:drop-shadow(0 1px 2px #0005)}
+.city.ready .pin{stroke:#b57a00}
+.city .ring{fill:none;stroke:var(--star);opacity:0;transform-box:fill-box;transform-origin:center}
 .city.ready .ring{animation:pulse 1.8s ease-out infinite}
-@keyframes pulse{0%{opacity:.9;transform:scale(.6)}100%{opacity:0;transform:scale(2.2)}}
-.city .ring{transform-box:fill-box;transform-origin:center}
-.city text{font-family:var(--f);font-weight:800;fill:#14202c;paint-order:stroke;stroke:rgba(255,255,255,.92);stroke-linejoin:round}
-.city:hover .dot,.city:focus .dot{fill:#ffe08a}
+@keyframes pulse{0%{opacity:.95;transform:scale(.7)}100%{opacity:0;transform:scale(2.3)}}
+.city .em{font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif;pointer-events:none}
+.city .nm{font-family:var(--f);font-weight:800;fill:#14202c;paint-order:stroke;stroke:rgba(255,255,255,.95);stroke-linejoin:round}
+.city:hover .pin,.city:focus .pin{fill:#fff2c2}
 .city:focus{outline:none}
+.mapbtn{position:absolute;z-index:3;font:800 15px var(--f);border:0;border-radius:12px;padding:9px 14px;cursor:pointer;box-shadow:0 3px 10px #0003}
+.exitbtn{top:10px;inset-inline-start:10px;background:#1d2b3a;color:#fff}
+.exitbtn:hover{background:#000}
+.exitbtn[hidden]{display:none}
 .hint{position:absolute;inset-inline:0;bottom:8px;text-align:center;font-size:15px;font-weight:600;color:#245;pointer-events:none}
-.hint span{background:rgba(255,255,255,.88);padding:5px 12px;border-radius:999px}
+.hint span{background:rgba(255,255,255,.9);padding:5px 12px;border-radius:999px}
 .regbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.regbtn{flex:1 1 40%;font:700 15px var(--f);padding:9px 10px;border-radius:12px;border:2px solid transparent;color:#14202c;cursor:pointer}
-.regbtn[data-r=north]{background:var(--north)} .regbtn[data-r=coast]{background:var(--coast)}
-.regbtn[data-r=shfela]{background:var(--shfela)} .regbtn[data-r=negev]{background:var(--negev)}
-.regbtn.on{border-color:#14202c}
+.regbtn{flex:1 1 28%;font:700 15px var(--f);padding:9px 8px;border-radius:12px;border:2px solid transparent;color:#14202c;cursor:pointer}
+.regbtn[data-r=north]{background:var(--north)} .regbtn[data-r=coast]{background:var(--coast)} .regbtn[data-r=shfela]{background:var(--shfela)}
+.regbtn[data-r=judea]{background:var(--judea)} .regbtn[data-r=negev]{background:var(--negev)} .regbtn[data-r=all]{background:#fff;border-color:#9bb7cf}
+.regbtn.on{border-color:#14202c;box-shadow:0 0 0 2px #fff,0 0 0 4px #14202c}
 .panel{padding:20px 22px 24px;min-height:420px}
 .panel h2{margin:0 0 4px;font-size:clamp(24px,3vw,34px);font-weight:800}
-.panel .en{color:var(--muted);font-size:15px;unicode-bidi:plaintext}
+.en{color:var(--muted);font-size:15px;unicode-bidi:plaintext}
+.ven{unicode-bidi:plaintext}
 .lead{font-size:clamp(19px,2.2vw,24px);margin:10px 0 16px}
 .facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
 .fact{background:#f5faff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start}
 .fact .ic{font-size:30px;line-height:1}
 .fact .lbl{font-size:14px;color:var(--muted);font-weight:600}
 .fact .lbl .en{margin-inline-start:.6em;font-weight:400}
-.en,.ven{unicode-bidi:plaintext}
 .fact .val{font-size:19px;font-weight:700}
 .fact .ven{font-size:13px;color:var(--muted)}
 .chip{display:inline-block;padding:3px 12px;border-radius:999px;font-weight:700;font-size:15px;color:#14202c}
@@ -69,14 +75,16 @@ header.top .sub{color:var(--muted);font-size:17px;flex:1 1 280px}
 .citybtn.soon small{background:#a9b6c3}
 .btn{font:700 16px var(--f);border:0;border-radius:12px;padding:10px 16px;background:var(--brand);color:#fff;cursor:pointer}
 .btn.ghost{background:#fff;color:var(--brand-dark);border:2px solid var(--brand)}
+.btn.exit{background:#1d2b3a;color:#fff}
 .sectitle{margin:22px 0 8px;font-size:20px;font-weight:800}
+.empty{background:#fff8e1;border:2px dashed #e9c35a;border-radius:14px;padding:12px 16px;font-weight:700}
 .picker{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
 .picker label{font-weight:800;font-size:18px}
 .picker select{font:600 18px var(--f);padding:9px 12px;border-radius:12px;border:2px solid var(--line);min-width:220px;background:#fff;color:var(--ink)}
 .toast{position:fixed;inset-inline:0;bottom:24px;margin:0 auto;width:fit-content;max-width:90vw;background:#1d2b3a;color:#fff;padding:12px 20px;border-radius:14px;font-weight:700;font-size:18px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99999;text-align:center}
 .toast.show{opacity:1}
 body.noen .en,body.noen .ven{display:none}
-@media(max-width:900px){.layout{grid-template-columns:1fr}.mapcard{position:static}.mapbox{height:62vh;min-height:360px}}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.mapcard{position:static}.mapbox{height:64vh;min-height:380px}}
 @media (prefers-reduced-motion:reduce){.city.ready .ring{animation:none}}
 </style>
 <style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
@@ -94,7 +102,8 @@ body.noen .en,body.noen .ven{display:none}
   <div class="layout">
     <section class="card mapcard" aria-label="מפת ישראל">
       <div class="mapbox" id="mapbox">
-        <svg id="map" viewBox="0 0 380 990" role="group" aria-label="מפת ישראל עם ארבעה אזורים" preserveAspectRatio="xMidYMid meet"></svg>
+        <svg id="map" viewBox="0 0 380 990" role="group" aria-label="מפת ישראל עם חמישה אזורים" preserveAspectRatio="xMidYMid meet"></svg>
+        <button class="mapbtn exitbtn" id="exitArea" type="button" hidden>✕ חֲזָרָה לְכָל הַמַּפָּה</button>
         <div class="hint" id="hint"><span>לַחֲצוּ עַל אֵזוֹר</span></div>
       </div>
       <div class="regbtns" id="regbtns"></div>
@@ -112,7 +121,7 @@ body.noen .en,body.noen .ven{display:none}
 const $ = id => document.getElementById(id);
 const SVGNS = 'http://www.w3.org/2000/svg';
 const REG = Object.fromEntries(REGIONS.map(r => [r.id, r]));
-const hasLesson = id => !!(window.CITY_LESSONS && CITY_LESSONS[id]);
+const hasLesson = id => { const c = CITIES.find(c => c.id === id); return !!(c && c.ready); };
 
 /* ---------- projection (lat/lon → map units) ---------- */
 const S = 240, LON0 = 34.1, LAT0 = 33.45, K = Math.cos(31.5 * Math.PI / 180);
@@ -138,53 +147,82 @@ const OUTLINE = [[35.10,33.09],[35.30,33.08],[35.43,33.09],[35.50,33.17],[35.58,
 const KINNERET = [[35.55,32.89],[35.62,32.85],[35.65,32.78],[35.60,32.71],[35.53,32.73],[35.50,32.81]];
 const DEADSEA = [[35.46,31.77],[35.54,31.74],[35.53,31.50],[35.50,31.30],[35.44,31.08],[35.40,31.15],[35.38,31.40],[35.39,31.62]];
 
-/* The four areas are bands over the silhouette (clipped to it). */
+/* The five areas are bands over the silhouette (clipped to it). */
 const AREAS = {
-  north:  { poly: [[34.0,32.58],[36.2,32.58],[36.2,33.7],[34.0,33.7]],
-            box: [34.88, 32.52, 35.95, 33.36], label: [35.34, 33.20, 'הַצָּפוֹן'] },
-  coast:  { poly: [[33.9,32.58],[34.96,32.58],[34.80,31.45],[33.9,31.45]],
-            box: [34.20, 31.40, 35.10, 32.66], label: [34.44, 32.27, 'מִישׁוֹר', 'הַחוֹף'] },
-  shfela: { poly: [[34.96,32.58],[36.2,32.58],[36.2,31.45],[34.80,31.45]],
-            box: [34.78, 31.40, 35.70, 32.60], label: [35.28, 32.30, 'הַשְּׁפֵלָה'] },
-  negev:  { poly: [[33.9,31.45],[36.2,31.45],[36.2,29.1],[33.9,29.1]],
+  north:  { poly: [[33.9,32.58],[36.2,32.58],[36.2,33.7],[33.9,33.7]], pat: 'pHills',
+            box: [34.88, 32.52, 35.95, 33.36], label: [35.34, 33.17, 'הַצָּפוֹן'] },
+  coast:  { poly: [[33.9,32.58],[34.99,32.58],[34.86,31.45],[33.9,31.45]], pat: 'pWaves',
+            box: [34.20, 31.40, 35.10, 32.66], label: [34.40, 32.22, 'מִישׁוֹר', 'הַחוֹף'] },
+  shfela: { poly: [[34.99,32.58],[35.16,32.58],[35.06,31.45],[34.86,31.45]], pat: 'pDots',
+            box: [34.74, 31.40, 35.26, 32.62], label: [35.03, 32.06, 'הַשְּׁפֵלָה'], rot: true },
+  judea:  { poly: [[35.16,32.58],[36.2,32.58],[36.2,31.45],[35.06,31.45]], pat: 'pHills',
+            box: [34.94, 31.40, 35.64, 32.62], label: [35.37, 32.10, 'הָרֵי', 'יְהוּדָה'] },
+  negev:  { poly: [[33.9,31.45],[36.2,31.45],[36.2,29.1],[33.9,29.1]], pat: 'pDunes',
             box: [34.20, 29.40, 35.62, 31.50], label: [34.93, 30.55, 'הַנֶּגֶב'] }
 };
+/* soft hill-shading blobs [lon, lat, half-width°, half-height°] */
+const RELIEF = [[35.35,32.98,.30,.11],[35.03,32.72,.07,.06],[35.78,33.17,.10,.20],[35.14,31.80,.14,.34],[35.20,32.22,.13,.26],[34.85,30.55,.38,.28],[35.02,29.72,.10,.20],[35.30,31.0,.10,.12]];
+const DECO = [['🌲',35.22,33.02],['🌲',35.42,32.85],['🌲',35.05,32.95],['🏖️',34.55,32.55],['🍊',34.58,31.62],['🌳',35.40,31.95],['🫒',35.28,32.35],['🏜️',34.85,30.95],['🐪',34.70,30.2],['🌵',35.0,30.25],['🌴',35.05,29.75]];
 
 /* ---------- build the map ---------- */
 const svg = $('map');
 const el = (name, attrs = {}, parent = svg) => { const e = document.createElementNS(SVGNS, name); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
 
 const defs = el('defs');
-const clip = el('clipPath', { id: 'clipIL' }, defs);
-el('path', { d: smoothD(OUTLINE) }, clip);
-/* soft shadow under the country */
-el('path', { d: smoothD(OUTLINE), fill: '#000', opacity: .12, transform: 'translate(3 4)' });
+defs.innerHTML = `
+  <linearGradient id="gSea" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d7effb"/><stop offset=".6" stop-color="#b3dbf2"/><stop offset="1" stop-color="#8ec6e8"/></linearGradient>
+  <pattern id="pSea" width="56" height="26" patternUnits="userSpaceOnUse"><path d="M0 8 q7 -6 14 0 t14 0 t14 0 t14 0" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round"/><path d="M-14 21 q7 -6 14 0 t14 0 t14 0 t14 0 t14 0" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="1.4" stroke-linecap="round"/></pattern>
+  <pattern id="pHills" width="30" height="24" patternUnits="userSpaceOnUse"><path d="M3 18 L10 7 L17 18 M15 19 L21 11 L27 19" fill="none" stroke="#1f5d2a" stroke-opacity=".3" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></pattern>
+  <pattern id="pWaves" width="22" height="14" patternUnits="userSpaceOnUse"><path d="M0 7 q5.5 -5 11 0 t11 0" fill="none" stroke="#a33a6c" stroke-opacity=".22" stroke-width="1.5" stroke-linecap="round"/></pattern>
+  <pattern id="pDots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="3" cy="4" r="1.5" fill="#9a7a00" fill-opacity=".3"/><circle cx="10" cy="11" r="1.5" fill="#9a7a00" fill-opacity=".3"/></pattern>
+  <pattern id="pDunes" width="34" height="18" patternUnits="userSpaceOnUse"><path d="M0 12 q8.5 -9 17 0 t17 0" fill="none" stroke="#a85a1c" stroke-opacity=".28" stroke-width="1.6" stroke-linecap="round"/><circle cx="9" cy="4" r="1.1" fill="#a85a1c" fill-opacity=".3"/><circle cx="26" cy="5" r="1.1" fill="#a85a1c" fill-opacity=".3"/></pattern>
+  <radialGradient id="gShade"><stop offset="0" stop-color="#6a4a24" stop-opacity=".5"/><stop offset=".6" stop-color="#6a4a24" stop-opacity=".18"/><stop offset="1" stop-color="#6a4a24" stop-opacity="0"/></radialGradient>
+  <linearGradient id="gWater" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9e4fa"/><stop offset="1" stop-color="#5fb4e6"/></linearGradient>
+  <clipPath id="clipIL"><path d="${smoothD(OUTLINE)}"/></clipPath>`;
+
+/* sea (also the "click here to go back" background) */
+const seaRect = el('rect', { x: -1200, y: -1200, width: 3000, height: 3400, fill: 'url(#gSea)', id: 'sea' });
+el('rect', { x: -1200, y: -1200, width: 3000, height: 3400, fill: 'url(#pSea)', 'pointer-events': 'none' });
+/* ripples around the coast */
+[[34, .16], [22, .22], [12, .32]].forEach(([w, o]) => el('path', { d: smoothD(OUTLINE), fill: 'none', stroke: '#fff', 'stroke-width': w, 'stroke-opacity': o, 'stroke-linejoin': 'round', 'pointer-events': 'none' }));
+el('path', { d: smoothD(OUTLINE), fill: '#0b3a5a', opacity: .22, transform: 'translate(3 5)', 'pointer-events': 'none' });
+
 const g = el('g', { 'clip-path': 'url(#clipIL)' });
 const regionEls = {};
 for (const id in AREAS){
   const a = AREAS[id];
-  const path = el('path', { d: lineD(a.poly), fill: REG[id].color, stroke: '#fff', 'stroke-width': 2, class: 'region', tabindex: 0, role: 'button',
+  const path = el('path', { d: lineD(a.poly), fill: REG[id].color, stroke: '#fff', 'stroke-width': 2.2, class: 'region', tabindex: 0, role: 'button',
     'aria-label': REG[id].he + ' — ' + REG[id].en, 'data-r': id }, g);
   path.addEventListener('click', () => selectRegion(id));
   path.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); selectRegion(id); } });
   regionEls[id] = path;
 }
-el('path', { d: lineD(KINNERET), fill: '#8fd0ee', stroke: '#5aa9d1', 'stroke-width': 1.5, 'pointer-events': 'none' }, g);
-el('path', { d: lineD(DEADSEA), fill: '#8fd0ee', stroke: '#5aa9d1', 'stroke-width': 1.5, 'pointer-events': 'none' }, g);
-el('path', { d: smoothD(OUTLINE), fill: 'none', stroke: '#2f6f94', 'stroke-width': 2.2, 'stroke-linejoin': 'round', 'pointer-events': 'none' });
+const texture = el('g', { 'pointer-events': 'none', class: 'fadeable' }, g);
+for (const id in AREAS) el('path', { d: lineD(AREAS[id].poly), fill: 'url(#' + AREAS[id].pat + ')', 'data-r': id }, texture);
+RELIEF.forEach(([lo, la, rx, ry]) => el('ellipse', { cx: px(lo), cy: py(la), rx: rx * K * S, ry: ry * S, fill: 'url(#gShade)', 'pointer-events': 'none' }, texture));
+/* water */
+[KINNERET, DEADSEA].forEach(w => el('path', { d: smoothD(w), fill: 'url(#gWater)', stroke: '#4f9fd0', 'stroke-width': 1.6, 'pointer-events': 'none' }, g));
+/* area borders drawn again on top so they stay crisp */
+for (const id in AREAS) el('path', { d: lineD(AREAS[id].poly), fill: 'none', stroke: '#fff', 'stroke-width': 1.6, 'stroke-opacity': .85, 'pointer-events': 'none' }, g);
+el('path', { d: smoothD(OUTLINE), fill: 'none', stroke: '#2b5f82', 'stroke-width': 2.4, 'stroke-linejoin': 'round', 'pointer-events': 'none' });
 
-/* labels: areas + water */
-const labels = el('g', { id: 'labels' });
+/* decorations + labels (shown on the whole map, hidden when zoomed) */
+const labels = el('g', { id: 'labels', class: 'fadeable', 'pointer-events': 'none' });
+DECO.forEach(([e, lo, la]) => { const t = el('text', { x: px(lo), y: py(la), 'font-size': 17, 'text-anchor': 'middle', 'dominant-baseline': 'central', class: 'deco' }, labels); t.textContent = e; });
 for (const id in AREAS){
-  const [lon, lat, l1, l2] = AREAS[id].label;
-  const t = el('text', { x: px(lon), y: py(lat), 'text-anchor': 'middle', class: 'rlabel', 'font-size': 21, 'data-r': id }, labels);
-  if (l2){ el('tspan', { x: px(lon), dy: '0' }, t).textContent = l1; el('tspan', { x: px(lon), dy: '1.15em' }, t).textContent = l2; }
-  else t.textContent = l1;
+  const a = AREAS[id], [lon, lat, l1, l2] = a.label, x = px(lon), y = py(lat);
+  const t = el('text', { x, y, 'text-anchor': 'middle', class: 'rlabel', 'font-size': a.rot ? 17 : 22, 'data-r': id, transform: a.rot ? `rotate(-90 ${x} ${y})` : '' }, labels);
+  if (l2){ el('tspan', { x, dy: '0' }, t).textContent = l1; el('tspan', { x, dy: '1.15em' }, t).textContent = l2; } else t.textContent = l1;
 }
-const sea = (lon, lat, txt, size = 14) => { const t = el('text', { x: px(lon), y: py(lat), 'text-anchor': 'middle', class: 'sealabel', 'font-size': size }, labels); t.textContent = txt; };
-sea(34.20, 32.62, 'הַיָּם הַתִּיכוֹן', 15);
+const sea = (lon, lat, txt, size) => { const t = el('text', { x: px(lon), y: py(lat), 'text-anchor': 'middle', class: 'sealabel', 'font-size': size }, labels); t.textContent = txt; };
+sea(34.18, 32.62, 'הַיָּם הַתִּיכוֹן', 16);
 sea(35.56, 32.93, 'הַכִּנֶּרֶת', 10);
-sea(34.90, 29.38, 'מִפְרַץ אֵילַת', 12);
+sea(35.47, 31.57, 'יַם הַמֶּלַח', 9);
+sea(34.80, 29.36, 'מִפְרַץ אֵילַת', 12);
+/* compass */
+const cx = px(33.99), cy = py(29.9);
+const comp = el('g', { transform: `translate(${cx} ${cy})`, 'pointer-events': 'none' }, labels);
+comp.innerHTML = `<circle r="21" fill="#fff" fill-opacity=".8" stroke="#2b5f82" stroke-width="1.6"/><path d="M0 -17 L5 0 L0 17 L-5 0Z" fill="#c8d7e4"/><path d="M0 -17 L5 0 L-5 0Z" fill="#d6455d"/><text y="-24" text-anchor="middle" font-size="12" font-weight="800" fill="#1d2b3a" font-family="Rubik,Arial">צ</text>`;
 
 /* cities layer (visible only after zooming into an area) */
 const cityLayer = el('g', { class: 'cities', id: 'cityLayer', opacity: 0, 'pointer-events': 'none' });
@@ -194,12 +232,13 @@ CITIES.forEach(c => {
     'aria-label': c.he + ' — ' + c.en }, cityLayer);
   const x = px(c.lon), y = py(c.lat);
   const ring = el('circle', { class: 'ring', cx: x, cy: y, r: 7, 'stroke-width': 2 }, gg);
-  const dot = el('circle', { class: 'dot', cx: x, cy: y, r: 6, 'stroke-width': 2 }, gg);
-  const txt = el('text', { x: x + (c.side === 'l' ? -11 : 11), y: y + 5 + (c.dy || 0), 'text-anchor': c.side === 'l' ? 'start' : 'end', 'font-size': 14, 'stroke-width': 4 }, gg);
+  const pin = el('circle', { class: 'pin', cx: x, cy: y, r: 6, 'stroke-width': 2 }, gg);
+  const em = el('text', { class: 'em', x, y, 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-size': 10 }, gg); em.textContent = c.emoji;
+  const txt = el('text', { class: 'nm', x, y, 'text-anchor': c.side === 'l' ? 'start' : 'end', 'font-size': 14 }, gg);
   txt.textContent = c.he;
   gg.addEventListener('click', () => openCity(c));
   gg.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openCity(c); } });
-  cityEls[c.id] = { g: gg, dot, ring, txt, x, y, c };
+  cityEls[c.id] = { g: gg, pin, ring, em, txt, x, y, c };
 });
 
 /* ---------- zoom ---------- */
@@ -215,16 +254,17 @@ function areaBox(id){ const [l0, a0, l1, a1] = AREAS[id].box; const x0 = px(l0),
   const padX = (x1 - x0) * .06, padY = (y1 - y0) * .06; return { x: x0 - padX, y: y0 - padY, w: x1 - x0 + 2 * padX, h: y1 - y0 + 2 * padY }; }
 function applyView(v){
   svg.setAttribute('viewBox', `${v.x.toFixed(2)} ${v.y.toFixed(2)} ${v.w.toFixed(2)} ${v.h.toFixed(2)}`);
-  const u = v.w / 100;                                              /* 1% of the visible width – keeps dots and names the same size on screen */
+  const u = v.w / 100;                                               /* 1% of the visible width – keeps pins and names the same size on screen */
   Object.values(cityEls).forEach(o => {
-    o.dot.setAttribute('r', (u * 1.5).toFixed(2)); o.dot.setAttribute('stroke-width', (u * 0.5).toFixed(2));
-    o.ring.setAttribute('r', (u * 1.7).toFixed(2)); o.ring.setAttribute('stroke-width', (u * 0.45).toFixed(2));
+    o.pin.setAttribute('r', (u * 2.5).toFixed(2)); o.pin.setAttribute('stroke-width', (u * .55).toFixed(2));
+    o.ring.setAttribute('r', (u * 2.7).toFixed(2)); o.ring.setAttribute('stroke-width', (u * .5).toFixed(2));
+    o.em.setAttribute('font-size', (u * 3.2).toFixed(2));
     o.txt.setAttribute('font-size', (u * 4.6).toFixed(2)); o.txt.setAttribute('stroke-width', (u * 1.4).toFixed(2));
-    const off = u * 2.4, c = o.c;
+    const off = u * 3.6, c = o.c;
     o.txt.setAttribute('x', (o.x + (c.side === 'l' ? -off : off)).toFixed(2)); o.txt.setAttribute('y', (o.y + u * 1.6 + (c.dy || 0) * u * 0.25).toFixed(2));
   });
 }
-function animateTo(target, ms = 750){
+function animateTo(target, ms = 800){
   cancelAnimationFrame(anim);
   const from = { ...view }, t0 = performance.now();
   const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -248,6 +288,7 @@ function selectRegion(id){
   cityLayer.setAttribute('opacity', 1); cityLayer.setAttribute('pointer-events', 'all');
   Object.values(cityEls).forEach(o => { const on = o.g.dataset.r === id; o.g.style.display = on ? '' : 'none'; o.g.setAttribute('tabindex', on ? 0 : -1); });
   $('hint').firstElementChild.textContent = 'לַחֲצוּ עַל עִיר';
+  $('exitArea').hidden = false;
   animateTo(fit(areaBox(id)));
   renderRegion(id);
   if (window.innerWidth <= 900) $('panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -255,35 +296,37 @@ function selectRegion(id){
 function backToAll(){
   current = null;
   Object.values(regionEls).forEach(e => e.classList.remove('dim'));
-  document.querySelectorAll('.regbtn').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.regbtn').forEach(b => b.classList.toggle('on', b.dataset.r === 'all'));
   labels.style.opacity = 1;
   cityLayer.setAttribute('opacity', 0); cityLayer.setAttribute('pointer-events', 'none');
   Object.values(cityEls).forEach(o => o.g.setAttribute('tabindex', -1));
   $('hint').firstElementChild.textContent = 'לַחֲצוּ עַל אֵזוֹר';
+  $('exitArea').hidden = true;
   animateTo(fit(FULL));
   renderIsrael();
 }
 function cityButtons(list){
+  if (!list.length) return `<div class="empty">אֵין כָּרֶגַע עָרִים מֵהָרְשִׁימָה בָּאֵזוֹר הַזֶּה.${en('No cities from the list in this area yet.')}</div>`;
   return `<div class="chips">` + list.map(c => `<button class="citybtn ${hasLesson(c.id) ? '' : 'soon'}" data-id="${c.id}" type="button"><span>${c.emoji}</span><span>${c.he}</span>
       <small>${hasLesson(c.id) ? 'שִׁעוּר' : 'בְּקָרוֹב'}</small></button>`).join('') + `</div>`;
 }
 function pickerHTML(){
-  const opts = REGIONS.map(r => `<optgroup label="${r.he}">` + CITIES.filter(c => c.region === r.id)
-    .map(c => `<option value="${c.id}">${c.he} — ${c.en}${hasLesson(c.id) ? '' : '  (בקרוב)'}</option>`).join('') + `</optgroup>`).join('');
+  const opts = REGIONS.map(r => { const cs = CITIES.filter(c => c.region === r.id); return cs.length ? `<optgroup label="${r.he}">` + cs
+    .map(c => `<option value="${c.id}">${c.he} — ${c.en}${hasLesson(c.id) ? '' : '  (בקרוב)'}</option>`).join('') + `</optgroup>` : ''; }).join('');
   return `<div class="picker"><label for="citySel">בְּחַר עִיר מֵהָרְשִׁימָה:</label>
     <select id="citySel"><option value="">— —</option>${opts}</select>
     <button class="btn" id="goCity" type="button">לַשִּׁעוּר ◀</button></div>`;
 }
 function bindPanel(){
   document.querySelectorAll('.citybtn').forEach(b => b.addEventListener('click', () => openCity(CITIES.find(c => c.id === b.dataset.id))));
-  const back = $('backAll'); if (back) back.addEventListener('click', backToAll);
+  document.querySelectorAll('.backAll').forEach(b => b.addEventListener('click', backToAll));
   const go = $('goCity'); if (go) go.addEventListener('click', () => { const c = CITIES.find(c => c.id === $('citySel').value); if (c) openCity(c); else toast('בְּחַרוּ עִיר מֵהָרְשִׁימָה'); });
 }
 function renderIsrael(){
   $('panel').innerHTML = `
     <h2>🗺️ יִשְׂרָאֵל — מַבָּט כְּלָלִי</h2>${en('Israel — an overview', 'div')}
-    <p class="lead">יִשְׂרָאֵל הִיא מְדִינָה קְטַנָּה עִם אַרְבָּעָה אֵזוֹרִים: הַצָּפוֹן, מִישׁוֹר הַחוֹף, הַשְּׁפֵלָה וְהַנֶּגֶב. בְּכָל אֵזוֹר יֵשׁ עָרִים אַחֵרוֹת.
-      ${en('Israel is a small country with four areas: the North, the Coastal Plain, the Shfela and the Negev. Each area has different cities.', 'div')}</p>
+    <p class="lead">יִשְׂרָאֵל הִיא מְדִינָה קְטַנָּה עִם חֲמִשָּׁה אֵזוֹרִים: הַצָּפוֹן, מִישׁוֹר הַחוֹף, הַשְּׁפֵלָה, הָרֵי יְהוּדָה וְהַנֶּגֶב. בְּכָל אֵזוֹר יֵשׁ עָרִים אַחֵרוֹת.
+      ${en('Israel is a small country with five areas: the North, the Coastal Plain, the Shfela, the Judean Hills and the Negev. Each area has different cities.', 'div')}</p>
     <div class="facts">${ISRAEL_FACTS.map(f => `<div class="fact"><div class="ic">${f.icon}</div><div><div class="lbl">${f.label.he}${en(f.label.en, 'span', 'en ven')}</div>
       <div class="val">${f.value.he}</div>${en(f.value.en, 'div', 'ven')}</div></div>`).join('')}</div>
     <div class="sectitle">👆 לַחֲצוּ עַל אֵזוֹר בַּמַּפָּה</div>
@@ -295,12 +338,14 @@ function renderIsrael(){
 function renderRegion(id){
   const r = REG[id], list = CITIES.filter(c => c.region === id);
   $('panel').innerHTML = `
-    <div><span class="chip" style="background:${r.color}">${r.icon} אֵזוֹר</span></div>
-    <h2>${r.he}</h2>${en(r.en, 'div')}
+    <div class="row" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+      <span class="chip" style="background:${r.color}">${r.icon} אֵזוֹר</span>
+      <button class="btn exit backAll" type="button">✕ יְצִיאָה מֵהָאֵזוֹר — חֲזָרָה לְכָל הַמַּפָּה</button></div>
+    <h2 style="margin-top:10px">${r.he}</h2>${en(r.en, 'div')}
     <p class="lead">${r.blurb.he}${en(r.blurb.en, 'div')}</p>
     <div class="facts">${r.facts.map(f => `<div class="fact"><div class="ic">${f.icon}</div><div><div class="val">${f.he}</div>${en(f.en, 'div', 'ven')}</div></div>`).join('')}</div>
     <div class="sectitle">🏙️ עָרִים בָּאֵזוֹר — בְּחַרוּ עִיר</div>${cityButtons(list)}
-    <div style="margin-top:14px"><button class="btn ghost" id="backAll" type="button">▶ חֲזָרָה לְכָל הַמַּפָּה</button></div>
+    <div style="margin-top:14px"><button class="btn ghost backAll" type="button">▶ חֲזָרָה לְכָל הַמַּפָּה</button></div>
     ${pickerHTML()}`;
   bindPanel(); syncEn();
 }
@@ -321,9 +366,11 @@ function syncEn(){ document.body.classList.toggle('noen', !showEn); const b = $(
 $('langtog').addEventListener('click', () => { showEn = !showEn; try { localStorage.setItem('cities.en', showEn ? '1' : '0'); } catch (e) {} syncEn(); });
 
 /* ---------- boot ---------- */
-$('regbtns').innerHTML = REGIONS.map(r => `<button class="regbtn" data-r="${r.id}" type="button">${r.icon} ${r.he}</button>`).join('');
-document.querySelectorAll('.regbtn').forEach(b => b.addEventListener('click', () => selectRegion(b.dataset.r)));
-svg.addEventListener('click', e => { if (e.target === svg && current) backToAll(); });
+$('regbtns').innerHTML = `<button class="regbtn on" data-r="all" type="button">🗺️ כָּל הַמַּפָּה</button>` + REGIONS.map(r => `<button class="regbtn" data-r="${r.id}" type="button">${r.icon} ${r.he}</button>`).join('');
+document.querySelectorAll('.regbtn').forEach(b => b.addEventListener('click', () => b.dataset.r === 'all' ? backToAll() : selectRegion(b.dataset.r)));
+$('exitArea').addEventListener('click', backToAll);
+seaRect.addEventListener('click', () => { if (current) backToAll(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && current) backToAll(); });
 let rz = 0; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { view = fit(current ? areaBox(current) : FULL); applyView(view); }, 120); });
 view = fit(FULL); applyView(view); renderIsrael();
 /* deep link: israel-cities.html#north etc. */
