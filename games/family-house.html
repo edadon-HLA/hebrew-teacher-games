@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מִי עוֹשֶׂה מָה בַּבַּיִת? | משחקי עברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#fdf7ef;--card:#fff;--ink:#23233a;--muted:#6b6880;--line:#eadfce;--green:#2f9d55;--green-soft:#dcf2e3;--red:#e2506a;--red-soft:#fde3e7;--sky:#2a8bd0;--gold:#f2b01e;--f:'Rubik','Noto Sans Hebrew',Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);line-height:1.45}
+.wrap{max-width:940px;margin:0 auto;padding:14px 16px 40px}
+h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;text-align:center}
+.sub{text-align:center;color:var(--muted);font-size:18px;margin-bottom:14px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;box-shadow:0 8px 24px #23233a14;padding:18px}
+.btn{font:700 20px var(--f);border:0;border-radius:14px;padding:12px 24px;background:var(--sky);color:#fff;cursor:pointer}
+.btn:hover{filter:brightness(.92)}.btn.ghost{background:#fff;color:var(--sky);border:2px solid var(--sky)}
+.family{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 14px}
+.fam{background:#f7f1e6;border:2px solid var(--line);border-radius:16px;padding:8px 14px;text-align:center;font-weight:800;font-size:20px;min-width:96px}.fam b{display:block;font-size:44px;line-height:1.1}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0}
+.mode{border:3px solid var(--line);border-radius:20px;background:#fff;padding:20px 16px;cursor:pointer;text-align:center;font-family:var(--f);color:var(--ink)}
+.mode:hover{border-color:var(--sky);background:#f0f7fd;transform:translateY(-2px)}
+.mode .big{font-size:52px;line-height:1.1}.mode h2{margin:6px 0 4px;font-size:26px}.mode p{margin:0;color:var(--muted);font-size:17px}
+.opts{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;align-items:center;margin:8px 0 4px;font-size:18px;font-weight:600}
+.opts select{font:600 18px var(--f);padding:7px 10px;border-radius:10px;border:2px solid var(--line)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:800;font-size:20px;margin-bottom:8px}
+.dots{display:flex;gap:5px;flex-wrap:wrap}.dots i{width:22px;height:9px;border-radius:5px;background:#e2d8c6}.dots i.cur{background:var(--sky)}.dots i.y{background:var(--green)}.dots i.n{background:var(--red)}
+.scene{max-width:640px;margin:6px auto 10px;border-radius:20px;overflow:hidden;border:5px solid #fff;box-shadow:0 8px 22px #0003;background:#bfe0f3}
+.scene svg{display:block;width:100%;height:auto}
+.q{text-align:center;font-size:clamp(26px,4.4vw,42px);font-weight:800;margin:6px 0 12px;min-height:1.4em}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ans{font:800 clamp(20px,3.2vw,28px) var(--f);padding:16px 12px;border-radius:18px;border:3px solid var(--line);background:#fff;cursor:pointer;color:var(--ink);display:flex;gap:10px;align-items:center;justify-content:center;text-align:center}
+.ans:hover:not(:disabled){border-color:var(--sky);background:#f0f7fd}
+.ans .k{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#efe6d6;font-size:16px;flex:none}
+.ans.ok{background:var(--green);border-color:var(--green);color:#fff}.ans.ok .k{background:#fff;color:var(--green)}
+.ans.no{background:var(--red-soft);border-color:var(--red);color:#8a2b3d}
+.yn{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.yn button{font:800 clamp(28px,5vw,42px) var(--f);padding:20px 10px;border-radius:22px;border:0;cursor:pointer;color:#fff;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 6px 0 rgba(0,0,0,.18)}
+.yn .y{background:var(--green)}.yn .n{background:var(--red)}.yn button:disabled{opacity:.45;cursor:default}.yn button.picked{outline:6px solid #23233a55}.yn .ico{font-size:56px;line-height:1}
+.fb{min-height:44px;text-align:center;font-size:26px;font-weight:800;margin:10px 0}.fb.ok{color:var(--green)}.fb.no{color:var(--red)}
+.nextrow{text-align:center}
+.end{text-align:center;padding:20px 0}.stars{font-size:70px;color:var(--gold);letter-spacing:6px}.end h2{font-size:38px;margin:6px 0}
+[hidden]{display:none!important}
+@media(max-width:620px){.modes{grid-template-columns:1fr}.answers{grid-template-columns:1fr}}
+</style>
+<style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
+</style></head>
+</head>
+<body>
+<nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
+<div class="wrap">
+  <h1>🏡 מִי עוֹשֶׂה מָה בַּבַּיִת?</h1>
+  <div class="sub">הַמִּשְׁפָּחָה בַּבַּיִת — מִי נִמְצָא אֵיפֹה, וּמָה הוּא עוֹשֶׂה?</div>
+
+  <div class="card" id="start">
+    <div class="family" id="family"></div>
+    <div class="modes">
+      <button class="mode" id="mNormal" type="button"><div class="big">🖼️ ➜ 🔤</div><h2>רָגִיל</h2><p>רוֹאִים תְּמוּנָה וּבוֹחֲרִים אֶת הַמִּשְׁפָּט הַנָּכוֹן מִתּוֹךְ 4</p></button>
+      <button class="mode" id="mEasy" type="button"><div class="big">✅ ❌</div><h2>קַל</h2><p>רוֹאִים תְּמוּנָה וּמִשְׁפָּט — מַתְאִים אוֹ לֹא מַתְאִים?</p></button>
+    </div>
+    <div class="opts">
+      <label>כַּמָּה שְׁאֵלוֹת? <select id="nQ"><option>8</option><option selected>12</option><option>20</option></select></label>
+      <label>קוֹל: <select id="voice"><option value="0">כָּבוּי</option><option value="1">מֻפְעָל</option></select></label>
+    </div>
+  </div>
+
+  <div class="card" id="game" hidden>
+    <div class="top"><div class="dots" id="dots"></div><div id="score">⭐ 0</div></div>
+    <div class="scene" id="scene"></div>
+    <div class="q" id="q"></div>
+    <div id="area"></div>
+    <div class="fb" id="fb" aria-live="polite"></div>
+    <div class="nextrow"><button class="btn" id="next" type="button" hidden>הַבָּא ◀</button></div>
+  </div>
+
+  <div class="card" id="end" hidden>
+    <div class="end"><div class="stars" id="stars"></div><h2 id="endScore"></h2><div id="endMsg" style="font-size:24px"></div><br>
+      <button class="btn" id="again" type="button">↻ עוֹד פַּעַם</button> <button class="btn ghost" id="menu" type="button">בְּחִירַת מַצָּב</button></div>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+/* ---------- data ---------- */
+const PEOPLE = [
+  { k: 'grandpa', he: 'סַבָּא', e: '👴', g: 'm' }, { k: 'grandma', he: 'סַבְתָּא', e: '👵', g: 'f' },
+  { k: 'dad', he: 'אַבָּא', e: '👨', g: 'm' }, { k: 'mom', he: 'אִמָּא', e: '👩', g: 'f' },
+  { k: 'shir', he: 'שִׁיר', e: '👧', g: 'f' }, { k: 'yonatan', he: 'יוֹנָתָן', e: '🧒', g: 'm' }, { k: 'noam', he: 'נוֹעַם', e: '👶', g: 'm' }
+];
+const ROOMS = { bedroom: 'בַּחֶדֶר', shower: 'בַּמִּקְלַחַת', balcony: 'בַּמִּרְפֶּסֶת', kitchen: 'בַּמִּטְבָּח', living: 'בַּסָּלוֹן', garden: 'בַּגִּנָּה' };
+const ACTIONS = [
+  { k: 'sing', m: 'שָׁר', f: 'שָׁרָה', e: '🎤', rooms: ['shower', 'living', 'garden', 'balcony'] },
+  { k: 'sleep', m: 'יָשֵׁן', f: 'יְשֵׁנָה', e: '💤', rooms: ['bedroom', 'living'] },
+  { k: 'eat', m: 'אוֹכֵל', f: 'אוֹכֶלֶת', e: '🍽️', rooms: ['kitchen', 'living', 'balcony', 'garden'] },
+  { k: 'read', m: 'קוֹרֵא', f: 'קוֹרֵאת', e: '📖', rooms: ['bedroom', 'living', 'balcony', 'garden'] },
+  { k: 'dance', m: 'רוֹקֵד', f: 'רוֹקֶדֶת', e: '🎶', rooms: ['living', 'garden', 'balcony', 'kitchen'] },
+  { k: 'cook', m: 'מְבַשֵּׁל', f: 'מְבַשֶּׁלֶת', e: '🍳', rooms: ['kitchen'] },
+  { k: 'phone', m: 'מְדַבֵּר בַּטֵּלֵפוֹן', f: 'מְדַבֶּרֶת בַּטֵּלֵפוֹן', e: '📱', rooms: ['bedroom', 'living', 'kitchen', 'balcony', 'garden'] },
+  { k: 'tv', m: 'רוֹאֶה טֵלֵוִיזְיָה', f: 'רוֹאָה טֵלֵוִיזְיָה', e: '📺', rooms: ['living', 'bedroom'] },
+  { k: 'drink', m: 'שׁוֹתֶה', f: 'שׁוֹתָה', e: '🥤', rooms: ['kitchen', 'living', 'balcony', 'garden'] },
+  { k: 'wash', m: 'מִתְקַלֵּחַ', f: 'מִתְקַלַּחַת', e: '🚿', rooms: ['shower'] },
+  { k: 'sport', m: 'עוֹשֶׂה סְפּוֹרְט', f: 'עוֹשָׂה סְפּוֹרְט', e: '🏃', rooms: ['garden', 'living', 'balcony'] }
+];
+const sentence = (p, a, r) => `${p.he} ${p.g === 'm' ? a.m : a.f} ${ROOMS[r]}.`;
+
+/* ---------- the house (a cut-open house with six places) ---------- */
+const RW = 220, RH = 160, X0 = 30, Y0 = 62;
+const POS = { bedroom: [0, 0], shower: [1, 0], balcony: [2, 0], kitchen: [0, 1], living: [1, 1], garden: [2, 1] };
+const rx = r => X0 + POS[r][0] * RW, ry = r => Y0 + POS[r][1] * RH;
+const INTERIOR = {
+  bedroom: `<rect width="220" height="160" fill="#ece6fb"/><rect y="124" width="220" height="36" fill="#d9b98a"/><rect x="132" y="22" width="62" height="52" rx="3" fill="#8a6a45"/><rect x="138" y="28" width="50" height="40" fill="#9fd4f5"/><circle cx="174" cy="42" r="6" fill="#fff3a8"/>
+    <rect x="14" y="76" width="8" height="52" fill="#8d5d2d"/><rect x="14" y="98" width="104" height="26" rx="6" fill="#fff"/><rect x="24" y="86" width="30" height="16" rx="7" fill="#fff" stroke="#c7d2e3" stroke-width="2"/><rect x="52" y="98" width="66" height="26" rx="6" fill="#3d8bf2"/>`,
+  shower: `<rect width="220" height="160" fill="#d6edf8"/><g stroke="#bfe0f0" stroke-width="2">${[22, 44, 66, 88, 110, 132, 154, 176, 198].map(x => `<path d="M${x} 0 V160"/>`).join('')}${[28, 56, 84, 112, 140].map(y => `<path d="M0 ${y} H220"/>`).join('')}</g><rect y="132" width="220" height="28" fill="#aebfcb"/>
+    <rect x="124" y="14" width="80" height="124" rx="4" fill="#bfe6fb" opacity=".6" stroke="#8fbfd9" stroke-width="3"/><path d="M150 14 V34 Q150 44 166 44 H184" stroke="#8f9aa6" stroke-width="5" fill="none"/><ellipse cx="184" cy="50" rx="13" ry="5" fill="#aab4bf"/>${[0, 1, 2, 3, 4].map(i => `<path d="M${172 + i * 6} ${60 + (i % 2) * 8} v13" stroke="#4aa3e0" stroke-width="3" stroke-linecap="round"/>`).join('')}`,
+  balcony: `<rect width="220" height="160" fill="#bfe6fb"/><circle cx="170" cy="36" r="16" fill="#ffe27a"/><ellipse cx="60" cy="40" rx="30" ry="9" fill="#fff"/><rect y="120" width="220" height="40" fill="#cdb89a"/><rect x="0" y="72" width="220" height="6" fill="#7b8794"/>${[10, 36, 62, 88, 114, 140, 166, 192].map(x => `<rect x="${x}" y="78" width="5" height="46" fill="#7b8794"/>`).join('')}
+    <rect x="14" y="98" width="30" height="26" rx="4" fill="#a8743e"/><path d="M29 98 V78 M29 90 q-12 -8 -6 -20 M29 86 q12 -6 8 -18" stroke="#5ea85c" stroke-width="4" fill="none"/>`,
+  kitchen: `<rect width="220" height="160" fill="#fff4dc"/><rect y="124" width="220" height="36" fill="#e7d4b0"/><rect x="12" y="24" width="46" height="100" rx="5" fill="#dfe6ec" stroke="#aab4bf" stroke-width="2"/><rect x="18" y="30" width="34" height="38" fill="#eef3f7"/><rect x="18" y="74" width="34" height="44" fill="#eef3f7"/>
+    <rect x="68" y="76" width="140" height="48" fill="#c58d52"/><rect x="68" y="70" width="140" height="8" fill="#e8d3b3"/><rect x="146" y="56" width="52" height="14" rx="3" fill="#6b7685"/><circle cx="158" cy="52" r="4" fill="#e2506a"/><circle cx="186" cy="52" r="4" fill="#e2506a"/><rect x="80" y="56" width="40" height="14" rx="3" fill="#9aa5b1"/><rect x="84" y="20" width="110" height="22" rx="3" fill="#ffd166" opacity=".55"/>`,
+  living: `<rect width="220" height="160" fill="#fbf1df"/><rect y="124" width="220" height="36" fill="#d9b98a"/><rect x="118" y="30" width="72" height="46" rx="3" fill="#2b2a3a"/><rect x="123" y="35" width="62" height="36" fill="#6fb7e8"/><rect x="146" y="76" width="16" height="8" fill="#555"/>
+    <rect x="12" y="78" width="104" height="46" rx="10" fill="#e2506a"/><rect x="20" y="66" width="88" height="38" rx="10" fill="#f0728a"/><rect x="200" y="62" width="9" height="62" fill="#6b7685"/><path d="M190 62 L218 62 L212 44 H196Z" fill="#ffd54a"/>`,
+  garden: `<rect width="220" height="160" fill="#bfe6fb"/><circle cx="36" cy="34" r="17" fill="#ffe27a"/><ellipse cx="130" cy="30" rx="32" ry="10" fill="#fff"/><rect y="112" width="220" height="48" fill="#8fd18a"/><path d="M0 112 Q55 98 110 112 T220 108 V120 H0Z" fill="#7bbf7a"/>
+    <rect x="150" y="62" width="12" height="56" fill="#8d5d2d"/><circle cx="156" cy="52" r="34" fill="#4fae5a"/><circle cx="136" cy="64" r="22" fill="#5ec06a"/><circle cx="178" cy="66" r="20" fill="#5ec06a"/>${[[24, 132], [60, 142], [92, 130]].map(([x, y]) => `<path d="M${x} ${y} v-12" stroke="#2f9d55" stroke-width="3"/><circle cx="${x}" cy="${y - 14}" r="6" fill="#e2506a"/><circle cx="${x}" cy="${y - 14}" r="2.5" fill="#ffd166"/>`).join('')}`
+};
+function houseSVG(p, a, r){
+  const rooms = Object.keys(POS).map(k => `<g transform="translate(${rx(k)} ${ry(k)})">${INTERIOR[k]}<rect width="${RW}" height="${RH}" fill="none" stroke="#6b4a2b" stroke-width="${k === 'garden' || k === 'balcony' ? 0 : 5}"/></g>`).join('');
+  const feet = [rx(r) + 100, ry(r) + 140], bub = [rx(r) + 168, ry(r) + 50];
+  const pdim = k => POS[k] ? '' : '';
+  return `<svg viewBox="0 0 720 400" role="img" aria-label="תמונה" xmlns="http://www.w3.org/2000/svg" style="font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif">
+    <rect width="720" height="400" fill="#cfe9f6"/><rect y="384" width="720" height="16" fill="#7bbf7a"/>
+    ${rooms}
+    <rect x="24" y="56" width="${RW * 2 + 12}" height="${RH * 2 + 12}" fill="none" stroke="#6b4a2b" stroke-width="12" rx="4" pointer-events="none"/>
+    <rect x="24" y="${Y0 + RH - 6}" width="${RW * 2 + 12}" height="12" fill="#6b4a2b"/>
+    <polygon points="14,62 ${X0 + RW},8 ${X0 + RW * 2 + 26},62" fill="#b9553c" stroke="#8a3d2a" stroke-width="5" stroke-linejoin="round"/>
+    <rect x="${X0 + RW * 2 + 6}" y="${Y0 + RH}" width="14" height="${RH}" fill="#6b4a2b"/>
+    <text x="${feet[0]}" y="${feet[1]}" font-size="84" text-anchor="middle">${p.e}</text>
+    <g transform="translate(${bub[0]} ${bub[1]})"><ellipse rx="34" ry="30" fill="#fff" stroke="#23233a" stroke-width="3"/><circle cx="-26" cy="26" r="6" fill="#fff" stroke="#23233a" stroke-width="3"/><circle cx="-38" cy="38" r="3" fill="#fff" stroke="#23233a" stroke-width="2"/><text y="12" font-size="36" text-anchor="middle">${a.e}</text></g>
+  </svg>`;
+}
+
+/* ---------- game ---------- */
+let mode = 'normal', deck = [], i = 0, score = 0, answered = false, res = [], voiceOn = false;
+const heVoice = () => (speechSynthesis.getVoices() || []).find(v => /^(he|iw)/i.test(v.lang));
+function say(t){ if (!voiceOn || !('speechSynthesis' in window)) return; const v = heVoice(); if (!v) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = v; u.lang = v.lang; u.rate = .85; speechSynthesis.speak(u); }
+
+function makeScene(prev){
+  let p, a, r, tries = 0;
+  do { p = pick(PEOPLE); a = pick(ACTIONS); r = pick(a.rooms); tries++; } while (prev && prev.p === p && prev.a === a && tries < 20);
+  return { p, a, r };
+}
+function wrongSentences(s, n){                       /* wrong in ONE detail: a different room, person or activity */
+  const out = new Map(); let guard = 0;
+  while (out.size < n && guard++ < 200){
+    const t = Math.floor(Math.random() * 3); let p = s.p, a = s.a, r = s.r;
+    if (t === 0) r = pick(Object.keys(ROOMS).filter(x => x !== s.r));
+    else if (t === 1){ p = pick(PEOPLE.filter(x => x !== s.p)); }
+    else { a = pick(ACTIONS.filter(x => x !== s.a)); if (!a.rooms.includes(r) && Math.random() < .6) r = pick(a.rooms); }
+    const txt = sentence(p, a, r); if (txt !== sentence(s.p, s.a, s.r)) out.set(txt, true);
+  }
+  return [...out.keys()];
+}
+function start(m){
+  mode = m; voiceOn = $('voice').value === '1'; const n = +$('nQ').value; deck = []; let prev = null;
+  for (let k = 0; k < n; k++){
+    const s = makeScene(prev); prev = s; const right = sentence(s.p, s.a, s.r);
+    if (m === 'normal') deck.push({ s, right, opts: shuffle([right, ...wrongSentences(s, 3)]) });
+    else { const fits = k % 2 === 0; deck.push({ s, right, fits, shown: fits ? right : wrongSentences(s, 1)[0] }); }
+  }
+  deck = shuffle(deck); i = 0; score = 0; res = [];
+  $('start').hidden = true; $('end').hidden = true; $('game').hidden = false; show();
+}
+function dots(){ $('dots').innerHTML = deck.map((_, k) => `<i class="${k === i && !answered ? 'cur' : res[k] === true ? 'y' : res[k] === false ? 'n' : ''}"></i>`).join(''); $('score').textContent = '⭐ ' + score; }
+function show(){
+  const q = deck[i]; answered = false; $('fb').textContent = ''; $('fb').className = 'fb'; $('next').hidden = true;
+  $('scene').innerHTML = houseSVG(q.s.p, q.s.a, q.s.r);
+  const area = $('area');
+  if (mode === 'normal'){
+    $('q').textContent = 'מָה קוֹרֶה בַּתְּמוּנָה?';
+    area.className = 'answers'; area.innerHTML = '';
+    q.opts.forEach((o, n) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'ans'; b.dataset.t = o; b.innerHTML = `<span class="k">${n + 1}</span><span>${o}</span>`; b.onclick = () => pickNormal(o, b); area.appendChild(b); });
+  } else {
+    $('q').textContent = q.shown;
+    area.className = 'yn'; area.innerHTML = `<button class="y" id="yBtn" type="button"><span class="ico">✔</span>מַתְאִים</button><button class="n" id="nBtn" type="button"><span class="ico">✖</span>לֹא מַתְאִים</button>`;
+    $('yBtn').onclick = () => pickEasy(true, $('yBtn')); $('nBtn').onclick = () => pickEasy(false, $('nBtn'));
+  }
+  dots(); const spoken = mode === 'normal' ? 'מָה קוֹרֶה בַּתְּמוּנָה?' : q.shown; setTimeout(() => say(spoken), 250);
+}
+function finishQ(right){
+  answered = true; res[i] = right; if (right) score++;
+  $('fb').className = 'fb ' + (right ? 'ok' : 'no'); $('fb').textContent = right ? 'נָכוֹן! כָּל הַכָּבוֹד! 🎉' : 'אוּפְּס! לֹא הַפַּעַם';
+  $('next').hidden = false; $('next').textContent = i === deck.length - 1 ? 'לַתּוֹצָאוֹת ✓' : 'הַבָּא ◀'; $('next').focus({ preventScroll: true }); dots();
+}
+function pickNormal(o, btn){
+  if (answered) return; const q = deck[i], right = o === q.right;
+  document.querySelectorAll('.ans').forEach(b => { b.disabled = true; if (b.dataset.t === q.right) b.classList.add('ok'); });
+  if (!right) btn.classList.add('no');
+  $('q').textContent = q.right; say(q.right); finishQ(right);
+}
+function pickEasy(yes, btn){
+  if (answered) return; const q = deck[i], right = yes === q.fits;
+  $('yBtn').disabled = $('nBtn').disabled = true; btn.classList.add('picked');
+  if (!right) $('q').textContent = q.right;                        /* show the sentence that does fit */
+  say(q.right); finishQ(right);
+}
+function next(){ if (!answered) return; i++; if (i < deck.length) show(); else end(); }
+function end(){
+  $('game').hidden = true; $('end').hidden = false;
+  const r = score / deck.length, s = r >= .9 ? 3 : r >= .6 ? 2 : 1;
+  $('stars').textContent = '★'.repeat(s) + '☆'.repeat(3 - s); $('endScore').textContent = `${score} מִתּוֹךְ ${deck.length}`;
+  $('endMsg').textContent = s === 3 ? 'מְצֻיָּן!' : s === 2 ? 'כָּל הַכָּבוֹד!' : 'יֹפִי! עוֹד פַּעַם?';
+}
+$('family').innerHTML = PEOPLE.map(p => `<div class="fam"><b>${p.e}</b>${p.he}</div>`).join('');
+$('mNormal').onclick = () => start('normal'); $('mEasy').onclick = () => start('easy');
+{ const q = new URLSearchParams(location.search).get('mode'); if (q === 'easy' || q === 'normal') start(q); }
+$('next').onclick = next; $('again').onclick = () => start(mode);
+$('menu').onclick = () => { $('end').hidden = true; $('start').hidden = false; };
+document.addEventListener('keydown', e => {
+  if ($('game').hidden) return;
+  if (!answered){
+    if (mode === 'normal' && /^[1-4]$/.test(e.key)){ const b = $('area').children[+e.key - 1]; b && b.click(); }
+    if (mode === 'easy'){ if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'y' || e.key === '1') $('yBtn').click(); if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'n' || e.key === '2') $('nBtn').click(); }
+  } else if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); next(); }
+});
+})();
+</script>
+<script id="fs-script">
+(function(){var b=document.getElementById("fsBtn"),d=document,e=d.documentElement;
+var req=e.requestFullscreen||e.webkitRequestFullscreen,ex=d.exitFullscreen||d.webkitExitFullscreen;
+if(!b||!req){return}b.hidden=false;
+function on(){return d.fullscreenElement||d.webkitFullscreenElement}
+function lbl(){b.textContent=on()?"✕ יציאה ממסך מלא":"⛶ מסך מלא"}
+b.addEventListener("click",function(){if(on()){ex.call(d)}else{req.call(e)}});
+d.addEventListener("fullscreenchange",lbl);d.addEventListener("webkitfullscreenchange",lbl);})();
+</script>
+</body>
+</html>
