@@ -109,7 +109,10 @@ window.CITIES = [
   { id: 'arad',      he: 'עֲרָד',        en: 'Arad',       region: 'negev',  lat: 31.26, lon: 35.21, emoji: '🌬️', side: 'r', ready: true },
   { id: 'raanana',   he: 'רָעֲנָנָה',    en: 'Raanana',    region: 'coast',  lat: 32.18, lon: 34.87, emoji: '🌳', side: 'r', ready: true },
   { id: 'metula',    he: 'מְטוּלָה',     en: 'Metula',     region: 'north',  lat: 33.28, lon: 35.58, emoji: '🍎', side: 'l', ready: true },
-  { id: 'ashdod',    he: 'אַשְׁדּוֹד',   en: 'Ashdod',     region: 'coast',  lat: 31.80, lon: 34.66, emoji: '🚢', side: 'l', ready: true }
+  { id: 'ashdod',    he: 'אַשְׁדּוֹד',   en: 'Ashdod',     region: 'coast',  lat: 31.80, lon: 34.66, emoji: '🚢', side: 'l', ready: true },
+  { id: 'tiberias',  he: 'טְבֶרְיָה',    en: 'Tiberias',   region: 'north',  lat: 32.79, lon: 35.53, emoji: '🏞️', side: 'r', dy: -4, ready: true },
+  { id: 'herzliya',  he: 'הֶרְצְלִיָּה', en: 'Herzliya',   region: 'coast',  lat: 32.17, lon: 34.84, emoji: '⛵', side: 'l', dy: -4, ready: true },
+  { id: 'degania',   he: 'דְּגַנְיָה',    en: 'Degania',    region: 'north',  lat: 32.70, lon: 35.57, emoji: '🍌', side: 'r', dy: 5, ready: true }
 ];
 
 window.CITY_LESSONS = {};

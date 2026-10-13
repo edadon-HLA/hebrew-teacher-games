@@ -4,6 +4,84 @@
  * A place with no photo here simply keeps its drawn picture.
  * To change a photo: put the new .jpg in games/cities/img/ and edit its line (f = file, a = author, l = license, p = page link). */
 window.PLACE_PHOTOS = {
+   "degania" : {
+   "2" : {
+      "a" : "Degania archive (various photographers)",
+      "f" : "degania-2.jpg",
+      "l" : "CC BY-SA 4.0",
+      "p" : "https://commons.wikimedia.org/wiki/File:Tractor_and_boom_sprayer_degania_spayer_archive-020.jpg"
+   },
+   "4" : {
+      "a" : "israel zellerישראל זלר",
+      "f" : "degania-4.jpg",
+      "l" : "CC BY 2.5",
+      "p" : "https://commons.wikimedia.org/wiki/File:PikiWiki_Israel_82290_banana_plantation_in_degania.jpg"
+   }
+   },
+   "herzliya" : {
+   "0" : {
+      "a" : "Avi1111 dr. avishai teicher",
+      "f" : "herzliya-0.jpg",
+      "l" : "CC BY-SA 4.0",
+      "p" : "https://commons.wikimedia.org/wiki/File:Beach_of_Herzliya_(1).jpg"
+   },
+   "1" : {
+      "a" : "israel zeller ישראל זלר",
+      "f" : "herzliya-1.jpg",
+      "l" : "CC BY 2.5",
+      "p" : "https://commons.wikimedia.org/wiki/File:150611_herzliya_marina_PikiWiki_Israel.jpg"
+   },
+   "3" : {
+      "a" : "Lev.Tsimbler",
+      "f" : "herzliya-3.jpg",
+      "l" : "CC BY-SA 4.0",
+      "p" : "https://commons.wikimedia.org/wiki/File:%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%9E%D7%94%D7%90%D7%95%D7%99%D7%A8_%D7%A9%D7%9C_%D7%94%D7%A8%D7%A6%D7%9C%D7%99%D7%94_%D7%A4%D7%99%D7%AA%D7%95%D7%97.jpg"
+   },
+   "4" : {
+      "a" : "יום-טוב",
+      "f" : "herzliya-4.jpg",
+      "l" : "CC BY-SA 3.0",
+      "p" : "https://commons.wikimedia.org/wiki/File:On_the_beach,_three_hotels.jpg"
+   }
+   },
+   "tiberias" : {
+   "0" : {
+      "a" : "TheStriker",
+      "f" : "tiberias-0.jpg",
+      "l" : "CC BY-SA 4.0",
+      "p" : "https://commons.wikimedia.org/wiki/File:Tiberias_promenade_-_Summer_2023.jpg"
+   },
+   "1" : {
+      "a" : "James Emery from Douglasville, United States",
+      "f" : "tiberias-1.jpg",
+      "l" : "CC BY 2.0",
+      "p" : "https://commons.wikimedia.org/wiki/File:Sea_of_Galilee-Yam_Kinneret_1009_(508238591).jpg"
+   },
+   "2" : {
+      "a" : "עדן גאנם",
+      "f" : "tiberias-2.jpg",
+      "l" : "CC BY 2.5",
+      "p" : "https://commons.wikimedia.org/wiki/File:PikiWiki_Israel_31432_Tiberias_Hot_Spa_(Hamat_Tiberias).jpg"
+   },
+   "3" : {
+      "a" : "Deror_avi",
+      "f" : "tiberias-3.jpg",
+      "l" : "CC BY-SA 4.0",
+      "p" : "https://commons.wikimedia.org/wiki/File:Maimonides_Tomb_IMG_5944.JPG"
+   },
+   "4" : {
+      "a" : "Bukvoed",
+      "f" : "tiberias-4.jpg",
+      "l" : "CC BY 3.0",
+      "p" : "https://commons.wikimedia.org/wiki/File:Mount-Arbel-189.jpg"
+   },
+   "5" : {
+      "a" : "Fritz Cohen",
+      "f" : "tiberias-5.jpg",
+      "l" : "CC BY-SA 3.0",
+      "p" : "https://commons.wikimedia.org/wiki/File:Flickr_-_Government_Press_Office_(GPO)_-_Fresh_Fish_in_Tiberias.jpg"
+   }
+   },
    "arad" : {
       "0" : {
          "a" : "Neukoln",
