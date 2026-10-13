@@ -63,8 +63,8 @@ CITY_LESSONS['arad'] = {
       'מְצָדָה הִיא הַר עִם מִבְצָר עַתִּיק.', 'Masada is a mountain with an ancient fortress.'),
     place('יַם הַמֶּלַח', 'The Dead Sea', ['sea', [['🧂', 100, 205, 64], ['🏊', 300, 178, 70], ['☀️', 335, 58, 50]]],
       'בְּיַם הַמֶּלַח אֶפְשָׁר לָצוּף עַל הַמַּיִם.', 'In the Dead Sea you can float on the water.'),
-    place('הַפֶּסְטִיבַּל', 'The festival', ['night', [['🎸', 130, 150, 90], ['🥁', 272, 152, 90], ['🎤', 200, 80, 50]]],
-      'בַּפֶּסְטִיבַּל מְנַגְּנִים וְשָׁרִים.', 'At the festival they play music and sing.'),
+    place('הַכִּכָּר', 'The square', ['city', [['🌴', 90, 160, 90], ['🏪', 290, 165, 80], ['🚶', 200, 212, 64]]],
+      'בְּלֵב עֲרָד יֵשׁ כִּכָּר עִם עֵצִים וַחֲנוּיוֹת.', 'In the center of Arad there is a square with trees and shops.'),
     place('הָרְחוֹבוֹת בַּעֲרָד', 'The streets of Arad', ['desert', [['🏘️', 120, 150, 100], ['🌳', 292, 170, 70], ['🚲', 200, 208, 66]]],
       'בַּעֲרָד אֶפְשָׁר לִרְכֹּב עַל אוֹפַנַּיִם בֵּין הַבָּתִּים.', 'In Arad you can ride a bike between the houses.')
   ],

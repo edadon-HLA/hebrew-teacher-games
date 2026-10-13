@@ -28,6 +28,18 @@ window.PLACE_PHOTOS = {
          "f" : "arad-3.jpg",
          "l" : "CC0",
          "p" : "https://commons.wikimedia.org/wiki/File:Dead_Sea_floating_(Unsplash).jpg"
+      },
+      "4" : {
+         "a" : "brewbooks from near Seattle, USA",
+         "f" : "arad-4.jpg",
+         "l" : "CC BY-SA 2.0",
+         "p" : "https://commons.wikimedia.org/wiki/File:Negev_Arad,_Israel_square_(469334595).jpg"
+      },
+      "5" : {
+         "a" : "brewbooks from near Seattle, USA",
+         "f" : "arad-5.jpg",
+         "l" : "CC BY-SA 2.0",
+         "p" : "https://commons.wikimedia.org/wiki/File:Negev_Driving_through_Arad,_Israel_(469334411).jpg"
       }
    },
    "ashdod" : {
@@ -60,6 +72,12 @@ window.PLACE_PHOTOS = {
          "f" : "ashdod-4.jpg",
          "l" : "CC BY 2.5",
          "p" : "https://commons.wikimedia.org/wiki/File:102887_ashdod_beach_PikiWiki_Israel.jpg"
+      },
+      "5" : {
+         "a" : "סתיו קונשטיק",
+         "f" : "ashdod-5.jpg",
+         "l" : "CC BY 2.5",
+         "p" : "https://commons.wikimedia.org/wiki/File:112061_tel_ashdod_PikiWiki_Israel.jpg"
       }
    },
    "beer-sheva" : {
@@ -157,11 +175,23 @@ window.PLACE_PHOTOS = {
          "l" : "CC BY-SA 4.0",
          "p" : "https://commons.wikimedia.org/wiki/File:Giv%27atayim_from_Koslovsky_Hill_2020.jpg"
       },
+      "3" : {
+         "a" : "Chenspec",
+         "f" : "givatayim-3.jpg",
+         "l" : "CC BY-SA 4.0",
+         "p" : "https://commons.wikimedia.org/wiki/File:Esther_garden_in_Givatayim,_March_2024_64.jpg"
+      },
       "4" : {
          "a" : "Chenspec",
          "f" : "givatayim-4.jpg",
          "l" : "CC BY-SA 4.0",
          "p" : "https://commons.wikimedia.org/wiki/File:Transport_in_Givatayim,_March_2024_16.jpg"
+      },
+      "5" : {
+         "a" : "Юкатан",
+         "f" : "givatayim-5.jpg",
+         "l" : "CC BY-SA 4.0",
+         "p" : "https://commons.wikimedia.org/wiki/File:Givatayim_-_07.jpg"
       }
    },
    "haifa" : {
@@ -279,6 +309,18 @@ window.PLACE_PHOTOS = {
       }
    },
    "metula" : {
+      "0" : {
+         "a" : "Zoltan Kluger",
+         "f" : "metula-0.jpg",
+         "l" : "Public domain",
+         "p" : "https://commons.wikimedia.org/wiki/File:VIEW_OF_THE_HULA_VALLEY_SEEN_FROM_THE_ORCHARD_AT_KIBBUTZ_MANARA._%D7%94%D7%A4%D7%A8%D7%93%D7%A1_%D7%91%D7%A7%D7%99%D7%91%D7%95%D7%A5_%D7%9E%D7%A0%D7%A8%D7%94._%D7%91%D7%A8%D7%A7%D7%A2,_%D7%A0%D7%95%D7%A3_%D7%A9%D7%9C_%D7%A2%D7%9E%D7%A7_%D7%94%D7%97%D7%95%D7%9C%D7%94.D17-137.jpg"
+      },
+      "1" : {
+         "a" : "בר",
+         "f" : "metula-1.jpg",
+         "l" : "CC BY-SA 3.0",
+         "p" : "https://commons.wikimedia.org/wiki/File:Agamon_HaHula_in_Hula_Valley.jpg"
+      },
       "2" : {
          "a" : "Hexafluoride",
          "f" : "metula-2.jpg",
@@ -296,6 +338,12 @@ window.PLACE_PHOTOS = {
          "f" : "metula-4.jpg",
          "l" : "CC BY 2.5",
          "p" : "https://commons.wikimedia.org/wiki/File:125549_dado_observatory_metula_PikiWiki_Israel.jpg"
+      },
+      "5" : {
+         "a" : "Mboesch",
+         "f" : "metula-5.jpg",
+         "l" : "CC BY-SA 4.0",
+         "p" : "https://commons.wikimedia.org/wiki/File:Metula-nahal-iyon-reserve-wading-pool.JPG"
       }
    },
    "nazareth" : {
@@ -349,11 +397,23 @@ window.PLACE_PHOTOS = {
          "l" : "CC BY 4.0",
          "p" : "https://commons.wikimedia.org/wiki/File:Celebrating_Independence_Day_(FL45773751).jpg"
       },
+      "2" : {
+         "a" : "Amir Shtanger",
+         "f" : "raanana-2.jpg",
+         "l" : "CC BY-SA 3.0",
+         "p" : "https://commons.wikimedia.org/wiki/File:Nvidia_Ra%27anana_office.jpg"
+      },
       "3" : {
          "a" : "Barak Bar-Zohar",
          "f" : "raanana-3.jpg",
          "l" : "CC BY-SA 4.0",
          "p" : "https://commons.wikimedia.org/wiki/File:%D7%9E%D7%91%D7%98_%D7%A2%D7%9C_%D7%A8%D7%97%D7%95%D7%91_%D7%90%D7%97%D7%95%D7%96%D7%94_%D7%9C%D7%9B%D7%99%D7%95%D7%95%D7%9F_%D7%9E%D7%A2%D7%A8%D7%91._%D7%A9%D7%A2%D7%95%D7%9F_%D7%9E%D7%A8%D7%9B%D7%96_%D7%90%D7%9C-%D7%A8%D7%9D,_%D7%A8%D7%97%D7%95%D7%91_%D7%90%D7%97%D7%95%D7%96%D7%94_%D7%95%D7%91%D7%99%D7%AA_%D7%94%D7%9B%D7%A0%D7%A1%D7%AA_%D7%94%D7%92%D7%93%D7%95%D7%9C.jpg"
+      },
+      "4" : {
+         "a" : "יובל מנדלסון",
+         "f" : "raanana-4.jpg",
+         "l" : "CC BY 2.5",
+         "p" : "https://commons.wikimedia.org/wiki/File:PikiWiki_Israel_16515_Raanana_Park.JPG"
       },
       "5" : {
          "a" : "רובי ליבוביץ הצלם שלי",
@@ -387,6 +447,12 @@ window.PLACE_PHOTOS = {
          "l" : "CC BY-SA 3.0",
          "p" : "https://commons.wikimedia.org/wiki/File:Rahat_School_1.jpg"
       },
+      "4" : {
+         "a" : "Noa Steiner",
+         "f" : "rahat-4.jpg",
+         "l" : "CC BY 2.5",
+         "p" : "https://commons.wikimedia.org/wiki/File:PikiWiki_Israel_35745_Sheep_grazing.JPG"
+      },
       "5" : {
          "a" : "David Shankbone",
          "f" : "rahat-5.jpg",
@@ -412,6 +478,12 @@ window.PLACE_PHOTOS = {
          "f" : "safed-2.jpg",
          "l" : "CC BY 2.5",
          "p" : "https://commons.wikimedia.org/wiki/File:PikiWiki_Israel_62532_old_safed,_artists_quarter.jpg"
+      },
+      "3" : {
+         "a" : "Adam Jones from Kelowna, BC, Canada",
+         "f" : "safed-3.jpg",
+         "l" : "CC BY-SA 2.0",
+         "p" : "https://commons.wikimedia.org/wiki/File:Gallery_Owner_Reads_in_Shop_-_Old_City_-_Tsfat_(Safed)_-_Galilee_-_Israel_(5714062298).jpg"
       },
       "4" : {
          "a" : "Tzvi Eitan",
@@ -488,6 +560,18 @@ window.PLACE_PHOTOS = {
          "f" : "yotvata-3.jpg",
          "l" : "CC BY 2.5",
          "p" : "https://commons.wikimedia.org/wiki/File:147165_acacia_grove_near_sde_boker_college_PikiWiki_Israel.jpg"
+      },
+      "4" : {
+         "a" : "ישראל פרקר",
+         "f" : "yotvata-4.jpg",
+         "l" : "CC BY 2.5",
+         "p" : "https://commons.wikimedia.org/wiki/File:99501_badland_lookout_-_in_the_arava_PikiWiki_Israel.jpg"
+      },
+      "5" : {
+         "a" : "MathKnight",
+         "f" : "yotvata-5.jpg",
+         "l" : "CC BY-SA 3.0",
+         "p" : "https://commons.wikimedia.org/wiki/File:Yotvata006.jpg"
       }
    }
 }
