@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null && request.auth.token.email_verified == true; }
+    function isOwner() { return signedIn() && request.auth.token.email.lower() == 'edadon@hlacharterschool.org'; }
+    function isTeacher() {
+      return isOwner() || (signedIn() && exists(/databases/$(database)/documents/teachers/$(request.auth.token.email.lower())));
+    }
+
+    match /teachers/{email} {
+      allow get: if signedIn() && (isOwner() || request.auth.token.email.lower() == email);
+      allow list: if isOwner();
+      allow write: if isOwner();
+    }
+    // Exam definitions and teacher audio: students need to read them.
+    match /examConfigs/{id} { allow read: if true; allow write: if isTeacher(); }
+    match /audio/{id}       { allow read: if true; allow write: if isTeacher(); }
+    match /students/{id}    { allow read, write: if isTeacher(); }
+
+    // A student's personal code: readable only by exact id (no listing).
+    match /codes/{code} {
+      allow get: if true;
+      allow list: if isTeacher();
+      allow create, delete: if isTeacher();
+      allow update: if isTeacher() ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'startedAt', 'submittedAt']);
+    }
+    // Results: a student can create one submission for a valid code; only teachers can read/grade.
+    match /submissions/{code} {
+      allow create: if exists(/databases/$(database)/documents/codes/$(code)) && request.resource.data.code == code;
+      allow read, update, delete: if isTeacher();
+    }
+    match /recordings/{id} {
+      allow create: if exists(/databases/$(database)/documents/codes/$(request.resource.data.code));
+      allow read, update, delete: if isTeacher();
+    }
+  }
+}

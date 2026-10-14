@@ -3,21 +3,28 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>מבחנים | משחקי עברית</title>
 <link rel="stylesheet" href="exam.css"></head>
-<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="index.html">📝 מבחנים / Exams</a></nav>
+<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="teachers.html">👩‍🏫 מורים / Teachers</a></nav>
 <header class="top"><h1>📝 מבחנים</h1><p>Exams · Niflaot</p></header>
 <main>
-<div id="gate" class="card gate"><div style="font-size:54px">🔒</div><h2>הַמִּבְחָנִים נְעוּלִים</h2><span class="en" style="text-align:center">The exams are locked</span>
-<form id="f"><input id="pw" type="password" placeholder="סִיסְמָה / Password" autocomplete="off" autofocus><button class="btn" type="submit">כְּנִיסָה / Enter</button></form>
-<p id="err" class="warn hidden">סִיסְמָה שְׁגוּיָה / Wrong password</p></div>
-<div id="list" class="cards hidden">
-<a class="examcard" href="exam1.html"><div class="icon">🏠</div><h2>מִבְחָן 1 · הַבַּיִת</h2><span class="en">Exam 1 · The House (rooms and objects)</span><p>כְּתִיבָה · קְרִיאָה · הֲאָזָנָה<br>30 דַּקּוֹת · 100 נְקֻדּוֹת</p><span class="open">פְּתִיחַת הַמִּבְחָן ←</span></a>
-<a class="examcard" href="exam2.html"><div class="icon">🛗</div><h2>מִבְחָן 2 · עוֹלִים וְיוֹרְדִים</h2><span class="en">Exam 2 · Going up and down (elevator and numbers)</span><p>כְּתִיבָה · קְרִיאָה · דִּבּוּר<br>30 דַּקּוֹת · 100 נְקֻדּוֹת</p><span class="open">פְּתִיחַת הַמִּבְחָן ←</span></a>
-</div>
+<div class="card gate"><div style="font-size:54px">🎫</div>
+<h2>הַכְנִיסוּ אֶת הַקּוֹד שֶׁלָּכֶם</h2><span class="en" style="text-align:center">Enter your exam code</span>
+<form id="f"><input id="code" type="text" placeholder="XXXXXX" autocomplete="off" autocapitalize="characters" maxlength="10" style="direction:ltr;letter-spacing:6px;text-transform:uppercase" autofocus>
+<button class="btn" type="submit">התחלה / Start</button></form>
+<p id="err" class="warn hidden"></p></div>
 </main>
-<script src="config.js"></script><script src="exam.js"></script>
+<script src="firebase-config.js"></script><script src="db.js"></script>
 <script>
-function show(){document.getElementById('gate').classList.add('hidden');document.getElementById('list').classList.remove('hidden');}
-if(ExamAuth.ok())show();
-document.getElementById('f').onsubmit=function(e){e.preventDefault();
- ExamAuth.login(document.getElementById('pw').value).then(function(ok){if(ok)show();else{document.getElementById('err').classList.remove('hidden');}});};
+document.getElementById('f').onsubmit=function(e){
+  e.preventDefault();
+  var code=document.getElementById('code').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  var err=document.getElementById('err'); err.classList.add('hidden');
+  if(!code)return;
+  function bad(t){err.innerHTML=t;err.classList.remove('hidden');}
+  DB.get('codes',code).then(function(c){
+    if(!c)return bad('קוֹד לֹא נִמְצָא<span class="en">Code not found</span>');
+    if(c.status==='submitted')return bad('הַמִּבְחָן כְּבָר נִשְׁלַח<span class="en">This exam was already submitted</span>');
+    try{sessionStorage.setItem('examCode',code);}catch(x){}
+    location.href='take.html?code='+code;
+  }).catch(function(){bad('שְׁגִיאָה בַּחִבּוּר<span class="en">Connection error</span>');});
+};
 </script></body></html>
