@@ -333,7 +333,7 @@
 
   function syncRoster() {
     return Promise.all([DB.list("codes"), DB.list("roster")]).then(function (r) {
-      var by = {}; r[0].forEach(function (c) { (by[c.studentId] = by[c.studentId] || { first: c.first, last: c.last, class: c.class || "", exams: [] }).exams.push(c.examId); });
+      var by = {}; r[0].forEach(function (c) { var k = (c.class || "").toLowerCase().replace(/[^a-z0-9֐-׿]+/g, "-") || "none"; var o = by[k] = by[k] || { class: c.class || "", exams: [] }; if (o.exams.indexOf(c.examId) < 0) o.exams.push(c.examId); });
       var ops = Object.keys(by).map(function (id) { return DB.set("roster", id, by[id]); });
       r[1].forEach(function (o) { if (!by[o._id]) ops.push(DB.del("roster", o._id)); });
       return Promise.all(ops);

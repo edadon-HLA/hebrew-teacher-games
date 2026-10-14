@@ -23,7 +23,7 @@
 <script src="firebase-config.js"></script><script src="db.js"></script><script src="core.js"></script><script src="defaults.js"></script>
 <script>
 if (DB.demo) document.getElementById('demo').classList.remove('hidden');
-var roster = [], pub = {}, cls = null, stu = null;
+var roster = [], pub = {}, cls = null;
 var step = document.getElementById('step'), crumb = document.getElementById('crumb');
 function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
 function EN(t) { return '<span class="en">' + t + '</span>'; }
@@ -31,30 +31,23 @@ function EN(t) { return '<span class="en">' + t + '</span>'; }
 function setCrumb() {
   var h = '<a id="c0">הַכִּתּוֹת</a>';
   if (cls != null) h += ' ‹ <a id="c1">' + esc(cls || '—') + '</a>';
-  if (stu) h += ' ‹ <b>' + esc(stu.first + ' ' + stu.last) + '</b>';
   crumb.innerHTML = cls == null ? '' : h;
-  if (cls != null) document.getElementById('c0').onclick = function () { cls = null; stu = null; showClasses(); };
-  if (stu) document.getElementById('c1').onclick = function () { stu = null; showNames(); };
+  if (cls != null) document.getElementById('c0').onclick = function () { cls = null; showClasses(); };
 }
 function showClasses() {
   setCrumb();
-  var cs = {}; roster.forEach(function (r) { cs[r.class || ''] = 1; });
+  var cs = {}; roster.forEach(function (r) { cs[r.class || ""] = 1; });
   var list = Object.keys(cs).sort();
   step.innerHTML = '<h2>בַּחֲרוּ אֶת הַכִּתָּה שֶׁלָּכֶם ' + EN('Choose your class') + '</h2>' +
     (list.length ? '<div class="pick">' + list.map(function (c) { return '<button data-c="' + esc(c) + '">' + esc(c || '—') + '</button>'; }).join('') + '</div>'
       : '<div class="card">עֲדַיִן לֹא הוּקְצוּ מִבְחָנִים.' + EN('No exams have been assigned yet.') + '</div>');
-  step.querySelectorAll('[data-c]').forEach(function (b) { b.onclick = function () { cls = b.getAttribute('data-c'); showNames(); }; });
-}
-function showNames() {
-  setCrumb();
-  var list = roster.filter(function (r) { return (r.class || '') === cls; }).sort(function (a, b) { return (a.first + a.last).localeCompare(b.first + b.last); });
-  step.innerHTML = '<h2>מִי אַתֶּם? ' + EN('Choose your name') + '</h2><div class="pick">' + list.map(function (r) { return '<button data-id="' + esc(r._id) + '">' + esc(r.first + ' ' + r.last) + '</button>'; }).join('') + '</div>';
-  step.querySelectorAll('[data-id]').forEach(function (b) { b.onclick = function () { stu = roster.filter(function (r) { return r._id === b.getAttribute('data-id'); })[0]; showExams(); }; });
+  step.querySelectorAll('[data-c]').forEach(function (b) { b.onclick = function () { cls = b.getAttribute("data-c"); showExams(); }; });
 }
 function showExams() {
   setCrumb();
-  var ids = (stu.exams || []).filter(function (id) { return window.DEFAULT_EXAMS[id] && pub[id] !== false; });
-  step.innerHTML = '<h2>הַמִּבְחָנִים שֶׁלָּכֶם ' + EN('Your exams') + '</h2><div class="cards">' + (ids.length ? ids.map(function (id) {
+  var cr = roster.filter(function (r) { return (r.class || "") === cls; })[0] || {};
+  var ids = (cr.exams || []).filter(function (id) { return window.DEFAULT_EXAMS[id] && pub[id] !== false; });
+  step.innerHTML = '<h2>הַמִּבְחָנִים שֶׁל הַכִּתָּה ' + EN('Your exams') + '</h2><div class="cards">' + (ids.length ? ids.map(function (id) {
     var e = DEFAULT_EXAMS[id];
     return '<div class="examcard click" data-e="' + id + '"><div class="icon">' + e.icon + '</div><h2>' + esc(e.title) + '</h2><span class="en">' + esc(e.titleEn) + '</span><p>' + e.sections.map(function (s) { return esc(s.he); }).join(' · ') + '</p><span class="open">פְּתִיחָה ←</span><div class="codebox hidden"></div></div>';
   }).join('') : '<div class="card">אֵין כָּרֶגַע מִבְחָנִים פְּתוּחִים בִּשְׁבִילְכֶם.' + EN('No open exams for you right now.') + '</div>') + '</div>';
@@ -72,7 +65,7 @@ function showExams() {
         function bad(t) { err.innerHTML = t; err.classList.remove('hidden'); }
         if (!code) return;
         DB.get('codes', code).then(function (c) {
-          if (!c || c.studentId !== stu._id || c.examId !== id) return bad('הַקּוֹד לֹא נָכוֹן לַמִּבְחָן הַזֶּה' + EN('This code is not correct for this exam'));
+          if (!c || (c.class || "") !== cls || c.examId !== id) return bad('הַקּוֹד לֹא נָכוֹן לַמִּבְחָן הַזֶּה' + EN('This code is not correct for this exam'));
           if (c.status === 'submitted') return bad('הַמִּבְחָן כְּבָר נִשְׁלַח' + EN('This exam was already submitted'));
           try { sessionStorage.setItem('examCode', code); } catch (x) {}
           location.href = 'take.html?code=' + code;
