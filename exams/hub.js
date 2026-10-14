@@ -46,8 +46,8 @@
     var ids = window.DEFAULT_EXAM_IDS;
     return Promise.all(ids.map(function (id) { return DB.get('examConfigs', id); })).then(function (cs) {
       ids.forEach(function (id, i) { S.exams[id] = { cfg: ExamCore.defaults(cs[i] || getDefaultExam(id)), custom: !!cs[i] }; });
-      return DB.list('students');
-    }).then(function (st) { S.students = st.sort(byName); });
+      return Promise.all([DB.list("students"), DB.get("settings", "published")]);
+    }).then(function (r) { S.students = r[0].sort(byName); S.published = r[1] || {}; });
   }
   function byName(a, b) { return (a.class || '').localeCompare(b.class || '') || (a.last || '').localeCompare(b.last || '') || (a.first || '').localeCompare(b.first || ''); }
 
@@ -69,11 +69,12 @@
     v.innerHTML = '<div class="cards">' + window.DEFAULT_EXAM_IDS.map(function (id) {
       var cfg = S.exams[id].cfg, sc = ExamCore.score(cfg, {}, {});
       return '<div class="examcard" style="cursor:default"><div class="icon">' + (cfg.icon || '📝') + '</div><h2>' + esc(cfg.title) + '</h2><span class="en">' + esc(cfg.titleEn || '') + '</span>' +
-        '<p>' + cfg.sections.map(function (s) { return esc(s.en); }).join(' · ') + '<br>' + (cfg.timeLimit.on ? cfg.timeLimit.minutes + ' min' : 'no time limit') + ' · ' + sc.max + ' pts → scaled to 100' + (S.exams[id].custom ? ' · <span class="tag g">customized</span>' : '') + '</p>' +
+        '<p>' + cfg.sections.map(function (s) { return esc(s.en); }).join(' · ') + '<br>' + (cfg.timeLimit.on ? cfg.timeLimit.minutes + ' min' : 'no time limit') + ' · ' + sc.max + ' pts → scaled to 100' + (S.exams[id].custom ? " · <span class=\"tag g\">customized</span>" : "") + " · " + (S.published[id] === false ? "<span class=\"tag r\">not published</span>" : "<span class=\"tag g\">published to students</span>") + '</p>' +
         '<div class="row"><button class="btn sm2" data-edit="' + id + '">✏️ Edit</button><a class="btn sm2 light" style="text-decoration:none" target="_blank" href="take.html?preview=' + id + '">👁 Preview</a>' +
-        '<button class="btn sm2 light" data-go="assign" data-id="' + id + '">🎫 Assign</button><button class="btn sm2 light" data-go="results" data-id="' + id + '">📊 Results</button></div></div>';
+        '<button class="btn sm2 ' + (S.published[id] === false ? "green" : "red") + '" data-pub="' + id + '">' + (S.published[id] === false ? "📢 Publish" : "🚫 Unpublish") + '</button><button class="btn sm2 light" data-go="assign" data-id="' + id + '">🎫 Assign</button><button class="btn sm2 light" data-go="results" data-id="' + id + '">📊 Results</button></div></div>';
     }).join('') + '</div>';
     v.querySelectorAll('[data-edit]').forEach(function (b) { b.onclick = function () { S.editId = b.getAttribute('data-edit'); S.E = clone(S.exams[S.editId].cfg); examsView(); }; });
+    v.querySelectorAll("[data-pub]").forEach(function (b) { b.onclick = function () { var id = b.getAttribute("data-pub"); S.published[id] = S.published[id] === false; DB.set("settings", "published", S.published).then(function () { toast(S.published[id] ? "Published ✔" : "Unpublished"); examsView(); }).catch(fail); }; });
     v.querySelectorAll('[data-go]').forEach(function (b) { b.onclick = function () { S.tab = b.getAttribute('data-go'); if (S.tab === 'assign') S.assignExam = b.getAttribute('data-id'); else S.resExam = b.getAttribute('data-id'); shell(); }; });
   }
 

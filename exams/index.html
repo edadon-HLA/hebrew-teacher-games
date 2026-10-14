@@ -1,19 +1,31 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>מבחנים | משחקי עברית</title>
+<title>Exams | משחקי עברית</title>
 <link rel="stylesheet" href="exam.css"></head>
-<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="teachers.html">👩‍🏫 מורים / Teachers</a></nav>
-<header class="top"><h1>📝 מבחנים</h1><p>Exams · Niflaot</p></header>
+<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="index.html">📝 Exams</a><a href="teachers.html">👩‍🏫 Exams Teachers Hub</a></nav>
+<header class="top"><h1>📝 מבחנים · Exams</h1><p>Niflaot</p></header>
 <main>
-<div class="card gate"><div style="font-size:54px">🎫</div>
-<h2>הַכְנִיסוּ אֶת הַקּוֹד שֶׁלָּכֶם</h2><span class="en" style="text-align:center">Enter your exam code</span>
-<form id="f"><input id="code" type="text" placeholder="XXXXXX" autocomplete="off" autocapitalize="characters" maxlength="10" style="direction:ltr;letter-spacing:6px;text-transform:uppercase" autofocus>
+<div id="demo" class="warn hidden" style="background:#fff3cd;border-color:#f0d27a;color:#6b5400">⚠️ <b>DEMO mode</b> – the shared database is not connected yet, so exams, codes and results are saved only in this browser. To try it: open the <a href="teachers.html">Exams Teachers Hub</a> in this browser (the owner email is edadon@hlacharterschool.org), add a student, create a code, then enter that code here.</div>
+<h2>הַמִּבְחָנִים הַזְּמִינִים <span class="en" style="display:inline">Available exams</span></h2>
+<div id="list" class="cards"><div class="card">…</div></div>
+<div class="card gate" style="margin-top:30px"><div style="font-size:54px">🎫</div>
+<h2>הַכְנִיסוּ אֶת הַקּוֹד שֶׁלָּכֶם</h2><span class="en" style="text-align:center">Enter your personal exam code</span>
+<form id="f"><input id="code" type="text" placeholder="XXXXXX" autocomplete="off" autocapitalize="characters" maxlength="10" style="direction:ltr;letter-spacing:6px;text-transform:uppercase">
 <button class="btn" type="submit">התחלה / Start</button></form>
 <p id="err" class="warn hidden"></p></div>
 </main>
-<script src="firebase-config.js"></script><script src="db.js"></script>
+<script src="firebase-config.js"></script><script src="db.js"></script><script src="core.js"></script><script src="defaults.js"></script>
 <script>
+if (DB.demo) document.getElementById('demo').classList.remove('hidden');
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+DB.get('settings','published').then(function(p){
+  p=p||{}; var ids=DEFAULT_EXAM_IDS.filter(function(id){return p[id]!==false;});
+  document.getElementById('list').innerHTML = ids.length ? ids.map(function(id){
+    var e=DEFAULT_EXAMS[id];
+    return '<div class="examcard" style="cursor:default"><div class="icon">'+e.icon+'</div><h2>'+esc(e.title)+'</h2><span class="en">'+esc(e.titleEn)+' – '+esc(e.topic)+'</span><p>'+e.sections.map(function(s){return esc(s.he)+' <small>('+esc(s.en)+')</small>';}).join(' · ')+'</p></div>';
+  }).join('') : '<div class="card">אֵין כָּרֶגַע מִבְחָנִים פְּתוּחִים.<span class="en">No exams are open right now.</span></div>';
+}).catch(function(){document.getElementById('list').innerHTML='<div class="card warn">Connection error</div>';});
 document.getElementById('f').onsubmit=function(e){
   e.preventDefault();
   var code=document.getElementById('code').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
@@ -23,8 +35,11 @@ document.getElementById('f').onsubmit=function(e){
   DB.get('codes',code).then(function(c){
     if(!c)return bad('קוֹד לֹא נִמְצָא<span class="en">Code not found</span>');
     if(c.status==='submitted')return bad('הַמִּבְחָן כְּבָר נִשְׁלַח<span class="en">This exam was already submitted</span>');
-    try{sessionStorage.setItem('examCode',code);}catch(x){}
-    location.href='take.html?code='+code;
+    return DB.get('settings','published').then(function(p){
+      if((p||{})[c.examId]===false)return bad('הַמִּבְחָן עֲדַיִן לֹא פָּתוּחַ<span class="en">This exam is not open yet</span>');
+      try{sessionStorage.setItem('examCode',code);}catch(x){}
+      location.href='take.html?code='+code;
+    });
   }).catch(function(){bad('שְׁגִיאָה בַּחִבּוּר<span class="en">Connection error</span>');});
 };
 </script></body></html>

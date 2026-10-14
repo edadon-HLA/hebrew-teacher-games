@@ -15,6 +15,7 @@ service cloud.firestore {
     // Exam definitions and teacher audio: students need to read them.
     match /examConfigs/{id} { allow read: if true; allow write: if isTeacher(); }
     match /audio/{id}       { allow read: if true; allow write: if isTeacher(); }
+    match /settings/{id}    { allow read: if true; allow write: if isTeacher(); }
     match /students/{id}    { allow read, write: if isTeacher(); }
 
     // A student's personal code: readable only by exact id (no listing).

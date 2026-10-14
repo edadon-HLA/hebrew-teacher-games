@@ -14,7 +14,7 @@ window.DB = (function () {
     try { api.user = JSON.parse(localStorage.getItem(P + 'user') || 'null'); } catch (e) {}
     api.ready = Promise.resolve();
     api.signIn = function () {
-      var e = (prompt('DEMO MODE – type a teacher email:') || '').trim().toLowerCase();
+      var e = (prompt("DEMO MODE – type a teacher email (owner: " + window.OWNER_EMAIL + "):", window.OWNER_EMAIL) || '').trim().toLowerCase();
       if (!e) return Promise.resolve();
       api.user = { email: e, name: e.split('@')[0] };
       localStorage.setItem(P + 'user', JSON.stringify(api.user)); emit(); return Promise.resolve();

@@ -93,7 +93,6 @@
   DB.get('codes', code).then(function (c) {
     if (!c) return msg('קוֹד לֹא נִמְצָא <a href="index.html">חזרה</a>');
     if (c.status === 'submitted') return msg('הַמִּבְחָן כְּבָר נִשְׁלַח.<span class="en">This exam was already submitted.</span>');
-    DB.update('codes', code, { startedAt: c.startedAt || new Date().toISOString() }).catch(function () {});
-    return start(c, c.examId);
+    return DB.get("settings", "published").then(function (p) { if ((p || {})[c.examId] === false) return msg("הַמִּבְחָן עֲדַיִן לֹא פָּתוּחַ.<span class=\"en\">This exam is not open yet.</span>"); DB.update("codes", code, { startedAt: c.startedAt || new Date().toISOString() }).catch(function () {}); return start(c, c.examId); });
   }).catch(function (e) { msg('שְׁגִיאָה: ' + (e && e.message || e)); });
 })();
