@@ -35,6 +35,11 @@
 
     var holder = $('div'); root.appendChild(holder);
     var r = ExamCore.render(holder, cfg, { mode: 'take', audio: audio });
+    if (codeDoc && codeDoc.status === 'returned') {
+      var saved = {}; try { saved = JSON.parse(codeDoc.savedAnswers || '{}'); } catch (e) {}
+      r.items.forEach(function (c) { if (saved[c.def.id] != null) c.setAnswer(saved[c.def.id]); });
+      nameCard.insertAdjacentHTML('beforeend', '<div class="warn" style="background:#e8f4ff;border-color:#b5d6f5;color:#14416b">הַמּוֹרָה הֶחְזִירָה אֶת הַמִּבְחָן. אֶפְשָׁר לְהַמְשִׁיךְ מֵהַמָּקוֹם שֶׁעָצַרְתֶּם וְלִשְׁלֹחַ שׁוּב.' + EN('Your teacher returned the exam. Continue where you stopped, then submit again. Speaking answers you already recorded are kept unless you record again.') + '</div>');
+    }
     var sc0 = ExamCore.score(cfg, {}, {});
     sc0.secs.forEach(function (s) { var e = holder.querySelector('[data-sec="' + s.id + '"]'); if (e) e.textContent = s.max + ' נְקֻדּוֹת / points'; });
 

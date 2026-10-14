@@ -31,11 +31,14 @@ service cloud.firestore {
     // Results: a student can create one submission for a valid code; only teachers can read/grade.
     match /submissions/{code} {
       allow create: if exists(/databases/$(database)/documents/codes/$(code)) && request.resource.data.code == code;
-      allow read, update, delete: if isTeacher();
+      // A student may re-submit only after a teacher returned the exam (code status = returned).
+      allow update: if isTeacher() || (get(/databases/$(database)/documents/codes/$(code)).data.status == 'returned' && request.resource.data.code == code);
+      allow read, delete: if isTeacher();
     }
     match /recordings/{id} {
       allow create: if exists(/databases/$(database)/documents/codes/$(request.resource.data.code));
-      allow read, update, delete: if isTeacher();
+      allow update: if isTeacher() || get(/databases/$(database)/documents/codes/$(request.resource.data.code)).data.status == 'returned';
+      allow read, delete: if isTeacher();
     }
   }
 }

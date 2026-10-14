@@ -390,10 +390,11 @@
         '<table class="t"><tr><th>First name</th><th>Last name</th><th>Class</th><th>Code</th><th>Score</th><th>Submitted</th><th></th></tr>' +
         rows.map(function (c) {
           var s = subs[c.code];
-          return '<tr><td>' + esc(c.first) + '</td><td>' + esc(c.last) + '</td><td>' + esc(c.class) + '</td><td class="code">' + c.code + '</td><td>' + (s ? '<b>' + s.total + '</b>' + (Object.keys(s.manual || {}).length ? ' <span class="tag y">✎</span>' : '') : '<span class="tag r">—</span>') + '</td><td>' + (s ? fmtDate(s.submittedAt) : '') + '</td><td>' + (s ? '<button class="btn sm2 light" data-view="' + c.code + '">View / grade</button>' : '') + '</td></tr>';
+          return '<tr><td>' + esc(c.first) + '</td><td>' + esc(c.last) + '</td><td>' + esc(c.class) + '</td><td class="code">' + c.code + '</td><td>' + (s ? '<b>' + s.total + '</b>' + (Object.keys(s.manual || {}).length ? ' <span class="tag y">✎</span>' : '') : '<span class="tag r">—</span>') + '</td><td>' + (s ? fmtDate(s.submittedAt) : '') + '</td><td>' + (s ? (c.status === "returned" ? "<span class=\"tag y\">↩ returned to student</span> " : "<button class=\"btn sm2 gray\" data-return=\"" + c.code + "\" title=\"Let the student continue the exam\">↩ Return to student</button> ") + "<button class=\"btn sm2 light\" data-view=\"" + c.code + "\">View / grade</button>" : "") + '</td></tr>';
         }).join('') + '</table></div>';
       $('#ex').onchange = function () { S.resExam = this.value; resultsView(); };
       $('#fcls').onchange = function () { S.cls = this.value; resultsView(); };
+      v.querySelectorAll("[data-return]").forEach(function (b) { b.onclick = function () { returnToStudent(b.getAttribute("data-return")); }; });
       v.querySelectorAll('[data-view]').forEach(function (b) { b.onclick = function () { detailView(b.getAttribute('data-view')); }; });
       function aoa() {
         return [['First name', 'Last name', 'Class', 'Code', 'Total (/100)'].concat(S.exams[S.resExam].cfg.sections.map(function (s) { return s.en + ' (pts)'; })).concat(['Submitted'])].concat(rows.map(function (c) {
@@ -405,6 +406,13 @@
         var a = aoa(); printHTML('<h2>' + esc(S.exams[S.resExam].cfg.title) + (S.cls ? ' · ' + esc(S.cls) : '') + '</h2><p>' + new Date().toLocaleDateString() + ' · Average ' + avg + '</p><table class="t">' + a.map(function (r, i) { return '<tr>' + r.map(function (c) { return '<' + (i ? 'td' : 'th') + '>' + esc(c) + '</' + (i ? 'td' : 'th') + '>'; }).join('') + '</tr>'; }).join('') + '</table>');
       };
     }).catch(fail);
+  }
+
+  function returnToStudent(code) {
+    if (!confirm("Return this exam to the student?\n\nThe student can enter the same code again and continue from where they stopped, without feedback, then submit again. Their current answers are kept.")) return;
+    DB.get("submissions", code).then(function (sub) {
+      return DB.update("codes", code, { status: "returned", savedAnswers: JSON.stringify(sub.answers || {}), returnedAt: new Date().toISOString(), returnedBy: S.user.email });
+    }).then(function () { toast("Returned to the student ✔"); resultsView(); }).catch(fail);
   }
 
   function detailView(code) {
