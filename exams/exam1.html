@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exam 1 – הבית | משחקי עברית</title>
+<link rel="stylesheet" href="exam.css"></head>
+<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="index.html">📝 מבחנים / Exams</a></nav>
+<header class="top"><h1>מִבְחָן 1 · הַבַּיִת</h1><p>Exam 1 · The House · כְּתִיבָה, קְרִיאָה, הֲאָזָנָה</p></header>
+<main id="exam"></main>
+<script src="config.js"></script><script src="exam.js"></script>
+<script>
+var TF=['נָכוֹן ✔ <span class="en" style="display:inline">True</span>','לֹא נָכוֹן ✘ <span class="en" style="display:inline">False</span>'];
+var ROOMS=['סָלוֹן','מִטְבָּח','חֲדַר שֵׁנָה','מִקְלַחַת','מִרְפֶּסֶת'];
+var STORY='<h4>הַבַּיִת שֶׁל דָּנִי</h4>דָּנִי גָּר בְּדִירָה בְּקוֹמָה שָׁלוֹשׁ. בַּדִּירָה יֵשׁ סָלוֹן, מִטְבָּח, שְׁנֵי חַדְרֵי שֵׁנָה וּמִקְלַחַת. בַּסָּלוֹן יֵשׁ סַפָּה גְּדוֹלָה וְטֵלֶוִיזְיָה. בַּמִּטְבָּח יֵשׁ שֻׁלְחָן, אַרְבָּעָה כִּסְאוֹת וּמְקָרֵר. בַּחֶדֶר שֶׁל דָּנִי יֵשׁ מִטָּה, אָרוֹן, שֻׁלְחָן וּמַחְשֵׁב. אֵין טֵלֶוִיזְיָה בַּחֶדֶר שֶׁלּוֹ. בָּעֶרֶב דָּנִי אוֹכֵל אֲרוּחָה בַּמִּטְבָּח עִם אִמָּא וְאַבָּא. אַחַר כָּךְ הוּא לוֹמֵד בַּחֶדֶר וְיָשֵׁן בַּמִּטָּה.';
+var LISTEN='שָׁלוֹם, אֲנִי נוֹעָה. אֲנִי גָּרָה בְּבַיִת קָטָן. בַּבַּיִת יֵשׁ חֲדַר שֵׁנָה, מִטְבָּח וְסָלוֹן. בַּחֲדַר שֵׁנָה שֶׁלִּי יֵשׁ מִטָּה וְאָרוֹן. בַּמִּטְבָּח יֵשׁ מְקָרֵר גָּדוֹל וְשֻׁלְחָן. אֲנִי אוֹהֶבֶת אֶת הַסָּלוֹן, כִּי יֵשׁ שָׁם סַפָּה גְּדוֹלָה.';
+
+ExamApp.run({title:'מבחן 1 · הבית / Exam 1 · The House',minutes:30,sections:[
+{he:'כְּתִיבָה',en:'Writing',pts:35,parts:[
+ {he:'חֵלֶק א׳ · מַה זֶּה?',pts:10,instrHe:'כִּתְבוּ אֶת שֵׁם הַחֵפֶץ. (נִיקּוּד לֹא חַיָּב)',instrEn:'Write the name of the object (nikud is optional). 2 points each.',
+  items:[
+   {kind:'type',pts:2,q:'<span class="big-emoji">🛏️</span>',ans:['מיטה']},
+   {kind:'type',pts:2,q:'<span class="big-emoji">🪑</span>',ans:['כיסא','כסא']},
+   {kind:'type',pts:2,q:'<span class="big-emoji">🚪</span>',ans:['דלת']},
+   {kind:'type',pts:2,q:'<span class="big-emoji">🪟</span>',ans:['חלון']},
+   {kind:'type',pts:2,q:'<span class="big-emoji">📺</span>',ans:['טלוויזיה','טלויזיה','טלוויזייה']}
+  ]},
+ {he:'חֵלֶק ב׳ · הַשְׁלִימוּ אֶת הַמִּשְׁפָּט',pts:10,instrHe:'בַּחֲרוּ אֶת הַמִּלָּה הַמַּתְאִימָה.',instrEn:'Choose the correct word to complete each sentence. 2 points each.',
+  items:[
+   {kind:'choice',pts:2,q:'אֲנִי יָשֵׁן בַּ______.',options:['מִטָּה','מְקָרֵר','שֻׁלְחָן','מִקְלַחַת'],ans:0},
+   {kind:'choice',pts:2,q:'הַחָלָב נִמְצָא בַּ______.',options:['אָרוֹן','מְקָרֵר','סַפָּה','דֶּלֶת'],ans:1},
+   {kind:'choice',pts:2,q:'אֲנַחְנוּ רוֹאִים טֵלֶוִיזְיָה בַּ______.',options:['מִקְלַחַת','מִטְבָּח','סָלוֹן','מִרְפֶּסֶת'],ans:2},
+   {kind:'choice',pts:2,q:'אִמָּא מְבַשֶּׁלֶת בַּ______.',options:['חֲדַר שֵׁנָה','מִטְבָּח','סָלוֹן','מִרְפֶּסֶת'],ans:1},
+   {kind:'choice',pts:2,q:'אֲנִי מִתְקַלֵּחַ בַּ______.',options:['מִקְלַחַת','מִטְבָּח','סָלוֹן','חֲדַר שֵׁנָה'],ans:0}
+  ]},
+ {he:'חֵלֶק ג׳ · בּוֹנִים מִשְׁפָּט',pts:15,instrHe:'לִחְצוּ עַל הַמִּלִּים לְפִי הַסֵּדֶר הַנָּכוֹן. לִחְצוּ שׁוּב כְּדֵי לְהַחֲזִיר.',instrEn:'Click the words in the correct order to build a sentence. Click again to remove. 5 points each.',
+  items:[
+   {kind:'order',pts:5,words:['יֵשׁ','סַפָּה','בַּסָּלוֹן']},
+   {kind:'order',pts:5,words:['אֵין','טֵלֶוִיזְיָה','בַּמִּטְבָּח']},
+   {kind:'order',pts:5,words:['הַכַּדּוּר','מִתַּחַת','לַמִּטָּה']}
+  ]}
+]},
+{he:'קְרִיאָה',en:'Reading',pts:35,parts:[
+ {he:'חֵלֶק א׳ · שְׁאֵלוֹת עַל הַטֶּקְסְט',pts:20,instrHe:'קִרְאוּ אֶת הַטֶּקְסְט וּבַחֲרוּ תְּשׁוּבָה נְכוֹנָה.',instrEn:'Read the text and choose the correct answer. 4 points each.',passage:STORY,
+  items:[
+   {kind:'choice',pts:4,q:'בְּאֵיזוֹ קוֹמָה דָּנִי גָּר?',options:['קוֹמָה אַחַת','קוֹמָה שְׁתַּיִם','קוֹמָה שָׁלוֹשׁ','קוֹמָה אַרְבַּע'],ans:2},
+   {kind:'choice',pts:4,q:'מָה יֵשׁ בַּסָּלוֹן?',options:['סַפָּה וְטֵלֶוִיזְיָה','מִטָּה וְאָרוֹן','מְקָרֵר וְשֻׁלְחָן','מַחְשֵׁב וְכִסֵּא'],ans:0},
+   {kind:'choice',pts:4,q:'כַּמָּה כִּסְאוֹת יֵשׁ בַּמִּטְבָּח?',options:['שְׁנַיִם','שְׁלוֹשָׁה','אַרְבָּעָה','חֲמִשָּׁה'],ans:2},
+   {kind:'choice',pts:4,q:'מָה יֵשׁ בַּחֶדֶר שֶׁל דָּנִי?',options:['טֵלֶוִיזְיָה','מְקָרֵר','סַפָּה','מַחְשֵׁב'],ans:3},
+   {kind:'choice',pts:4,q:'אֵיפֹה דָּנִי אוֹכֵל בָּעֶרֶב?',options:['בַּסָּלוֹן','בַּמִּטְבָּח','בַּמִּקְלַחַת','בַּחֶדֶר'],ans:1}
+  ]},
+ {he:'חֵלֶק ב׳ · נָכוֹן אוֹ לֹא נָכוֹן?',pts:10,instrHe:'לְפִי הַטֶּקְסְט: נָכוֹן אוֹ לֹא נָכוֹן?',instrEn:'According to the text: true or false? 2 points each.',passage:STORY,
+  items:[
+   {kind:'choice',pts:2,q:'בַּדִּירָה יֵשׁ שְׁלוֹשָׁה חַדְרֵי שֵׁנָה.',options:TF,ans:1},
+   {kind:'choice',pts:2,q:'יֵשׁ מְקָרֵר בַּמִּטְבָּח.',options:TF,ans:0},
+   {kind:'choice',pts:2,q:'יֵשׁ טֵלֶוִיזְיָה בַּחֶדֶר שֶׁל דָּנִי.',options:TF,ans:1},
+   {kind:'choice',pts:2,q:'דָּנִי יָשֵׁן בַּמִּטָּה.',options:TF,ans:0},
+   {kind:'choice',pts:2,q:'הַסַּפָּה קְטַנָּה.',options:TF,ans:1}
+  ]},
+ {he:'חֵלֶק ג׳ · אֵיפֹה זֶה?',pts:5,instrHe:'בַּחֲרוּ אֶת הַחֶדֶר הַמַּתְאִים לַחֵפֶץ.',instrEn:'Choose the room that matches the object. 1 point each.',
+  items:[
+   {kind:'choice',pts:1,q:'מְקָרֵר 🧊',options:ROOMS,ans:1},
+   {kind:'choice',pts:1,q:'סַפָּה 🛋️',options:ROOMS,ans:0},
+   {kind:'choice',pts:1,q:'מִטָּה 🛏️',options:ROOMS,ans:2},
+   {kind:'choice',pts:1,q:'סַבּוֹן 🧼',options:ROOMS,ans:3},
+   {kind:'choice',pts:1,q:'עָצִיץ 🪴',options:ROOMS,ans:4}
+  ]}
+]},
+{he:'הֲאָזָנָה',en:'Listening',pts:30,parts:[
+ {he:'חֵלֶק א׳ · שׁוֹמְעִים וּבוֹחֲרִים',pts:15,listenWarn:true,instrHe:'לִחְצוּ 🔊, שִׁמְעוּ אֶת הַמִּלָּה וּבַחֲרוּ אֶת הַתְּמוּנָה. אֶפְשָׁר לִשְׁמֹעַ פַּעֲמַיִם.',instrEn:'Press 🔊, listen to the word and choose the picture. You can listen twice. 3 points each.',
+  items:[
+   {kind:'choice',pts:3,speak:'מִטָּה',big:true,options:['🛋️','🛏️','🪑','🚪'],ans:1,script:'מִטָּה'},
+   {kind:'choice',pts:3,speak:'מְקָרֵר',big:true,options:['🧊','📺','🪟','🪑'],ans:0,script:'מְקָרֵר'},
+   {kind:'choice',pts:3,speak:'כִּסֵּא',big:true,options:['🛏️','🚪','🪑','🛋️'],ans:2,script:'כִּסֵּא'},
+   {kind:'choice',pts:3,speak:'טֵלֶוִיזְיָה',big:true,options:['📺','🧊','🪟','🛏️'],ans:0,script:'טֵלֶוִיזְיָה'},
+   {kind:'choice',pts:3,speak:'דֶּלֶת',big:true,options:['🪟','🪑','🛋️','🚪'],ans:3,script:'דֶּלֶת'}
+  ]},
+ {he:'חֵלֶק ב׳ · שׁוֹמְעִים סִפּוּר קָצָר',pts:15,listenWarn:true,instrHe:'שִׁמְעוּ אֶת הַטֶּקְסְט וְעִנוּ עַל הַשְּׁאֵלוֹת. אֶפְשָׁר לִשְׁמֹעַ פַּעֲמַיִם.',instrEn:'Listen to the text and answer the questions. You can listen twice. 5 points each.',
+  items:[
+   {kind:'choice',pts:5,speak:LISTEN,plays:2,q:'אֵיפֹה נוֹעָה גָּרָה?',options:['בְּבַיִת קָטָן','בְּבַיִת גָּדוֹל','בְּדִירָה גְּדוֹלָה','בְּקוֹמָה שָׁלוֹשׁ'],ans:0,script:LISTEN},
+   {kind:'choice',pts:5,q:'מָה יֵשׁ בַּמִּטְבָּח?',options:['מִטָּה וְאָרוֹן','מְקָרֵר וְשֻׁלְחָן','סַפָּה וְטֵלֶוִיזְיָה','מַחְשֵׁב וְכִסֵּא'],ans:1},
+   {kind:'choice',pts:5,q:'אֵיזֶה חֶדֶר נוֹעָה אוֹהֶבֶת?',options:['אֶת הַמִּטְבָּח','אֶת הַמִּקְלַחַת','אֶת חֲדַר הַשֵּׁנָה','אֶת הַסָּלוֹן'],ans:3}
+  ]}
+]}
+]});
+</script></body></html>
