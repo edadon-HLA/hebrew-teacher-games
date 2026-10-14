@@ -2,44 +2,89 @@
 <html lang="he" dir="rtl">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Exams | משחקי עברית</title>
-<link rel="stylesheet" href="exam.css"></head>
+<link rel="stylesheet" href="exam.css">
+<style>
+.pick{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 20px}
+.pick button{font:inherit;font-size:20px;font-weight:700;border:3px solid #18213a;background:#fff;color:#18213a;border-radius:14px;padding:10px 20px;cursor:pointer}
+.pick button:hover{background:#eef2ff}
+.crumb{margin:6px 0 14px;font-size:18px}
+.crumb a{color:#3730a3;font-weight:700;cursor:pointer}
+.examcard.click{cursor:pointer}
+.codebox{margin-top:14px;padding-top:14px;border-top:2px dashed #b8c1d6}
+.codebox input{font:inherit;font-size:26px;padding:8px 12px;border:2px solid #b8c1d6;border-radius:10px;width:100%;max-width:260px;direction:ltr;letter-spacing:6px;text-transform:uppercase;text-align:center}
+</style></head>
 <body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="index.html">📝 Exams</a><a href="teachers.html">👩‍🏫 Exams Teachers Hub</a></nav>
 <header class="top"><h1>📝 מבחנים · Exams</h1><p>Niflaot</p></header>
 <main>
-<div id="demo" class="warn hidden" style="background:#fff3cd;border-color:#f0d27a;color:#6b5400">⚠️ <b>DEMO mode</b> – the shared database is not connected yet, so exams, codes and results are saved only in this browser. To try it: open the <a href="teachers.html">Exams Teachers Hub</a> in this browser (the owner email is edadon@hlacharterschool.org), add a student, create a code, then enter that code here.</div>
-<h2>הַמִּבְחָנִים הַזְּמִינִים <span class="en" style="display:inline">Available exams</span></h2>
-<div id="list" class="cards"><div class="card">…</div></div>
-<div class="card gate" style="margin-top:30px"><div style="font-size:54px">🎫</div>
-<h2>הַכְנִיסוּ אֶת הַקּוֹד שֶׁלָּכֶם</h2><span class="en" style="text-align:center">Enter your personal exam code</span>
-<form id="f"><input id="code" type="text" placeholder="XXXXXX" autocomplete="off" autocapitalize="characters" maxlength="10" style="direction:ltr;letter-spacing:6px;text-transform:uppercase">
-<button class="btn" type="submit">התחלה / Start</button></form>
-<p id="err" class="warn hidden"></p></div>
+<div id="demo" class="warn hidden" style="background:#fff3cd;border-color:#f0d27a;color:#6b5400">⚠️ <b>DEMO mode</b> – the shared database is not connected yet, so exams, codes and results are saved only in this browser. To try it: open the <a href="teachers.html">Exams Teachers Hub</a> in this browser (owner email: edadon@hlacharterschool.org), add a student, assign an exam (generate a code), then come back here.</div>
+<div class="crumb" id="crumb"></div>
+<div id="step"><div class="card">…</div></div>
 </main>
 <script src="firebase-config.js"></script><script src="db.js"></script><script src="core.js"></script><script src="defaults.js"></script>
 <script>
 if (DB.demo) document.getElementById('demo').classList.remove('hidden');
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
-DB.get('settings','published').then(function(p){
-  p=p||{}; var ids=DEFAULT_EXAM_IDS.filter(function(id){return p[id]!==false;});
-  document.getElementById('list').innerHTML = ids.length ? ids.map(function(id){
-    var e=DEFAULT_EXAMS[id];
-    return '<div class="examcard" style="cursor:default"><div class="icon">'+e.icon+'</div><h2>'+esc(e.title)+'</h2><span class="en">'+esc(e.titleEn)+' – '+esc(e.topic)+'</span><p>'+e.sections.map(function(s){return esc(s.he)+' <small>('+esc(s.en)+')</small>';}).join(' · ')+'</p></div>';
-  }).join('') : '<div class="card">אֵין כָּרֶגַע מִבְחָנִים פְּתוּחִים.<span class="en">No exams are open right now.</span></div>';
-}).catch(function(){document.getElementById('list').innerHTML='<div class="card warn">Connection error</div>';});
-document.getElementById('f').onsubmit=function(e){
-  e.preventDefault();
-  var code=document.getElementById('code').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
-  var err=document.getElementById('err'); err.classList.add('hidden');
-  if(!code)return;
-  function bad(t){err.innerHTML=t;err.classList.remove('hidden');}
-  DB.get('codes',code).then(function(c){
-    if(!c)return bad('קוֹד לֹא נִמְצָא<span class="en">Code not found</span>');
-    if(c.status==='submitted')return bad('הַמִּבְחָן כְּבָר נִשְׁלַח<span class="en">This exam was already submitted</span>');
-    return DB.get('settings','published').then(function(p){
-      if((p||{})[c.examId]===false)return bad('הַמִּבְחָן עֲדַיִן לֹא פָּתוּחַ<span class="en">This exam is not open yet</span>');
-      try{sessionStorage.setItem('examCode',code);}catch(x){}
-      location.href='take.html?code='+code;
-    });
-  }).catch(function(){bad('שְׁגִיאָה בַּחִבּוּר<span class="en">Connection error</span>');});
-};
+var roster = [], pub = {}, cls = null, stu = null;
+var step = document.getElementById('step'), crumb = document.getElementById('crumb');
+function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+function EN(t) { return '<span class="en">' + t + '</span>'; }
+
+function setCrumb() {
+  var h = '<a id="c0">הַכִּתּוֹת</a>';
+  if (cls != null) h += ' ‹ <a id="c1">' + esc(cls || '—') + '</a>';
+  if (stu) h += ' ‹ <b>' + esc(stu.first + ' ' + stu.last) + '</b>';
+  crumb.innerHTML = cls == null ? '' : h;
+  if (cls != null) document.getElementById('c0').onclick = function () { cls = null; stu = null; showClasses(); };
+  if (stu) document.getElementById('c1').onclick = function () { stu = null; showNames(); };
+}
+function showClasses() {
+  setCrumb();
+  var cs = {}; roster.forEach(function (r) { cs[r.class || ''] = 1; });
+  var list = Object.keys(cs).sort();
+  step.innerHTML = '<h2>בַּחֲרוּ אֶת הַכִּתָּה שֶׁלָּכֶם ' + EN('Choose your class') + '</h2>' +
+    (list.length ? '<div class="pick">' + list.map(function (c) { return '<button data-c="' + esc(c) + '">' + esc(c || '—') + '</button>'; }).join('') + '</div>'
+      : '<div class="card">עֲדַיִן לֹא הוּקְצוּ מִבְחָנִים.' + EN('No exams have been assigned yet.') + '</div>');
+  step.querySelectorAll('[data-c]').forEach(function (b) { b.onclick = function () { cls = b.getAttribute('data-c'); showNames(); }; });
+}
+function showNames() {
+  setCrumb();
+  var list = roster.filter(function (r) { return (r.class || '') === cls; }).sort(function (a, b) { return (a.first + a.last).localeCompare(b.first + b.last); });
+  step.innerHTML = '<h2>מִי אַתֶּם? ' + EN('Choose your name') + '</h2><div class="pick">' + list.map(function (r) { return '<button data-id="' + esc(r._id) + '">' + esc(r.first + ' ' + r.last) + '</button>'; }).join('') + '</div>';
+  step.querySelectorAll('[data-id]').forEach(function (b) { b.onclick = function () { stu = roster.filter(function (r) { return r._id === b.getAttribute('data-id'); })[0]; showExams(); }; });
+}
+function showExams() {
+  setCrumb();
+  var ids = (stu.exams || []).filter(function (id) { return window.DEFAULT_EXAMS[id] && pub[id] !== false; });
+  step.innerHTML = '<h2>הַמִּבְחָנִים שֶׁלָּכֶם ' + EN('Your exams') + '</h2><div class="cards">' + (ids.length ? ids.map(function (id) {
+    var e = DEFAULT_EXAMS[id];
+    return '<div class="examcard click" data-e="' + id + '"><div class="icon">' + e.icon + '</div><h2>' + esc(e.title) + '</h2><span class="en">' + esc(e.titleEn) + '</span><p>' + e.sections.map(function (s) { return esc(s.he); }).join(' · ') + '</p><span class="open">פְּתִיחָה ←</span><div class="codebox hidden"></div></div>';
+  }).join('') : '<div class="card">אֵין כָּרֶגַע מִבְחָנִים פְּתוּחִים בִּשְׁבִילְכֶם.' + EN('No open exams for you right now.') + '</div>') + '</div>';
+  step.querySelectorAll('[data-e]').forEach(function (card) {
+    card.onclick = function (ev) {
+      if (ev.target.closest('.codebox')) return;
+      step.querySelectorAll('.codebox').forEach(function (b) { b.classList.add('hidden'); b.innerHTML = ''; });
+      var box = card.querySelector('.codebox'), id = card.getAttribute('data-e');
+      box.classList.remove('hidden');
+      box.innerHTML = '<b>הַכְנִיסוּ אֶת הַקּוֹד הָאִישִׁי שֶׁלָּכֶם</b>' + EN('Enter your personal code') + '<form><input type="text" maxlength="10" autocomplete="off" autocapitalize="characters" placeholder="XXXXXX"><br><button class="btn" style="margin-top:10px" type="submit">התחלה / Start</button></form><p class="warn hidden"></p>';
+      var inp = box.querySelector('input'), err = box.querySelector('.warn'); inp.focus();
+      box.querySelector('form').onsubmit = function (e) {
+        e.preventDefault(); err.classList.add('hidden');
+        var code = inp.value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+        function bad(t) { err.innerHTML = t; err.classList.remove('hidden'); }
+        if (!code) return;
+        DB.get('codes', code).then(function (c) {
+          if (!c || c.studentId !== stu._id || c.examId !== id) return bad('הַקּוֹד לֹא נָכוֹן לַמִּבְחָן הַזֶּה' + EN('This code is not correct for this exam'));
+          if (c.status === 'submitted') return bad('הַמִּבְחָן כְּבָר נִשְׁלַח' + EN('This exam was already submitted'));
+          try { sessionStorage.setItem('examCode', code); } catch (x) {}
+          location.href = 'take.html?code=' + code;
+        }).catch(function () { bad('שְׁגִיאָה בַּחִבּוּר' + EN('Connection error')); });
+      };
+    };
+  });
+}
+
+Promise.all([DB.list('roster'), DB.get('settings', 'published')]).then(function (r) {
+  pub = r[1] || {};
+  roster = r[0].filter(function (s) { return (s.exams || []).some(function (id) { return window.DEFAULT_EXAMS[id] && pub[id] !== false; }); });
+  showClasses();
+}).catch(function () { step.innerHTML = '<div class="card warn">שְׁגִיאָה בַּחִבּוּר / Connection error</div>'; });
 </script></body></html>

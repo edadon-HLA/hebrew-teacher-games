@@ -331,6 +331,15 @@
     })).then(function () { S.students.sort(byName); toast('Saved ' + arr.length + ' students'); studentsView(); }).catch(fail);
   }
 
+  function syncRoster() {
+    return Promise.all([DB.list("codes"), DB.list("roster")]).then(function (r) {
+      var by = {}; r[0].forEach(function (c) { (by[c.studentId] = by[c.studentId] || { first: c.first, last: c.last, class: c.class || "", exams: [] }).exams.push(c.examId); });
+      var ops = Object.keys(by).map(function (id) { return DB.set("roster", id, by[id]); });
+      r[1].forEach(function (o) { if (!by[o._id]) ops.push(DB.del("roster", o._id)); });
+      return Promise.all(ops);
+    });
+  }
+
   /* ---------- assign & codes ---------- */
   function assignView() {
     var v = $('#view'); v.innerHTML = '<div class="card">Loading…</div>';
@@ -358,10 +367,10 @@
       $('#gen').onclick = function () {
         var ids = [].slice.call(v.querySelectorAll('.sel:checked')).map(function (e) { return e.value; }).filter(function (id) { return !codes[id]; });
         if (!ids.length) return alert('Tick students without a code first.');
-        Promise.all(ids.map(function (id) { return make(S.students.filter(function (s) { return s._id === id; })[0]); })).then(function () { toast(ids.length + ' codes created'); assignView(); }).catch(fail);
+        Promise.all(ids.map(function (id) { return make(S.students.filter(function (s) { return s._id === id; })[0]); })).then(function () { syncRoster().then(function () { toast(ids.length + " codes created"); assignView(); }); }).catch(fail);
       };
-      v.querySelectorAll('[data-regen]').forEach(function (b) { b.onclick = function () { var id = b.getAttribute('data-regen'); if (!confirm('Replace this student\'s code with a new one?')) return; DB.del('codes', codes[id].code).then(function () { return make(S.students.filter(function (s) { return s._id === id; })[0]); }).then(assignView).catch(fail); }; });
-      v.querySelectorAll('[data-unassign]').forEach(function (b) { b.onclick = function () { var id = b.getAttribute('data-unassign'); if (confirm('Remove the code? (a submitted result stays in Results)')) DB.del('codes', codes[id].code).then(assignView).catch(fail); }; });
+      v.querySelectorAll('[data-regen]').forEach(function (b) { b.onclick = function () { var id = b.getAttribute('data-regen'); if (!confirm('Replace this student\'s code with a new one?')) return; DB.del('codes', codes[id].code).then(function () { return make(S.students.filter(function (s) { return s._id === id; })[0]); }).then(syncRoster).then(assignView).catch(fail); }; });
+      v.querySelectorAll("[data-unassign]").forEach(function (b) { b.onclick = function () { var id = b.getAttribute('data-unassign'); if (confirm('Remove the code? (a submitted result stays in Results)')) DB.del("codes", codes[id].code).then(syncRoster).then(assignView).catch(fail); }; });
       var rows = list.filter(function (x) { return codes[x._id]; });
       $('#xls').onclick = function () { if (!rows.length) return alert('No codes yet.'); sheetDownload('codes-' + S.assignExam + '.xlsx', [['First name', 'Last name', 'Class', 'Code']].concat(rows.map(function (x) { return [x.first, x.last, x.class, codes[x._id].code]; }))); };
       $('#prt').onclick = function () { if (!rows.length) return alert('No codes yet.'); printHTML('<h2>' + esc(S.exams[S.assignExam].cfg.title) + '</h2>' + rows.map(function (x) { return '<div class="slip"><b>' + esc(x.first + ' ' + x.last) + '</b> · ' + esc(x.class) + '<div class="c">' + codes[x._id].code + '</div><small>' + esc(location.origin + location.pathname.replace('teachers.html', 'index.html')) + '</small></div>'; }).join('')); };
