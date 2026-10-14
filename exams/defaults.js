@@ -103,7 +103,44 @@
 
   window.DEFAULT_EXAMS = { exam1: exam1, exam2: exam2 };
   window.DEFAULT_EXAM_IDS = ['exam1', 'exam2'];
+  /* English versions of the questions (ids are positional: s<section>p<part>i<item>). */
+  var T1 = 'Danny\'s House. Danny lives in an apartment on the third floor. The apartment has a living room, a kitchen, two bedrooms and a shower room. In the living room there is a big sofa and a TV. In the kitchen there is a table, four chairs and a refrigerator. In Danny\'s room there is a bed, a closet, a desk and a computer. There is no TV in his room. In the evening Danny eats dinner in the kitchen with Mom and Dad. Afterwards he studies in his room and sleeps in his bed.';
+  var T2 = 'The Elevator in the Building. Noam\'s building has five floors and an elevator. On floor zero there is a parking lot. Noam lives on floor four, and his grandmother lives on floor two. In the morning Noam presses the button and the elevator goes down to floor zero. In the afternoon he goes up in the elevator to floor four. When the elevator is broken, Noam goes up the stairs.';
+  var EN_TEXT = {
+    exam1: {
+      passages: { s1p0: T1, s1p1: T1 },
+      items: {
+        s0p1i0: 'I sleep in the ______.', s0p1i1: 'The milk is in the ______.', s0p1i2: 'We watch TV in the ______.', s0p1i3: 'Mom cooks in the ______.', s0p1i4: 'I take a shower in the ______.',
+        s1p0i0: 'On which floor does Danny live?', s1p0i1: 'What is in the living room?', s1p0i2: 'How many chairs are in the kitchen?', s1p0i3: 'What is in Danny\'s room?', s1p0i4: 'Where does Danny eat in the evening?',
+        s1p1i0: 'The apartment has three bedrooms.', s1p1i1: 'There is a refrigerator in the kitchen.', s1p1i2: 'There is a TV in Danny\'s room.', s1p1i3: 'Danny sleeps in the bed.', s1p1i4: 'The sofa is small.',
+        s1p2i0: 'Refrigerator ' + F + ' – which room is it in?', s1p2i1: 'Sofa 🛋️ – which room is it in?', s1p2i2: 'Bed 🛏️ – which room is it in?', s1p2i3: 'Soap 🧼 – which room is it in?', s1p2i4: 'Curtain ' + CU + ' – which room? (living room or bedroom)',
+        s2p1i0: 'Where does Noa live?', s2p1i1: 'What is in the kitchen?', s2p1i2: 'Which room does Noa love?'
+      }
+    },
+    exam2: {
+      passages: { s1p0: T2, s1p1: T2 },
+      items: {
+        s0p0i0: 'Floor 4 → Floor ______ (write the number in Hebrew words)', s0p0i1: 'Floor 7 → Floor ______ (write the number in Hebrew words)', s0p0i2: 'Floor 9 → Floor ______ (write the number in Hebrew words)', s0p0i3: 'Floor 6 → Floor ______ (write the number in Hebrew words)', s0p0i4: 'Floor 10 → Floor ______ (write the number in Hebrew words)',
+        s0p1i0: 'The elevator ______ from floor 5 to floor 2.', s0p1i1: 'Noam ______ on the stairs from floor 0 to floor 3.', s0p1i2: 'Dana ______ from floor 4 to floor 0.', s0p1i3: 'The boy ______ from floor 6 to floor 2.', s0p1i4: 'The elevator ______ from floor 1 to floor 3.',
+        s1p0i0: 'How many floors does the building have?', s1p0i1: 'On which floor does Noam live?', s1p0i2: 'What is on floor zero?', s1p0i3: 'What does Noam do in the morning?', s1p0i4: 'How does Noam go up when the elevator is broken?',
+        s1p1i0: 'Grandma lives on the second floor.', s1p1i1: 'In the morning the elevator goes up to floor zero.', s1p1i2: 'The building has an elevator.', s1p1i3: 'Noam lives on the third floor.', s1p1i4: 'In the afternoon Noam goes down to the parking lot.',
+        s1p2i0: 'The elevator is on floor 5 and goes down two floors. Which floor does it reach?', s1p2i1: 'The elevator is on floor 0 and goes up four floors. Which floor does it reach?', s1p2i2: 'Six plus three equals...', s1p2i3: 'Ten minus five equals...', s1p2i4: 'Which is the biggest number?',
+        s2p0i0: '<b>Reading:</b> Read aloud: zero, one, two, three, four, five, six, seven, eight, nine, ten. / The elevator goes up to floor five.',
+        s2p0i1: '<b>Questions:</b> Answer in a full sentence, in Hebrew:<br>1. On which floor do you live? Or: on which floor is your classroom?<br>2. What do you do when the elevator is broken?',
+        s2p0i2: '<b>Picture:</b> Tell about the picture in three sentences, in Hebrew. (Where is the elevator? Is it going up or down? To which floor?)'
+      }
+    }
+  };
+  // Adds the English text to any exam (also older saved copies) where it is missing.
+  window.fillEnglish = function (cfg) {
+    var m = EN_TEXT[cfg.id]; if (!m) return cfg;
+    ExamCore.each(cfg, function (it, p) {
+      if (!it.en && m.items[it.id]) it.en = m.items[it.id];
+      if (!p.passageEn && p.passage && m.passages[p.id]) p.passageEn = m.passages[p.id];
+    });
+    return cfg;
+  };
   window.getDefaultExam = function (id) {
-    var c = JSON.parse(JSON.stringify(window.DEFAULT_EXAMS[id])); return ExamCore.defaults(c);
+    var c = JSON.parse(JSON.stringify(window.DEFAULT_EXAMS[id])); return window.fillEnglish(ExamCore.defaults(c));
   };
 })();

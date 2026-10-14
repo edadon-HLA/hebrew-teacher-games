@@ -81,3 +81,7 @@ main{max-width:900px;margin:28px auto 80px;padding:0 16px}
 @media(max-width:600px){.passage{font-size:19px}.opts.big .opt{font-size:38px}}
 .item.partial{background:#fffbe6}.partial .mark{color:#b58900}
 .big-emoji img{height:64px}
+.enq{direction:ltr;text-align:left;font-size:.82em;color:#3a4463;font-family:Arial,sans-serif}
+.enq.inl{display:inline-block;font-size:1em;color:inherit;vertical-align:middle}
+.item .q .enq:not(.inl){margin-top:2px}
+.passage .enq{font-size:1em;line-height:1.7}

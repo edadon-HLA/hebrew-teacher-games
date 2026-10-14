@@ -45,7 +45,7 @@
   function loadAll() {
     var ids = window.DEFAULT_EXAM_IDS;
     return Promise.all(ids.map(function (id) { return DB.get('examConfigs', id); })).then(function (cs) {
-      ids.forEach(function (id, i) { S.exams[id] = { cfg: ExamCore.defaults(cs[i] || getDefaultExam(id)), custom: !!cs[i] }; });
+      ids.forEach(function (id, i) { S.exams[id] = { cfg: fillEnglish(ExamCore.defaults(cs[i] || getDefaultExam(id))), custom: !!cs[i] }; });
       return Promise.all([DB.list("students"), DB.get("settings", "published")]);
     }).then(function (r) { S.students = r[0].sort(byName); S.published = r[1] || {}; });
   }
@@ -78,12 +78,18 @@
     v.querySelectorAll('[data-go]').forEach(function (b) { b.onclick = function () { S.tab = b.getAttribute('data-go'); if (S.tab === 'assign') S.assignExam = b.getAttribute('data-id'); else S.resExam = b.getAttribute('data-id'); shell(); }; });
   }
 
+  var LANGS = [['he', 'Hebrew only'], ['both', 'Hebrew + English'], ['en', 'English only']];
+  function langSelect(id, val, withInherit, inheritLabel) {
+    var o = (withInherit ? '<option value="inherit"' + (!val || val === 'inherit' ? ' selected' : '') + '>' + inheritLabel + '</option>' : '');
+    return '<select class="sm" id="' + id + '" data-lang="' + id + '">' + o + LANGS.map(function (l) { return '<option value="' + l[0] + '"' + (val === l[0] ? ' selected' : '') + '>' + l[1] + '</option>'; }).join('') + '</select>';
+  }
+
   function itemSummary(it) {
     var t = ExamCore.strip(it.q) || (it.options ? '[picture]' : '') || (it.words || []).join(' ');
     if (!t && it.speak) t = '🔊 ' + ExamCore.strip(it.speak);
     if (it.kind === 'order') t = '🔀 ' + (it.words || []).join(' ');
     if (it.speak || it.audioId) t = (it.audioId ? '🎙 ' : '🔊 ') + t;
-    return esc(t.slice(0, 90));
+    return esc(t.slice(0, 90)) + (it.lang && it.lang !== "inherit" ? " <span class=\"tag\">🌐 " + it.lang + "</span>" : "");
   }
   function editorView() {
     var E = S.E, v = $('#view');
@@ -92,6 +98,7 @@
     h += '<div class="card"><h3>⚙️ Exam settings</h3>' +
       '<div class="row"><label><input type="checkbox" data-set="tl.on"' + (E.timeLimit.on ? ' checked' : '') + '> Apply a time limit</label><label>minutes <input class="sm" type="number" min="1" max="180" data-set="tl.min" value="' + E.timeLimit.minutes + '"></label><span class="en">When time is up the exam is submitted automatically.</span></div>' +
       '<div class="row"><label><input type="checkbox" data-set="ll.on"' + (E.listenLimit.on ? ' checked' : '') + '> Limit how many times students can listen</label><label>max plays <input class="sm" type="number" min="1" max="10" data-set="ll.max" value="' + E.listenLimit.max + '"></label></div>' +
+      '<div class="row"><label>Question language (whole exam): ' + '<select class="sm" data-set="lang">' + LANGS.map(function (l) { return '<option value="' + l[0] + '"' + (E.lang === l[0] ? ' selected' : '') + '>' + l[1] + '</option>'; }).join('') + '</select></label><span class="en">You can override this for a single part or question (✏️ on the part or question).</span></div>' +
       '<div class="row"><label>Spelling tolerance (typed answers): <select class="sm" data-set="spell">' + SPELL.map(function (s, i) { return '<option value="' + i + '"' + (E.spell === i ? ' selected' : '') + '>' + esc(s) + '</option>'; }).join('') + '</select></label></div>' +
       '<div class="row"><label><input type="checkbox" data-set="show"' + (E.showScore ? ' checked' : '') + '> Show the score to the student right after submitting</label></div>' +
       '<div class="row"><span class="stat">Total points: ' + sc.max + '</span><span class="en">The final grade is always scaled to 100 (earned ÷ total × 100).</span></div></div>';
@@ -101,7 +108,7 @@
         '<button class="ic" data-a="secUp" data-s="' + si + '">▲</button><button class="ic" data-a="secDown" data-s="' + si + '">▼</button><button class="ic" data-a="secEdit" data-s="' + si + '">✏️</button><button class="ic" data-a="partAdd" data-s="' + si + '">＋ part</button></div>';
       s.parts.forEach(function (p, pi) {
         var tot = p.items.reduce(function (a, it) { return a + (Number(it.pts) || 0); }, 0);
-        h += '<div class="part"><div class="h"><b>' + esc(ExamCore.strip(p.he)) + '</b><label>part points <input class="sm" type="number" step="0.5" min="0" style="width:80px" data-a="partPts" data-s="' + si + '" data-p="' + pi + '" value="' + Math.round(tot * 100) / 100 + '"></label>' +
+        h += '<div class="part"><div class="h"><b>' + esc(ExamCore.strip(p.he)) + (p.lang && p.lang !== "inherit" ? " <span class=\"tag\">🌐 " + p.lang + "</span>" : "") + '</b><label>part points <input class="sm" type="number" step="0.5" min="0" style="width:80px" data-a="partPts" data-s="' + si + '" data-p="' + pi + '" value="' + Math.round(tot * 100) / 100 + '"></label>' +
           '<button class="ic" data-a="partUp" data-s="' + si + '" data-p="' + pi + '">▲</button><button class="ic" data-a="partDown" data-s="' + si + '" data-p="' + pi + '">▼</button><button class="ic" data-a="partEdit" data-s="' + si + '" data-p="' + pi + '">✏️</button><button class="ic del" data-a="partDel" data-s="' + si + '" data-p="' + pi + '">🗑</button><button class="ic" data-a="itemAdd" data-s="' + si + '" data-p="' + pi + '">＋ question</button></div>';
         p.items.forEach(function (it, ii) {
           var at = 'data-s="' + si + '" data-p="' + pi + '" data-i="' + ii + '"';
@@ -131,7 +138,7 @@
         var k = e.getAttribute('data-set'), val = e.type === 'checkbox' ? e.checked : e.value;
         if (k === 'tl.on') E.timeLimit.on = val; else if (k === 'tl.min') E.timeLimit.minutes = Math.max(1, parseInt(val, 10) || 30);
         else if (k === 'll.on') E.listenLimit.on = val; else if (k === 'll.max') E.listenLimit.max = Math.max(1, parseInt(val, 10) || 2);
-        else if (k === 'spell') E.spell = parseInt(val, 10); else if (k === 'show') E.showScore = val;
+        else if (k === 'spell') E.spell = parseInt(val, 10); else if (k === 'show') E.showScore = val; else if (k === 'lang') E.lang = val;
       };
     });
     v.querySelectorAll('[data-a]').forEach(function (e) {
@@ -173,10 +180,12 @@
     openDlg('<h3>Edit part</h3><div class="field"><label>Title (Hebrew)</label><input class="sm" style="width:100%" id="f1" value="' + esc(part.he) + '"></div>' +
       '<div class="field"><label>Instructions – Hebrew</label><textarea class="sm" id="f2" rows="2">' + esc(part.instrHe) + '</textarea></div>' +
       '<div class="field"><label>Instructions – English</label><textarea class="sm" id="f3" rows="2" style="direction:ltr">' + esc(part.instrEn) + '</textarea></div>' +
+      '<div class="field"><label>Question language for this part</label>' + langSelect('fl', part.lang, true, 'Same as the whole exam') + '</div>' +
       '<div class="field"><label>Reading text shown above the questions (HTML allowed, optional)</label><textarea class="sm" id="f4" rows="6">' + esc(part.passage || '') + '</textarea></div>' +
+      '<div class="field"><label>English version of the reading text (optional)</label><textarea class="sm" id="f5" rows="5" style="direction:ltr">' + esc(part.passageEn || '') + '</textarea></div>' +
       '<div class="row"><button class="btn sm2" id="ok">OK</button><button class="btn sm2 gray" id="no">Cancel</button></div>');
     $('#no').onclick = function () { dlg.close(); };
-    $('#ok').onclick = function () { part.he = $('#f1').value; part.instrHe = $('#f2').value; part.instrEn = $('#f3').value; part.passage = $('#f4').value; dlg.close(); editorView(); };
+    $('#ok').onclick = function () { part.he = $('#f1').value; part.instrHe = $('#f2').value; part.instrEn = $('#f3').value; part.passage = $('#f4').value; part.passageEn = $('#f5').value; part.lang = $('#fl').value; dlg.close(); editorView(); };
   }
 
   /* ----- question editor with audio ----- */
@@ -189,6 +198,7 @@
       h += '<div class="row"><div class="field"><label>Type</label><select class="sm" id="kind"><option value="choice">Multiple choice / true-false</option><option value="type">Typed answer</option><option value="order">Build a sentence (word order)</option><option value="record">Speaking (student records)</option></select></div>' +
         '<div class="field"><label>Points</label><input class="sm" type="number" step="0.5" min="0" id="pts" value="' + (Number(d.pts) || 0) + '"></div></div>';
       if (k !== 'order') h += '<div class="field"><label>Question text (Hebrew, HTML allowed' + (k === 'choice' ? '; may be empty for picture/listening questions' : '') + ')</label><textarea class="sm" id="q" rows="2">' + esc(d.q) + '</textarea></div>';
+      if (k !== 'order') h += '<div class="field"><label>English version of the question (optional – shown according to the language setting)</label><textarea class="sm" id="en" rows="2" style="direction:ltr">' + esc(d.en || '') + '</textarea></div><div class="field"><label>Language for this question</label>' + langSelect('fq', d.lang, true, 'Same as the part / exam') + '</div>';
       if (k === 'choice') {
         h += '<div class="field"><label>Answer options (one per line; HTML/emoji allowed)</label><textarea class="sm" id="opts" rows="5">' + esc((d.options || []).join('\n')) + '</textarea></div><div class="field"><label>Correct option(s) – tick all that are accepted</label><div id="correct"></div></div>' +
           '<div class="field"><label><input type="checkbox" id="big"' + (d.big ? ' checked' : '') + '> Show options large (for pictures/emoji)</label></div>' +
@@ -210,6 +220,8 @@
       var g = function (id) { var e = $('#' + id, dlg); return e ? e.value : null; };
       if (g('pts') != null) d.pts = parseFloat(g('pts')) || 0;
       if (g('q') != null) d.q = g('q');
+      if (g('en') != null) { d.en = g('en'); if (!d.en) delete d.en; }
+      if (g('fq') != null) { d.lang = g('fq'); if (d.lang === 'inherit') delete d.lang; }
       if (d.kind === 'choice') {
         d.options = g('opts').split('\n').map(function (x) { return x.trim(); }).filter(Boolean);
         d.big = $('#big', dlg).checked; d.speak = g('speak'); d.script = g('script');

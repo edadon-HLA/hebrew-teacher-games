@@ -14,6 +14,13 @@ window.ExamCore = (function () {
       d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
     return d[m][n];
   };
+  // Question language: item.lang > part.lang > cfg.lang ('he' | 'both' | 'en'; 'inherit' = use the level above)
+  C.lang = function (cfg, part, it) {
+    var ok = function (v) { return v === 'he' || v === 'both' || v === 'en'; };
+    if (it && ok(it.lang)) return it.lang;
+    if (part && ok(part.lang)) return part.lang;
+    return ok(cfg.lang) ? cfg.lang : 'he';
+  };
   C.uid = function () { return 'q' + Math.random().toString(36).slice(2, 9); };
   C.strip = function (html) { var t = document.createElement('div'); t.innerHTML = html || ''; return (t.textContent || '').trim(); };
   function h(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
@@ -30,6 +37,7 @@ window.ExamCore = (function () {
     cfg.listenLimit = cfg.listenLimit || { on: true, max: 2 };
     if (cfg.spell == null) cfg.spell = 0;
     if (cfg.showScore == null) cfg.showScore = true;
+    if (!cfg.lang) cfg.lang = "he";
     cfg.sections.forEach(function (s, si) {
       s.id = s.id || 's' + si;
       s.parts.forEach(function (p, pi) {
@@ -237,7 +245,11 @@ window.ExamCore = (function () {
         var card = h('div', 'card part');
         card.appendChild(h('h3', null, part.he));
         card.appendChild(h('div', 'instr', part.instrHe + '<span class="en">' + (part.instrEn || '') + '</span>'));
-        if (part.passage) card.appendChild(h('div', 'passage', part.passage));
+        var plang = C.lang(cfg, part, null);
+        if (part.passage || part.passageEn) {
+          var ph = part.passage || '', pe = part.passageEn || '';
+          card.appendChild(h('div', 'passage', plang === 'en' && pe ? '<div class="enq">' + pe + '</div>' : plang === 'both' && pe ? ph + '<div class="enq" style="margin-top:10px">' + pe + '</div>' : ph));
+        }
         if (opts.mode === 'take' && part.items.some(function (i) { return i.speak || i.audioId; })) {
           var warn = h('div', 'warn hidden', 'לֹא נִמְצָא קוֹל עִבְרִי בַּמַּחְשֵׁב. בַּקְשׁוּ מֵהַמּוֹרָה לִפְתֹּחַ בְּ-Chrome אוֹ Edge.<span class="en">No Hebrew voice found on this device. Ask the teacher to use Chrome or Edge.</span>');
           card.appendChild(warn);
@@ -245,7 +257,12 @@ window.ExamCore = (function () {
         }
         part.items.forEach(function (it) {
           idx++;
-          var ctl = it.kind === 'type' ? buildType(it, idx) : it.kind === 'order' ? buildOrder(it, idx) : it.kind === 'record' ? buildRecord(it, idx, opts) : buildChoice(it, idx, opts);
+          var lang = C.lang(cfg, part, it), vit = it;
+          if (it.en && lang !== 'he') {
+            vit = Object.assign({}, it, { q: lang === 'en' ? '<span class="enq inl">' + it.en + '</span>' : (it.q || '') + '<div class="enq">' + it.en + '</div>' });
+          }
+          var ctl = it.kind === 'type' ? buildType(vit, idx) : it.kind === 'order' ? buildOrder(vit, idx) : it.kind === 'record' ? buildRecord(vit, idx, opts) : buildChoice(vit, idx, opts);
+          ctl.def = it;
           card.appendChild(ctl.el); all.push(ctl);
         });
         root.appendChild(card);

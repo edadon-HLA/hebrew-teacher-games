@@ -11,7 +11,7 @@
 
   function start(codeDoc, examId) {
     return Promise.all([DB.get('examConfigs', examId), DB.list('audio', ['examId', examId])]).then(function (r) {
-      var cfg = ExamCore.defaults(r[0] || (window.DEFAULT_EXAMS[examId] ? getDefaultExam(examId) : null));
+      var cfg = r[0] || (window.DEFAULT_EXAMS[examId] ? getDefaultExam(examId) : null); if (cfg) cfg = fillEnglish(ExamCore.defaults(cfg));
       if (!cfg) return msg('מִבְחָן לֹא נִמְצָא<span class="en">Exam not found</span>');
       var audio = {}; r[1].forEach(function (a) { audio[a._id] = a.data; });
       run(codeDoc, cfg, audio);
