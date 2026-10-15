@@ -309,8 +309,8 @@
     v.innerHTML = '<div class="card"><h3>📥 Upload an Excel file</h3><p class="en">Columns: <b>First name, Last name, Class</b> (first row = headers; Hebrew headers שם פרטי / שם משפחה / כיתה also work). .xlsx, .xls or .csv</p>' +
       '<div class="row"><input type="file" id="xl" accept=".xlsx,.xls,.csv"><button class="btn sm2 light" id="tpl">⬇ Download template</button></div><div id="xlmsg"></div></div>' +
       '<div class="card"><h3>➕ Add one student</h3><div class="row"><input class="sm" id="nf" placeholder="First name"><input class="sm" id="nl" placeholder="Last name"><input class="sm" id="nc" placeholder="Class"><input class="sm" id="ns" placeholder="Student ID"><button class="btn sm2" id="add">Add</button></div></div>' +
-      '<div class="card"><div class="row"><h3 style="margin:0">Students (' + list.length + ')</h3>' + clsSelect('fcls', S.cls) + '</div><table class="t"><tr><th>First name</th><th>Last name</th><th>Class</th><th>Student ID (PowerSchool)</th><th></th></tr>' +
-      list.map(function (x) { return '<tr><td>' + esc(x.first) + '</td><td>' + esc(x.last) + '</td><td>' + esc(x.class) + '</td><td><input class="sm" style="min-width:120px;width:140px" data-sid="' + x._id + '" value="' + esc(x.sid) + '" placeholder="ID"></td><td><button class="ic del" data-del="' + x._id + '">🗑</button></td></tr>'; }).join('') + '</table></div>';
+      '<div class="card"><div class="row"><h3 style="margin:0">Students (' + list.length + ')</h3>' + clsSelect('fcls', S.cls) + '<button class="btn sm2 red" id="sdel">🗑 Delete selected</button></div><table class="t"><tr><th><input type="checkbox" id="sall" title="Select all"></th><th>First name</th><th>Last name</th><th>Class</th><th>Student ID (PowerSchool)</th><th></th></tr>' +
+      list.map(function (x) { return '<tr><td><input type="checkbox" class="ssel" value="' + x._id + '"></td><td>' + esc(x.first) + '</td><td>' + esc(x.last) + '</td><td>' + esc(x.class) + '</td><td><input class="sm" style="min-width:120px;width:140px" data-sid="' + x._id + '" value="' + esc(x.sid) + '" placeholder="ID"></td><td><button class="ic del" data-del="' + x._id + '">🗑</button></td></tr>'; }).join('') + '</table></div>';
     $('#fcls').onchange = function () { S.cls = this.value; studentsView(); };
     v.querySelectorAll('[data-sid]').forEach(function (inp) {
       inp.onchange = function () {
@@ -318,6 +318,21 @@
         st.sid = inp.value.trim(); DB.update('students', id, { sid: st.sid }).then(function () { toast('ID saved'); }).catch(fail);
       };
     });
+    $('#sall').onchange = function () { var c = this.checked; v.querySelectorAll('.ssel').forEach(function (e) { e.checked = c; }); };
+    $('#sdel').onclick = function () {
+      var ids = [].slice.call(v.querySelectorAll('.ssel:checked')).map(function (e) { return e.value; });
+      if (!ids.length) return alert('Tick the students you want to delete first (or use the top checkbox to select all).');
+      if (!confirm('Delete ' + ids.length + ' student' + (ids.length > 1 ? 's' : '') + ' from the list?\n\nTheir unused exam codes are removed too. Exams already submitted keep their results.')) return;
+      var set = {}; ids.forEach(function (i) { set[i] = 1; });
+      DB.list('codes').then(function (cs) {
+        var ops = cs.filter(function (c) { return set[c.studentId] && c.status !== 'submitted' && c.status !== 'returned'; }).map(function (c) { return DB.del('codes', c._id); });
+        ids.forEach(function (id) { ops.push(DB.del('students', id)); });
+        return Promise.all(ops);
+      }).then(syncRoster).then(function () {
+        S.students = S.students.filter(function (x) { return !set[x._id]; });
+        toast(ids.length + ' deleted'); studentsView();
+      }).catch(fail);
+    };
     $('#tpl').onclick = function () { sheetDownload('students-template.xlsx', [['First name', 'Last name', 'Class', 'Student ID'], ['Dana', 'Cohen', '5A', '1234567'], ['Noam', 'Levi', '5A', '1234568']]); };
     $('#add').onclick = function () { saveStudents([{ first: $('#nf').value.trim(), last: $('#nl').value.trim(), class: $('#nc').value.trim(), sid: $('#ns').value.trim() }]); };
     v.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (confirm('Remove this student from the list? (existing codes and results stay)')) DB.del('students', b.getAttribute('data-del')).then(function () { S.students = S.students.filter(function (x) { return x._id !== b.getAttribute('data-del'); }); studentsView(); }).catch(fail); }; });
@@ -367,7 +382,7 @@
       var codes = {}, used = {}; r[0].forEach(function (c) { codes[c.studentId] = c; }); r[1].forEach(function (c) { used[c._id] = 1; });
       var list = S.students.filter(function (x) { return !S.cls || x.class === S.cls; });
       v.innerHTML = '<div class="card"><div class="row"><label>Exam: <select class="sm" id="ex">' + window.DEFAULT_EXAM_IDS.map(function (id) { return '<option value="' + id + '"' + (id === S.assignExam ? ' selected' : '') + '>' + esc(S.exams[id].cfg.title) + '</option>'; }).join('') + '</select></label>' + clsSelect('fcls', S.cls) +
-        '<button class="btn sm2" id="gen">🎫 Assign selected &amp; generate codes</button><button class="btn sm2 light" id="xls">⬇ Excel</button><button class="btn sm2 light" id="prt">🖨 Print code slips</button></div>' +
+        '<button class="btn sm2" id="gen">🎫 Assign selected &amp; generate codes</button><button class="btn sm2 red" id="unas">↩ Unassign selected</button><button class="btn sm2 light" id="xls">⬇ Excel</button><button class="btn sm2 light" id="prt">🖨 Print code slips</button></div>' +
         '<p class="en">Students open <b>' + esc(location.origin + location.pathname.replace('teachers.html', 'index.html')) + '</b> and type their personal code. Each code works once.</p>' +
         '<table class="t"><tr><th><input type="checkbox" id="all"></th><th>First name</th><th>Last name</th><th>Class</th><th>Code</th><th>Status</th><th></th></tr>' +
         list.map(function (x) {
@@ -384,6 +399,13 @@
         var code = newCode();
         return DB.set('codes', code, { code: code, examId: S.assignExam, studentId: st._id, first: st.first, last: st.last, class: st.class || '', status: 'assigned', createdAt: new Date().toISOString() });
       }
+      $('#unas').onclick = function () {
+        var ids = [].slice.call(v.querySelectorAll('.sel:checked')).map(function (e) { return e.value; }).filter(function (id) { return codes[id]; });
+        if (!ids.length) return alert('Tick students who have a code first (or use the top checkbox to select all).');
+        var done = ids.filter(function (id) { return codes[id].status === 'submitted' || codes[id].status === 'returned'; }).length;
+        if (!confirm('Unassign ' + S.exams[S.assignExam].cfg.title + ' from ' + ids.length + ' student' + (ids.length > 1 ? 's' : '') + '? Their codes will stop working.' + (done ? '\n\n' + done + ' of them already submitted – those results stay in Results & grading.' : ''))) return;
+        Promise.all(ids.map(function (id) { return DB.del('codes', codes[id].code); })).then(syncRoster).then(function () { toast(ids.length + ' unassigned'); assignView(); }).catch(fail);
+      };
       $('#gen').onclick = function () {
         var ids = [].slice.call(v.querySelectorAll('.sel:checked')).map(function (e) { return e.value; }).filter(function (id) { return !codes[id]; });
         if (!ids.length) return alert('Tick students without a code first.');
