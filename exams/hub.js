@@ -308,12 +308,18 @@
     var v = $('#view'), list = S.students.filter(function (x) { return !S.cls || x.class === S.cls; });
     v.innerHTML = '<div class="card"><h3>📥 Upload an Excel file</h3><p class="en">Columns: <b>First name, Last name, Class</b> (first row = headers; Hebrew headers שם פרטי / שם משפחה / כיתה also work). .xlsx, .xls or .csv</p>' +
       '<div class="row"><input type="file" id="xl" accept=".xlsx,.xls,.csv"><button class="btn sm2 light" id="tpl">⬇ Download template</button></div><div id="xlmsg"></div></div>' +
-      '<div class="card"><h3>➕ Add one student</h3><div class="row"><input class="sm" id="nf" placeholder="First name"><input class="sm" id="nl" placeholder="Last name"><input class="sm" id="nc" placeholder="Class"><button class="btn sm2" id="add">Add</button></div></div>' +
-      '<div class="card"><div class="row"><h3 style="margin:0">Students (' + list.length + ')</h3>' + clsSelect('fcls', S.cls) + '</div><table class="t"><tr><th>First name</th><th>Last name</th><th>Class</th><th></th></tr>' +
-      list.map(function (x) { return '<tr><td>' + esc(x.first) + '</td><td>' + esc(x.last) + '</td><td>' + esc(x.class) + '</td><td><button class="ic del" data-del="' + x._id + '">🗑</button></td></tr>'; }).join('') + '</table></div>';
+      '<div class="card"><h3>➕ Add one student</h3><div class="row"><input class="sm" id="nf" placeholder="First name"><input class="sm" id="nl" placeholder="Last name"><input class="sm" id="nc" placeholder="Class"><input class="sm" id="ns" placeholder="Student ID"><button class="btn sm2" id="add">Add</button></div></div>' +
+      '<div class="card"><div class="row"><h3 style="margin:0">Students (' + list.length + ')</h3>' + clsSelect('fcls', S.cls) + '</div><table class="t"><tr><th>First name</th><th>Last name</th><th>Class</th><th>Student ID (PowerSchool)</th><th></th></tr>' +
+      list.map(function (x) { return '<tr><td>' + esc(x.first) + '</td><td>' + esc(x.last) + '</td><td>' + esc(x.class) + '</td><td><input class="sm" style="min-width:120px;width:140px" data-sid="' + x._id + '" value="' + esc(x.sid) + '" placeholder="ID"></td><td><button class="ic del" data-del="' + x._id + '">🗑</button></td></tr>'; }).join('') + '</table></div>';
     $('#fcls').onchange = function () { S.cls = this.value; studentsView(); };
-    $('#tpl').onclick = function () { sheetDownload('students-template.xlsx', [['First name', 'Last name', 'Class'], ['Dana', 'Cohen', '5A'], ['Noam', 'Levi', '5A']]); };
-    $('#add').onclick = function () { saveStudents([{ first: $('#nf').value.trim(), last: $('#nl').value.trim(), class: $('#nc').value.trim() }]); };
+    v.querySelectorAll('[data-sid]').forEach(function (inp) {
+      inp.onchange = function () {
+        var id = inp.getAttribute('data-sid'), st = S.students.filter(function (x) { return x._id === id; })[0];
+        st.sid = inp.value.trim(); DB.update('students', id, { sid: st.sid }).then(function () { toast('ID saved'); }).catch(fail);
+      };
+    });
+    $('#tpl').onclick = function () { sheetDownload('students-template.xlsx', [['First name', 'Last name', 'Class', 'Student ID'], ['Dana', 'Cohen', '5A', '1234567'], ['Noam', 'Levi', '5A', '1234568']]); };
+    $('#add').onclick = function () { saveStudents([{ first: $('#nf').value.trim(), last: $('#nl').value.trim(), class: $('#nc').value.trim(), sid: $('#ns').value.trim() }]); };
     v.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { if (confirm('Remove this student from the list? (existing codes and results stay)')) DB.del('students', b.getAttribute('data-del')).then(function () { S.students = S.students.filter(function (x) { return x._id !== b.getAttribute('data-del'); }); studentsView(); }).catch(fail); }; });
     $('#xl').onchange = function () {
       var f = this.files[0]; if (!f) return;
@@ -323,9 +329,9 @@
           var wb = XLSX.read(rd.result, { type: 'array' }), rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, defval: '' });
           var hdr = rows[0].map(function (c) { return String(c).toLowerCase().trim(); });
           function col(re, dflt) { var i = hdr.findIndex(function (c) { return re.test(c); }); return i >= 0 ? i : dflt; }
-          var hasHdr = hdr.some(function (c) { return /first|last|class|פרטי|משפחה|כיתה|שם/.test(c); });
-          var ci = hasHdr ? { f: col(/first|פרטי/, 0), l: col(/last|family|משפחה/, 1), c: col(/class|כיתה/, 2) } : { f: 0, l: 1, c: 2 };
-          var out = rows.slice(hasHdr ? 1 : 0).map(function (r) { return { first: String(r[ci.f] || '').trim(), last: String(r[ci.l] || '').trim(), class: String(r[ci.c] || '').trim() }; }).filter(function (x) { return x.first || x.last; });
+          var hasHdr = hdr.some(function (c) { return /first|last|class|id|number|פרטי|משפחה|כיתה|שם|מספר|זהות/.test(c); });
+          var ci = hasHdr ? { f: col(/first|פרטי/, 0), l: col(/last|family|משפחה/, 1), c: col(/class|כיתה/, 2), s: col(/(^|[^a-z])id([^a-z]|$)|number|מספר|זהות|מזהה/, 3) } : { f: 0, l: 1, c: 2, s: 3 };
+          var out = rows.slice(hasHdr ? 1 : 0).map(function (r) { return { first: String(r[ci.f] || '').trim(), last: String(r[ci.l] || '').trim(), class: String(r[ci.c] || '').trim(), sid: String(r[ci.s] == null ? '' : r[ci.s]).trim() }; }).filter(function (x) { return x.first || x.last; });
           if (!out.length) return alert('No students found in the file.');
           if (confirm('Add ' + out.length + ' students (' + out.slice(0, 3).map(function (x) { return x.first + ' ' + x.last; }).join(', ') + '…)?')) saveStudents(out);
         } catch (e) { fail(e); }
@@ -339,7 +345,9 @@
     var ex = {}; S.students.forEach(function (s) { ex[s._id] = 1; });
     Promise.all(arr.map(function (x) {
       var id = (x.first + '_' + x.last + '_' + x.class).toLowerCase().replace(/[^a-z0-9֐-׿_]+/g, '-');
-      return DB.set('students', id, x).then(function () { if (!ex[id]) S.students.push(Object.assign({ _id: id }, x)); });
+      var old = S.students.filter(function (s) { return s._id === id; })[0];
+      if (!x.sid && old && old.sid) x.sid = old.sid;
+      return DB.set('students', id, x).then(function () { if (!ex[id]) S.students.push(Object.assign({ _id: id }, x)); else Object.assign(old, x); });
     })).then(function () { S.students.sort(byName); toast('Saved ' + arr.length + ' students'); studentsView(); }).catch(fail);
   }
 
@@ -397,7 +405,7 @@
       var rows = r[0].filter(function (c) { return !S.cls || c.class === S.cls; }).sort(byName);
       var done = rows.filter(function (c) { return subs[c.code]; }), avg = done.length ? Math.round(done.reduce(function (a, c) { return a + subs[c.code].total; }, 0) / done.length * 10) / 10 : 0;
       v.innerHTML = '<div class="card"><div class="row"><label>Exam: <select class="sm" id="ex">' + window.DEFAULT_EXAM_IDS.map(function (id) { return '<option value="' + id + '"' + (id === S.resExam ? ' selected' : '') + '>' + esc(S.exams[id].cfg.title) + '</option>'; }).join('') + '</select></label>' + clsSelect('fcls', S.cls) +
-        '<button class="btn sm2 light" id="xls">⬇ Excel</button><button class="btn sm2 light" id="prt">🖨 Print</button></div>' +
+        '<button class="btn sm2 light" id="xls">⬇ Excel</button><button class="btn sm2 light" id="prt">🖨 Print</button><button class="btn sm2" id="ps">📤 Export to PowerSchool</button></div>' +
         '<div><span class="stat">Submitted: ' + done.length + ' / ' + rows.length + '</span><span class="stat">Average: ' + avg + '</span></div>' +
         '<table class="t"><tr><th>First name</th><th>Last name</th><th>Class</th><th>Code</th><th>Score</th><th>Submitted</th><th></th></tr>' +
         rows.map(function (c) {
@@ -413,11 +421,58 @@
           var s = subs[c.code]; return [c.first, c.last, c.class, c.code, s ? s.total : ''].concat(S.exams[S.resExam].cfg.sections.map(function (sec, i) { return s && s.secs[i] ? s.secs[i].earned + '/' + s.secs[i].max : ''; })).concat([s ? fmtDate(s.submittedAt) : '']);
         }));
       }
+      $('#ps').onclick = function () { psDialog(rows, subs); };
       $('#xls').onclick = function () { if (!rows.length) return alert('Nothing to export.'); sheetDownload('results-' + S.resExam + (S.cls ? '-' + S.cls : '') + '.xlsx', aoa()); };
       $('#prt').onclick = function () {
         var a = aoa(); printHTML('<h2>' + esc(S.exams[S.resExam].cfg.title) + (S.cls ? ' · ' + esc(S.cls) : '') + '</h2><p>' + new Date().toLocaleDateString() + ' · Average ' + avg + '</p><table class="t">' + a.map(function (r, i) { return '<tr>' + r.map(function (c) { return '<' + (i ? 'td' : 'th') + '>' + esc(c) + '</' + (i ? 'td' : 'th') + '>'; }).join('') + '</tr>'; }).join('') + '</table>');
       };
     }).catch(fail);
+  }
+
+  /* ---------- PowerSchool export (score import file) ---------- */
+  function psDialog(rows, subs) {
+    var saved = {}; try { saved = JSON.parse(localStorage.getItem('psAssign') || '{}'); } catch (e) {}
+    var cfg = S.exams[S.resExam].cfg, today = new Date().toISOString().slice(0, 10);
+    var byId = {}; S.students.forEach(function (s) { byId[s._id] = s; });
+    function sidOf(c) { var s = byId[c.studentId]; return s && s.sid ? String(s.sid) : ''; }
+    openDlg('<h3>📤 Export grades to PowerSchool</h3>' +
+      '<div class="field"><label>Assignment name</label><input class="sm" style="width:100%" id="an" value="' + esc(saved.name || ExamCore.strip(cfg.titleEn || cfg.title)) + '"></div>' +
+      '<div class="row"><div class="field"><label>Category (for your reference)</label><input class="sm" id="ac" value="' + esc(saved.cat || 'Test') + '"></div>' +
+      '<div class="field"><label>Points possible</label><input class="sm" type="number" min="1" id="ap" value="' + esc(saved.pts || 100) + '"></div>' +
+      '<div class="field"><label>Date</label><input class="sm" type="date" id="ad" value="' + today + '"></div></div>' +
+      '<div class="field"><label>Students who did not submit</label><select class="sm" id="am"><option value="blank">Leave blank (not in the file)</option><option value="zero">Score 0</option></select></div>' +
+      '<div id="psinfo" class="instr"></div>' +
+      '<div class="row"><button class="btn sm2" id="dlcsv">⬇ Import file (.csv)</button><button class="btn sm2 light" id="dlxls">⬇ Check sheet with names (.xlsx)</button><button class="btn sm2 gray" id="no">Close</button></div>' +
+      '<p class="en" style="font-size:14px">In PowerTeacher Pro: create the assignment with the same points, then right-click its header → <b>Import Scores</b> → choose the CSV, student ID = column 1, score = column 2, no header row, points (not percent).</p>');
+    function build() {
+      var pts = parseFloat($('#ap', dlg).value) || 100, mode = $('#am', dlg).value;
+      var ok = [], noId = [], missing = 0;
+      rows.forEach(function (c) {
+        var s = subs[c.code], id = sidOf(c);
+        var score = s ? Math.round(s.total / 100 * pts * 100) / 100 : (mode === 'zero' ? 0 : null);
+        if (score == null) { missing++; return; }
+        if (!id) { noId.push(c.first + ' ' + c.last); return; }
+        ok.push({ c: c, id: id, score: score, submitted: !!s });
+      });
+      $('#psinfo', dlg).innerHTML = '<b>' + ok.length + '</b> students ready' + (missing ? ' · ' + missing + ' not submitted (left out)' : '') +
+        (noId.length ? '<br><span style="color:#8a1f17">⚠ ' + noId.length + ' without a Student ID (left out): ' + esc(noId.slice(0, 8).join(', ')) + (noId.length > 8 ? '…' : '') + '. Add IDs in the Students tab.</span>' : '');
+      return { ok: ok, pts: pts };
+    }
+    ['ap', 'am'].forEach(function (id) { $('#' + id, dlg).onchange = build; });
+    build();
+    function keep() { try { localStorage.setItem('psAssign', JSON.stringify({ name: $('#an', dlg).value, cat: $('#ac', dlg).value, pts: $('#ap', dlg).value })); } catch (e) {} }
+    $('#no', dlg).onclick = function () { dlg.close(); };
+    $('#dlcsv', dlg).onclick = function () {
+      var b = build(); if (!b.ok.length) return alert('Nothing to export.'); keep();
+      var csv = b.ok.map(function (x) { return x.id + ',' + x.score; }).join('\r\n') + '\r\n';
+      var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+      a.download = 'powerschool-import-' + S.resExam + (S.cls ? '-' + S.cls : '') + '.csv'; a.click();
+    };
+    $('#dlxls', dlg).onclick = function () {
+      var b = build(); if (!b.ok.length) return alert('Nothing to export.'); keep();
+      sheetDownload('powerschool-check-' + S.resExam + '.xlsx', [['Assignment', $('#an', dlg).value, 'Category', $('#ac', dlg).value, 'Points possible', b.pts, 'Date', $('#ad', dlg).value], [], ['Student ID', 'First name', 'Last name', 'Class', 'Score', 'Percent']]
+        .concat(b.ok.map(function (x) { return [x.id, x.c.first, x.c.last, x.c.class, x.score, x.submitted ? Math.round(x.score / b.pts * 1000) / 10 : '']; })));
+    };
   }
 
   function returnToStudent(code) {
