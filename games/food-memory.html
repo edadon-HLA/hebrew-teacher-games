@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>זִכָּרוֹן שֶׁל אֹכֶל | משחקי עברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#fff6ec;--card:#fff;--ink:#23233a;--muted:#6b6880;--line:#eadfce;--green:#2f9d55;--green-soft:#dcf2e3;--red:#e2506a;--sky:#2a8bd0;--sky-soft:#e6f2fd;--gold:#f2b01e;--orange:#f08a24;--f:'Rubik','Noto Sans Hebrew',Arial,sans-serif}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto;padding:14px 16px 40px}
+h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;text-align:center}
+.sub{text-align:center;color:var(--muted);font-size:18px;margin:0 0 14px}
+.panel{background:var(--card);border:2px solid var(--line);border-radius:22px;box-shadow:0 8px 24px #23233a14;padding:18px}
+.btn{font:700 20px var(--f);border:0;border-radius:14px;padding:12px 24px;background:var(--sky);color:#fff;cursor:pointer}
+.btn:hover{filter:brightness(.92)}.btn:disabled{opacity:.45;cursor:default}
+.btn.ghost{background:#fff;color:var(--sky);border:2px solid var(--sky)}
+.btn.good{background:var(--green)}.btn.big{font-size:26px;padding:14px 40px}.btn.small{font-size:16px;padding:7px 14px}
+button{font-family:var(--f)}
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+
+/* setup */
+.set{margin:0 0 18px}.set h2{font-size:22px;margin:0 0 8px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.mode{border:3px solid var(--line);border-radius:18px;background:#fff;padding:14px;cursor:pointer;text-align:center;color:var(--ink)}
+.mode .pic{font-size:36px;line-height:1.2}.mode h3{margin:6px 0 2px;font-size:22px}.mode p{margin:0;color:var(--muted);font-size:15px}
+.mode.on,.chip.on{border-color:var(--sky);background:var(--sky-soft)}
+.mode:hover{border-color:var(--sky)}
+.chip{font:700 19px var(--f);border:3px solid var(--line);background:#fff;border-radius:999px;padding:6px 16px;cursor:pointer;color:var(--ink)}
+.list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.list span{background:#fff3e0;border:2px solid #f6d3a8;border-radius:999px;padding:3px 12px;font-weight:700}
+.start{text-align:center;margin-top:8px}
+
+/* game bar */
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.stat{font-weight:800;font-size:20px;background:#fff;border:2px solid var(--line);border-radius:999px;padding:5px 16px}
+.teams{display:flex;gap:10px}
+.team{font-weight:800;font-size:20px;border:3px solid var(--line);border-radius:16px;padding:5px 16px;background:#fff}
+.team.turn{border-color:var(--orange);background:#fff1e0;box-shadow:0 0 0 3px #f08a2433}
+.team b{font-size:24px;margin-inline-start:6px}
+
+/* cards */
+#board{display:grid;gap:12px;grid-template-columns:repeat(var(--cols,6),1fr)}
+.card{position:relative;aspect-ratio:3/3.6;border:0;padding:0;background:none;cursor:pointer;perspective:900px}
+.card .in{position:absolute;inset:0;transition:transform .45s;transform-style:preserve-3d}
+.card.open .in,.card.done .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 0 #0000001a,0 8px 18px #23233a1a}
+.back{background:repeating-linear-gradient(45deg,#f08a24 0 14px,#f39b40 14px 28px);border:4px solid #fff;color:#fff;font-size:clamp(34px,5vw,52px)}
+.front{background:#fff;border:4px solid #f6d3a8;transform:rotateY(180deg);padding:6px}
+.card.done .front{border-color:var(--green);background:var(--green-soft)}
+.pic{font-size:clamp(40px,6.5vw,72px);line-height:1.05;display:flex;align-items:center;justify-content:center;min-height:1.1em}
+.pic svg{width:clamp(60px,9vw,100px);height:auto}
+.pic.many{font-size:clamp(26px,4vw,44px)}
+.word{font:800 clamp(18px,2.6vw,28px) var(--f);margin-top:4px;text-align:center;line-height:1.15}
+.front.only-word .word{font-size:clamp(22px,3.4vw,36px)}
+.front.only-pic .pic{font-size:clamp(52px,8vw,90px)}
+.num{position:absolute;top:6px;right:6px;z-index:3;min-width:34px;height:34px;padding:0 6px;border-radius:17px;background:#ffd23f;color:#17324d;border:3px solid #17324d;font:800 18px/28px var(--f);text-align:center;pointer-events:none}
+.card.done .num{background:#b7f0c6}
+.card.bump{animation:bump .4s}
+@keyframes bump{50%{transform:scale(1.06)}}
+.card.nope .front{border-color:var(--red)}
+.endbox{text-align:center;margin-top:16px}
+.endbox h2{font-size:36px;margin:6px 0}
+.toast{position:fixed;top:30%;left:50%;transform:translate(-50%,-50%);background:var(--green);color:#fff;font:800 32px var(--f);padding:16px 30px;border-radius:24px;box-shadow:0 12px 40px #0004;z-index:50;animation:pop 1.5s forwards;pointer-events:none}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}80%{opacity:1}100%{opacity:0}}
+.novoice{color:var(--muted);font-size:14px;text-align:center;margin-top:8px}
+@media(max-width:700px){#board{gap:8px}.num{min-width:28px;height:28px;font-size:15px;line-height:22px}}
+@media (prefers-reduced-motion:reduce){.card .in{transition:none}.toast,.card.bump{animation:none}}
+</style>
+<style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
+</style></head>
+</head>
+<body>
+<nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
+<div class="wrap">
+
+<section id="setup">
+  <h1>🍽️ זִכָּרוֹן שֶׁל אֹכֶל</h1>
+  <p class="sub">הוֹפְכִים שְׁנֵי קְלָפִים וּמְחַפְּשִׂים זוּג. כְּשֶׁהוֹפְכִים קְלָף — שׁוֹמְעִים אֶת הַמִּלָּה.</p>
+  <div class="panel">
+    <div class="set">
+      <h2>1. אֵיזֶה מִשְׂחָק?</h2>
+      <div class="modes">
+        <button class="mode" type="button" data-m="list"><div class="pic">🥑🍕🧆</div><h3>הָרְשִׁימָה שֶׁלָּנוּ</h3><p>11 מַאֲכָלִים מֵהַשִּׁעוּר</p>
+          <div class="list" id="listWords"></div></button>
+        <button class="mode" type="button" data-m="more"><div class="pic">🍔🍉🥕🍰</div><h3>מוּרְחָב</h3><p>מַאֲכָלִים אַקְרָאִיִּים מֵרְשִׁימָה גְּדוֹלָה — וְאֶפְשָׁר לְהוֹסִיף זוּגוֹת</p></button>
+      </div>
+    </div>
+    <div class="set" id="pairsSet">
+      <h2>2. כַּמָּה זוּגוֹת?</h2>
+      <div class="row" id="pairs">
+        <button class="chip" type="button" data-p="6">6</button><button class="chip" type="button" data-p="8">8</button>
+        <button class="chip" type="button" data-p="10">10</button><button class="chip" type="button" data-p="12">12</button>
+        <button class="chip" type="button" data-p="15">15</button><button class="chip" type="button" data-p="18">18</button>
+      </div>
+    </div>
+    <div class="set">
+      <h2 id="kindTitle">3. אֵיךְ נִרְאִים הַקְּלָפִים?</h2>
+      <div class="row" id="kinds">
+        <button class="chip" type="button" data-k="same">🥑 אָבוֹקָדוֹ + 🥑 אָבוֹקָדוֹ · תְּמוּנָה וּמִלָּה בְּכָל קְלָף</button>
+        <button class="chip" type="button" data-k="split">🥑 ↔ אָבוֹקָדוֹ · קְלָף שֶׁל תְּמוּנָה וּקְלָף שֶׁל מִלָּה</button>
+      </div>
+    </div>
+    <div class="set">
+      <h2 id="teamTitle">4. מִי מְשַׂחֵק?</h2>
+      <div class="row" id="teams">
+        <button class="chip" type="button" data-t="1">🙋 שַׂחְקָן אֶחָד / כָּל הַכִּתָּה</button>
+        <button class="chip" type="button" data-t="2">👥 שְׁתֵּי קְבוּצוֹת</button>
+      </div>
+    </div>
+    <div class="start"><button class="btn big good" id="go" type="button">▶ מַתְחִילִים</button></div>
+  </div>
+</section>
+
+<section id="game" hidden>
+  <div class="bar">
+    <div class="row">
+      <span class="stat" id="pairsLeft"></span>
+      <span class="stat" id="moves"></span>
+    </div>
+    <div class="teams" id="teamBox" hidden><span class="team" id="t0">קְבוּצָה א <b id="s0">0</b></span><span class="team" id="t1">קְבוּצָה ב <b id="s1">0</b></span></div>
+    <div class="row">
+      <button class="btn small good" id="addPair" type="button">➕ זוּג נוֹסָף</button>
+      <button class="btn small ghost" id="restart" type="button">↺ מֵהַתְחָלָה</button>
+      <button class="btn small ghost" id="toSetup" type="button">⚙ הַגְדָּרוֹת</button>
+    </div>
+  </div>
+  <div id="board"></div>
+  <div class="endbox" id="endBox" hidden>
+    <h2 id="endTitle">🎉 כָּל הַכָּבוֹד!</h2>
+    <p id="endText" style="font-size:22px;color:var(--muted)"></p>
+    <div class="row" style="justify-content:center"><button class="btn big good" id="again" type="button">↺ עוֹד פַּעַם</button><button class="btn big ghost" id="menu" type="button">⚙ הַגְדָּרוֹת</button></div>
+  </div>
+  <p class="novoice" id="novoice" hidden>אֵין קוֹל עִבְרִי בַּמַּחְשֵׁב הַזֶּה — הַמּוֹרֶה יָכוֹל לְהַקְרִיא אֶת הַמִּלִּים.</p>
+</section>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+/* two foods without a good emoji are drawn here */
+const HUMMUS = `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="46" rx="47" ry="30" fill="#dfe9f3"/><ellipse cx="50" cy="43" rx="37" ry="23" fill="#ecd29f"/>
+  <path d="M24 44 Q50 22 76 44 Q50 62 24 44" fill="none" stroke="#d2b06c" stroke-width="3"/><ellipse cx="50" cy="43" rx="13" ry="7" fill="#d9a400" opacity=".75"/>
+  <g fill="#e0b25f"><circle cx="46" cy="42" r="3"/><circle cx="53" cy="44" r="3"/><circle cx="50" cy="39" r="3"/></g><g fill="#c0392b"><circle cx="34" cy="38" r="1.6"/><circle cx="66" cy="47" r="1.6"/><circle cx="60" cy="33" r="1.6"/></g>
+  <g fill="#3c9a45"><circle cx="40" cy="50" r="2"/><circle cx="62" cy="40" r="2"/></g></svg>`;
+const SHAKSHUKA = `<svg viewBox="0 0 110 80" xmlns="http://www.w3.org/2000/svg"><rect x="80" y="36" width="30" height="8" rx="4" fill="#2b2b2b"/><circle cx="46" cy="40" r="38" fill="#333"/><circle cx="46" cy="40" r="32" fill="#d8432c"/>
+  <path d="M22 34 q4 -10 14 -8 q10 -2 12 8 q4 10 -8 12 q-12 4 -18 -12z" fill="#fff"/><circle cx="34" cy="34" r="6" fill="#ffb703"/>
+  <path d="M46 46 q4 -10 14 -8 q10 -2 12 8 q4 10 -8 12 q-12 4 -18 -12z" fill="#fff"/><circle cx="58" cy="46" r="6" fill="#ffb703"/>
+  <g fill="#3c9a45"><circle cx="30" cy="54" r="2"/><circle cx="62" cy="28" r="2"/><circle cx="48" cy="22" r="2"/><circle cx="70" cy="56" r="2"/></g></svg>`;
+
+/* the class list (from the lesson) */
+const LIST = [
+  ['אָבוֹקָדוֹ', '🥑'], ['גְּבִינָה', '🧀'], ['חוּמוּס', HUMMUS], ['מַנְגּוֹ', '🥭'], ['פַּסְטָה', '🍝'], ['פֵּרוֹת', '🍎🍌🍇'],
+  ['פִּיצָה', '🍕'], ['פָלָאפֶל', '🧆'], ['שׁוֹקוֹלָד', '🍫'], ['שָׁוַרְמָה', '🥙'], ['שַׁקְשׁוּקָה', SHAKSHUKA],
+];
+/* more foods for the expanded game */
+const MORE = [
+  ['לֶחֶם', '🍞'], ['חָלָב', '🥛'], ['בֵּיצָה', '🥚'], ['תַּפּוּחַ', '🍎'], ['בָּנָנָה', '🍌'], ['עַגְבָנִיָּה', '🍅'], ['מְלָפְפוֹן', '🥒'], ['גֶּזֶר', '🥕'],
+  ['תַּפּוּחַ אֲדָמָה', '🥔'], ['תִּירָס', '🌽'], ['אֹרֶז', '🍚'], ['עוּגָה', '🍰'], ['גְּלִידָה', '🍦'], ['עוּגִיָּה', '🍪'], ['דָּג', '🐟'], ['עוֹף', '🍗'],
+  ['הַמְבּוּרְגֶּר', '🍔'], ['צִ\'יפְּס', '🍟'], ['סָלָט', '🥗'], ['מָרָק', '🍲'], ['תּוּת', '🍓'], ['אֲבַטִּיחַ', '🍉'], ['עֲנָבִים', '🍇'], ['לִימוֹן', '🍋'],
+  ['תַּפּוּז', '🍊'], ['אַגָּס', '🍐'], ['אָנָנָס', '🍍'], ['דֻּבְדְּבָן', '🍒'], ['פַּנְקֵייק', '🥞'], ['בֵּייגֶל', '🥯'], ['סֻפְגָּנִיָּה', '🍩'], ['סֻכָּרִיָּה', '🍬'],
+  ['דְּבַשׁ', '🍯'], ['קָפֶה', '☕'], ['תֵּה', '🍵'], ['מִיץ', '🧃'], ['פּוֹפְּקוֹרְן', '🍿'], ['נַקְנִיקִיָּה', '🌭'], ['בְּרוֹקוֹלִי', '🥦'], ['חָצִיל', '🍆'],
+  ['בָּצָל', '🧅'], ['שׁוּם', '🧄'], ['קְרוּאָסוֹן', '🥐'], ['בֵּיגְלֶה', '🥨'], ['סוּשִׁי', '🍣'], ['קוֹקוֹס', '🥥'], ['קִיוִי', '🥝'], ['אֲפַרְסֵק', '🍑'],
+  ['בָּטָטָה', '🍠'], ['בָּגֶט', '🥖'], ['פַּשְׁטִידָה', '🥧'], ['בָּשָׂר', '🥩'], ['אֱגוֹזִים', '🥜'],
+];
+const ALL = [...LIST, ...MORE];
+$('listWords').innerHTML = LIST.map(f => `<span>${f[0]}</span>`).join('');
+
+/* settings */
+const S = { mode: 'list', pairs: 8, kind: 'same', teams: 1 };
+try { Object.assign(S, JSON.parse(localStorage.getItem('foodMemory') || '{}')); } catch (e) {}
+{ const u = new URLSearchParams(location.search); if (/^(list|more)$/.test(u.get('mode') || '')) S.mode = u.get('mode'); }
+const save = () => { try { localStorage.setItem('foodMemory', JSON.stringify(S)); } catch (e) {} };
+function paint(){
+  document.querySelectorAll('[data-m]').forEach(b => b.classList.toggle('on', b.dataset.m === S.mode));
+  document.querySelectorAll('[data-p]').forEach(b => b.classList.toggle('on', +b.dataset.p === S.pairs));
+  document.querySelectorAll('[data-k]').forEach(b => b.classList.toggle('on', b.dataset.k === S.kind));
+  document.querySelectorAll('[data-t]').forEach(b => b.classList.toggle('on', +b.dataset.t === S.teams));
+  $('pairsSet').hidden = S.mode === 'list';
+  $('kindTitle').textContent = (S.mode === 'list' ? '2' : '3') + '. אֵיךְ נִרְאִים הַקְּלָפִים?';
+  $('teamTitle').textContent = (S.mode === 'list' ? '3' : '4') + '. מִי מְשַׂחֵק?';
+}
+document.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { S.mode = b.dataset.m; paint(); });
+document.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { S.pairs = +b.dataset.p; paint(); });
+document.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { S.kind = b.dataset.k; paint(); });
+document.querySelectorAll('[data-t]').forEach(b => b.onclick = () => { S.teams = +b.dataset.t; paint(); });
+paint();
+
+/* voice */
+const heVoice = () => ('speechSynthesis' in window ? speechSynthesis.getVoices() : []).find(v => /^(he|iw)/i.test(v.lang));
+if ('speechSynthesis' in window) speechSynthesis.getVoices();
+function say(t){
+  if (!('speechSynthesis' in window)){ $('novoice').hidden = false; return; }
+  const v = heVoice(); if (!v){ $('novoice').hidden = false; return; }
+  speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = v; u.lang = v.lang; u.rate = .85; speechSynthesis.speak(u);
+}
+let ac = null;
+function tone(ok){
+  try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const t = ac.currentTime;
+    (ok ? [523, 659, 784] : [300, 240]).forEach((f, i) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; o.type = 'triangle';
+      g.gain.setValueAtTime(.0001, t + i * .1); g.gain.exponentialRampToValueAtTime(.14, t + i * .1 + .02); g.gain.exponentialRampToValueAtTime(.0001, t + i * .1 + .2);
+      o.connect(g).connect(ac.destination); o.start(t + i * .1); o.stop(t + i * .1 + .22); });
+  } catch (e) {}
+}
+
+/* game */
+let G = null;
+function start(){
+  save();
+  const foods = S.mode === 'list' ? shuffle(LIST) : shuffle(ALL).slice(0, S.pairs);
+  G = { cards: [], open: [], lock: false, moves: 0, found: 0, turn: 0, score: [0, 0], used: new Set(foods.map(f => f[0])) };
+  foods.forEach(f => addPairCards(f));
+  G.cards = shuffle(G.cards);
+  $('setup').hidden = true; $('game').hidden = false; $('endBox').hidden = true;
+  $('teamBox').hidden = S.teams !== 2;
+  $('addPair').hidden = S.mode === 'list';
+  render(); stats();
+}
+function addPairCards(f){
+  const a = S.kind === 'split' ? ['pic', 'word'] : ['both', 'both'];
+  a.forEach(k => G.cards.push({ food: f, kind: k, done: false, open: false }));
+}
+const picHtml = p => `<div class="pic${[...p].length > 2 && !p.startsWith('<') ? ' many' : ''}">${p}</div>`;
+function faceHtml(c){
+  const [w, p] = c.food;
+  if (c.kind === 'word') return `<div class="face front only-word"><div class="word">${w}</div></div>`;
+  if (c.kind === 'pic') return `<div class="face front only-pic">${picHtml(p)}</div>`;
+  return `<div class="face front">${picHtml(p)}<div class="word">${w}</div></div>`;
+}
+function render(){
+  const n = G.cards.length, cols = n <= 12 ? 4 : n <= 16 ? 4 : n <= 24 ? 6 : n <= 30 ? 6 : 8;
+  const board = $('board'); board.style.setProperty('--cols', window.innerWidth < 560 ? Math.min(cols, 4) : cols); board.innerHTML = '';
+  G.cards.forEach((c, i) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'card' + (c.open ? ' open' : '') + (c.done ? ' done' : '');
+    b.setAttribute('aria-label', 'קלף ' + (i + 1));
+    b.innerHTML = `<span class="num">${i + 1}</span><span class="in"><span class="face back">🍽️</span>${faceHtml(c)}</span>`;
+    b.onclick = () => flip(c);
+    c.el = b; board.appendChild(b);
+  });
+}
+function stats(){
+  const total = G.cards.length / 2;
+  $('pairsLeft').textContent = `🍽️ ${G.found} / ${total} זוּגוֹת`;
+  $('moves').textContent = `🔄 ${G.moves} נִסְיוֹנוֹת`;
+  if (S.teams === 2){ $('s0').textContent = G.score[0]; $('s1').textContent = G.score[1]; $('t0').classList.toggle('turn', G.turn === 0); $('t1').classList.toggle('turn', G.turn === 1); }
+  $('addPair').disabled = G.found === total || G.used.size >= ALL.length;
+}
+function flip(c){
+  if (G.lock || c.open || c.done) return;
+  c.open = true; c.el.classList.add('open'); G.open.push(c);
+  say(c.food[0]);
+  if (G.open.length < 2) return;
+  G.moves++; G.lock = true;
+  const [a, b] = G.open;
+  if (a.food === b.food){
+    setTimeout(() => {
+      a.done = b.done = true; a.open = b.open = false; [a, b].forEach(x => { x.el.classList.add('done', 'bump'); x.el.classList.remove('open'); });
+      G.found++; if (S.teams === 2) G.score[G.turn]++;
+      tone(true); G.open = []; G.lock = false; stats();
+      if (G.found === G.cards.length / 2) finish(); else say(a.food[0]);
+    }, 650);
+  } else {
+    setTimeout(() => { [a, b].forEach(x => x.el.classList.add('nope')); tone(false); }, 500);
+    setTimeout(() => {
+      [a, b].forEach(x => { x.open = false; x.el.classList.remove('open', 'nope'); });
+      G.open = []; G.lock = false; if (S.teams === 2) G.turn = 1 - G.turn; stats();
+    }, 1500);
+  }
+  stats();
+}
+/* expanded game: add one more pair in the middle of the game */
+$('addPair').onclick = () => {
+  if (G.lock || G.open.length) return;
+  const f = shuffle(ALL).find(x => !G.used.has(x[0])); if (!f) return;
+  G.used.add(f[0]);
+  const kinds = S.kind === 'split' ? ['pic', 'word'] : ['both', 'both'];
+  kinds.forEach(k => G.cards.splice(Math.floor(Math.random() * (G.cards.length + 1)), 0, { food: f, kind: k, done: false, open: false }));
+  render(); stats(); toast('➕ ' + f[0]);
+};
+function toast(t){ const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 1600); }
+function finish(){
+  $('endBox').hidden = false;
+  if (S.teams === 2){ const [x, y] = G.score; $('endTitle').textContent = x === y ? '🤝 תֵּיקוּ!' : `🏆 קְבוּצָה ${x > y ? 'א' : 'ב'} נִצְּחָה!`; $('endText').textContent = `קְבוּצָה א: ${x} · קְבוּצָה ב: ${y}`; }
+  else { $('endTitle').textContent = '🎉 כָּל הַכָּבוֹד!'; $('endText').textContent = `מְצָאתֶם אֶת כָּל ${G.cards.length / 2} הַזּוּגוֹת בְּ־${G.moves} נִסְיוֹנוֹת`; }
+  setTimeout(() => $('endBox').scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+}
+$('go').onclick = start; $('restart').onclick = start; $('again').onclick = start;
+$('toSetup').onclick = $('menu').onclick = () => { $('game').hidden = true; $('setup').hidden = false; paint(); };
+window.addEventListener('resize', () => { if (G && !$('game').hidden) render(); });
+if (new URLSearchParams(location.search).get('start') === '1') start();
+})();
+</script>
+<script id="fs-script">
+(function(){var b=document.getElementById("fsBtn"),d=document,e=d.documentElement;
+var req=e.requestFullscreen||e.webkitRequestFullscreen,ex=d.exitFullscreen||d.webkitExitFullscreen;
+if(!b||!req){return}b.hidden=false;
+function on(){return d.fullscreenElement||d.webkitFullscreenElement}
+function lbl(){b.textContent=on()?"✕ יציאה ממסך מלא":"⛶ מסך מלא"}
+b.addEventListener("click",function(){if(on()){ex.call(d)}else{req.call(e)}});
+d.addEventListener("fullscreenchange",lbl);d.addEventListener("webkitfullscreenchange",lbl);})();
+</script>
+</body>
+</html>
