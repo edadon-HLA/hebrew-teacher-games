@@ -200,5 +200,22 @@ function qaCards(root, { items }){
   root.append(grid, msg); root.appendChild(toolbar(root, { reset: () => qaCards(root, { items }) }));
 }
 
+/* click a .zoomable picture to see it big (click again, Esc or ✕ to close) */
+function zoomables(){
+  document.querySelectorAll('img.zoomable').forEach(img => {
+    if (img.dataset.z) return; img.dataset.z = 1; img.tabIndex = 0; img.setAttribute('role', 'button');
+    const wrap = h('span', 'zoomwrap'); img.parentNode.insertBefore(wrap, img); wrap.appendChild(img); wrap.appendChild(h('span', 'zhint', '🔍 לוֹחֲצִים לְהַגְדָּלָה'));
+    const open = () => {
+      const box = h('div', 'lightbox'); const big = h('img', 'fit-w'); big.src = img.src; big.alt = img.alt; const x = h('button', 'close', '✕'); x.type = 'button'; x.setAttribute('aria-label', 'סגירה');
+      box.append(big, x); document.body.appendChild(box); x.focus();
+      const close = () => { box.remove(); document.removeEventListener('keydown', esc); img.focus(); };
+      const esc = e => { if (e.key === 'Escape') close(); };
+      box.onclick = close; document.addEventListener('keydown', esc);
+    };
+    img.addEventListener('click', open); img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(); } });
+  });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', zoomables); else zoomables();
+
 return { shuffle, h, plain, say, setVoice, fillBlanks, builder, oddOne, syllables, tableFill, qaCards };
 })();

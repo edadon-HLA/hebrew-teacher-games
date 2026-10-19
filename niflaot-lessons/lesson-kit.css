@@ -136,3 +136,15 @@ h1{margin:2px 0 0;font:800 clamp(30px,5vw,46px)/1.15 var(--f-display)}
 .numtable td,.numtable th{font-size:22px}
 .rule{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;background:#f3ecff;border:2px solid #7a4cc2;border-radius:18px;padding:12px 16px;margin-bottom:14px}
 .rule b{color:#7a4cc2}.rule .big{font:800 34px var(--f-display);color:#7a4cc2;margin:0 8px}
+
+/* pictures that open bigger on click */
+.zoomable{cursor:zoom-in}
+.zoomwrap{position:relative;display:block}
+.zoomwrap .zhint{position:absolute;bottom:10px;inset-inline-start:10px;background:rgba(35,35,58,.78);color:#fff;font:700 15px var(--f-display);border-radius:999px;padding:4px 12px;pointer-events:none}
+.lightbox{position:fixed;inset:0;z-index:10000;background:rgba(20,20,35,.88);display:flex;align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
+.lightbox img{max-width:100%;max-height:100%;width:auto;height:auto;border-radius:14px;box-shadow:0 20px 60px #0008;background:#fff;image-rendering:auto}
+.lightbox img.fit-w{width:min(100%,1400px)}
+.lightbox .close{position:absolute;top:14px;inset-inline-end:14px;width:52px;height:52px;border-radius:50%;border:0;background:#fff;font:800 26px var(--f-display);cursor:pointer}
+.ex15{display:flex;flex-direction:column-reverse;gap:16px}
+.ex15 .zoomwrap{max-width:760px;margin:0 auto;width:100%}
+.ex15 img{width:100%;height:auto;border-radius:14px}
