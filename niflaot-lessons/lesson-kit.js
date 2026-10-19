@@ -200,22 +200,24 @@ function qaCards(root, { items }){
   root.append(grid, msg); root.appendChild(toolbar(root, { reset: () => qaCards(root, { items }) }));
 }
 
-/* click a .zoomable picture to see it big (click again, Esc or ✕ to close) */
+/* show a picture big over the whole screen (click, Esc or ✕ to close); back = element to focus afterwards */
+function zoom(src, alt, back){
+  const box = h('div', 'lightbox'); const big = h('img', 'fit-w'); big.src = src; big.alt = alt || ''; const x = h('button', 'close', '✕'); x.type = 'button'; x.setAttribute('aria-label', 'סגירה');
+  box.append(big, x); document.body.appendChild(box); x.focus();
+  const close = () => { box.remove(); document.removeEventListener('keydown', esc); if (back) back.focus(); };
+  const esc = e => { if (e.key === 'Escape') close(); };
+  box.onclick = close; document.addEventListener('keydown', esc);
+}
+/* click a .zoomable picture to see it big */
 function zoomables(){
   document.querySelectorAll('img.zoomable').forEach(img => {
     if (img.dataset.z) return; img.dataset.z = 1; img.tabIndex = 0; img.setAttribute('role', 'button');
     const wrap = h('span', 'zoomwrap'); img.parentNode.insertBefore(wrap, img); wrap.appendChild(img); wrap.appendChild(h('span', 'zhint', '🔍 לוֹחֲצִים לְהַגְדָּלָה'));
-    const open = () => {
-      const box = h('div', 'lightbox'); const big = h('img', 'fit-w'); big.src = img.src; big.alt = img.alt; const x = h('button', 'close', '✕'); x.type = 'button'; x.setAttribute('aria-label', 'סגירה');
-      box.append(big, x); document.body.appendChild(box); x.focus();
-      const close = () => { box.remove(); document.removeEventListener('keydown', esc); img.focus(); };
-      const esc = e => { if (e.key === 'Escape') close(); };
-      box.onclick = close; document.addEventListener('keydown', esc);
-    };
+    const open = () => zoom(img.src, img.alt, img);
     img.addEventListener('click', open); img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(); } });
   });
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', zoomables); else zoomables();
 
-return { shuffle, h, plain, say, setVoice, fillBlanks, builder, oddOne, syllables, tableFill, qaCards };
+return { shuffle, h, plain, say, setVoice, fillBlanks, builder, oddOne, syllables, tableFill, qaCards, zoom };
 })();

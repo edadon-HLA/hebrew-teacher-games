@@ -6,7 +6,7 @@
 <title>נפלאות ג — עמודים 14–15</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
-<link rel="stylesheet" href="lesson-kit.css?v=1792420574">
+<link rel="stylesheet" href="lesson-kit.css?v=1792421680">
 <style id="site-navigation">
 <style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
 </style></head>
@@ -37,7 +37,7 @@
   <p class="lead">מָה הֵם עוֹשִׂים?</p>
   <p class="sub">לוֹחֲצִים עַל הָעִגּוּלִים הַצְּהֻבִּים בַּתְּמוּנָה וְקוֹרְאִים מָה הָאֲנָשִׁים עוֹשִׂים. אֶפְשָׁר גַּם לְהַקְשִׁיב.</p>
   <div class="panel">
-    <div class="imgscene" id="scene"><img src="img-mall.jpg?v=1791910954" alt="קניון: מוכר פלאפל, ילדים ליד שולחן, מדרגות נעות, נגן גיטרה, זוג רוקד וחנות ספרים"></div>
+    <div class="imgscene" id="scene"><img src="img-mall.jpg?v=1791910954" alt="קניון: מוכר פלאפל, ילדים ליד שולחן, מדרגות נעות, נגן גיטרה, זוג רוקד וחנות ספרים"><button class="zbtn" id="zoomScene" type="button">🔍 הַגְדָּלָה</button></div>
     <div class="said" id="said" aria-live="polite"><span class="em">👆</span><span class="tx">לוֹחֲצִים עַל עִגּוּל…</span></div>
     <p class="prog" id="prog"></p>
     <div class="toolbar"><label><input type="checkbox" id="voice"> 🔊 לְהַקְשִׁיב לַמִּשְׁפָּטִים</label><span class="spacer"></span><button class="btn ghost small" id="resetScene" type="button">↺ מֵהַתְחָלָה</button></div>
@@ -61,7 +61,7 @@
 <p class="src">הַתְּמוּנָה וְהַתַּרְגִּילִים: "נִפְלָאוֹת ג", עמודים 14–15 (מט"ח). לְשִׁמּוּשׁ בַּכִּתָּה בִּלְבַד.</p>
 </div>
 
-<script src="lesson-kit.js?v=1792420574"></script>
+<script src="lesson-kit.js?v=1792421680"></script>
 <script>
 (() => {
 /* hot spots: x,y are percentages of the picture */
@@ -85,6 +85,7 @@ HOT.forEach((p, i) => {
     prog.textContent = `מָצָאתֶם ${seen.size} מִתּוֹךְ ${HOT.length}` + (seen.size === HOT.length ? ' — כָּל הַכָּבוֹד! 🎉' : ''); NK.say(p.he); };
   scene.appendChild(b);
 });
+document.getElementById('zoomScene').onclick = e => { const im = scene.querySelector('img'); NK.zoom(im.src, im.alt, e.currentTarget); };
 document.getElementById('voice').onchange = e => NK.setVoice(e.target.checked);
 document.getElementById('resetScene').onclick = () => { seen.clear(); scene.querySelectorAll('.hotb').forEach(x => x.classList.remove('seen', 'on')); said.querySelector('.em').textContent = '👆'; said.querySelector('.tx').textContent = START; prog.textContent = ''; };
 
