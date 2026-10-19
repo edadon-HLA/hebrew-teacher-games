@@ -72,8 +72,16 @@
       var res = ExamCore.score(cfg, answers, {});
       ExamCore.mark(r, cfg.showScore ? res : ExamCore.score(cfg, {}, {}), false);
       if (!cfg.showScore) { document.querySelectorAll('.ok,.bad,.partial').forEach(function (e) { e.classList.remove('ok', 'bad', 'partial'); }); document.querySelectorAll('.mark,.key').forEach(function (e) { e.remove(); }); }
+      var hwCount = 0;
+      r.items.forEach(function (c) {
+        if (!ExamCore.isDrawn(answers[c.def.id])) return;
+        hwCount++; c.el.classList.remove('ok', 'bad', 'partial');
+        [].forEach.call(c.el.querySelectorAll('.mark,.key'), function (e) { e.remove(); });
+        if (cfg.showScore) c.el.appendChild($('span', 'mark', '✍'));
+      });
       var card = $('div', 'card result'); card.id = 'result-card';
       card.innerHTML = '<h2>הַמִּבְחָן נִשְׁלַח! ✔ ' + EN('Exam submitted') + '</h2>' + (cfg.showScore ? '<p>' + name.replace(/</g, '&lt;') + '</p><div class="total" style="direction:ltr">' + res.total + ' / 100</div><p>' + res.secs.map(function (s) { return s.he + ': ' + s.earned + '/' + s.max; }).join(' · ') + '</p><p class="en">Speaking and any manual items are scored by the teacher.</p>' : '<p>הַמּוֹרָה תַּחֲזִיר אֶת הַצִּיּוּן.' + EN('Your teacher will give you your score.') + '</p>');
+      if (hwCount) card.insertAdjacentHTML('beforeend', '<p class="warn" style="background:#fff3cd;border-color:#f0d27a;color:#6b5400">✍ ' + hwCount + ' תְּשׁוּבוֹת כְּתוּבוֹת בְּיָד יִבָּדְקוּ עַל־יְדֵי הַמּוֹרָה.' + EN('handwritten answers will be checked by your teacher, so the score above may go up.') + '</p>');
       resBox.appendChild(card);
       card.scrollIntoView({ behavior: 'smooth' });
       if (previewId || !codeDoc) return;

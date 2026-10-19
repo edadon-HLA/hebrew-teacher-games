@@ -38,6 +38,7 @@ window.ExamCore = (function () {
     if (cfg.spell == null) cfg.spell = 0;
     if (cfg.showScore == null) cfg.showScore = true;
     if (!cfg.lang) cfg.lang = "he";
+    if (!cfg.input) cfg.input = { kb: true, draw: true };
     cfg.sections.forEach(function (s, si) {
       s.id = s.id || 's' + si;
       s.parts.forEach(function (p, pi) {
@@ -57,6 +58,7 @@ window.ExamCore = (function () {
     if (it.kind === 'record') return 0;
     if (ans == null || ans === '') return 0;
     if (it.kind === 'type') {
+      if (C.isDrawn(ans)) return 0;   // handwriting is scored by the teacher
       var v = C.norm(ans), best = 99, len = 0;
       (it.ans || []).forEach(function (a) { var n = C.norm(a), d = C.lev(n, v); if (d < best) { best = d; len = n.length; } });
       if (best === 0) return 1;
@@ -136,16 +138,63 @@ window.ExamCore = (function () {
     return { el: wrap, lock: function (keep) { if (!keep) b.disabled = true; } };
   }
 
-  function buildType(it, idx) {
+  var KB_ROWS = ['קראטוןםפ', 'שדגכעיחלךף', 'זסבהנמצתץ'];
+  C.isDrawn = function (v) { return typeof v === 'string' && v.indexOf('data:image/') === 0; };
+
+  function buildType(it, idx, o) {
+    o = o || {};
+    var inputCfg = (o.cfg && o.cfg.input) || {}, kbOn = inputCfg.kb !== false, drawOn = inputCfg.draw !== false && o.mode !== 'review';
     var w = h('div', 'item'); w.appendChild(h('div', 'q', qHead(it, idx)));
     var inp = h('input', 'txt'); inp.type = 'text'; inp.autocomplete = 'off'; inp.spellcheck = false; inp.placeholder = 'כתבו כאן / write here';
     w.appendChild(inp);
+    var shown = h('div', 'drawnshow hidden'); w.appendChild(shown);   // review: the student's handwriting
+    var tools = h('div', 'typetools noprint'), kbBtn = h('button', 'tt', '⌨ מקלדת עברית ' + EN('Hebrew keyboard')), drBtn = h('button', 'tt', '✍ כתיבה בעט / בעכבר ' + EN('Handwriting'));
+    kbBtn.type = drBtn.type = 'button';
+    if (kbOn && o.mode !== 'review') tools.appendChild(kbBtn);
+    if (drawOn) tools.appendChild(drBtn);
+    if (tools.children.length) w.appendChild(tools);
+
+    // virtual Hebrew keyboard
+    var kb = h('div', 'vkb hidden noprint'); w.appendChild(kb);
+    function ins(t) { var s = inp.selectionStart == null ? inp.value.length : inp.selectionStart, e = inp.selectionEnd == null ? s : inp.selectionEnd; inp.value = inp.value.slice(0, s) + t + inp.value.slice(e); inp.selectionStart = inp.selectionEnd = s + t.length; inp.dispatchEvent(new Event('input', { bubbles: true })); }
+    KB_ROWS.forEach(function (row) {
+      var r = h('div', 'vkr');
+      row.split('').forEach(function (ch) { var b = h('button', 'vk', ch); b.type = 'button'; b.onclick = function () { if (!inp.disabled) ins(ch); }; r.appendChild(b); });
+      kb.appendChild(r);
+    });
+    var r4 = h('div', 'vkr');
+    [['⌫', 'wide', function () { var s = inp.selectionStart == null ? inp.value.length : inp.selectionStart, e = inp.selectionEnd == null ? s : inp.selectionEnd; if (s === e && s > 0) s--; inp.value = inp.value.slice(0, s) + inp.value.slice(e); inp.selectionStart = inp.selectionEnd = s; inp.dispatchEvent(new Event('input', { bubbles: true })); }],
+      ['רווח / space', 'space', function () { ins(' '); }], ['✖', 'wide', function () { inp.value = ''; inp.dispatchEvent(new Event('input', { bubbles: true })); }]].forEach(function (k) {
+      var b = h('button', 'vk ' + k[1], k[0]); b.type = 'button'; b.onclick = function () { if (!inp.disabled) k[2](); }; r4.appendChild(b);
+    });
+    kb.appendChild(r4);
+    kbBtn.onclick = function () { var on = kb.classList.toggle('hidden'); inp.setAttribute('inputmode', on ? 'text' : 'none'); kbBtn.classList.toggle('on', !on); };
+
+    // handwriting pad
+    var pad = h('div', 'drawpad hidden noprint'), cv = h('canvas'), has = false, down = false, last = null;
+    cv.width = 560; cv.height = 200; pad.appendChild(cv);
+    var pbar = h('div', 'padbar'), clr = h('button', 'tt', '🧽 מחיקה ' + EN('Clear')); clr.type = 'button'; pbar.appendChild(clr);
+    pbar.appendChild(h('span', 'padhint', 'כִּתְבוּ כָּאן בָּעַכְבָּר אוֹ בָּאֶצְבָּע. ' + EN('Write here with the mouse, a pen or your finger. Your teacher will check it.'))); pad.appendChild(pbar); w.appendChild(pad);
+    var ctx = cv.getContext('2d'); ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#111';
+    function pos(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * cv.width / r.width, y: (e.clientY - r.top) * cv.height / r.height }; }
+    cv.addEventListener('pointerdown', function (e) { if (inp.disabled) return; down = true; last = pos(e); try { cv.setPointerCapture(e.pointerId); } catch (x) {} ctx.beginPath(); ctx.arc(last.x, last.y, 2.5, 0, 6.3); ctx.fillStyle = '#111'; ctx.fill(); has = true; e.preventDefault(); });
+    cv.addEventListener('pointermove', function (e) { if (!down) return; var p = pos(e); ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke(); last = p; e.preventDefault(); });
+    function up() { if (down) { down = false; root_fire(); } }
+    cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+    function root_fire() { inp.dispatchEvent(new Event('input', { bubbles: true })); }
+    clr.onclick = function () { ctx.clearRect(0, 0, cv.width, cv.height); has = false; root_fire(); };
+    drBtn.onclick = function () { var on = pad.classList.toggle('hidden'); drBtn.classList.toggle('on', !on); };
+
     return {
       el: w, def: it,
-      getAnswer: function () { return inp.value.trim(); }, setAnswer: function (v) { inp.value = v || ''; },
-      done: function () { return !!inp.value.trim(); },
+      getAnswer: function () { var t = inp.value.trim(); if (t) return t; return has ? cv.toDataURL('image/png') : ''; },
+      setAnswer: function (v) {
+        if (C.isDrawn(v)) { inp.classList.add('hidden'); shown.classList.remove('hidden'); shown.innerHTML = '<div class="small">✍ כתב יד / handwriting:</div><img alt="handwriting" src="' + v + '">'; }
+        else inp.value = v || '';
+      },
+      done: function () { return !!inp.value.trim() || has; },
       key: function () { return 'התשובה / Answer: ' + (it.ans || [])[0]; },
-      lock: function () { inp.disabled = true; }
+      lock: function () { inp.disabled = true; kb.classList.add('hidden'); pad.classList.add('hidden'); tools.classList.add('hidden'); }
     };
   }
 
@@ -261,7 +310,7 @@ window.ExamCore = (function () {
           if (it.en && lang !== 'he') {
             vit = Object.assign({}, it, { q: lang === 'en' ? '<span class="enq inl">' + it.en + '</span>' : (it.q || '') + '<div class="enq">' + it.en + '</div>' });
           }
-          var ctl = it.kind === 'type' ? buildType(vit, idx) : it.kind === 'order' ? buildOrder(vit, idx) : it.kind === 'record' ? buildRecord(vit, idx, opts) : buildChoice(vit, idx, opts);
+          var ctl = it.kind === 'type' ? buildType(vit, idx, opts) : it.kind === 'order' ? buildOrder(vit, idx) : it.kind === 'record' ? buildRecord(vit, idx, opts) : buildChoice(vit, idx, opts);
           ctl.def = it;
           card.appendChild(ctl.el); all.push(ctl);
         });

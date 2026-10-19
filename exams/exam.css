@@ -85,3 +85,15 @@ main{max-width:900px;margin:28px auto 80px;padding:0 16px}
 .enq.inl{display:inline-block;font-size:1em;color:inherit;vertical-align:middle}
 .item .q .enq:not(.inl){margin-top:2px}
 .passage .enq{font-size:1em;line-height:1.7}
+.typetools{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+.tt{font:inherit;font-size:15px;font-weight:700;border:2px solid #b8c1d6;background:#fff;color:#18213a;border-radius:10px;padding:6px 12px;cursor:pointer}
+.tt:hover,.tt.on{background:#eef2ff;border-color:#3730a3}
+.vkb{margin-top:10px;background:#eef1f8;border-radius:12px;padding:8px;max-width:520px;direction:rtl}
+.vkr{display:flex;justify-content:center;gap:5px;margin-bottom:5px}
+.vk{font:inherit;font-size:22px;min-width:38px;height:42px;border:1px solid #b8c1d6;border-bottom-width:3px;background:#fff;border-radius:8px;cursor:pointer;color:#18213a;padding:0 6px}
+.vk:active{background:#dfe4ff}.vk.wide{min-width:64px}.vk.space{flex:1;font-size:15px}
+.drawpad{margin-top:10px;max-width:560px}
+.drawpad canvas{width:100%;height:auto;aspect-ratio:560/200;background:#fff;border:2px solid #3730a3;border-radius:10px;touch-action:none;cursor:crosshair;display:block}
+.padbar{display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap}.padhint{font-size:14px;color:#59647d}
+.drawnshow img{max-width:100%;border:1px solid #cfd6e6;border-radius:8px;background:#fff;display:block;margin-top:4px}
+.tag.hw{background:#fff3cd;color:#8a6d00}

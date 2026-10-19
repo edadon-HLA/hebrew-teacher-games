@@ -101,6 +101,7 @@
       '<div class="row"><label>Question language (whole exam): ' + '<select class="sm" data-set="lang">' + LANGS.map(function (l) { return '<option value="' + l[0] + '"' + (E.lang === l[0] ? ' selected' : '') + '>' + l[1] + '</option>'; }).join('') + '</select></label><span class="en">You can override this for a single part or question (✏️ on the part or question).</span></div>' +
       '<div class="row"><label>Spelling tolerance (typed answers): <select class="sm" data-set="spell">' + SPELL.map(function (s, i) { return '<option value="' + i + '"' + (E.spell === i ? ' selected' : '') + '>' + esc(s) + '</option>'; }).join('') + '</select></label></div>' +
       '<div class="row"><label><input type="checkbox" data-set="show"' + (E.showScore ? ' checked' : '') + '> Show the score to the student right after submitting</label></div>' +
+      '<div class="row"><b>Typed answers:</b><label><input type="checkbox" data-set="kb"' + (E.input.kb !== false ? ' checked' : '') + '> ⌨ Hebrew on-screen keyboard</label><label><input type="checkbox" data-set="draw"' + (E.input.draw !== false ? ' checked' : '') + '> ✍ Handwriting with mouse/touch</label><span class="en">Handwritten answers are not checked automatically: you score them in Results &amp; grading.</span></div>' +
       '<div class="row"><span class="stat">Total points: ' + sc.max + '</span><span class="en">The final grade is always scaled to 100 (earned ÷ total × 100).</span></div></div>';
     h += '<div class="tree">';
     E.sections.forEach(function (s, si) {
@@ -138,7 +139,7 @@
         var k = e.getAttribute('data-set'), val = e.type === 'checkbox' ? e.checked : e.value;
         if (k === 'tl.on') E.timeLimit.on = val; else if (k === 'tl.min') E.timeLimit.minutes = Math.max(1, parseInt(val, 10) || 30);
         else if (k === 'll.on') E.listenLimit.on = val; else if (k === 'll.max') E.listenLimit.max = Math.max(1, parseInt(val, 10) || 2);
-        else if (k === 'spell') E.spell = parseInt(val, 10); else if (k === 'show') E.showScore = val; else if (k === 'lang') E.lang = val;
+        else if (k === 'spell') E.spell = parseInt(val, 10); else if (k === 'show') E.showScore = val; else if (k === 'lang') E.lang = val; else if (k === 'kb') E.input.kb = val; else if (k === 'draw') E.input.draw = val;
       };
     });
     v.querySelectorAll('[data-a]').forEach(function (e) {
@@ -432,7 +433,7 @@
         '<table class="t"><tr><th>First name</th><th>Last name</th><th>Class</th><th>Code</th><th>Score</th><th>Submitted</th><th></th></tr>' +
         rows.map(function (c) {
           var s = subs[c.code];
-          return '<tr><td>' + esc(c.first) + '</td><td>' + esc(c.last) + '</td><td>' + esc(c.class) + '</td><td class="code">' + c.code + '</td><td>' + (s ? '<b>' + s.total + '</b>' + (Object.keys(s.manual || {}).length ? ' <span class="tag y">✎</span>' : '') : '<span class="tag r">—</span>') + '</td><td>' + (s ? fmtDate(s.submittedAt) : '') + '</td><td>' + (s ? (c.status === "returned" ? "<span class=\"tag y\">↩ returned to student</span> " : "<button class=\"btn sm2 gray\" data-return=\"" + c.code + "\" title=\"Let the student continue the exam\">↩ Return to student</button> ") + "<button class=\"btn sm2 light\" data-view=\"" + c.code + "\">View / grade</button>" : "") + '</td></tr>';
+          return '<tr><td>' + esc(c.first) + '</td><td>' + esc(c.last) + '</td><td>' + esc(c.class) + '</td><td class="code">' + c.code + '</td><td>' + (s ? '<b>' + s.total + '</b>' + (Object.keys(s.manual || {}).length ? ' <span class="tag y">✎</span>' : '') + (hwPending(s) ? ' <span class="tag hw" title="Handwritten answers waiting for your score">✍ ' + hwPending(s) + ' to grade</span>' : '') : '<span class="tag r">—</span>') + '</td><td>' + (s ? fmtDate(s.submittedAt) : '') + '</td><td>' + (s ? (c.status === "returned" ? "<span class=\"tag y\">↩ returned to student</span> " : "<button class=\"btn sm2 gray\" data-return=\"" + c.code + "\" title=\"Let the student continue the exam\">↩ Return to student</button> ") + "<button class=\"btn sm2 light\" data-view=\"" + c.code + "\">View / grade</button>" : "") + '</td></tr>';
         }).join('') + '</table></div>';
       $('#ex').onchange = function () { S.resExam = this.value; resultsView(); };
       $('#fcls').onchange = function () { S.cls = this.value; resultsView(); };
@@ -476,7 +477,9 @@
         if (!id) { noId.push(c.first + ' ' + c.last); return; }
         ok.push({ c: c, id: id, score: score, submitted: !!s });
       });
+      var hw = rows.filter(function (c) { return subs[c.code] && hwPending(subs[c.code]); }).length;
       $('#psinfo', dlg).innerHTML = '<b>' + ok.length + '</b> students ready' + (missing ? ' · ' + missing + ' not submitted (left out)' : '') +
+        (hw ? '<br><span style="color:#8a6d00">✍ ' + hw + ' student' + (hw > 1 ? 's have' : ' has') + ' handwritten answers you have not scored yet – grade them first.</span>' : '') +
         (noId.length ? '<br><span style="color:#8a1f17">⚠ ' + noId.length + ' without a Student ID (left out): ' + esc(noId.slice(0, 8).join(', ')) + (noId.length > 8 ? '…' : '') + '. Add IDs in the Students tab.</span>' : '');
       return { ok: ok, pts: pts };
     }
@@ -495,6 +498,11 @@
       sheetDownload('powerschool-check-' + S.resExam + '.xlsx', [['Assignment', $('#an', dlg).value, 'Category', $('#ac', dlg).value, 'Points possible', b.pts, 'Date', $('#ad', dlg).value], [], ['Student ID', 'First name', 'Last name', 'Class', 'Score', 'Percent']]
         .concat(b.ok.map(function (x) { return [x.id, x.c.first, x.c.last, x.c.class, x.score, x.submitted ? Math.round(x.score / b.pts * 1000) / 10 : '']; })));
     };
+  }
+
+  function hwPending(s) {   // handwritten answers the teacher has not scored yet
+    var a = s.answers || {}, m = s.manual || {};
+    return Object.keys(a).filter(function (id) { return ExamCore.isDrawn(a[id]) && (m[id] == null || m[id] === ''); }).length;
   }
 
   function returnToStudent(code) {
