@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סוֹפְרִים בְּעִבְרִית | משחקי עברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#fdf7ef;--card:#fff;--ink:#23233a;--muted:#6b6880;--line:#eadfce;--green:#2f9d55;--green-soft:#dcf2e3;--red:#e2506a;--red-soft:#fde3e7;--sky:#2a8bd0;--sky-soft:#e6f2fd;--gold:#f2b01e;--gold-soft:#fbf0d2;--purple:#7a4cc2;--f:'Rubik','Noto Sans Hebrew',Arial,sans-serif}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);line-height:1.45}
+.wrap{max-width:980px;margin:0 auto;padding:14px 16px 40px}
+h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;text-align:center}
+.sub{text-align:center;color:var(--muted);font-size:18px;margin:0 0 14px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;box-shadow:0 8px 24px #23233a14;padding:18px}
+.btn{font:700 20px var(--f);border:0;border-radius:14px;padding:12px 24px;background:var(--sky);color:#fff;cursor:pointer}
+.btn:hover{filter:brightness(.92)}
+.btn.ghost{background:#fff;color:var(--sky);border:2px solid var(--sky)}
+.btn.good{background:var(--green)}
+.btn.big{font-size:26px;padding:14px 40px}
+button{font-family:var(--f)}
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+
+/* teacher setup */
+.set{margin:0 0 18px}
+.set h2{font-size:22px;margin:0 0 8px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.chip{font:700 19px var(--f);border:3px solid var(--line);background:#fff;border-radius:999px;padding:6px 16px;cursor:pointer;color:var(--ink)}
+.chip[data-r]{direction:ltr;unicode-bidi:isolate}
+.chip.on{border-color:var(--sky);background:var(--sky-soft);color:#16527d}
+select{font:700 22px var(--f);padding:6px 10px;border:3px solid var(--line);border-radius:12px;background:#fff}
+.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.lvl{border:3px solid var(--line);border-radius:18px;background:#fff;padding:12px;cursor:pointer;text-align:center;color:var(--ink)}
+.lvl .pic{font-size:34px;line-height:1.2;min-height:46px}
+.lvl h3{margin:4px 0 2px;font-size:21px}.lvl p{margin:0;color:var(--muted);font-size:15px}
+.lvl.on{border-color:var(--sky);background:var(--sky-soft)}
+.lvl:hover{border-color:var(--sky)}
+.start{text-align:center;margin-top:8px}
+.tip{color:var(--muted);font-size:15px;margin:6px 0 0}
+
+/* game */
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.badge{background:var(--purple);color:#fff;border-radius:999px;padding:4px 14px;font-weight:800;font-size:17px}
+.bar{flex:1;min-width:120px;height:14px;background:#eee6da;border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--green);border-radius:999px;transition:width .3s}
+.score{font-weight:800;font-size:20px}
+.q{display:flex;align-items:center;justify-content:center;gap:12px;font:800 clamp(26px,4.4vw,40px) var(--f);margin:6px 0 10px;text-align:center}
+.ear{border:0;background:var(--gold-soft);border-radius:50%;width:48px;height:48px;font-size:24px;cursor:pointer;flex:none}
+.ear:hover{background:var(--gold)}
+.ear.small{width:36px;height:36px;font-size:18px}
+.stage{max-width:max(320px,min(100%,calc((100dvh - 340px) * 1.78)));margin:0 auto}
+.stage{border-radius:20px;overflow:hidden;border:4px solid #fff;box-shadow:0 8px 24px #23233a14;transition:box-shadow .2s}
+.stage svg{display:block;width:100%;height:auto;direction:ltr}
+.stage.ok{box-shadow:0 0 0 6px var(--green)}
+.stage.no{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.tools{display:flex;justify-content:center;gap:10px;margin:10px 0}
+.together{font:700 19px var(--f);border:3px solid var(--gold);background:#fff8e6;border-radius:999px;padding:6px 18px;cursor:pointer}
+.together.pulse{animation:pulse 1s ease-in-out 3}
+@keyframes pulse{50%{transform:scale(1.08);background:var(--gold)}}
+.nums{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:6px}
+.nums.all{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr))}
+.num{position:relative;display:flex;flex-direction:column;align-items:center;background:#fff;border:3px solid var(--line);border-radius:18px;min-width:120px;padding:4px 6px 8px}
+.nums.all .num{min-width:0}
+.num .pick{border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;width:100%;padding:4px 0 2px;color:var(--ink)}
+.num .d{font:800 clamp(40px,7vw,64px)/1 var(--f)}
+.nums.all .num .d{font-size:38px}
+.num .w{font:700 19px var(--f);color:#3b3960;margin-top:2px;white-space:nowrap}
+.nums.all .num .w{font-size:15px}
+.num:hover{border-color:var(--sky)}
+.num.ok{border-color:var(--green);background:var(--green-soft)}
+.num.bad{border-color:var(--red);background:var(--red-soft);opacity:.65}
+.fb{min-height:52px;text-align:center;font:800 clamp(22px,3.6vw,32px) var(--f);margin-top:10px}
+.fb.ok{color:var(--green)}.fb.no{color:var(--red)}
+.next{text-align:center;margin-top:6px}
+.toast{position:fixed;top:30%;left:50%;transform:translate(-50%,-50%);background:var(--purple);color:#fff;font:800 34px var(--f);padding:18px 34px;border-radius:24px;box-shadow:0 12px 40px #0004;z-index:50;animation:pop 1.8s forwards;pointer-events:none}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}80%{opacity:1}100%{opacity:0}}
+.end{text-align:center}
+.end .stars{font-size:64px;letter-spacing:6px}
+.end h2{font-size:34px;margin:6px 0}
+.end p{font-size:22px;color:var(--muted)}
+.hl{fill:rgba(242,176,30,.35);stroke:#f2b01e;stroke-width:4}
+.tag circle{fill:#7a4cc2;stroke:#fff;stroke-width:3}.tag text{fill:#fff;font:800 20px Rubik,Arial,sans-serif}
+.novoice{color:var(--muted);font-size:14px;text-align:center;margin-top:4px}
+@media(max-width:560px){.num{min-width:96px}.num .w{font-size:16px}}
+@media (prefers-reduced-motion:reduce){.toast,.together.pulse,.stage.no{animation:none}}
+</style>
+<style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
+</style></head>
+</head>
+<body>
+<nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
+<div class="wrap">
+
+<!-- ===== teacher setup ===== -->
+<section id="setup">
+  <h1>🔢 סוֹפְרִים בְּעִבְרִית</h1>
+  <p class="sub">רוֹאִים תְּמוּנָה, סוֹפְרִים וּבוֹחֲרִים אֶת הַמִּסְפָּר הַנָּכוֹן</p>
+  <div class="card">
+    <div class="set">
+      <h2>1. אֵילוּ מִסְפָּרִים?</h2>
+      <div class="row">
+        <span>מִ־</span><select id="min" aria-label="המספר הקטן"></select>
+        <span>עַד</span><select id="max" aria-label="המספר הגדול"></select>
+        <span style="width:12px"></span>
+        <button class="chip" type="button" data-r="1-5">1–5</button>
+        <button class="chip" type="button" data-r="1-10">1–10</button>
+        <button class="chip" type="button" data-r="6-10">6–10</button>
+        <button class="chip" type="button" data-r="11-20">11–20</button>
+        <button class="chip" type="button" data-r="1-20">1–20</button>
+      </div>
+    </div>
+    <div class="set">
+      <h2>2. אֵיזוֹ רָמָה?</h2>
+      <div class="levels" id="levels">
+        <button class="lvl" type="button" data-l="1"><div class="pic">🍎🍎🍎🍎🍎</div><h3>רָמָה 1 · בְּשׁוּרוֹת</h3><p>הַדְּבָרִים מְסֻדָּרִים בְּשׁוּרוֹת שֶׁל חָמֵשׁ</p></button>
+        <button class="lvl" type="button" data-l="2"><div class="pic">🍎 🍎<br>🍎 🍎</div><h3>רָמָה 2 · מְפֻזָּר</h3><p>הַדְּבָרִים מְפֻזָּרִים בַּתְּמוּנָה</p></button>
+        <button class="lvl" type="button" data-l="3"><div class="pic">🏞️🐦🌸🐶</div><h3>רָמָה 3 · סְצֵנָה</h3><p>תְּמוּנָה מְלֵאָה — סוֹפְרִים רַק דָּבָר אֶחָד</p></button>
+        <button class="lvl" type="button" data-l="auto"><div class="pic">🚀</div><h3>עוֹלִים בְּרָמָה</h3><p>מַתְחִילִים קַל, וְהַמִּשְׂחָק נַעֲשֶׂה קָשֶׁה יוֹתֵר</p></button>
+      </div>
+    </div>
+    <div class="set">
+      <h2>3. כַּמָּה תְּשׁוּבוֹת לִבְחִירָה?</h2>
+      <div class="row" id="choices">
+        <button class="chip" type="button" data-c="3">3</button>
+        <button class="chip" type="button" data-c="4">4</button>
+        <button class="chip" type="button" data-c="0">כָּל הַמִּסְפָּרִים</button>
+      </div>
+    </div>
+    <div class="set">
+      <h2>4. כַּמָּה שְׁאֵלוֹת?</h2>
+      <div class="row" id="count">
+        <button class="chip" type="button" data-n="5">5</button>
+        <button class="chip" type="button" data-n="10">10</button>
+        <button class="chip" type="button" data-n="15">15</button>
+        <button class="chip" type="button" data-n="20">20</button>
+      </div>
+    </div>
+    <div class="set">
+      <label class="row" style="font-size:19px"><input type="checkbox" id="autoSay" style="width:22px;height:22px"> 🔊 לְהַקְרִיא אֶת הַשְּׁאֵלָה בְּכָל פַּעַם</label>
+      <p class="tip">בְּכָל מִסְפָּר יֵשׁ 🔊 — לוֹחֲצִים וְשׁוֹמְעִים אֵיךְ אוֹמְרִים אוֹתוֹ.</p>
+    </div>
+    <div class="start"><button class="btn big good" id="go" type="button">▶ מַתְחִילִים</button></div>
+  </div>
+</section>
+
+<!-- ===== game ===== -->
+<section id="game" hidden>
+  <div class="top">
+    <span class="badge" id="lvlBadge">רָמָה 1</span>
+    <div class="bar" aria-hidden="true"><i id="barFill"></i></div>
+    <span class="score" id="score">⭐ 0</span>
+    <button class="btn ghost" id="toSetup" type="button" style="font-size:16px;padding:6px 14px">⚙ הַגְדָּרוֹת</button>
+  </div>
+  <div class="q"><span id="qText"></span><button class="ear" id="qEar" type="button" aria-label="הקראת השאלה">🔊</button></div>
+  <div class="stage" id="stage"></div>
+  <div class="tools"><button class="together" id="together" type="button">👆 סוֹפְרִים יַחַד</button></div>
+  <div class="nums" id="nums"></div>
+  <div class="fb" id="fb" aria-live="polite"></div>
+  <div class="next"><button class="btn big" id="next" type="button" hidden>הַבָּא ◀</button></div>
+  <p class="novoice" id="novoice" hidden>אֵין קוֹל עִבְרִי בַּמַּחְשֵׁב הַזֶּה — הַמּוֹרֶה יָכוֹל לְהַקְרִיא.</p>
+</section>
+
+<!-- ===== end ===== -->
+<section id="end" hidden>
+  <div class="card end">
+    <div class="stars" id="stars">⭐⭐⭐</div>
+    <h2 id="endTitle">כָּל הַכָּבוֹד!</h2>
+    <p id="endText"></p>
+    <div class="row" style="justify-content:center;margin-top:14px">
+      <button class="btn big good" id="again" type="button">↺ עוֹד פַּעַם</button>
+      <button class="btn big ghost" id="menu" type="button">⚙ הַגְדָּרוֹת</button>
+    </div>
+  </div>
+</section>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+/* ---------- numbers 1–20 ----------
+   FEM = the counting form (אַחַת, שְׁתַּיִם…) shown under the numbers; MASC = with a masculine noun. */
+const FEM = [, 'אַחַת', 'שְׁתַּיִם', 'שָׁלוֹשׁ', 'אַרְבַּע', 'חָמֵשׁ', 'שֵׁשׁ', 'שֶׁבַע', 'שְׁמוֹנֶה', 'תֵּשַׁע', 'עֶשֶׂר',
+  'אַחַת־עֶשְׂרֵה', 'שְׁתֵּים־עֶשְׂרֵה', 'שְׁלוֹשׁ־עֶשְׂרֵה', 'אַרְבַּע־עֶשְׂרֵה', 'חֲמֵשׁ־עֶשְׂרֵה', 'שֵׁשׁ־עֶשְׂרֵה', 'שְׁבַע־עֶשְׂרֵה', 'שְׁמוֹנֶה־עֶשְׂרֵה', 'תְּשַׁע־עֶשְׂרֵה', 'עֶשְׂרִים'];
+const MASC = [, 'אֶחָד', 'שְׁנַיִם', 'שְׁלוֹשָׁה', 'אַרְבָּעָה', 'חֲמִשָּׁה', 'שִׁשָּׁה', 'שִׁבְעָה', 'שְׁמוֹנָה', 'תִּשְׁעָה', 'עֲשָׂרָה',
+  'אַחַד־עָשָׂר', 'שְׁנֵים־עָשָׂר', 'שְׁלוֹשָׁה־עָשָׂר', 'אַרְבָּעָה־עָשָׂר', 'חֲמִשָּׁה־עָשָׂר', 'שִׁשָּׁה־עָשָׂר', 'שִׁבְעָה־עָשָׂר', 'שְׁמוֹנָה־עָשָׂר', 'תִּשְׁעָה־עָשָׂר', 'עֶשְׂרִים'];
+
+/* ---------- things to count: emoji, singular, plural, gender ---------- */
+const K = {
+  apple:     ['🍎', 'תַּפּוּחַ', 'תַּפּוּחִים', 'm'],   banana:   ['🍌', 'בָּנָנָה', 'בָּנָנוֹת', 'f'],
+  cookie:    ['🍪', 'עוּגִיָּה', 'עוּגִיּוֹת', 'f'],   cup:      ['🥛', 'כּוֹס', 'כּוֹסוֹת', 'f'],
+  strawberry:['🍓', 'תּוּת', 'תּוּתִים', 'm'],        candy:    ['🍬', 'סֻכָּרִיָּה', 'סֻכָּרִיּוֹת', 'f'],
+  bird:      ['🐦', 'צִפּוֹר', 'צִפֳּרִים', 'f'],      flower:   ['🌸', 'פֶּרַח', 'פְּרָחִים', 'm'],
+  butterfly: ['🦋', 'פַּרְפַּר', 'פַּרְפָּרִים', 'm'],  dog:      ['🐶', 'כֶּלֶב', 'כְּלָבִים', 'm'],
+  ball:      ['⚽', 'כַּדּוּר', 'כַּדּוּרִים', 'm'],    duck:     ['🦆', 'בַּרְוָז', 'בַּרְוָזִים', 'm'],
+  fish:      ['🐟', 'דָּג', 'דָּגִים', 'm'],          boat:     ['⛵', 'סִירָה', 'סִירוֹת', 'f'],
+  shell:     ['🐚', 'צֶדֶף', 'צְדָפִים', 'm'],        umbrella: ['⛱️', 'שִׁמְשִׁיָּה', 'שִׁמְשִׁיּוֹת', 'f'],
+  car:       ['🚗', 'מְכוֹנִית', 'מְכוֹנִיּוֹת', 'f'],  bus:      ['🚌', 'אוֹטוֹבּוּס', 'אוֹטוֹבּוּסִים', 'm'],
+  balloon:   ['🎈', 'בַּלּוֹן', 'בַּלּוֹנִים', 'm'],    tree:     ['🌳', 'עֵץ', 'עֵצִים', 'm'],
+  cat:       ['🐱', 'חָתוּל', 'חֲתוּלִים', 'm'],      star:     ['⭐', 'כּוֹכָב', 'כּוֹכָבִים', 'm'],
+  pencil:    ['✏️', 'עִפָּרוֹן', 'עֶפְרוֹנוֹת', 'm'],  heart:    ['❤️', 'לֵב', 'לְבָבוֹת', 'm'],
+};
+const SIMPLE = ['apple', 'banana', 'cookie', 'strawberry', 'candy', 'bird', 'flower', 'butterfly', 'dog', 'ball', 'duck', 'fish', 'boat', 'car', 'balloon', 'cat', 'star', 'pencil', 'heart', 'cup'];
+
+/* how to say "5 apples": 1 → "תַּפּוּחַ אֶחָד", 2 → "שְׁנֵי תַּפּוּחִים", 3+ → number in the right gender + plural */
+function phrase(n, k){
+  const [, s, p, g] = K[k];
+  if (n === 1) return s + ' ' + (g === 'f' ? 'אַחַת' : 'אֶחָד');
+  if (n === 2) return (g === 'f' ? 'שְׁתֵּי ' : 'שְׁנֵי ') + p;
+  return (g === 'f' ? FEM[n] : MASC[n]) + ' ' + p;
+}
+
+/* ---------- full scenes (level 3): background + where each thing can stand ---------- */
+const W = 800, H = 450;
+const SCENES = {
+  park: {
+    bg: `<rect width="800" height="450" fill="#bfe6ff"/><circle cx="90" cy="70" r="42" fill="#ffd54a"/>
+      <g fill="#fff" opacity=".9"><ellipse cx="560" cy="60" rx="60" ry="22"/><ellipse cx="610" cy="48" rx="40" ry="20"/><ellipse cx="300" cy="90" rx="48" ry="16"/></g>
+      <path d="M0 250 Q200 215 400 245 T800 240 V450 H0Z" fill="#8fd18a"/><path d="M0 300 Q300 280 800 310 V450 H0Z" fill="#7cc576"/>`,
+    zones: { sky: [40, 30, 720, 180], ground: [40, 270, 720, 160] },
+    kinds: { bird: 'sky', butterfly: 'sky', balloon: 'sky', flower: 'ground', dog: 'ground', ball: 'ground', duck: 'ground' } },
+  kitchen: {
+    bg: `<rect width="800" height="450" fill="#fbe9d0"/><rect x="560" y="30" width="190" height="140" rx="10" fill="#bfe6ff" stroke="#fff" stroke-width="10"/>
+      <rect x="40" y="200" width="460" height="12" rx="4" fill="#b07a44"/><rect x="40" y="120" width="460" height="12" rx="4" fill="#b07a44" opacity=".0"/>
+      <rect x="0" y="260" width="800" height="190" fill="#c8894e"/><rect x="0" y="260" width="800" height="14" fill="#a96e38"/>`,
+    zones: { shelf: [50, 120, 440, 80], table: [40, 290, 720, 145] },
+    kinds: { cup: 'shelf', apple: 'table', banana: 'table', cookie: 'table', strawberry: 'table', candy: 'table' } },
+  sea: {
+    bg: `<rect width="800" height="160" fill="#bfe6ff"/><circle cx="700" cy="60" r="38" fill="#ffd54a"/>
+      <rect y="150" width="800" height="200" fill="#4fb3e6"/><path d="M0 160 Q50 150 100 160 T200 160 T300 160 T400 160 T500 160 T600 160 T700 160 T800 160" stroke="#fff" stroke-width="4" fill="none" opacity=".7"/>
+      <path d="M0 340 Q200 325 400 345 T800 335 V450 H0Z" fill="#f3d9a4"/>`,
+    zones: { sky: [40, 20, 600, 110], surface: [40, 145, 720, 45], water: [40, 205, 720, 125], sand: [40, 355, 720, 85] },
+    kinds: { bird: 'sky', boat: 'surface', fish: 'water', shell: 'sand', umbrella: 'sand' } },
+  street: {
+    bg: `<rect width="800" height="450" fill="#cfe9ff"/>
+      <g fill="#e8d2b8"><rect x="20" y="70" width="120" height="140"/><rect x="160" y="40" width="100" height="170"/><rect x="540" y="60" width="110" height="150"/><rect x="670" y="90" width="110" height="120"/></g>
+      <g fill="#fff8e6"><rect x="40" y="95" width="22" height="22"/><rect x="95" y="95" width="22" height="22"/><rect x="180" y="70" width="22" height="22"/><rect x="225" y="70" width="22" height="22"/><rect x="565" y="85" width="22" height="22"/><rect x="615" y="85" width="22" height="22"/><rect x="695" y="115" width="22" height="22"/><rect x="745" y="115" width="22" height="22"/></g>
+      <rect y="205" width="800" height="70" fill="#d9d4cc"/><rect y="275" width="800" height="175" fill="#6b6f78"/>
+      <g fill="#fff">${[40, 160, 280, 400, 520, 640, 760].map(x => `<rect x="${x - 30}" y="360" width="60" height="8" rx="4"/>`).join('')}</g>`,
+    zones: { sky: [290, 20, 230, 150], walk: [40, 210, 720, 60], road: [40, 290, 720, 150] },
+    kinds: { balloon: 'sky', bird: 'sky', tree: 'walk', cat: 'walk', car: 'road', bus: 'road' } },
+};
+
+/* cells of a zone, in a jittered grid */
+function cells(z, size){
+  const [x, y, w, h] = z, cols = Math.max(1, Math.floor(w / size)), rows = Math.max(1, Math.floor(h / size));
+  const gx = w / cols, gy = h / rows, out = [];
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) out.push({ x: x + gx * (c + .5) + rnd(-6, 6), y: y + gy * (r + .5) + rnd(-5, 5) });
+  return shuffle(out);
+}
+
+/* ---------- teacher settings (remembered on this computer; a link can also set them: ?min=1&max=10&level=auto) ---------- */
+const S = { min: 1, max: 10, level: '1', choices: 3, count: 10, autoSay: false };
+try { Object.assign(S, JSON.parse(localStorage.getItem('countGame') || '{}')); } catch (e) {}
+{ const u = new URLSearchParams(location.search);
+  if (u.get('min')) S.min = +u.get('min'); if (u.get('max')) S.max = +u.get('max');
+  if (/^(1|2|3|auto)$/.test(u.get('level') || '')) S.level = u.get('level'); if (/^(0|3|4)$/.test(u.get('choices') || '')) S.choices = +u.get('choices'); }
+const clamp = () => { S.min = Math.min(Math.max(1, S.min | 0), 20); S.max = Math.min(Math.max(1, S.max | 0), 20); if (S.min > S.max) [S.min, S.max] = [S.max, S.min]; };
+clamp();
+const save = () => { try { localStorage.setItem('countGame', JSON.stringify(S)); } catch (e) {} };
+
+const minSel = $('min'), maxSel = $('max');
+for (let i = 1; i <= 20; i++){ minSel.add(new Option(i, i)); maxSel.add(new Option(i, i)); }
+function paintSetup(){
+  minSel.value = S.min; maxSel.value = S.max;
+  document.querySelectorAll('[data-r]').forEach(b => b.classList.toggle('on', b.dataset.r === S.min + '-' + S.max));
+  document.querySelectorAll('[data-l]').forEach(b => b.classList.toggle('on', b.dataset.l === S.level));
+  document.querySelectorAll('[data-c]').forEach(b => b.classList.toggle('on', +b.dataset.c === S.choices));
+  document.querySelectorAll('[data-n]').forEach(b => b.classList.toggle('on', +b.dataset.n === S.count));
+  $('autoSay').checked = S.autoSay;
+}
+minSel.onchange = () => { S.min = +minSel.value; clamp(); paintSetup(); };
+maxSel.onchange = () => { S.max = +maxSel.value; clamp(); paintSetup(); };
+document.querySelectorAll('[data-r]').forEach(b => b.onclick = () => { [S.min, S.max] = b.dataset.r.split('-').map(Number); paintSetup(); });
+document.querySelectorAll('[data-l]').forEach(b => b.onclick = () => { S.level = b.dataset.l; paintSetup(); });
+document.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { S.choices = +b.dataset.c; paintSetup(); });
+document.querySelectorAll('[data-n]').forEach(b => b.onclick = () => { S.count = +b.dataset.n; paintSetup(); });
+$('autoSay').onchange = e => { S.autoSay = e.target.checked; };
+paintSetup();
+
+/* ---------- voice ---------- */
+const heVoice = () => ('speechSynthesis' in window ? speechSynthesis.getVoices() : []).find(v => /^(he|iw)/i.test(v.lang));
+if ('speechSynthesis' in window) speechSynthesis.getVoices();
+function say(t){
+  if (!('speechSynthesis' in window)) { $('novoice').hidden = false; return; }
+  const v = heVoice(); if (!v){ $('novoice').hidden = false; return; }
+  speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = v; u.lang = v.lang; u.rate = .85; speechSynthesis.speak(u);
+}
+/* small happy / sad sounds */
+let ac = null;
+function tone(ok){
+  try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const t = ac.currentTime;
+    (ok ? [523, 659, 784] : [220, 180]).forEach((f, i) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; o.type = 'triangle';
+      g.gain.setValueAtTime(.0001, t + i * .11); g.gain.exponentialRampToValueAtTime(.18, t + i * .11 + .02); g.gain.exponentialRampToValueAtTime(.0001, t + i * .11 + .22);
+      o.connect(g).connect(ac.destination); o.start(t + i * .11); o.stop(t + i * .11 + .25); });
+  } catch (e) {}
+}
+
+/* ---------- game state ---------- */
+const LV = { 1: 'רָמָה 1 · בְּשׁוּרוֹת', 2: 'רָמָה 2 · מְפֻזָּר', 3: 'רָמָה 3 · סְצֵנָה' };
+let G = null;
+function startGame(){
+  clamp(); save();
+  const auto = S.level === 'auto';
+  G = { i: 0, total: S.count, first: 0, auto, stage: 0, lvl: auto ? 1 : +S.level, cap: auto ? half() : S.max, streak: 0, last: 0, q: null, busy: false };
+  $('setup').hidden = true; $('end').hidden = true; $('game').hidden = false;
+  newQuestion();
+}
+function hi(){ return G.cap; }
+/* "go up a level" mode: 1 small numbers → 1 all numbers → 2 small → 2 all → 3 small → 3 all */
+const half = () => Math.min(S.max, S.min + Math.ceil((S.max - S.min) / 2));
+
+function newQuestion(){
+  G.tries = 0; G.done = false;
+  const lo = S.min, top = hi();
+  let n; do { n = rnd(lo, top); } while (n === G.last && top > lo); G.last = n;
+  let q;
+  if (G.lvl === 3) q = sceneQ(n); else q = simpleQ(n, G.lvl);
+  G.q = q;
+  $('lvlBadge').textContent = (G.auto ? '🚀 ' : '') + LV[G.lvl];
+  $('barFill').style.width = (G.i / G.total * 100) + '%';
+  $('score').textContent = '⭐ ' + G.first;
+  $('qText').textContent = `כַּמָּה ${K[q.kind][2]} יֵשׁ${G.lvl === 3 ? ' בַּתְּמוּנָה' : ''}?`;
+  $('fb').textContent = ''; $('fb').className = 'fb'; $('next').hidden = true;
+  $('together').disabled = false; $('together').classList.remove('pulse');
+  drawStage(q); drawNums(n);
+  if (S.autoSay) setTimeout(() => say($('qText').textContent), 250);
+}
+
+/* level 1: rows of five (like a ten-frame); level 2: scattered */
+function simpleQ(n, lvl){
+  const kind = SIMPLE[rnd(0, SIMPLE.length - 1)], items = [];
+  if (lvl === 1){
+    const blocks = Math.ceil(n / 10), cell = n > 10 ? 64 : 84, size = n > 10 ? 48 : 64, bw = cell * 5, gap = 40;
+    const totalW = blocks * bw + (blocks - 1) * gap, rowsInBlock = 2, startY = H / 2 - cell * rowsInBlock / 2;
+    const slots = [];
+    for (let b = 0; b < blocks; b++){
+      const bx = W / 2 + totalW / 2 - b * (bw + gap);          /* first block on the right (we read right to left) */
+      for (let r = 0; r < rowsInBlock; r++) for (let c = 0; c < 5; c++) slots.push({ x: bx - cell * (c + .5), y: startY + cell * (r + .5), b });
+    }
+    slots.forEach((s, i) => { if (i < n) items.push({ x: s.x, y: s.y, k: kind, t: true, size }); });
+    return { n, kind, items, frames: { slots, cell, blocks, bw, gap, totalW, startY, rowsInBlock }, lvl };
+  }
+  const size = n > 12 ? 50 : 58;
+  cells([40, 30, 720, 390], n > 12 ? 62 : 72).slice(0, n).forEach(c => items.push({ x: c.x, y: c.y, k: kind, t: true, size, rot: rnd(-15, 15) }));
+  return { n, kind, items, lvl };
+}
+
+/* level 3: a full scene with other things too; the child counts only one kind */
+function sceneQ(n){
+  for (let tryNo = 0; tryNo < 30; tryNo++){
+    const sid = Object.keys(SCENES)[rnd(0, 3)], sc = SCENES[sid], size = 46, cell = 54;
+    const free = {}; Object.keys(sc.zones).forEach(z => free[z] = cells(sc.zones[z], cell));
+    const kinds = shuffle(Object.keys(sc.kinds));
+    const target = kinds.find(k => free[sc.kinds[k]].length >= n); if (!target) continue;
+    const items = [];
+    free[sc.kinds[target]].splice(0, n).forEach(c => items.push({ x: c.x, y: c.y, k: target, t: true, size }));
+    kinds.filter(k => k !== target).slice(0, 3).forEach(k => {
+      const room = free[sc.kinds[k]], m = Math.min(room.length, rnd(1, Math.max(2, Math.min(9, S.max))));
+      room.splice(0, m).forEach(c => items.push({ x: c.x, y: c.y, k, t: false, size }));
+    });
+    return { n, kind: target, items: shuffle(items), scene: sid, lvl: 3 };
+  }
+  return simpleQ(n, 2);
+}
+
+function drawStage(q){
+  let bg;
+  if (q.lvl === 3) bg = SCENES[q.scene].bg;
+  else if (q.lvl === 1){
+    const f = q.frames;
+    bg = `<rect width="800" height="450" fill="#fff8ec"/>` +
+      Array.from({ length: f.blocks }, (_, b) => { const bx = W / 2 + f.totalW / 2 - b * (f.bw + f.gap);
+        return `<rect x="${bx - f.bw - 8}" y="${f.startY - 8}" width="${f.bw + 16}" height="${f.cell * f.rowsInBlock + 16}" rx="18" fill="#fff" stroke="#eadfce" stroke-width="4"/>` +
+          `<line x1="${bx - f.bw - 8}" y1="${f.startY + f.cell}" x2="${bx + 8}" y2="${f.startY + f.cell}" stroke="#eadfce" stroke-width="3" stroke-dasharray="8 8"/>`; }).join('') +
+      f.slots.map(s => `<circle cx="${s.x}" cy="${s.y}" r="${f.cell * .38}" fill="none" stroke="#efe6d6" stroke-width="3" stroke-dasharray="5 6"/>`).join('');
+  } else bg = `<rect width="800" height="450" fill="#fff8ec"/><g fill="#fdf0d8">${Array.from({ length: 14 }, () => `<circle cx="${rnd(0, 800)}" cy="${rnd(0, 450)}" r="${rnd(20, 60)}"/>`).join('')}</g>`;
+  const its = q.items.map((it, i) => `<text class="it" data-i="${i}" x="${it.x.toFixed(1)}" y="${(it.y + it.size * .35).toFixed(1)}" font-size="${it.size}" text-anchor="middle"${it.rot ? ` transform="rotate(${it.rot} ${it.x.toFixed(1)} ${it.y.toFixed(1)})"` : ''}>${K[it.k][0]}</text>`).join('');
+  $('stage').className = 'stage';
+  $('stage').innerHTML = `<svg viewBox="0 0 800 450" role="img" aria-label="${$('qText').textContent}">${bg}<g id="hlLayer"></g>${its}<g id="tagLayer"></g></svg>`;
+}
+
+function drawNums(n){
+  const lo = S.min, top = hi(); let list;
+  if (S.choices === 0) list = Array.from({ length: top - lo + 1 }, (_, i) => lo + i);
+  else {
+    const want = Math.min(S.choices, top - lo + 1), set = new Set([n]);
+    const near = shuffle([-2, -1, 1, 2, 3, -3]).map(d => n + d).filter(x => x >= lo && x <= top);
+    for (const x of near){ if (set.size >= want) break; set.add(x); }
+    while (set.size < want) set.add(rnd(lo, top));
+    list = [...set].sort((a, b) => a - b);
+  }
+  const box = $('nums'); box.className = 'nums' + (S.choices === 0 ? ' all' : ''); box.innerHTML = '';
+  list.forEach(x => {
+    const card = document.createElement('div'); card.className = 'num';
+    card.innerHTML = `<button class="pick" type="button" aria-label="${x}"><span class="d">${x}</span><span class="w">${FEM[x]}</span></button><button class="ear small" type="button" aria-label="השמעה">🔊</button>`;
+    card.querySelector('.pick').onclick = () => answer(x, card);
+    card.querySelector('.ear').onclick = () => say(FEM[x]);
+    box.appendChild(card);
+  });
+}
+
+function answer(x, card){
+  if (G.done || G.busy || card.classList.contains('bad')) return;
+  const q = G.q;
+  if (x === q.n){
+    G.done = true; card.classList.add('ok'); $('stage').classList.add('ok'); tone(true);
+    document.querySelectorAll('#nums .num').forEach(c => { if (c !== card) c.style.opacity = '.45'; });
+    if (G.tries === 0){ G.first++; G.streak++; } else G.streak = 0;
+    const p = phrase(q.n, q.kind);
+    $('fb').className = 'fb ok'; $('fb').textContent = (G.tries === 0 ? 'נָכוֹן! ⭐ ' : 'נָכוֹן! ') + p;
+    setTimeout(() => say(p), 300);
+    $('score').textContent = '⭐ ' + G.first;
+    $('together').disabled = true; $('next').hidden = false; $('next').focus({ preventScroll: true });
+  } else {
+    G.tries++; G.streak = 0; card.classList.add('bad'); tone(false);
+    const st = $('stage'); st.classList.remove('no'); void st.offsetWidth; st.classList.add('no');
+    $('fb').className = 'fb no'; $('fb').textContent = G.tries > 1 ? 'בּוֹאוּ נִסְפֹּר יַחַד 👆' : 'נַסּוּ שׁוּב 🙂';
+    if (G.tries > 1) $('together').classList.add('pulse');
+  }
+}
+
+/* count together: every item of the right kind lights up with its number, and the number is read aloud */
+function countTogether(){
+  if (G.busy) return; G.busy = true; $('together').disabled = true; $('together').classList.remove('pulse');
+  const q = G.q, svg = $('stage').querySelector('svg'), hl = svg.querySelector('#hlLayer'), tags = svg.querySelector('#tagLayer');
+  hl.innerHTML = ''; tags.innerHTML = '';
+  let order = q.items.map((it, i) => ({ it, i })).filter(o => o.it.t);
+  if (q.lvl !== 1) order.sort((a, b) => (Math.round(a.it.y / 70) - Math.round(b.it.y / 70)) || (b.it.x - a.it.x));
+  let k = 0;
+  const step = () => {
+    if (k >= order.length){ G.busy = false; if (!G.done) $('together').disabled = false; return; }
+    const { it } = order[k]; k++;
+    const r = it.size * .62;
+    hl.insertAdjacentHTML('beforeend', `<circle class="hl" cx="${it.x}" cy="${it.y}" r="${r}"/>`);
+    tags.insertAdjacentHTML('beforeend', `<g class="tag"><circle cx="${it.x + r * .8}" cy="${it.y - r * .8}" r="16"/><text x="${it.x + r * .8}" y="${it.y - r * .8 + 7}" text-anchor="middle">${k}</text></g>`);
+    say(FEM[k]);
+    setTimeout(step, 850);
+  };
+  step();
+}
+
+function nextQ(){
+  if (!G.done) return;
+  G.i++;
+  if (G.auto && G.streak >= 2 && G.stage < 5){        /* two right in a row → harder */
+    G.streak = 0; G.stage++;
+    const lvl = 1 + Math.floor(G.stage / 2); G.cap = G.stage % 2 ? S.max : half();
+    toast(lvl > G.lvl ? '🚀 ' + LV[lvl] : '🚀 מִסְפָּרִים גְּדוֹלִים יוֹתֵר!'); G.lvl = lvl;
+  }
+  if (G.i >= G.total) return finish();
+  newQuestion();
+}
+function toast(t){ const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 1900); }
+
+function finish(){
+  $('game').hidden = true; $('end').hidden = false; $('barFill').style.width = '100%';
+  const r = G.first / G.total, s = r >= .9 ? 3 : r >= .6 ? 2 : 1;
+  $('stars').textContent = '⭐'.repeat(s) + '☆'.repeat(3 - s);
+  $('endTitle').textContent = s === 3 ? 'מְצֻיָּן!' : s === 2 ? 'כָּל הַכָּבוֹד!' : 'יֹפִי! עוֹד פַּעַם?';
+  $('endText').textContent = `${G.first} מִתּוֹךְ ${G.total} — נָכוֹן כְּבָר בַּפַּעַם הָרִאשׁוֹנָה`;
+  tone(true);
+}
+
+$('go').onclick = startGame;
+$('again').onclick = startGame;
+$('menu').onclick = $('toSetup').onclick = () => { if ('speechSynthesis' in window) speechSynthesis.cancel(); $('game').hidden = true; $('end').hidden = true; $('setup').hidden = false; paintSetup(); };
+$('next').onclick = nextQ;
+$('together').onclick = countTogether;
+$('qEar').onclick = () => say($('qText').textContent);
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && !$('game').hidden && G && G.done){ e.preventDefault(); nextQ(); } });
+if (new URLSearchParams(location.search).get('start') === '1') startGame();
+})();
+</script>
+<script id="fs-script">
+(function(){var b=document.getElementById("fsBtn"),d=document,e=d.documentElement;
+var req=e.requestFullscreen||e.webkitRequestFullscreen,ex=d.exitFullscreen||d.webkitExitFullscreen;
+if(!b||!req){return}b.hidden=false;
+function on(){return d.fullscreenElement||d.webkitFullscreenElement}
+function lbl(){b.textContent=on()?"✕ יציאה ממסך מלא":"⛶ מסך מלא"}
+b.addEventListener("click",function(){if(on()){ex.call(d)}else{req.call(e)}});
+d.addEventListener("fullscreenchange",lbl);d.addEventListener("webkitfullscreenchange",lbl);})();
+</script>
+</body>
+</html>
