@@ -15,3 +15,9 @@ Notes
 - Students never log in: they type their personal code at `/exams/index.html`. Each code works once.
 - Exam answers are stored with the exam definition so the page can score instantly; a technical student could read them from the browser tools. For classroom exams this is a reasonable trade-off, supervise as usual.
 - Until `firebase-config.js` is filled in, the site runs in **DEMO mode** (everything stays in one browser) – good for trying it out.
+
+## Niflaot lessons – teachers only
+- Every page in `niflaot-lessons/` loads `niflaot-lessons/gate.js`, which asks for Google sign-in and opens the page only for the owner or for emails on the **niflaotAccess** list.
+- The owner manages the list on the Niflaot Lessons page (box "ניהול גישה"). This list is separate from the Exams teachers list.
+- After changing `exams/firestore.rules`, paste it again in Firestore → **Rules** → **Publish**.
+- This is a login screen, not encryption: the files are still public in the GitHub repository.
