@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>נפלאות ג — עמוד 21</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="lesson-kit.css?v=1792422068">
+<style>
+/* the phone-call show */
+.show{background:var(--surface);border:2px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+.cast{display:grid;grid-template-columns:1fr 1fr;min-height:200px}
+.side{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:14px 10px 12px;overflow:hidden}
+.side.shir{order:-1}
+.side.shir{background:linear-gradient(#efe4ff,#e2d3ff)}
+.side.mom{background:linear-gradient(#e2f6e6,#cdeed5)}
+.side .deco{position:absolute;inset:0;pointer-events:none;font-size:34px;opacity:.55}
+.side .deco span{position:absolute}
+.who{position:relative;width:118px;height:118px;border-radius:50%;background:#fff;border:5px solid #fff;box-shadow:0 6px 16px #0002;display:grid;place-items:center;font-size:70px;transition:transform .2s,box-shadow .2s}
+.who .ph{position:absolute;bottom:-4px;inset-inline-end:-10px;font-size:34px}
+.name{margin-top:6px;font:800 24px var(--f-display);background:#fff;border-radius:999px;padding:1px 16px}
+.side.talk .who{animation:talk .5s ease-in-out infinite alternate;box-shadow:0 0 0 6px var(--gold),0 6px 16px #0002}
+@keyframes talk{to{transform:translateY(-6px) scale(1.04)}}
+.line-call{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:34px;z-index:2;background:#fff;border-radius:50%;width:56px;height:56px;display:grid;place-items:center;box-shadow:0 4px 12px #0002}
+.cast{position:relative}
+.chat{padding:16px;max-height:min(58vh,560px);overflow:auto;scroll-behavior:smooth;background:#fffdf8;border-top:2px solid var(--line)}
+.msgrow{display:flex;gap:10px;align-items:flex-start;margin:10px 0;animation:in .35s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+.msgrow.mom{flex-direction:row-reverse}
+.ava{flex:none;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:32px;background:#efe4ff}
+.msgrow.mom .ava{background:#e2f6e6}
+.bub{max-width:82%;background:#fff;border:3px solid #9fd4ea;border-radius:20px;padding:10px 16px;font:700 clamp(21px,2.8vw,28px)/2.1 var(--f-display)}
+.msgrow.now .bub{border-color:var(--gold);box-shadow:0 0 0 4px #f2b01e33}
+.slot{display:inline-flex;flex-direction:column;align-items:center;vertical-align:top;margin:0 4px;line-height:1.3}
+.slot .box{min-width:120px;min-height:44px;border-bottom:4px solid #7bbfdc;display:flex;align-items:flex-end;justify-content:center;padding:0 8px;font:800 clamp(21px,2.8vw,28px) var(--f-display)}
+.slot .dig{font:800 20px var(--f-display);color:#16527d;margin-top:2px}
+.slot.ask .box{background:var(--gold-soft);border:3px dashed var(--gold);border-radius:12px;animation:blink 1.2s ease-in-out infinite}
+@keyframes blink{50%{background:#fff}}
+.slot.ok .box{color:var(--green);border-bottom-color:var(--green)}
+.bub.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.choices{padding:14px 16px 18px;border-top:2px solid var(--line);background:#fff8ec;text-align:center}
+.choices h3{margin:0 0 8px;font:800 22px var(--f-display)}
+.choices h3 .big-n{margin:0 6px}
+.opts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.opts .opt{min-width:130px}
+.opts .opt.bad{animation:shake .4s}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;border-top:2px solid var(--line)}
+.status{font:800 20px var(--f-display);min-height:30px;text-align:center;padding:6px 10px}
+.status.no{color:var(--coral)}.status.ok{color:var(--green)}
+.startcard{text-align:center;padding:26px 16px}
+.startcard p{font-size:20px;margin:0 0 14px}
+@media(max-width:600px){.who{width:86px;height:86px;font-size:52px}.cast{min-height:160px}.bub{max-width:90%}.slot .box{min-width:96px}}
+@media (prefers-reduced-motion:reduce){.side.talk .who,.slot.ask .box,.msgrow{animation:none}}
+</style>
+<style id="site-navigation">
+<style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
+</style></head>
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../niflaot-lessons/index.html'}">← חזרה</button></nav>
+<div class="wrap">
+<header class="top">
+  <div><p class="crumb">NIFLAOT LESSONS · נפלאות ג · עמוד 21</p><h1>שִׂיחָה בַּטֶּלֶפוֹן</h1></div>
+  <p class="he-title">שיעור · כַּמָּה פֵּרוֹת אַתְּ צְרִיכָה?</p>
+</header>
+<nav class="steps"><ol>
+  <li><a href="#s1"><b>1</b> מִשְׂחַק הַמִּסְפָּרִים</a></li><li><a href="#s2"><b>2</b> הַהַצָּגָה</a></li><li><a href="#s3"><b>3</b> כָּל הַשִּׂיחָה</a></li>
+</ol></nav>
+
+<section class="step" id="s1">
+  <span class="tag"><span class="tnum">1</span> מְחַמְּמִים</span>
+  <p class="lead">סוֹפְרִים בְּעִבְרִית</p>
+  <p class="sub">מִשְׂחָק קָצָר: רוֹאִים תְּמוּנָה, סוֹפְרִים וּבוֹחֲרִים אֶת הַמִּסְפָּר.</p>
+  <div class="shortcuts">
+    <a class="sc" href="../games/count-hebrew.html?min=1&amp;max=10&amp;level=auto&amp;start=1"><span class="ic">🔢</span><div><h3>סוֹפְרִים בְּעִבְרִית</h3><p>1–10 · מַתְחִילִים קַל וְעוֹלִים בְּרָמָה</p></div><span class="go">◀</span></a>
+    <a class="sc" href="../games/count-hebrew.html"><span class="ic">⚙️</span><div><h3>לִבְחֹר רָמָה</h3><p>הַמּוֹרֶה בּוֹחֵר מִסְפָּרִים וְרָמָה</p></div><span class="go">◀</span></a>
+  </div>
+</section>
+
+<section class="step" id="s2">
+  <span class="tag green"><span class="tnum">2</span> תרגיל 16</span>
+  <p class="lead">שִׁיר מְדַבֶּרֶת עִם אִמָּא בַּטֶּלֶפוֹן</p>
+  <p class="sub">צוֹפִים בַּהַצָּגָה. כְּשֶׁיֵּשׁ מָקוֹם רֵיק, הַשִּׂיחָה עוֹצֶרֶת — בּוֹחֲרִים אֶת הַמִּסְפָּר הַנָּכוֹן בְּמִלִּים, וְהַהַצָּגָה מַמְשִׁיכָה.</p>
+  <div class="show" id="show">
+    <div class="cast">
+      <div class="side mom" id="sideMom"><div class="deco"><span style="top:10px;left:12px">🛒</span><span style="top:14px;right:16px">🍎</span><span style="top:64px;left:40%">🥕</span><span style="top:70px;right:12%">🍉</span></div>
+        <div class="who">👩<span class="ph">📱</span></div><div class="name">אִמָּא · בַּסּוּפֶּרְמַרְקֶט</div></div>
+      <div class="side shir" id="sideShir"><div class="deco"><span style="top:10px;right:14px">🪴</span><span style="top:14px;left:16px">🪟</span><span style="top:66px;right:42%">🍓</span></div>
+        <div class="who">👧<span class="ph">📱</span></div><div class="name">שִׁיר · בַּבַּיִת</div></div>
+      <div class="line-call" aria-hidden="true">📞</div>
+    </div>
+    <div class="startcard" id="startCard">
+      <p>שִׁיר עוֹשָׂה סָלָט פֵּרוֹת לַחֲבֵרוֹת שֶׁלָּהּ, וְהִיא מִתְקַשֶּׁרֶת לְאִמָּא…</p>
+      <button class="btn good" id="play" type="button" style="font-size:24px;padding:12px 34px">▶ מַתְחִילִים אֶת הַהַצָּגָה</button>
+    </div>
+    <div class="chat" id="chat" hidden aria-live="polite"></div>
+    <div class="choices" id="choices" hidden>
+      <h3>כַּמָּה? <span class="big-n" id="askN"></span> — בּוֹחֲרִים אֶת הַמִּלָּה:</h3>
+      <div class="opts" id="opts"></div>
+    </div>
+    <div class="status" id="status" aria-live="polite"></div>
+    <div class="ctrl">
+      <label><input type="checkbox" id="voice" checked> 🔊 קוֹל</label>
+      <span class="spacer"></span>
+      <button class="btn ghost small" id="again" type="button">↺ מֵהַהַתְחָלָה</button>
+    </div>
+  </div>
+</section>
+
+<section class="step" id="s3">
+  <span class="tag sky"><span class="tnum">3</span> קוֹרְאִים יַחַד</span>
+  <p class="lead">כָּל הַשִּׂיחָה</p>
+  <p class="sub">אַחֲרֵי הַהַצָּגָה אֶפְשָׁר לִקְרֹא אֶת כָּל הַשִּׂיחָה בְּתַפְקִידִים: מִי שִׁיר וּמִי אִמָּא?</p>
+  <div class="panel"><p class="sub" id="fullHint" style="margin:0">הַשִּׂיחָה הַמְּלֵאָה תּוֹפִיעַ כָּאן אַחֲרֵי הַהַצָּגָה. <button class="btn ghost small" id="showFull" type="button">👀 לְהַצִּיג עַכְשָׁו (לַמּוֹרֶה)</button></p><div id="full" hidden></div></div>
+  <details class="note"><summary>הערות למורה</summary>
+    <p>בַּתַּרְגִּיל הַתַּלְמִידִים מַשְׁלִימִים מִסְפָּרִים בְּמִלִּים. הַמִּסְפָּר תָּלוּי בְּמִין הַשֵּׁם: חֲמִשָּׁה תַּפּוּחִים, אֲבָל שְׁתֵּי בָּנָנוֹת וְעֶשֶׂר צַלָּחוֹת. בַּהַצָּגָה מוֹפִיעוֹת רַק אֶפְשָׁרֻיּוֹת בַּמִּין הַנָּכוֹן, כְּדֵי לְהִתְרַכֵּז בַּמִּסְפָּר עַצְמוֹ. אֶפְשָׁר לִשְׁאֹל: לָמָּה "שְׁתֵּי בָּנָנוֹת" וְלֹא "שְׁנֵי"?</p>
+  </details>
+</section>
+<p class="src">הַשִּׂיחָה מְבֻסֶּסֶת עַל תַּרְגִּיל 16, עַמּוּד 21 בְּ"נִפְלָאוֹת ג" (מט"ח). הָאִיּוּרִים הֵם שֶׁל הָאֲתָר.</p>
+</div>
+
+<script src="lesson-kit.js?v=1792422068"></script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const M = [, 'אֶחָד', 'שְׁנֵי', 'שְׁלוֹשָׁה', 'אַרְבָּעָה', 'חֲמִשָּׁה', 'שִׁשָּׁה', 'שִׁבְעָה', 'שְׁמוֹנָה', 'תִּשְׁעָה', 'עֲשָׂרָה'];   /* with a masculine noun */
+const F = [, 'אַחַת', 'שְׁתֵּי', 'שָׁלוֹשׁ', 'אַרְבַּע', 'חָמֵשׁ', 'שֵׁשׁ', 'שֶׁבַע', 'שְׁמוֹנֶה', 'תֵּשַׁע', 'עֶשֶׂר'];        /* with a feminine noun */
+const N = (n, g) => ({ n, g });   /* a blank: the number and the gender of the noun */
+
+/* the dialogue (exercise 16) */
+const LINES = [
+  ['shir', ['הַי אִמָּא, אַתְּ בַּסּוּפֶּרְמַרְקֶט?']],
+  ['mom',  ['כֵּן, מָה אַתְּ צְרִיכָה?']],
+  ['shir', ['אֲנִי עוֹשָׂה סָלָט פֵּרוֹת לַחֲבֵרוֹת, אֲבָל אֵין לִי מַסְפִּיק פֵּרוֹת.']],
+  ['mom',  ['כַּמָּה פֵּרוֹת אַתְּ צְרִיכָה?']],
+  ['shir', [N(5, 'm'), ' תַּפּוּחִים, ', N(2, 'f'), ' בָּנָנוֹת, ', N(9, 'm'), ' תְּמָרִים, ', N(8, 'm'), ' תּוּתִים. אָהּ… גַּם אֲבַטִּיחַ ', N(1, 'm'), ' גָּדוֹל.']],
+  ['mom',  ['טוֹב, אֲנִי קוֹנָה לָךְ עַכְשָׁו.']],
+  ['shir', ['רֶגַע, אוּלַי גַּם ', N(2, 'm'), ' תַּפּוּזִים.']],
+  ['mom',  ['אַתְּ צְרִיכָה גַּם צַלָּחוֹת?']],
+  ['shir', ['כֵּן, ', N(10, 'f'), ' צַלָּחוֹת לְכָל הַחֲבֵרוֹת. וְאוּלַי גַּם ', N(3, 'm'), ' חֲטִיפִים.']],
+  ['mom',  ['גַּם זֶה לְסָלָט פֵּרוֹת?']],
+  ['shir', ['לֹא, זֶה לִי. 😋']],
+];
+const WHO = { shir: { ava: '👧', side: 'sideShir', pitch: 1.35 }, mom: { ava: '👩', side: 'sideMom', pitch: .95 } };
+const word = b => (b.g === 'f' ? F : M)[b.n];
+
+/* voice: one Hebrew voice, a higher pitch for Shir */
+let voiceOn = true;
+const heVoice = () => ('speechSynthesis' in window ? speechSynthesis.getVoices() : []).find(v => /^(he|iw)/i.test(v.lang));
+if ('speechSynthesis' in window) speechSynthesis.getVoices();
+let run = 0;   /* bumps when the show restarts, so old timers stop */
+function speak(text, who){
+  const my = run;
+  return new Promise(res => {
+    const clean = text.replace(/[😋…]/g, ' ').trim();
+    const fallback = () => setTimeout(res, 700 + clean.length * 55);
+    if (!voiceOn || !clean || !('speechSynthesis' in window) || !heVoice()){ fallback(); return; }
+    const u = new SpeechSynthesisUtterance(clean); u.voice = heVoice(); u.lang = u.voice.lang; u.rate = .85; u.pitch = WHO[who].pitch;
+    let done = false; const fin = () => { if (!done){ done = true; if (my === run) res(); } };
+    u.onend = fin; u.onerror = fin; setTimeout(fin, 2500 + clean.length * 120);
+    speechSynthesis.speak(u);
+  });
+}
+const wait = ms => new Promise(r => setTimeout(r, ms));
+let ac = null;
+function tone(ok){
+  try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const t = ac.currentTime;
+    (ok ? [523, 659, 784] : [260, 200]).forEach((f, i) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; o.type = 'triangle';
+      g.gain.setValueAtTime(.0001, t + i * .1); g.gain.exponentialRampToValueAtTime(.15, t + i * .1 + .02); g.gain.exponentialRampToValueAtTime(.0001, t + i * .1 + .2);
+      o.connect(g).connect(ac.destination); o.start(t + i * .1); o.stop(t + i * .1 + .22); });
+  } catch (e) {}
+}
+
+const chat = $('chat');
+function talking(who){ ['sideShir', 'sideMom'].forEach(s => $(s).classList.toggle('talk', !!who && WHO[who].side === s)); }
+function addRow(who){
+  chat.querySelectorAll('.msgrow.now').forEach(r => r.classList.remove('now'));
+  const row = document.createElement('div'); row.className = 'msgrow now ' + who;
+  row.innerHTML = `<div class="ava">${WHO[who].ava}</div><div class="bub"></div>`;
+  chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
+  return row.querySelector('.bub');
+}
+/* wait for the right word: only words of the same gender are offered */
+function ask(blank, bub, slot, who){
+  return new Promise(res => {
+    const my = run;
+    const list = blank.g === 'f' ? F : M;
+    const others = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].filter(x => x !== blank.n).sort(() => Math.random() - .5).slice(0, 3);
+    const opts = [blank.n, ...others].sort((a, b) => a - b);
+    $('askN').textContent = blank.n;
+    const box = $('opts'); box.innerHTML = '';
+    opts.forEach(x => { const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.textContent = list[x];
+      b.onclick = () => {
+        if (my !== run) return;
+        if (x === blank.n){
+          tone(true); slot.className = 'slot ok'; slot.querySelector('.box').textContent = list[x];
+          $('choices').hidden = true; $('status').className = 'status ok'; $('status').textContent = '✓ נָכוֹן!'; res();
+        } else {
+          tone(false); b.classList.add('bad'); b.disabled = true; bub.classList.remove('shake'); void bub.offsetWidth; bub.classList.add('shake');
+          $('status').className = 'status no'; $('status').textContent = `✗ לֹא נָכוֹן — "${list[x]}" זֶה ${x}. נַסּוּ שׁוּב!`;
+        }
+      };
+      box.appendChild(b); });
+    $('choices').hidden = false; $('status').className = 'status'; $('status').textContent = '';
+    talking(null);
+    $('choices').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+}
+
+async function playShow(){
+  run++; const my = run;
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  chat.innerHTML = ''; chat.hidden = false; $('startCard').hidden = true; $('choices').hidden = true; $('status').textContent = '';
+  for (const [who, parts] of LINES){
+    if (my !== run) return;
+    const bub = addRow(who); talking(who);
+    let pending = '';
+    for (const p of parts){
+      if (my !== run) return;
+      if (typeof p === 'string'){ bub.insertAdjacentText('beforeend', p); pending += p; chat.scrollTop = chat.scrollHeight; continue; }
+      /* a blank: say what came before it, then stop and ask */
+      if (pending){ talking(who); await speak(pending, who); pending = ''; }
+      if (my !== run) return;
+      const slot = document.createElement('span'); slot.className = 'slot ask'; slot.innerHTML = `<span class="box">?</span><span class="dig">${p.n}</span>`;
+      bub.appendChild(slot); chat.scrollTop = chat.scrollHeight;
+      await ask(p, bub, slot, who);
+      if (my !== run) return;
+      talking(who); pending = word(p);
+    }
+    if (pending){ talking(who); await speak(pending, who); }
+    if (my !== run) return;
+    talking(null); $('status').textContent = ''; await wait(450);
+  }
+  chat.querySelectorAll('.msgrow.now').forEach(r => r.classList.remove('now'));
+  $('status').className = 'status ok'; $('status').textContent = '🎉 כָּל הַכָּבוֹד! הִשְׁלַמְתֶּם אֶת כָּל הַשִּׂיחָה!';
+  showFull();
+  tone(true);
+}
+$('play').onclick = playShow;
+$('again').onclick = () => { $('startCard').hidden = true; playShow(); };
+$('voice').onchange = e => { voiceOn = e.target.checked; if (!voiceOn && 'speechSynthesis' in window) speechSynthesis.cancel(); };
+
+/* the whole dialogue with the answers, for reading in roles */
+function showFull(){ $('full').hidden = false; $('fullHint').hidden = true; }
+$('showFull').onclick = showFull;
+$('full').innerHTML = LINES.map(([who, parts]) => `<div class="msgrow ${who}" style="animation:none"><div class="ava">${WHO[who].ava}</div><div class="bub">${
+  parts.map(p => typeof p === 'string' ? p : `<span class="slot ok"><span class="box">${word(p)}</span><span class="dig">${p.n}</span></span>`).join('')}</div></div>`).join('');
+})();
+</script>
+</body>
+</html>
