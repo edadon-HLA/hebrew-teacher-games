@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Days of the week · יְמֵי הַשָּׁבוּעַ | משחקי עברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172235;--muted:#5f6b80;--line:#dfe4ec;--green:#2f9d55;--green-soft:#dcf2e3;--red:#e2506a;--red-soft:#fde3e7;--sky:#1f4fbf;--sky-soft:#e7eefc;--gold:#f2b01e;--gold-soft:#fbf0d2;--f:'Rubik','Noto Sans Hebrew',Arial,sans-serif}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);line-height:1.45}
+.wrap{max-width:1100px;margin:0 auto;padding:14px 16px 40px}
+h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;text-align:center}
+.sub{text-align:center;color:var(--muted);font-size:18px;margin:0 0 14px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;box-shadow:0 8px 24px #17223514;padding:18px}
+.btn{font:700 19px var(--f);border:0;border-radius:14px;padding:11px 22px;background:var(--sky);color:#fff;cursor:pointer}
+.btn:hover{filter:brightness(.92)}
+.btn.ghost{background:#fff;color:var(--sky);border:2px solid var(--sky)}
+.btn.good{background:var(--green)}.btn.big{font-size:24px;padding:14px 36px}.btn.small{font-size:15px;padding:6px 12px}
+button{font-family:var(--f)}
+:focus-visible{outline:3px solid #2a8bd0;outline-offset:2px}
+
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:10px 0 16px}
+.mode{border:3px solid var(--line);border-radius:20px;background:#fff;padding:20px 14px;cursor:pointer;text-align:center;color:var(--ink)}
+.mode:hover{border-color:var(--sky);background:#f6f9ff;transform:translateY(-2px)}
+.mode .big{font-size:48px;line-height:1.1}.mode h2{margin:8px 0 4px;font-size:25px}.mode p{margin:0;color:var(--muted);font-size:16px}
+.opts{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;align-items:center;font-size:17px}
+.opts select{font:700 17px var(--f);padding:4px 8px;border-radius:10px;border:2px solid var(--line)}
+
+/* game */
+.top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar{flex:1;min-width:50px;height:14px;background:#e3e8f0;border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--green);transition:width .3s}
+.score{font-weight:800;font-size:20px}
+.say{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;background:#fff;border:3px solid var(--gold);border-radius:20px;padding:12px 18px;margin-bottom:6px}
+.say .tx{font:800 clamp(24px,4vw,38px)/1.35 var(--f);text-align:center}
+.say .en{display:block;font:600 18px Arial,sans-serif;color:var(--muted);direction:ltr}
+.ear{border:0;background:var(--gold-soft);border-radius:50%;width:50px;height:50px;font-size:24px;cursor:pointer;flex:none}
+.ear:hover{background:var(--gold)}
+.hint{text-align:center;color:var(--muted);font-size:17px;margin:4px 0 10px}
+
+/* the week: Monday first, left to right, like a US calendar */
+.cal{direction:ltr;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:3px solid #1f4fbf;border-radius:18px;overflow:hidden;background:#fff}
+.day{display:flex;flex-direction:column;border-inline-start:2px solid var(--line);min-height:210px;position:relative}
+.day:first-child{border-inline-start:0}
+.day .hd{background:#1f4fbf;color:#fff;text-align:center;padding:8px 4px;direction:rtl}
+.day .hd b{display:block;font:800 clamp(15px,2vw,22px) var(--f)}
+.day .hd small{font:600 13px Arial,sans-serif;opacity:.75;direction:ltr;display:block}
+.day.wk .hd{background:#7a4cc2}
+.day .body{flex:1;display:flex;flex-wrap:wrap;align-content:flex-start;justify-content:center;gap:6px;padding:8px 4px}
+.day.target-hot{background:var(--gold-soft)}
+.day.ok{background:var(--green-soft)}
+.day.no{animation:shake .4s;background:var(--red-soft)}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.day.pick{cursor:pointer}.day.pick:hover{background:#f3f6ff}
+.day .v{font:800 clamp(54px,8vw,90px)/1 var(--f);color:var(--green);margin:auto;animation:pop .35s}
+.day .x{font:800 clamp(54px,8vw,90px)/1 var(--f);color:var(--red);margin:auto}
+@keyframes pop{from{transform:scale(.3)}}
+.placed{width:clamp(38px,5vw,56px);height:clamp(38px,5vw,56px);animation:pop .3s}
+.placed svg,.tile svg{width:100%;height:100%;display:block}
+
+/* icons to drag */
+.tray{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:14px 0 4px;min-height:96px}
+.tile{width:92px;display:flex;flex-direction:column;align-items:center;gap:2px;background:#fff;border:3px solid var(--line);border-radius:18px;padding:8px 4px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.tile .ic{width:60px;height:60px}
+.tile .nm{font:700 15px var(--f)}
+.tile.sel{border-color:var(--gold);background:var(--gold-soft)}
+.tile.drag{opacity:.35}
+.tile.bad{animation:shake .4s;border-color:var(--red)}
+.ghost{position:fixed;z-index:1000;pointer-events:none;transform:translate(-50%,-60%) rotate(-4deg);opacity:.95;box-shadow:0 12px 26px #0004}
+.fb{min-height:44px;text-align:center;font:800 clamp(21px,3.2vw,28px) var(--f);margin-top:8px}
+.fb.ok{color:var(--green)}.fb.no{color:var(--red)}
+.next{text-align:center}
+.end{text-align:center}.end .stars{font-size:62px;letter-spacing:6px}.end h2{font-size:34px;margin:6px 0}
+.novoice{color:var(--muted);font-size:14px;text-align:center}
+@media(max-width:720px){.modes{grid-template-columns:1fr}.day{min-height:150px}.day .hd small{display:none}.tile{width:78px}.tile .ic{width:48px;height:48px}}
+@media (prefers-reduced-motion:reduce){.day.no,.tile.bad,.day .v,.placed{animation:none}}
+</style>
+<style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
+</style></head>
+</head>
+<body>
+<nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
+<div class="wrap">
+
+<section id="start">
+  <h1>📅 יְמֵי הַשָּׁבוּעַ</h1>
+  <p class="sub">Days of the week · קוֹרְאִים מִשְׁפָּט וּמְסַמְּנִים אֶת הַיּוֹם בַּלּוּחַ</p>
+  <div class="modes">
+    <button class="mode" type="button" data-mode="act"><div class="big">📘 ➜ 📅</div><h2>מִשְׂחָק עִם פְּעִילֻיּוֹת</h2><p>"דָּן לוֹמֵד אַנְגְּלִית בְּיוֹם שִׁשִּׁי" — גּוֹרְרִים אֶת הַסֵּפֶר לַיּוֹם הַנָּכוֹן</p></button>
+    <button class="mode" type="button" data-mode="easy"><div class="big">✔️ 📅</div><h2>קַל · רַק יָמִים</h2><p>"אֲנִי אוֹהֵב אֶת יוֹם שֵׁנִי" — מְסַמְּנִים V בַּיּוֹם הַנָּכוֹן</p></button>
+  </div>
+  <div class="card opts">
+    <label>כַּמָּה מִשְׁפָּטִים? <select id="count"><option>6</option><option selected>10</option><option>14</option></select></label>
+    <label><input type="checkbox" id="autoSay" checked> 🔊 לְהַקְרִיא כָּל מִשְׁפָּט</label>
+    <label><input type="checkbox" id="showEn"> English</label>
+  </div>
+</section>
+
+<section id="game" hidden>
+  <div class="top">
+    <span class="score" id="mode"></span>
+    <div class="bar" aria-hidden="true"><i id="barFill"></i></div>
+    <span class="score" id="score">⭐ 0</span>
+    <button class="btn ghost small" id="toStart" type="button">⚙ תַּפְרִיט</button>
+  </div>
+  <div class="say"><button class="ear" id="ear" type="button" aria-label="הקראה">🔊</button><span class="tx" id="sent"></span></div>
+  <p class="hint" id="hint"></p>
+  <div class="cal" id="cal"></div>
+  <div class="tray" id="tray"></div>
+  <div class="fb" id="fb" aria-live="polite"></div>
+  <div class="next"><button class="btn big" id="next" type="button" hidden>הַבָּא ◀</button></div>
+  <p class="novoice" id="novoice" hidden>אֵין קוֹל עִבְרִי בַּמַּחְשֵׁב הַזֶּה — הַמּוֹרֶה יָכוֹל לְהַקְרִיא.</p>
+</section>
+
+<section id="end" hidden>
+  <div class="card end">
+    <div class="stars" id="stars"></div>
+    <h2 id="endTitle"></h2>
+    <p id="endText" style="font-size:21px;color:var(--muted)"></p>
+    <div class="opts" style="margin-top:12px"><button class="btn big good" id="again" type="button">↺ עוֹד פַּעַם</button><button class="btn big ghost" id="menu" type="button">⚙ תַּפְרִיט</button></div>
+  </div>
+</section>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const rnd = n => Math.floor(Math.random() * n);
+const pick = a => a[rnd(a.length)];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+/* the calendar starts on Monday (like in the US). i = position on the calendar */
+const DAYS = [
+  { he: 'יוֹם שֵׁנִי', en: 'Monday' }, { he: 'יוֹם שְׁלִישִׁי', en: 'Tuesday' }, { he: 'יוֹם רְבִיעִי', en: 'Wednesday' },
+  { he: 'יוֹם חֲמִישִׁי', en: 'Thursday' }, { he: 'יוֹם שִׁשִּׁי', en: 'Friday' }, { he: 'שַׁבָּת', en: 'Saturday' }, { he: 'יוֹם רִאשׁוֹן', en: 'Sunday' },
+];
+const inDay = i => i === 5 ? 'בְּשַׁבָּת' : 'בְּ' + DAYS[i].he;           /* "on Monday" */
+const etDay = i => i === 5 ? 'אֶת שַׁבָּת' : 'אֶת ' + DAYS[i].he;       /* "Monday" after a verb */
+const isDay = i => i === 5 ? 'שַׁבָּת' : DAYS[i].he;
+
+/* subject icons — the same pictures as in the lesson 1.28–1.30 */
+const BALL = {
+  basket:`<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" fill="#f26a1b"/><g stroke="#2b2a3a" stroke-width="2.4" fill="none"><circle cx="30" cy="30" r="27"/><path d="M3 30h54M30 3v54M10 11q12 19 0 38M50 11q-12 19 0 38"/></g></svg>`
+};
+const SUBJ = [
+  {k:'eng',   n:'אַנְגְּלִית',    icon:`<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="4" width="26" height="30" rx="3" fill="#2a8bd0" stroke="#23233a" stroke-width="2"/><rect x="7" y="4" width="5" height="30" fill="#e2506a"/><rect x="14" y="12" width="16" height="9" rx="1.5" fill="#fff"/><text x="22" y="19.5" font-family="Rubik,Arial" font-size="7" font-weight="800" text-anchor="middle" fill="#23233a">ENG</text><path d="M7 34h26v3H7z" fill="#eee" stroke="#23233a" stroke-width="1.5"/></svg>`},
+  {k:'heb',   n:'עִבְרִית',     icon:`<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="4" width="26" height="30" rx="3" fill="#f2b01e" stroke="#23233a" stroke-width="2"/><rect x="12" y="9" width="18" height="18" rx="1.5" fill="#ffe3a0" stroke="#23233a" stroke-width="1.5"/><text x="21" y="21" font-family="Noto Sans Hebrew,Arial" font-size="7" font-weight="800" text-anchor="middle" fill="#23233a">עברית</text><path d="M7 34h26v3H7z" fill="#eee" stroke="#23233a" stroke-width="1.5"/></svg>`},
+  {k:'sport', n:'סְפּוֹרְט',     icon:`<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="18" width="4" height="12" rx="1" fill="#555"/><rect x="15" y="18" width="4" height="12" rx="1" fill="#555"/><path d="M7 24h8" stroke="#555" stroke-width="3"/><path d="M22 6l4 3 4-3 4 3v16H22z" fill="#e2506a" stroke="#23233a" stroke-width="1.5"/><path d="M18 34l6-6 4 3 8-1v4H18z" fill="#2a8bd0" stroke="#23233a" stroke-width="1.5"/></svg>`},
+  {k:'art',   n:'אָמָּנוּת',     icon:`<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 5C9 5 3 13 4 21c1 9 9 13 13 10 3-2-1-6 3-7 5-1 15 2 16-6C37 10 30 5 20 5z" fill="#dbe9fb" stroke="#23233a" stroke-width="2"/><circle cx="12" cy="17" r="3" fill="#e2506a"/><circle cx="19" cy="11" r="3" fill="#f2b01e"/><circle cx="27" cy="12" r="3" fill="#2f9d55"/><circle cx="12" cy="25" r="3" fill="#2a8bd0"/><path d="M36 4L24 30" stroke="#a0522d" stroke-width="3.5" stroke-linecap="round"/><path d="M36 4l2 2-3 4-2-1z" fill="#f2b01e"/></svg>`},
+  {k:'bball', n:'כַּדּוּרְסַל',   icon:BALL.basket},
+  {k:'math',  n:'מָתֵמָטִיקָה',  icon:`<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="4" width="24" height="18" rx="2" fill="#eef1f6" stroke="#23233a" stroke-width="2"/><text x="18" y="17" font-family="Rubik,Arial" font-size="10" font-weight="800" text-anchor="middle" fill="#23233a">√×</text><path d="M4 36V22l14 14z" fill="#f2d067" stroke="#23233a" stroke-width="1.8"/><rect x="24" y="20" width="12" height="16" rx="2" fill="#f2b01e" stroke="#23233a" stroke-width="1.8"/><rect x="26" y="22" width="8" height="4" fill="#fff"/></svg>`}
+];
+const ICON = {}; SUBJ.forEach(s => ICON[s.k] = s);
+const EN_S = { eng: 'English', heb: 'Hebrew', sport: 'sports', art: 'art', bball: 'basketball', math: 'math' };
+
+const PEOPLE = [{ n: 'דָּן', g: 'm', en: 'Dan' }, { n: 'קֶרֶן', g: 'f', en: 'Keren' }, { n: 'יוֹנָתָן', g: 'm', en: 'Jonathan' }, { n: 'שִׁיר', g: 'f', en: 'Shir' }];
+const learn = p => p.g === 'f' ? 'לוֹמֶדֶת' : 'לוֹמֵד';
+const play = p => p.g === 'f' ? 'מְשַׂחֶקֶת' : 'מְשַׂחֵק';
+const lamed = p => 'לְ' + p.n;
+
+/* sentence makers for the activity game: subject s, person p, day i */
+function actSentence(s, p, i){
+  const D = DAYS[i].en, N = p.en;
+  if (s === 'bball') return pick([
+    [`${p.n} ${play(p)} כַּדּוּרְסַל ${inDay(i)}.`, `${N} plays basketball on ${D}.`],
+    [`${inDay(i)} ${p.n} ${play(p)} כַּדּוּרְסַל.`, `On ${D} ${N} plays basketball.`]]);
+  if (s === 'sport') return pick([
+    [`${inDay(i)} ${p.n} בְּשִׁעוּר סְפּוֹרְט.`, `On ${D} ${N} is in a sports class.`],
+    [`${inDay(i)} יֵשׁ ${lamed(p)} שִׁעוּר סְפּוֹרְט.`, `On ${D} ${N} has a sports class.`]]);
+  const sub = ICON[s].n;
+  return pick([
+    [`${p.n} ${learn(p)} ${sub} ${inDay(i)}.`, `${N} studies ${EN_S[s]} on ${D}.`],
+    [`${inDay(i)} יֵשׁ ${lamed(p)} שִׁעוּר ${sub}.`, `On ${D} ${N} has a ${EN_S[s]} class.`],
+    [`${inDay(i)} ${p.n} ${learn(p)} ${sub}.`, `On ${D} ${N} studies ${EN_S[s]}.`]]);
+}
+/* sentences for the easy game: only the day matters */
+const EASY = [
+  i => [`אֲנִי אוֹהֵב ${etDay(i)}.`, `I love ${DAYS[i].en}.`],
+  i => [`אֲנִי אוֹהֶבֶת ${etDay(i)}.`, `I love ${DAYS[i].en}.`],
+  i => [`אֲנִי הוֹלֵךְ לְבֵית הַסֵּפֶר ${inDay(i)}.`, `I go to school on ${DAYS[i].en}.`],
+  i => [`${inDay(i)} אֲנִי הוֹלֶכֶת לַיָּם.`, `On ${DAYS[i].en} I go to the beach.`],
+  i => [`הַיּוֹם ${isDay(i)}.`, `Today is ${DAYS[i].en}.`],
+  i => [`${inDay(i)} יֵשׁ לִי מְסִבָּה.`, `On ${DAYS[i].en} I have a party.`],
+  i => [`סַבָּא וְסַבְתָּא בָּאִים ${inDay(i)}.`, `Grandpa and Grandma come on ${DAYS[i].en}.`],
+  i => [`${inDay(i)} אֲנַחְנוּ בַּבַּיִת.`, `On ${DAYS[i].en} we are at home.`],
+  i => [`מָחָר ${isDay(i)}.`, `Tomorrow is ${DAYS[i].en}.`],
+];
+
+/* voice */
+const heVoice = () => ('speechSynthesis' in window ? speechSynthesis.getVoices() : []).find(v => /^(he|iw)/i.test(v.lang));
+if ('speechSynthesis' in window) speechSynthesis.getVoices();
+function say(t){
+  if (!('speechSynthesis' in window) || !heVoice()){ $('novoice').hidden = false; return; }
+  speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = heVoice(); u.lang = u.voice.lang; u.rate = .85; speechSynthesis.speak(u);
+}
+let ac = null;
+function tone(ok){
+  try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const t = ac.currentTime;
+    (ok ? [523, 659, 784] : [260, 200]).forEach((f, i) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; o.type = 'triangle';
+      g.gain.setValueAtTime(.0001, t + i * .1); g.gain.exponentialRampToValueAtTime(.15, t + i * .1 + .02); g.gain.exponentialRampToValueAtTime(.0001, t + i * .1 + .2);
+      o.connect(g).connect(ac.destination); o.start(t + i * .1); o.stop(t + i * .1 + .22); });
+  } catch (e) {}
+}
+
+let G = null;
+function start(mode){
+  const total = +$('count').value;
+  /* every day comes up, spread over the game */
+  let days = []; while (days.length < total) days = days.concat(shuffle([0, 1, 2, 3, 4, 5, 6]));
+  days = days.slice(0, total);
+  G = { mode, total, i: 0, first: 0, tries: 0, done: false, days, sel: null, q: null };
+  $('start').hidden = true; $('end').hidden = true; $('game').hidden = false;
+  $('mode').textContent = mode === 'act' ? '📘 פְּעִילֻיּוֹת' : '✔️ קַל';
+  drawCal();
+  newQ();
+}
+function drawCal(){
+  $('cal').innerHTML = DAYS.map((d, i) => `<div class="day${i >= 5 ? ' wk' : ''}" data-i="${i}"><div class="hd"><b>${d.he}</b><small>${d.en}</small></div><div class="body"></div></div>`).join('');
+  $('cal').querySelectorAll('.day').forEach(el => el.onclick = () => clickDay(+el.dataset.i, el));
+}
+function newQ(){
+  const i = G.days[G.i];
+  G.tries = 0; G.done = false; G.sel = null;
+  let he, en;
+  if (G.mode === 'act'){
+    const s = pick(SUBJ).k, p = pick(PEOPLE);
+    [he, en] = actSentence(s, p, i);
+    G.q = { day: i, s };
+    const others = shuffle(SUBJ.map(x => x.k).filter(k => k !== s)).slice(0, 3);
+    $('tray').innerHTML = '';
+    shuffle([s, ...others]).forEach(k => $('tray').appendChild(tile(k)));
+    $('tray').hidden = false;
+    $('hint').textContent = 'גּוֹרְרִים אֶת הַתְּמוּנָה הַנְּכוֹנָה אֶל הַיּוֹם הַנָּכוֹן (אוֹ לוֹחֲצִים עַל תְּמוּנָה וְאַחַר כָּךְ עַל הַיּוֹם).';
+    $('cal').querySelectorAll('.day').forEach(d => d.classList.remove('pick'));
+  } else {
+    [he, en] = pick(EASY)(i);
+    G.q = { day: i };
+    $('tray').hidden = true;
+    $('hint').textContent = 'לוֹחֲצִים עַל הַיּוֹם הַנָּכוֹן כְּדֵי לְסַמֵּן V.';
+    $('cal').querySelectorAll('.day').forEach(d => { d.classList.add('pick'); d.classList.remove('ok'); d.querySelector('.body').innerHTML = ''; });
+  }
+  $('sent').innerHTML = he + ($('showEn').checked ? `<span class="en">${en}</span>` : '');
+  G.say = he; G.en = en;
+  $('fb').textContent = ''; $('fb').className = 'fb'; $('next').hidden = true;
+  $('barFill').style.width = (G.i / G.total * 100) + '%'; $('score').textContent = '⭐ ' + G.first;
+  if ($('autoSay').checked) setTimeout(() => say(he), 250);
+}
+
+/* a picture to drag */
+function tile(k){
+  const s = ICON[k], b = document.createElement('div');
+  b.className = 'tile'; b.tabIndex = 0; b.setAttribute('role', 'button'); b.dataset.k = k;
+  b.innerHTML = `<span class="ic">${s.icon}</span><span class="nm">${s.n}</span>`;
+  b.onclick = () => { if (justDragged || G.done) return; $('tray').querySelectorAll('.tile').forEach(t => t.classList.remove('sel')); b.classList.add('sel'); G.sel = k; say(s.n);
+    $('cal').querySelectorAll('.day').forEach(d => d.classList.add('pick')); };
+  b.onkeydown = e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); b.click(); } };
+  b.addEventListener('pointerdown', e => {
+    if (G.done || (e.button || 0) > 0) return;
+    const sx = e.clientX, sy = e.clientY; let ghost = null, hot = null;
+    const dayAt = ev => document.elementsFromPoint(ev.clientX, ev.clientY).map(x => x.closest && x.closest('.day')).find(Boolean) || null;
+    const move = ev => {
+      if (!ghost){ if (Math.hypot(ev.clientX - sx, ev.clientY - sy) < 8) return; ghost = b.cloneNode(true); ghost.classList.add('ghost'); document.body.appendChild(ghost); b.classList.add('drag'); }
+      ev.preventDefault(); ghost.style.left = ev.clientX + 'px'; ghost.style.top = ev.clientY + 'px';
+      const d = dayAt(ev); if (d !== hot){ if (hot) hot.classList.remove('target-hot'); hot = d; if (hot) hot.classList.add('target-hot'); }
+    };
+    const up = ev => {
+      document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); document.removeEventListener('pointercancel', up);
+      if (!ghost) return;
+      ghost.remove(); b.classList.remove('drag'); if (hot) hot.classList.remove('target-hot');
+      justDragged = true; setTimeout(() => justDragged = false, 60);
+      const d = ev.type === 'pointerup' ? dayAt(ev) : null;
+      if (d) drop(k, +d.dataset.i, d, b);
+    };
+    document.addEventListener('pointermove', move, { passive: false }); document.addEventListener('pointerup', up); document.addEventListener('pointercancel', up);
+  });
+  return b;
+}
+let justDragged = false;
+
+function clickDay(i, el){
+  if (G.done) return;
+  if (G.mode === 'act'){ if (G.sel) drop(G.sel, i, el, $('tray').querySelector(`.tile[data-k="${G.sel}"]`)); return; }
+  /* easy mode: mark V */
+  if (i === G.q.day){
+    el.querySelector('.body').innerHTML = '<span class="v">✔</span>'; el.classList.add('ok'); right();
+  } else {
+    wrong(el); el.querySelector('.body').innerHTML = '<span class="x">✗</span>';
+    setTimeout(() => { if (!el.classList.contains('ok')) el.querySelector('.body').innerHTML = ''; }, 700);
+    $('fb').textContent = `זֶה ${isDay(i)} — נַסּוּ שׁוּב 🙂`;
+  }
+}
+function drop(k, i, el, tileEl){
+  if (G.done) return;
+  const okIcon = k === G.q.s, okDay = i === G.q.day;
+  if (okIcon && okDay){
+    const p = document.createElement('span'); p.className = 'placed'; p.innerHTML = ICON[k].icon; p.title = ICON[k].n;
+    el.querySelector('.body').appendChild(p); el.classList.add('ok'); setTimeout(() => el.classList.remove('ok'), 900);
+    if (tileEl) tileEl.style.visibility = 'hidden';
+    right();
+  } else {
+    wrong(el); if (tileEl){ tileEl.classList.remove('bad'); void tileEl.offsetWidth; tileEl.classList.add('bad'); }
+    $('fb').textContent = !okIcon ? `זֶה ${ICON[k].n} — אֵיזֶה שִׁעוּר כָּתוּב בַּמִּשְׁפָּט?` : `זֶה ${isDay(i)} — אֵיזֶה יוֹם כָּתוּב בַּמִּשְׁפָּט?`;
+  }
+}
+function right(){
+  G.done = true; tone(true);
+  if (G.tries === 0) G.first++;
+  $('fb').className = 'fb ok'; $('fb').textContent = (G.tries === 0 ? 'נָכוֹן! ⭐ ' : 'נָכוֹן! ') + isDay(G.q.day);
+  $('score').textContent = '⭐ ' + G.first;
+  $('cal').querySelectorAll('.day').forEach(d => d.classList.remove('pick'));
+  setTimeout(() => say(G.say), 300);
+  $('next').hidden = false; $('next').focus({ preventScroll: true });
+}
+function wrong(el){ G.tries++; tone(false); el.classList.remove('no'); void el.offsetWidth; el.classList.add('no'); $('fb').className = 'fb no'; }
+
+function next(){
+  if (!G.done) return;
+  G.i++;
+  if (G.i >= G.total) return finish();
+  newQ();
+}
+function finish(){
+  $('game').hidden = true; $('end').hidden = false;
+  const r = G.first / G.total, s = r >= .9 ? 3 : r >= .6 ? 2 : 1;
+  $('stars').textContent = '⭐'.repeat(s) + '☆'.repeat(3 - s);
+  $('endTitle').textContent = s === 3 ? 'מְצֻיָּן!' : s === 2 ? 'כָּל הַכָּבוֹד!' : 'יֹפִי! עוֹד פַּעַם?';
+  $('endText').textContent = `${G.first} מִתּוֹךְ ${G.total} — נָכוֹן כְּבָר בַּפַּעַם הָרִאשׁוֹנָה`;
+  tone(true);
+}
+
+document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => start(b.dataset.mode));
+$('next').onclick = next;
+$('ear').onclick = () => say(G.say);
+$('again').onclick = () => start(G.mode);
+$('toStart').onclick = $('menu').onclick = () => { $('game').hidden = true; $('end').hidden = true; $('start').hidden = false; };
+$('showEn').onchange = () => { if (G && G.say) $('sent').innerHTML = G.say + ($('showEn').checked ? `<span class="en">${G.en}</span>` : ''); };
+const q = new URLSearchParams(location.search).get('mode');
+if (q === 'act' || q === 'easy') start(q);
+})();
+</script>
+<script id="fs-script">
+(function(){var b=document.getElementById("fsBtn"),d=document,e=d.documentElement;
+var req=e.requestFullscreen||e.webkitRequestFullscreen,ex=d.exitFullscreen||d.webkitExitFullscreen;
+if(!b||!req){return}b.hidden=false;
+function on(){return d.fullscreenElement||d.webkitFullscreenElement}
+function lbl(){b.textContent=on()?"✕ יציאה ממסך מלא":"⛶ מסך מלא"}
+b.addEventListener("click",function(){if(on()){ex.call(d)}else{req.call(e)}});
+d.addEventListener("fullscreenchange",lbl);d.addEventListener("webkitfullscreenchange",lbl);})();
+</script>
+</body>
+</html>
