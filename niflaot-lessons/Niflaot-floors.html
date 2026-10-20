@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="gate.js?v=1792519767"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>נפלאות ג — קוֹמוֹת, מַעֲלִית וּמִסְפָּרִים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="lesson-kit.css?v=1792519767">
+<style>
+.zero{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:14px}
+.zcard{background:#fff;border:2px solid var(--line);border-radius:20px;padding:14px;text-align:center}
+.zcard .art{font-size:54px;line-height:1.2;min-height:76px;display:flex;align-items:center;justify-content:center;gap:6px}
+.zcard .big0{font:800 72px/1 var(--f-display);color:var(--coral)}
+.zcard p{margin:6px 0 0;font:700 22px/1.5 var(--f-display)}
+.panel0{display:inline-grid;grid-template-columns:repeat(2,44px);gap:8px;background:#5f6b80;border-radius:14px;padding:10px}
+.panel0 span{display:grid;place-items:center;height:44px;border-radius:50%;background:#e9edf3;font:800 20px var(--f-display);color:#23233a}
+.panel0 span.z{background:var(--gold);box-shadow:0 0 0 4px #fff8}
+.zq{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:center}
+.plate{background:#fff;border:3px solid var(--line);border-radius:22px;min-height:190px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;justify-content:center;padding:14px;font-size:54px;position:relative}
+.plate::before{content:'';position:absolute;inset:18% 12%;border-radius:50%;border:6px solid #eef1f6;z-index:0}
+.plate span{position:relative;z-index:1}
+.zq h3{font:800 clamp(24px,3.4vw,32px) var(--f-display);margin:0 0 10px}
+.numbtns{display:flex;flex-wrap:wrap;gap:10px}
+.numbtns .opt{display:flex;flex-direction:column;align-items:center;min-width:92px;line-height:1.1}
+.numbtns .opt b{font-size:40px}.numbtns .opt small{font-size:17px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.mean{background:#fff;border:3px solid var(--line);border-radius:22px;overflow:hidden}
+.mean .scene{height:220px;display:flex;align-items:flex-end;justify-content:center;gap:10px;font-size:64px;position:relative;padding:10px}
+.mean.climb{border-color:#e2506a}.mean.money{border-color:#2f9d55}
+.mean .cap{padding:12px 14px;display:flex;gap:10px;align-items:center;font:800 clamp(22px,3vw,28px)/1.4 var(--f-display);border-top:2px solid var(--line)}
+.mean .cap .lbl{margin-inline-start:auto;font-size:16px;border-radius:999px;padding:3px 12px;color:#fff;white-space:nowrap}
+.mean.climb .lbl{background:#e2506a}.mean.money .lbl{background:#2f9d55}
+.bubble{position:absolute;top:14px;background:#fff;border:3px solid #23233a;border-radius:18px;padding:6px 14px;font:800 22px var(--f-display)}
+.bubble::after{content:'';position:absolute;bottom:-12px;inset-inline-start:30px;border:10px solid transparent;border-top-color:#23233a}
+.price{position:absolute;background:#fff3c4;border:3px solid #b07d06;border-radius:10px;padding:2px 10px;font:800 22px var(--f-display);transform:rotate(-8deg)}
+.ear{border:0;background:var(--gold-soft);border-radius:50%;width:44px;height:44px;font-size:21px;cursor:pointer;flex:none}
+.ear:hover{background:var(--gold)}
+.olgame .q{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:center}
+.olgame .scene{height:240px;border-radius:20px;border:3px solid var(--line);display:flex;align-items:center;justify-content:center;gap:12px;font-size:72px;position:relative;overflow:hidden}
+.olgame .sent{display:flex;gap:10px;align-items:center;font:800 clamp(24px,3.6vw,34px)/1.45 var(--f-display);margin-bottom:12px}
+.olgame .sent mark{background:var(--gold-soft);border-radius:8px;padding:0 6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.two button{font:800 clamp(22px,3vw,28px) var(--f-display);border:0;border-radius:18px;padding:18px 10px;color:#fff;cursor:pointer;box-shadow:0 5px 0 #0002}
+.two .g{background:#2f9d55}.two .r{background:#e2506a}
+.two button:hover{filter:brightness(.93)}.two button:disabled{opacity:.45;cursor:default}
+.two button.shake{animation:shk .4s}
+@keyframes shk{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.prog2{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.prog2 .bar{flex:1;height:12px;background:#eee6da;border-radius:999px;overflow:hidden}.prog2 .bar i{display:block;height:100%;width:0;background:var(--green);transition:width .3s}
+@media(max-width:700px){.zq,.pair,.olgame .q{grid-template-columns:1fr}.olgame .scene{height:190px;font-size:58px}}
+</style>
+<style id="site-navigation">
+<style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
+</style></head>
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../niflaot-lessons/index.html'}">← חזרה</button></nav>
+<div class="wrap">
+<header class="top">
+  <div><p class="crumb">NIFLAOT LESSONS · נפלאות ג</p><h1>קוֹמוֹת, מַעֲלִית וּמִסְפָּרִים</h1></div>
+  <p class="he-title">אֶפֶס · הַבִּנְיָן · "עוֹלֶה" — מָה זֶה?</p>
+</header>
+<nav class="steps"><ol>
+  <li><a href="#s1"><b>1</b> סוֹפְרִים</a></li><li><a href="#s2"><b>2</b> אֶפֶס</a></li><li><a href="#s3"><b>3</b> הַבִּנְיָן שֶׁלָּנוּ</a></li><li><a href="#s4"><b>4</b> עוֹלֶה = ?</a></li><li><a href="#s5"><b>5</b> כֶּסֶף אוֹ לְמַעְלָה?</a></li>
+</ol></nav>
+
+<section class="step" id="s1">
+  <span class="tag"><span class="tnum">1</span> מְחַמְּמִים</span>
+  <p class="lead">סוֹפְרִים בְּעִבְרִית</p>
+  <div class="shortcuts">
+    <a class="sc" href="../games/count-hebrew.html?min=1&amp;max=10&amp;level=auto&amp;start=1"><span class="ic">🔢</span><div><h3>סוֹפְרִים בְּעִבְרִית</h3><p>1–10 · מַתְחִילִים קַל וְעוֹלִים בְּרָמָה</p></div><span class="go">◀</span></a>
+    <a class="sc" href="../games/count-hebrew.html"><span class="ic">⚙️</span><div><h3>לִבְחֹר רָמָה</h3><p>הַמּוֹרֶה בּוֹחֵר מִסְפָּרִים וְרָמָה</p></div><span class="go">◀</span></a>
+  </div>
+</section>
+
+<section class="step" id="s2">
+  <span class="tag green"><span class="tnum">2</span> מִסְפָּר חָדָשׁ</span>
+  <p class="lead">0 = אֶפֶס</p>
+  <div class="zero">
+    <div class="zcard"><div class="art"><span class="big0">0</span></div><p>אֶפֶס <button class="ear" type="button" data-say="אֶפֶס" aria-label="השמעה">🔊</button></p></div>
+    <div class="zcard"><div class="art">🍽️</div><p>אֵין כְּלוּם — אֶפֶס תַּפּוּחִים</p></div>
+    <div class="zcard"><div class="art"><span class="panel0"><span>3</span><span>4</span><span>1</span><span>2</span><span class="z">0</span><span>🔔</span></span></div><p>בַּמַּעֲלִית: קוֹמָה אֶפֶס — הַכְּנִיסָה לַבִּנְיָן</p></div>
+  </div>
+  <div class="panel">
+    <div class="zq">
+      <div class="plate" id="plate"></div>
+      <div><h3 id="zQ">כַּמָּה יֵשׁ?</h3><div class="numbtns" id="zBtns"></div><div class="msg" id="zMsg"></div>
+        <div class="toolbar"><span class="prog" id="zProg"></span><span class="spacer"></span><button class="btn" id="zNext" type="button" hidden>הַבָּא ◀</button></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="step" id="s3">
+  <span class="tag sky"><span class="tnum">3</span> מִשְׂחָק</span>
+  <p class="lead">הַבִּנְיָן שֶׁלָּנוּ</p>
+  <p class="sub">מִי גָּר בְּאֵיזוֹ קוֹמָה? עוֹלִים וְיוֹרְדִים בַּמַּעֲלִית וּבַמַּדְרֵגוֹת.</p>
+  <div class="shortcuts">
+    <a class="sc" href="../games/habinyan-shelanu.html"><span class="ic">🛗</span><div><h3>הַבִּנְיָן שֶׁלָּנוּ</h3><p>קוֹמוֹת, מַעֲלִית וּמַדְרֵגוֹת</p></div><span class="go">◀</span></a>
+  </div>
+</section>
+
+<section class="step" id="s4">
+  <span class="tag"><span class="tnum">4</span> מִלָּה אַחַת — שְׁתֵּי מַשְׁמָעֻיּוֹת</span>
+  <p class="lead">עוֹלֶה 🤔</p>
+  <p class="sub">לְמִלָּה "עוֹלֶה" יֵשׁ שְׁתֵּי מַשְׁמָעֻיּוֹת: לָלֶכֶת לְמַעְלָה, וְגַם — כַּמָּה כֶּסֶף צָרִיךְ לְשַׁלֵּם.</p>
+  <div class="pair">
+    <div class="mean climb">
+      <div class="scene" style="background:linear-gradient(#dff1ff,#fff)" id="climbScene"></div>
+      <div class="cap"><button class="ear" type="button" data-say="דָּן עוֹלֶה בַּמַּדְרֵגוֹת." aria-label="השמעה">🔊</button><span>דָּן <u>עוֹלֶה</u> בַּמַּדְרֵגוֹת.</span><span class="lbl">⬆️ לְמַעְלָה</span></div>
+    </div>
+    <div class="mean money">
+      <div class="scene" style="background:linear-gradient(#fff6dc,#fff)"><span class="bubble" style="inset-inline-start:16px">כַּמָּה זֶה עוֹלֶה?</span><span>👩</span><span style="font-size:80px">👗</span><span class="price" style="left:46%;top:96px">₪100</span><span>🧑‍💼</span></div>
+      <div class="cap"><button class="ear" type="button" data-say="כַּמָּה זֶה עוֹלֶה? זֶה עוֹלֶה מֵאָה שְׁקָלִים." aria-label="השמעה">🔊</button><span>כַּמָּה זֶה <u>עוֹלֶה</u>?</span><span class="lbl">💰 כֶּסֶף</span></div>
+    </div>
+  </div>
+  <details class="note"><summary>הערות למורה</summary>
+    <p>שׁוֹאֲלִים אֶת הַתַּלְמִידִים: "בְּאַנְגְּלִית — אֵיךְ אוֹמְרִים כָּל מִשְׁפָּט?" (goes up / costs). כְּדַאי לְהָרִים יָד לְמַעְלָה לְ"עוֹלֶה בַּמַּדְרֵגוֹת", וּלְשַׁפְשֵׁף אֶצְבָּעוֹת (כֶּסֶף) לְ"כַּמָּה זֶה עוֹלֶה".</p>
+  </details>
+</section>
+
+<section class="step" id="s5">
+  <span class="tag green"><span class="tnum">5</span> מִשְׂחָק קָצָר</span>
+  <p class="lead">"עוֹלֶה" — כֶּסֶף אוֹ לְמַעְלָה?</p>
+  <p class="sub">קוֹרְאִים אֶת הַמִּשְׁפָּט וּמִסְתַּכְּלִים בַּתְּמוּנָה. יָרֹק = כֶּסֶף, אָדֹם = עוֹלִים לְמַעְלָה.</p>
+  <div class="panel olgame">
+    <div class="prog2"><div class="bar"><i id="oBar"></i></div><span class="prog" id="oScore" style="margin:0"></span></div>
+    <div class="q">
+      <div>
+        <div class="sent"><button class="ear" id="oEar" type="button" aria-label="השמעה">🔊</button><span id="oSent"></span></div>
+        <div class="two"><button class="g" id="oMoney" type="button">💰 כֶּסֶף</button><button class="r" id="oUp" type="button">⬆️ לְמַעְלָה</button></div>
+        <div class="msg" id="oMsg"></div>
+        <div class="toolbar"><span class="spacer"></span><button class="btn" id="oNext" type="button" hidden>הַבָּא ◀</button><button class="btn ghost small" id="oAgain" type="button">↺ מֵהַהַתְחָלָה</button></div>
+      </div>
+      <div class="scene" id="oScene"></div>
+    </div>
+  </div>
+</section>
+<p class="src">שִׁעוּר שֶׁל הָאֲתָר לְ"נִפְלָאוֹת ג" (מט"ח). הָאִיּוּרִים הֵם שֶׁל הָאֲתָר.</p>
+</div>
+
+<script src="lesson-kit.js?v=1792519767"></script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+NK.setVoice(true);
+const say = t => NK.say(t);
+document.querySelectorAll('[data-say]').forEach(b => b.onclick = () => say(b.dataset.say));
+let ac = null;
+function tone(ok){
+  try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const t = ac.currentTime;
+    (ok ? [523, 659, 784] : [260, 200]).forEach((f, i) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; o.type = 'triangle';
+      g.gain.setValueAtTime(.0001, t + i * .1); g.gain.exponentialRampToValueAtTime(.15, t + i * .1 + .02); g.gain.exponentialRampToValueAtTime(.0001, t + i * .1 + .2);
+      o.connect(g).connect(ac.destination); o.start(t + i * .1); o.stop(t + i * .1 + .22); });
+  } catch (e) {}
+}
+const STAIRS = (w) => `<svg viewBox="0 0 64 64" width="${w}" height="${w}" aria-hidden="true"><path d="M4 58 H16 V46 H28 V34 H40 V22 H52 V10 H60 V58 Z" fill="#c98b4f" stroke="#7a4a22" stroke-width="3" stroke-linejoin="round"/><g fill="#e6b47c"><rect x="4" y="46" width="12" height="4"/><rect x="16" y="34" width="12" height="4"/><rect x="28" y="22" width="12" height="4"/><rect x="40" y="10" width="12" height="4"/></g><path d="M8 40 L56 4" stroke="#5f6b80" stroke-width="3.5" stroke-linecap="round"/></svg>`;
+$('climbScene').innerHTML = `<div style="position:relative">${STAIRS(170)}<span style="position:absolute;left:52px;top:28px;font-size:56px">🧒</span><span style="position:absolute;right:-28px;top:-6px;font-size:40px">⬆️</span></div>`;
+
+/* ---------- 0 = אֶפֶס : how many are on the plate? ---------- */
+const WORD = ['אֶפֶס', 'אַחַת', 'שְׁתַּיִם', 'שָׁלוֹשׁ'];
+const THINGS = [['🍎', 'תַּפּוּחִים'], ['🍪', 'עוּגִיּוֹת'], ['🍓', 'תּוּתִים'], ['🍌', 'בָּנָנוֹת'], ['🧁', 'עוּגוֹת']];
+let Z = null;
+function zStart(){ Z = { list: shuffle([0, 0, 0, 1, 2, 3]), i: 0, ok: 0 }; zShow(); }
+function zShow(){
+  const n = Z.list[Z.i], [e, p] = THINGS[Z.i % THINGS.length];
+  $('plate').innerHTML = n ? Array.from({ length: n }, () => `<span>${e}</span>`).join('') : '<span style="font-size:22px;color:#9aa3b2">🍽️</span>';
+  $('zQ').textContent = `כַּמָּה ${p} יֵשׁ בַּצַּלַּחַת?`;
+  $('zMsg').textContent = ''; $('zMsg').className = 'msg'; $('zNext').hidden = true;
+  $('zProg').textContent = `${Z.i + 1} / ${Z.list.length}`;
+  $('zBtns').innerHTML = '';
+  [0, 1, 2, 3].forEach(x => { const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.innerHTML = `<b>${x}</b><small>${WORD[x]}</small>`;
+    b.onclick = () => {
+      if (Z.done) return;
+      if (x === n){ b.classList.add('ok'); Z.done = true; tone(true); say(WORD[x]);
+        $('zMsg').className = 'msg ok'; $('zMsg').textContent = n === 0 ? 'נָכוֹן! אֶפֶס — אֵין כְּלוּם 🍽️' : `נָכוֹן! ${WORD[x]}`;
+        $('zBtns').querySelectorAll('button').forEach(y => y.disabled = true);
+        if (Z.i < Z.list.length - 1) $('zNext').hidden = false; else $('zMsg').textContent += ' — 🎉 סִיַּמְתֶּם!';
+      } else { b.classList.add('bad'); b.disabled = true; tone(false); $('zMsg').className = 'msg no'; $('zMsg').textContent = 'סִפְרוּ שׁוּב 🙂'; }
+    };
+    $('zBtns').appendChild(b); });
+  Z.done = false;
+}
+$('zNext').onclick = () => { Z.i++; zShow(); };
+zStart();
+
+/* ---------- "עוֹלֶה": money or going up? ---------- */
+const bgUp = 'linear-gradient(#e8f4ff,#fffdf8)', bgMoney = bgUp;   /* same background, so the colour is not a hint */
+const tag = (t, x, y) => `<span class="price" style="left:${x}%;top:${y}%">${t}</span>`;
+const OL = [
+  { m: 1, t: 'הַגְּלִידָה <mark>עוֹלָה</mark> 10 שְׁקָלִים.', s: 'הַגְּלִידָה עוֹלָה עֶשֶׂר שְׁקָלִים.', art: '<span style="font-size:96px">🍦</span>' + tag('₪10', 58, 22) },
+  { m: 1, t: 'כַּמָּה <mark>עוֹלֶה</mark> הַסֵּפֶר?', s: 'כַּמָּה עוֹלֶה הַסֵּפֶר?', art: '<span>🧒</span><span style="font-size:90px">📕</span><span class="bubble" style="inset-inline-start:14px;font-size:20px">כַּמָּה?</span>' },
+  { m: 1, t: 'הַשִּׂמְלָה <mark>עוֹלָה</mark> 100 שְׁקָלִים.', s: 'הַשִּׂמְלָה עוֹלָה מֵאָה שְׁקָלִים.', art: '<span style="font-size:96px">👗</span>' + tag('₪100', 56, 18) },
+  { m: 1, t: 'הַפִּיצָה <mark>עוֹלָה</mark> 40 שְׁקָלִים.', s: 'הַפִּיצָה עוֹלָה אַרְבָּעִים שְׁקָלִים.', art: '<span style="font-size:96px">🍕</span>' + tag('₪40', 58, 20) },
+  { m: 1, t: 'כַּמָּה <mark>עוֹלִים</mark> הַתַּפּוּחִים?', s: 'כַּמָּה עוֹלִים הַתַּפּוּחִים?', art: '<span>🍎</span><span>🍎</span><span>🍎</span><span style="font-size:52px">💰</span>' },
+  { m: 1, t: 'הַכַּדּוּר <mark>עוֹלֶה</mark> 20 שְׁקָלִים.', s: 'הַכַּדּוּר עוֹלֶה עֶשְׂרִים שְׁקָלִים.', art: '<span style="font-size:96px">⚽</span>' + tag('₪20', 58, 20) },
+  { m: 0, t: 'סַבָּא <mark>עוֹלֶה</mark> בַּמַּעֲלִית לְקוֹמָה 5.', s: 'סַבָּא עוֹלֶה בַּמַּעֲלִית לְקוֹמָה חָמֵשׁ.', art: '<span>🛗</span><span>👴</span><span style="font-size:48px">⬆️5</span>' },
+  { m: 0, t: 'שִׁיר <mark>עוֹלָה</mark> בַּמַּדְרֵגוֹת.', s: 'שִׁיר עוֹלָה בַּמַּדְרֵגוֹת.', art: `<div style="position:relative">${STAIRS(170)}<span style="position:absolute;left:52px;top:28px;font-size:56px">👧</span></div>` },
+  { m: 0, t: 'הַבַּלּוֹן <mark>עוֹלֶה</mark> לַשָּׁמַיִם.', s: 'הַבַּלּוֹן עוֹלֶה לַשָּׁמַיִם.', art: '<span style="font-size:96px">🎈</span><span>☁️</span>' },
+  { m: 0, t: 'הַמָּטוֹס <mark>עוֹלֶה</mark> לְמַעְלָה.', s: 'הַמָּטוֹס עוֹלֶה לְמַעְלָה.', art: '<span style="font-size:96px;transform:rotate(-30deg);display:inline-block">✈️</span><span>☁️</span>' },
+  { m: 0, t: 'הַחָתוּל <mark>עוֹלֶה</mark> עַל הָעֵץ.', s: 'הַחָתוּל עוֹלֶה עַל הָעֵץ.', art: '<span style="font-size:110px">🌳</span><span style="font-size:52px;margin-inline-start:-70px;margin-bottom:60px">🐱</span>' },
+  { m: 0, t: 'הַשֶּׁמֶשׁ <mark>עוֹלָה</mark> בַּבֹּקֶר.', s: 'הַשֶּׁמֶשׁ עוֹלָה בַּבֹּקֶר.', art: '<span style="font-size:110px">🌅</span>' },
+];
+let O = null;
+function oStart(){ O = { list: shuffle(OL).slice(0, 10), i: 0, first: 0 }; oShow(); }
+function oShow(){
+  const q = O.list[O.i]; O.tries = 0; O.done = false;
+  $('oSent').innerHTML = q.t;
+  $('oScene').innerHTML = q.art; $('oScene').style.background = q.m ? bgMoney : bgUp;
+  $('oMsg').textContent = ''; $('oMsg').className = 'msg'; $('oNext').hidden = true;
+  [$('oMoney'), $('oUp')].forEach(b => { b.disabled = false; b.classList.remove('shake'); });
+  $('oBar').style.width = (O.i / O.list.length * 100) + '%'; $('oScore').textContent = `⭐ ${O.first} · ${O.i + 1} / ${O.list.length}`;
+  setTimeout(() => say(q.s), 250);
+}
+function oAnswer(m, btn){
+  if (O.done) return;
+  const q = O.list[O.i];
+  if (m === q.m){
+    O.done = true; tone(true); if (!O.tries) O.first++;
+    $('oMsg').className = 'msg ok'; $('oMsg').textContent = 'נָכוֹן! ' + (m ? 'כָּאן "עוֹלֶה" = כַּמָּה כֶּסֶף 💰' : 'כָּאן "עוֹלֶה" = הוֹלְכִים לְמַעְלָה ⬆️');
+    $('oMoney').disabled = $('oUp').disabled = true;
+    $('oScore').textContent = `⭐ ${O.first} · ${O.i + 1} / ${O.list.length}`;
+    if (O.i < O.list.length - 1) $('oNext').hidden = false;
+    else { $('oBar').style.width = '100%'; $('oMsg').textContent += ` — 🎉 סִיַּמְתֶּם! ${O.first} מִתּוֹךְ ${O.list.length} בַּפַּעַם הָרִאשׁוֹנָה`; }
+  } else {
+    O.tries++; tone(false); btn.classList.remove('shake'); void btn.offsetWidth; btn.classList.add('shake');
+    $('oMsg').className = 'msg no'; $('oMsg').textContent = 'לֹא בְּדִיּוּק — הִסְתַּכְּלוּ שׁוּב בַּתְּמוּנָה 🙂';
+  }
+}
+$('oMoney').onclick = () => oAnswer(1, $('oMoney'));
+$('oUp').onclick = () => oAnswer(0, $('oUp'));
+$('oNext').onclick = () => { O.i++; oShow(); };
+$('oAgain').onclick = oStart;
+$('oEar').onclick = () => say(O.list[O.i].s);
+O = { list: shuffle(OL).slice(0, 10), i: 0, first: 0 };
+/* show the first sentence without reading it aloud on page load */
+(() => { const q = O.list[0]; $('oSent').innerHTML = q.t; $('oScene').innerHTML = q.art; $('oScene').style.background = q.m ? bgMoney : bgUp; $('oScore').textContent = `⭐ 0 · 1 / ${O.list.length}`; O.tries = 0; O.done = false; })();
+})();
+</script>
+</body>
+</html>
