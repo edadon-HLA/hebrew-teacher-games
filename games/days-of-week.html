@@ -42,8 +42,8 @@ button{font-family:var(--f)}
 .ear:hover{background:var(--gold)}
 .hint{text-align:center;color:var(--muted);font-size:17px;margin:4px 0 10px}
 
-/* the week: Monday first, left to right, like a US calendar */
-.cal{direction:ltr;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:3px solid #1f4fbf;border-radius:18px;overflow:hidden;background:#fff}
+/* the week: Monday first (on the right — Hebrew reads right to left), Sunday last */
+.cal{direction:rtl;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:3px solid #1f4fbf;border-radius:18px;overflow:hidden;background:#fff}
 .day{display:flex;flex-direction:column;border-inline-start:2px solid var(--line);min-height:210px;position:relative}
 .day:first-child{border-inline-start:0}
 .day .hd{background:#1f4fbf;color:#fff;text-align:center;padding:8px 4px;direction:rtl}
@@ -134,7 +134,7 @@ const rnd = n => Math.floor(Math.random() * n);
 const pick = a => a[rnd(a.length)];
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
-/* the calendar starts on Monday (like in the US). i = position on the calendar */
+/* the calendar starts on Monday (rightmost column). i = position on the calendar */
 const DAYS = [
   { he: 'יוֹם שֵׁנִי', en: 'Monday' }, { he: 'יוֹם שְׁלִישִׁי', en: 'Tuesday' }, { he: 'יוֹם רְבִיעִי', en: 'Wednesday' },
   { he: 'יוֹם חֲמִישִׁי', en: 'Thursday' }, { he: 'יוֹם שִׁשִּׁי', en: 'Friday' }, { he: 'שַׁבָּת', en: 'Saturday' }, { he: 'יוֹם רִאשׁוֹן', en: 'Sunday' },
