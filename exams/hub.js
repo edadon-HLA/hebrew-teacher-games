@@ -312,7 +312,7 @@
       '<div class="row"><input type="file" id="xl" accept=".xlsx,.xls,.csv"><button class="btn sm2 light" id="tpl">⬇ Download template</button></div><div id="xlmsg"></div></div>' +
       '<div class="card"><h3>➕ Add one student</h3><div class="row"><input class="sm" id="nf" placeholder="First name"><input class="sm" id="nl" placeholder="Last name"><input class="sm" id="nc" placeholder="Class"><input class="sm" id="ns" placeholder="Student ID"><button class="btn sm2" id="add">Add</button></div></div>' +
       '<div class="card"><div class="row"><h3 style="margin:0">Students (' + list.length + ')</h3>' + clsSelect('fcls', S.cls) + '<button class="btn sm2 red" id="sdel">🗑 Delete selected</button></div><table class="t"><tr><th><input type="checkbox" id="sall" title="Select all"></th><th>First name</th><th>Last name</th><th>Class</th><th>Student ID (PowerSchool)</th><th></th></tr>' +
-      list.map(function (x) { return '<tr><td><input type="checkbox" class="ssel" value="' + x._id + '"></td><td>' + esc(x.first) + '</td><td>' + esc(x.last) + '</td><td>' + esc(x.class) + '</td><td><input class="sm" style="min-width:120px;width:140px" data-sid="' + x._id + '" value="' + esc(x.sid) + '" placeholder="ID"></td><td><button class="ic del" data-del="' + x._id + '">🗑</button></td></tr>'; }).join('') + '</table></div>';
+      list.map(function (x) { return '<tr><td><input type="checkbox" class="ssel" value="' + x._id + '"></td><td>' + esc(x.first) + '</td><td>' + esc(x.last) + '</td><td>' + esc(x.class) + '</td><td><input class="sm" style="min-width:120px;width:140px" data-sid="' + x._id + '" value="' + esc(x.sid) + '" placeholder="ID"></td><td style="white-space:nowrap"><button class="ic" data-editst="' + x._id + '" title="Edit details">✏️</button> <button class="ic del" data-del="' + x._id + '">🗑</button></td></tr>'; }).join('') + '</table></div>';
     $('#fcls').onchange = function () { S.cls = this.value; studentsView(); };
     v.querySelectorAll('[data-sid]').forEach(function (inp) {
       inp.onchange = function () {
@@ -320,6 +320,7 @@
         st.sid = inp.value.trim(); DB.update('students', id, { sid: st.sid }).then(function () { toast('ID saved'); }).catch(fail);
       };
     });
+    v.querySelectorAll('[data-editst]').forEach(function (b) { b.onclick = function () { studentDialog(S.students.filter(function (x) { return x._id === b.getAttribute('data-editst'); })[0]); }; });
     $('#sall').onchange = function () { var c = this.checked; v.querySelectorAll('.ssel').forEach(function (e) { e.checked = c; }); };
     $('#sdel').onclick = function () {
       var ids = [].slice.call(v.querySelectorAll('.ssel:checked')).map(function (e) { return e.value; });
@@ -356,6 +357,28 @@
       rd.readAsArrayBuffer(f);
     };
   }
+  // Fix a student's first name, last name, class or ID. Codes and submitted results keep working and show the corrected details.
+  function studentDialog(st) {
+    if (!st) return;
+    openDlg('<h3>Edit student</h3><div class="row"><div class="field"><label>First name</label><input class="sm" id="ef" value="' + esc(st.first) + '"></div><div class="field"><label>Last name</label><input class="sm" id="el" value="' + esc(st.last) + '"></div></div>' +
+      '<div class="row"><div class="field"><label>Class</label><input class="sm" id="ec" value="' + esc(st.class) + '"></div><div class="field"><label>Student ID (PowerSchool)</label><input class="sm" id="es" value="' + esc(st.sid) + '"></div></div>' +
+      '<p class="en" style="font-size:14px">The student\'s personal codes and any submitted exams are kept and updated with the corrected details. Scores and answers are not changed.</p>' +
+      '<div class="row"><button class="btn sm2" id="ok">Save</button><button class="btn sm2 gray" id="no">Cancel</button></div>');
+    $('#no', dlg).onclick = function () { dlg.close(); };
+    $('#ok', dlg).onclick = function () {
+      var nd = { first: $('#ef', dlg).value.trim(), last: $('#el', dlg).value.trim(), class: $('#ec', dlg).value.trim(), sid: $('#es', dlg).value.trim() };
+      if (!nd.first && !nd.last) return alert('Enter a name.');
+      var names = { first: nd.first, last: nd.last, class: nd.class };
+      DB.update('students', st._id, nd).then(function () { return DB.list('codes', ['studentId', st._id]); }).then(function (cs) {
+        return Promise.all(cs.map(function (c) {
+          return DB.update('codes', c._id, names).then(function () { return DB.get('submissions', c._id); }).then(function (sub) { if (sub) return DB.update('submissions', c._id, names); });
+        }));
+      }).then(syncRoster).then(function () {
+        Object.assign(st, nd); S.students.sort(byName); dlg.close(); toast('Student updated ✔'); studentsView();
+      }).catch(fail);
+    };
+  }
+
   function saveStudents(arr) {
     arr = arr.filter(function (x) { return x.first || x.last; });
     if (!arr.length) return alert('Enter a name.');
