@@ -155,9 +155,11 @@ function buildBuilding(){
   }
   bEl.querySelectorAll('.apt').forEach(c=>c.onclick=()=>{ if(aptClick) aptClick(c.dataset.id); });
 }
+/* stairs drawing (the emoji 🪜 looks like a ladder) */
+const STAIRS = '<svg class="stairs" viewBox="0 0 64 64" width="1em" height="1em" aria-hidden="true" style="vertical-align:-.12em"><path d="M4 58 H16 V46 H28 V34 H40 V22 H52 V10 H60 V58 Z" fill="#c98b4f" stroke="#7a4a22" stroke-width="3" stroke-linejoin="round"/><g fill="#e6b47c"><rect x="4" y="46" width="12" height="4"/><rect x="16" y="34" width="12" height="4"/><rect x="28" y="22" width="12" height="4"/><rect x="40" y="10" width="12" height="4"/></g><path d="M8 40 L56 4" stroke="#5f6b80" stroke-width="3.5" stroke-linecap="round"/><g stroke="#5f6b80" stroke-width="2.5"><path d="M12 37 V46"/><path d="M24 28 V34"/><path d="M36 19 V22"/></g></svg>';
 function moverTo(f, p, badge){
   if(p!==undefined){ const mi=document.getElementById("mimg"); if(p){mi.src=photo(p);mi.style.visibility="visible";} else mi.style.visibility="hidden"; }
-  if(badge!==undefined) document.getElementById('mbadge').textContent = badge;
+  if(badge!==undefined) document.getElementById('mbadge').innerHTML = badge;
   mover.style.top = ((10-f)*H)+'px';
 }
 function mark(map){
@@ -193,7 +195,7 @@ function learn(){
   moverTo(10, first, '🛗');
   const words = [
    ['🏢','בִּנְיָן'],['🚪','דִּירָה'],['🔢','קוֹמָה'],['👥','שָׁכֵן / שְׁכֵנָה'],
-   ['🛗','מַעֲלִית'],['🪜','מַדְרֵגוֹת'],['⬆️','עוֹלֶה'],['⬇️','יוֹרֵד / יוֹרֶדֶת']
+   ['🛗','מַעֲלִית'],[STAIRS,'מַדְרֵגוֹת'],['⬆️','עוֹלֶה'],['⬇️','יוֹרֵד / יוֹרֶדֶת']
   ];
   P.innerHTML = `<p class="q">לַחֲצוּ עַל הַמִּלִּים וְעַל הַדִּירוֹת כְּדֵי לִשְׁמֹעַ.</p>
    <div class="who" id="who"></div>
@@ -213,10 +215,10 @@ function g1(){
   const a=pick(people.filter(p=>p.floor===fa)), b=pick(people.filter(p=>p.floor===fb));
   const s = {up:b.floor>a.floor,d:Math.abs(b.floor-a.floor),tr:Math.random()<.5?'elevator':'stairs',my:0};
   mark({[a.id]:'from',[b.id]:'to'});
-  moverTo(a.floor, a, s.tr==='elevator'?'🛗':'🪜');
+  moverTo(a.floor, a, s.tr==='elevator'?'🛗':STAIRS);
   const text = `${a.he} ${live(a)} בְּקוֹמָה ${a.floor}. ${b.he} ${live(b)} בְּקוֹמָה ${b.floor}. ${a.he} ${goes(a)} לְבַקֵּר אֶת ${b.he} ${trText(s.tr)}.`;
   const my = tick;
-  P.innerHTML = `<div class="who">${imgTag(a)}<span style="font-size:2rem">${s.tr==='elevator'?'🛗':'🪜'} ➜</span>${imgTag(b)}</div>
+  P.innerHTML = `<div class="who">${imgTag(a)}<span style="font-size:2rem">${s.tr==='elevator'?'🛗':STAIRS} ➜</span>${imgTag(b)}</div>
     <p class="q">${text}${speakBtn(text)}</p>
     <div class="sub" id="sub">${a.he} ${a.g==='m'?'עוֹלֶה אוֹ יוֹרֵד':'עוֹלָה אוֹ יוֹרֶדֶת'}?</div>
     <div class="btns" id="ans"></div><div class="msg" id="msg"></div><div id="nx"></div>`;
