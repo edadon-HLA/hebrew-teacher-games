@@ -275,6 +275,11 @@ window.ExamCore = (function () {
       el: w, def: it,
       getAnswer: function () { return null; }, setAnswer: function () {},
       getBlob: function () { return blob; },
+      restoreRecording: function (data) {   // a recording saved earlier ("Save and continue later")
+        if (!data) return;
+        player.src = data; player.className = ''; status.textContent = '✔ נשמר קודם / Saved earlier';
+        fetch(data).then(function (r) { return r.blob(); }).then(function (b) { if (!blob) blob = b; });
+      },
       setAudio: function (data) { if (data) { player.src = data; player.className = ''; } else { player.className = 'hidden'; w.appendChild(h('div', 'key', 'אין הקלטה / No recording')); } },
       done: function () { return !!blob; }, key: function () { return null; },
       lock: function () { start.disabled = true; stop.disabled = true; if (o.mode === 'review') rec.classList.remove('noprint'); if (o.mode === 'review') { start.className = 'hidden'; stop.className = 'hidden'; } }
@@ -292,7 +297,7 @@ window.ExamCore = (function () {
       root.appendChild(head); secEls.push(head);
       sec.parts.forEach(function (part) {
         var card = h('div', 'card part');
-        card.appendChild(h('h3', null, part.he));
+        card.appendChild(h('h3', null, part.he + (part.titleEn ? '<span class="en en-title">' + part.titleEn + '</span>' : '')));
         card.appendChild(h('div', 'instr', part.instrHe + '<span class="en">' + (part.instrEn || '') + '</span>'));
         var plang = C.lang(cfg, part, null);
         if (part.passage || part.passageEn) {

@@ -97,3 +97,11 @@ main{max-width:900px;margin:28px auto 80px;padding:0 16px}
 .padbar{display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap}.padhint{font-size:14px;color:#59647d}
 .drawnshow img{max-width:100%;border:1px solid #cfd6e6;border-radius:8px;background:#fff;display:block;margin-top:4px}
 .tag.hw{background:#fff3cd;color:#8a6d00}
+/* bigger English instructions, English titles */
+.instr{font-size:20px;line-height:1.6}
+.instr .en,.namebox .instr .en{font-size:1em;color:#18213a;margin-top:4px;display:block}
+.warn .en{font-size:1em}
+.en-title{font-size:.8em;font-weight:700;color:#3a4463;margin-top:2px}
+.savebar{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn.blue{background:#3730a3}
+.savemsg{font-weight:700;color:#1b6b37}

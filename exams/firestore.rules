@@ -41,6 +41,17 @@ service cloud.firestore {
       allow update: if isTeacher() || (get(/databases/$(database)/documents/codes/$(code)).data.status == 'returned' && request.resource.data.code == code);
       allow read, delete: if isTeacher();
     }
+    // "Save and continue later": a student's unfinished work, kept under the personal code.
+    match /progress/{code} {
+      allow get: if exists(/databases/$(database)/documents/codes/$(code));
+      allow create, update: if exists(/databases/$(database)/documents/codes/$(code)) && request.resource.data.code == code;
+      allow list, delete: if isTeacher();
+    }
+    match /progressRec/{id} {
+      allow get: if exists(/databases/$(database)/documents/codes/$(resource.data.code));
+      allow create, update: if exists(/databases/$(database)/documents/codes/$(request.resource.data.code));
+      allow list, delete: if isTeacher();
+    }
     match /recordings/{id} {
       allow create: if exists(/databases/$(database)/documents/codes/$(request.resource.data.code));
       allow update: if isTeacher() || get(/databases/$(database)/documents/codes/$(request.resource.data.code)).data.status == 'returned';

@@ -179,6 +179,7 @@
   }
   function partDialog(part) {
     openDlg('<h3>Edit part</h3><div class="field"><label>Title (Hebrew)</label><input class="sm" style="width:100%" id="f1" value="' + esc(part.he) + '"></div>' +
+      '<div class="field"><label>English title (shown under the Hebrew title)</label><input class="sm" style="width:100%;direction:ltr" id="f6" value="' + esc(part.titleEn || '') + '"></div>' +
       '<div class="field"><label>Instructions – Hebrew</label><textarea class="sm" id="f2" rows="2">' + esc(part.instrHe) + '</textarea></div>' +
       '<div class="field"><label>Instructions – English</label><textarea class="sm" id="f3" rows="2" style="direction:ltr">' + esc(part.instrEn) + '</textarea></div>' +
       '<div class="field"><label>Question language for this part</label>' + langSelect('fl', part.lang, true, 'Same as the whole exam') + '</div>' +
@@ -186,7 +187,7 @@
       '<div class="field"><label>English version of the reading text (optional)</label><textarea class="sm" id="f5" rows="5" style="direction:ltr">' + esc(part.passageEn || '') + '</textarea></div>' +
       '<div class="row"><button class="btn sm2" id="ok">OK</button><button class="btn sm2 gray" id="no">Cancel</button></div>');
     $('#no').onclick = function () { dlg.close(); };
-    $('#ok').onclick = function () { part.he = $('#f1').value; part.instrHe = $('#f2').value; part.instrEn = $('#f3').value; part.passage = $('#f4').value; part.passageEn = $('#f5').value; part.lang = $('#fl').value; dlg.close(); editorView(); };
+    $('#ok').onclick = function () { part.he = $('#f1').value; part.instrHe = $('#f2').value; part.instrEn = $('#f3').value; part.passage = $('#f4').value; part.passageEn = $('#f5').value; part.titleEn = $('#f6').value; part.lang = $('#fl').value; dlg.close(); editorView(); };
   }
 
   /* ----- question editor with audio ----- */

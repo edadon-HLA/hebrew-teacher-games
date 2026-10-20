@@ -43,7 +43,7 @@
           C('יֵשׁ טֵלֶוִיזְיָה בַּחֶדֶר שֶׁל דָּנִי.', TF, 1, 2), C('דָּנִי יָשֵׁן בַּמִּטָּה.', TF, 0, 2), C('הַסַּפָּה קְטַנָּה.', TF, 1, 2)], { passage: STORY1 }),
         part('חֵלֶק ג׳ · אֵיפֹה זֶה?', 5, 'בַּחֲרוּ אֶת הַחֶדֶר הַמַּתְאִים לַחֵפֶץ.', 'Choose the room that matches the object.', [
           C('מְקָרֵר ' + F, ROOMS, 1, 1), C('סַפָּה 🛋️', ROOMS, 0, 1), C('מִטָּה 🛏️', ROOMS, 2, 1), C('סַבּוֹן 🧼', ROOMS, 3, 1),
-          C('וִילוֹן ' + CU + ' <small style="color:#59647d">(סָלוֹן אוֹ חֲדַר שֵׁנָה)</small>', ROOMS, [0, 2], 1)])
+          C('וִילוֹן ' + CU + ' <small style="color:#59647d">(שְׁתֵּי תְּשׁוּבוֹת אֶפְשָׁרִיּוֹת – בַּחֲרוּ אַחַת)</small>', ROOMS, [0, 2], 1)])
       ] },
       { he: 'הֲאָזָנָה', en: 'Listening', parts: [
         part('חֵלֶק א׳ · שׁוֹמְעִים וּבוֹחֲרִים', 15, 'לִחְצוּ 🔊, שִׁמְעוּ אֶת הַמִּלָּה וּבַחֲרוּ אֶת הַתְּמוּנָה.', 'Press 🔊, listen to the word and choose the picture.', [
@@ -113,7 +113,7 @@
         s0p1i0: 'I sleep in the ______.', s0p1i1: 'The milk is in the ______.', s0p1i2: 'We watch TV in the ______.', s0p1i3: 'Mom cooks in the ______.', s0p1i4: 'I take a shower in the ______.',
         s1p0i0: 'On which floor does Danny live?', s1p0i1: 'What is in the living room?', s1p0i2: 'How many chairs are in the kitchen?', s1p0i3: 'What is in Danny\'s room?', s1p0i4: 'Where does Danny eat in the evening?',
         s1p1i0: 'The apartment has three bedrooms.', s1p1i1: 'There is a refrigerator in the kitchen.', s1p1i2: 'There is a TV in Danny\'s room.', s1p1i3: 'Danny sleeps in the bed.', s1p1i4: 'The sofa is small.',
-        s1p2i0: 'Refrigerator ' + F + ' – which room is it in?', s1p2i1: 'Sofa 🛋️ – which room is it in?', s1p2i2: 'Bed 🛏️ – which room is it in?', s1p2i3: 'Soap 🧼 – which room is it in?', s1p2i4: 'Curtain ' + CU + ' – which room? (living room or bedroom)',
+        s1p2i0: 'Refrigerator ' + F + ' – which room is it in?', s1p2i1: 'Sofa 🛋️ – which room is it in?', s1p2i2: 'Bed 🛏️ – which room is it in?', s1p2i3: 'Soap 🧼 – which room is it in?', s1p2i4: 'Curtain ' + CU + ' – which room? (2 answers are possible – choose one)',
         s2p1i0: 'Where does Noa live?', s2p1i1: 'What is in the kitchen?', s2p1i2: 'Which room does Noa love?'
       }
     },
@@ -131,12 +131,20 @@
       }
     }
   };
+  var PART_TITLES = {
+    exam1: { s0p0: 'Part A · What is it?', s0p1: 'Part B · Complete the sentence', s0p2: 'Part C · Build a sentence', s1p0: 'Part A · Questions about the text', s1p1: 'Part B · True or false?', s1p2: 'Part C · Where is it?', s2p0: 'Part A · Listen and choose', s2p1: 'Part B · Listen to a short story' },
+    exam2: { s0p0: 'Part A · Numbers in words', s0p1: 'Part B · Goes up or goes down?', s0p2: 'Part C · Build a sentence', s1p0: 'Part A · Questions about the text', s1p1: 'Part B · True or false?', s1p2: 'Part C · Numbers and the elevator', s2p0: 'Recording your answers' }
+  };
   // Adds the English text to any exam (also older saved copies) where it is missing.
   window.fillEnglish = function (cfg) {
     var m = EN_TEXT[cfg.id]; if (!m) return cfg;
+    cfg.sections.forEach(function (sec) { sec.parts.forEach(function (p) { if (!p.titleEn && PART_TITLES[cfg.id] && PART_TITLES[cfg.id][p.id]) p.titleEn = PART_TITLES[cfg.id][p.id]; }); });
     ExamCore.each(cfg, function (it, p) {
       if (!it.en && m.items[it.id]) it.en = m.items[it.id];
       if (!p.passageEn && p.passage && m.passages[p.id]) p.passageEn = m.passages[p.id];
+      // Exam 1, question 28 (curtain): two answers are possible, but the text must not say which
+      if (cfg.id === 'exam1' && it.q) it.q = it.q.replace('(סָלוֹן אוֹ חֲדַר שֵׁנָה)', '(שְׁתֵּי תְּשׁוּבוֹת אֶפְשָׁרִיּוֹת – בַּחֲרוּ אַחַת)');
+      if (cfg.id === 'exam1' && it.en) it.en = it.en.replace('(living room or bedroom)', '(2 answers are possible – choose one)');
     });
     return cfg;
   };
