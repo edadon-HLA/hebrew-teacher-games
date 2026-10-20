@@ -218,7 +218,7 @@ function g1(){
   moverTo(a.floor, a, s.tr==='elevator'?'🛗':STAIRS);
   const text = `${a.he} ${live(a)} בְּקוֹמָה ${a.floor}. ${b.he} ${live(b)} בְּקוֹמָה ${b.floor}. ${a.he} ${goes(a)} לְבַקֵּר אֶת ${b.he} ${trText(s.tr)}.`;
   const my = tick;
-  P.innerHTML = `<div class="who">${imgTag(a)}<span style="font-size:2rem">${s.tr==='elevator'?'🛗':STAIRS} ➜</span>${imgTag(b)}</div>
+  P.innerHTML = `<div class="who">${imgTag(a)}<span style="font-size:2rem">${s.tr==='elevator'?'🛗':STAIRS} ⬅</span>${imgTag(b)}</div>
     <p class="q">${text}${speakBtn(text)}</p>
     <div class="sub" id="sub">${a.he} ${a.g==='m'?'עוֹלֶה אוֹ יוֹרֵד':'עוֹלָה אוֹ יוֹרֶדֶת'}?</div>
     <div class="btns" id="ans"></div><div class="msg" id="msg"></div><div id="nx"></div>`;
