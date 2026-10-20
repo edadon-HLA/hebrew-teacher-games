@@ -48,7 +48,7 @@ button{font-family:var(--f)}
 .day:first-child{border-inline-start:0}
 .day .hd{background:#1f4fbf;color:#fff;text-align:center;padding:8px 4px;direction:rtl}
 .day .hd b{display:block;font:800 clamp(15px,2vw,22px) var(--f)}
-.day .hd small{font:600 13px Arial,sans-serif;opacity:.75;direction:ltr;display:block}
+.day .hd small{font:700 clamp(13px,1.6vw,17px) var(--f);opacity:.85;display:block}
 .day.wk .hd{background:#7a4cc2}
 .day .body{flex:1;display:flex;flex-wrap:wrap;align-content:flex-start;justify-content:center;gap:6px;padding:8px 4px}
 .day.target-hot{background:var(--gold-soft)}
@@ -76,7 +76,7 @@ button{font-family:var(--f)}
 .next{text-align:center}
 .end{text-align:center}.end .stars{font-size:62px;letter-spacing:6px}.end h2{font-size:34px;margin:6px 0}
 .novoice{color:var(--muted);font-size:14px;text-align:center}
-@media(max-width:720px){.modes{grid-template-columns:1fr}.day{min-height:150px}.day .hd small{display:none}.tile{width:78px}.tile .ic{width:48px;height:48px}}
+@media(max-width:720px){.modes{grid-template-columns:1fr}.day{min-height:150px}.tile{width:78px}.tile .ic{width:48px;height:48px}}
 @media (prefers-reduced-motion:reduce){.day.no,.tile.bad,.day .v,.placed{animation:none}}
 </style>
 <style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
@@ -88,7 +88,7 @@ button{font-family:var(--f)}
 
 <section id="start">
   <h1>📅 יְמֵי הַשָּׁבוּעַ</h1>
-  <p class="sub">Days of the week · קוֹרְאִים מִשְׁפָּט וּמְסַמְּנִים אֶת הַיּוֹם בַּלּוּחַ</p>
+  <p class="sub">קוֹרְאִים מִשְׁפָּט וּמְסַמְּנִים אֶת הַיּוֹם בַּלּוּחַ</p>
   <div class="modes">
     <button class="mode" type="button" data-mode="act"><div class="big">📘 ➜ 📅</div><h2>מִשְׂחָק עִם פְּעִילֻיּוֹת</h2><p>"דָּן לוֹמֵד אַנְגְּלִית בְּיוֹם שִׁשִּׁי" — גּוֹרְרִים אֶת הַסֵּפֶר לַיּוֹם הַנָּכוֹן</p></button>
     <button class="mode" type="button" data-mode="easy"><div class="big">✔️ 📅</div><h2>קַל · רַק יָמִים</h2><p>"אֲנִי אוֹהֵב אֶת יוֹם שֵׁנִי" — מְסַמְּנִים V בַּיּוֹם הַנָּכוֹן</p></button>
@@ -96,7 +96,6 @@ button{font-family:var(--f)}
   <div class="card opts">
     <label>כַּמָּה מִשְׁפָּטִים? <select id="count"><option>6</option><option selected>10</option><option>14</option></select></label>
     <label><input type="checkbox" id="autoSay" checked> 🔊 לְהַקְרִיא כָּל מִשְׁפָּט</label>
-    <label><input type="checkbox" id="showEn"> English</label>
   </div>
 </section>
 
@@ -136,8 +135,8 @@ const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ co
 
 /* the calendar starts on Monday (rightmost column). i = position on the calendar */
 const DAYS = [
-  { he: 'יוֹם שֵׁנִי', en: 'Monday' }, { he: 'יוֹם שְׁלִישִׁי', en: 'Tuesday' }, { he: 'יוֹם רְבִיעִי', en: 'Wednesday' },
-  { he: 'יוֹם חֲמִישִׁי', en: 'Thursday' }, { he: 'יוֹם שִׁשִּׁי', en: 'Friday' }, { he: 'שַׁבָּת', en: 'Saturday' }, { he: 'יוֹם רִאשׁוֹן', en: 'Sunday' },
+  { he: 'יוֹם שֵׁנִי', l: 'יוֹם ב׳', w: 'שֵׁנִי', en: 'Monday' }, { he: 'יוֹם שְׁלִישִׁי', l: 'יוֹם ג׳', w: 'שְׁלִישִׁי', en: 'Tuesday' }, { he: 'יוֹם רְבִיעִי', l: 'יוֹם ד׳', w: 'רְבִיעִי', en: 'Wednesday' },
+  { he: 'יוֹם חֲמִישִׁי', l: 'יוֹם ה׳', w: 'חֲמִישִׁי', en: 'Thursday' }, { he: 'יוֹם שִׁשִּׁי', l: 'יוֹם ו׳', w: 'שִׁשִּׁי', en: 'Friday' }, { he: 'שַׁבָּת', l: 'יוֹם שַׁבָּת', w: '', en: 'Saturday' }, { he: 'יוֹם רִאשׁוֹן', l: 'יוֹם א׳', w: 'רִאשׁוֹן', en: 'Sunday' },
 ];
 const inDay = i => i === 5 ? 'בְּשַׁבָּת' : 'בְּ' + DAYS[i].he;           /* "on Monday" */
 const etDay = i => i === 5 ? 'אֶת שַׁבָּת' : 'אֶת ' + DAYS[i].he;       /* "Monday" after a verb */
@@ -220,7 +219,7 @@ function start(mode){
   newQ();
 }
 function drawCal(){
-  $('cal').innerHTML = DAYS.map((d, i) => `<div class="day${i >= 5 ? ' wk' : ''}" data-i="${i}"><div class="hd"><b>${d.he}</b><small>${d.en}</small></div><div class="body"></div></div>`).join('');
+  $('cal').innerHTML = DAYS.map((d, i) => `<div class="day${i >= 5 ? ' wk' : ''}" data-i="${i}"><div class="hd"><b>${d.l}</b>${d.w ? `<small>${d.w}</small>` : ''}</div><div class="body"></div></div>`).join('');
   $('cal').querySelectorAll('.day').forEach(el => el.onclick = () => clickDay(+el.dataset.i, el));
 }
 function newQ(){
@@ -244,7 +243,7 @@ function newQ(){
     $('hint').textContent = 'לוֹחֲצִים עַל הַיּוֹם הַנָּכוֹן כְּדֵי לְסַמֵּן V.';
     $('cal').querySelectorAll('.day').forEach(d => { d.classList.add('pick'); d.classList.remove('ok'); d.querySelector('.body').innerHTML = ''; });
   }
-  $('sent').innerHTML = he + ($('showEn').checked ? `<span class="en">${en}</span>` : '');
+  $('sent').textContent = he;
   G.say = he; G.en = en;
   $('fb').textContent = ''; $('fb').className = 'fb'; $('next').hidden = true;
   $('barFill').style.width = (G.i / G.total * 100) + '%'; $('score').textContent = '⭐ ' + G.first;
@@ -338,7 +337,6 @@ $('next').onclick = next;
 $('ear').onclick = () => say(G.say);
 $('again').onclick = () => start(G.mode);
 $('toStart').onclick = $('menu').onclick = () => { $('game').hidden = true; $('end').hidden = true; $('start').hidden = false; };
-$('showEn').onchange = () => { if (G && G.say) $('sent').innerHTML = G.say + ($('showEn').checked ? `<span class="en">${G.en}</span>` : ''); };
 const q = new URLSearchParams(location.search).get('mode');
 if (q === 'act' || q === 'easy') start(q);
 })();
