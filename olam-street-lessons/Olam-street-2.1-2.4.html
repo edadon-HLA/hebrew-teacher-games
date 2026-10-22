@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Olam Street 2.1–2.4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<style>
+:root{
+  --bg:#fdf7ef; --surface:#ffffff; --ink:#23233a; --muted:#6b6880; --line:#eadfce;
+  --coral:#e2506a; --coral-soft:#fde3e7; --green:#2f9d55; --green-soft:#dcf2e3;
+  --sky:#2a8bd0; --sky-soft:#dcecfb; --gold:#f2b01e; --gold-soft:#fbf0d2; --plate:#fff8ec; --shadow:0 2px 0 rgba(35,35,58,.08), 0 8px 24px rgba(35,35,58,.08);
+  --boy:#2a8bd0; --girl:#d6457f; --boy-soft:#dcecfb; --girl-soft:#fbe1ec;
+  --f-display:'Rubik', 'Segoe UI', Arial, sans-serif;
+  --f-he:'Noto Sans Hebrew', 'Arial Hebrew', 'Segoe UI', Arial, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --gold-soft:#3d3320; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35);
+  --boy:#62b4f0; --girl:#ff7fb0; --boy-soft:#1c3247; --girl-soft:#43213a; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#191823; --surface:#24232f; --ink:#f4efe6; --muted:#aaa6b9; --line:#383647;
+  --coral:#ff7088; --coral-soft:#45252f; --green:#5fd283; --green-soft:#1d3a29; --sky:#62b4f0; --sky-soft:#1c3247; --gold:#f7c24a; --gold-soft:#3d3320; --plate:#f6ecda; --shadow:0 8px 24px rgba(0,0,0,.35);
+  --boy:#62b4f0; --girl:#ff7fb0; --boy-soft:#1c3247; --girl-soft:#43213a; color-scheme:dark; }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:var(--f-he); font-size:17px; line-height:1.55;}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:16px; padding-block:0 64px}
+.he{font-family:var(--f-he); direction:rtl; unicode-bidi:isolate}
+.en{font-family:var(--f-display); direction:ltr; unicode-bidi:isolate}
+svg{direction:ltr}
+button{font:inherit; color:inherit}
+:focus-visible{outline:3px solid var(--sky); outline-offset:3px; border-radius:8px}
+
+/* Header */
+.top{padding-block:28px 18px; display:flex; flex-wrap:wrap; gap:12px 24px; align-items:flex-end; justify-content:space-between}
+.crumb{font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 6px}
+h1{font-family:var(--f-he); font-size:clamp(28px,5vw,46px); line-height:1.05; margin:0; font-weight:800; text-wrap:balance}
+.top .he-title{font-size:clamp(20px,3vw,28px); color:var(--muted); margin:0}
+
+/* Step bar */
+.steps{position:sticky; top:calc(var(--navh,0px) + env(safe-area-inset-top,0px)); z-index:20; background:var(--bg); border-bottom:2px solid var(--line); margin-bottom:24px}
+.steps ol{list-style:none; display:flex; gap:8px; padding:10px 0; margin:0; overflow-x:auto}
+.steps a{display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; text-decoration:none; color:var(--ink); font-weight:600; white-space:nowrap; border:2px solid var(--line); background:var(--surface)}
+.steps a b{display:inline-grid; place-items:center; width:24px; height:24px; border-radius:50%; color:#fff; font-size:13px}
+.steps a[data-c="coral"] b{background:var(--coral)} .steps a[data-c="green"] b{background:var(--green)} .steps a[data-c="sky"] b{background:var(--sky)} .steps a[data-c="gold"] b{background:var(--gold)}
+.steps a:hover{border-color:var(--ink)}
+
+/* Section shell */
+section.step{margin-block:28px 48px; scroll-margin-top:calc(var(--navh,0px) + 70px)}
+.tag{display:inline-flex; align-items:center; gap:10px; padding-block:6px; padding-inline:8px 16px; border-radius:999px; font-weight:800; font-size:18px}
+.tag .num{background:var(--surface); border-radius:999px; padding:2px 10px; font-size:16px; font-family:var(--f-display); direction:ltr; unicode-bidi:isolate}
+.tag.green{background:var(--green-soft)} .tag.green .num{color:var(--green)}
+.tag.sky{background:var(--sky-soft)} .tag.sky .num{color:var(--sky)}
+.tag.gold{background:var(--gold-soft)} .tag.gold .num{color:#b07d06}
+.tag.coral{background:var(--coral-soft)} .tag.coral .num{color:var(--coral)}
+.step-head{display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; justify-content:space-between; margin-bottom:6px}
+.lead{font-size:clamp(19px,2.2vw,23px); font-weight:600; max-width:70ch; margin:10px 0 6px}
+.sub{color:var(--muted); font-weight:600; margin:0 0 16px}
+h3{font-size:22px; margin:26px 0 10px}
+
+.panel{background:var(--surface); border:2px solid var(--line); border-radius:20px; padding:18px; box-shadow:var(--shadow)}
+.toolbar{display:flex; flex-wrap:wrap; gap:8px 10px; align-items:center; margin-bottom:16px}
+.btn{border:2px solid var(--line); background:var(--surface); border-radius:12px; padding:8px 14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px}
+.btn:hover{border-color:var(--ink)}
+.btn[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.btn.primary{background:var(--green); border-color:var(--green); color:#fff}
+.btn.big{font-size:20px; padding:12px 22px; border-radius:16px; font-weight:800}
+.spacer{flex:1}
+.score{font-weight:800; font-size:18px}
+.stars{color:var(--gold); letter-spacing:2px}
+
+/* ---------- word bank + chips (shared drag) ---------- */
+.bank{display:flex; flex-wrap:wrap; gap:10px; align-items:center; background:var(--plate); color:#2b2a3a; border:2px dashed #e0cfb2; border-radius:18px; padding:12px 14px; margin-bottom:18px; min-height:70px}
+.bank .bl{font-weight:800; margin-inline-end:6px}
+.chip{touch-action:none; user-select:none; -webkit-user-select:none; cursor:grab; background:#fff; color:#23233a; border:3px solid #23233a; border-radius:14px; padding:6px 16px; font-size:clamp(22px,2.6vw,28px); font-weight:800; box-shadow:0 3px 0 #23233a; transition:transform .15s, opacity .2s}
+.chip:hover{transform:translateY(-2px)}
+.chip.sel{background:var(--gold); transform:translateY(-3px) scale(1.05)}
+.chip.used{opacity:.25; pointer-events:none; box-shadow:none}
+.chip.wrong{animation:shake .4s}
+.ghost{position:fixed; z-index:200; pointer-events:none; transform:translate(-50%,-60%) rotate(-4deg) scale(1.08); cursor:grabbing; box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.slot.hover{outline:4px dashed var(--gold); outline-offset:3px}
+.slot.wrong{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-7px)} 40%,80%{transform:translateX(7px)}}
+@keyframes pop{from{transform:scale(.5); opacity:0}}
+
+/* ---------- 1.29 pictures ---------- */
+.pics{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px}
+.pic{display:flex; flex-direction:column; gap:10px; align-items:stretch}
+.pic .art{border-radius:20px; overflow:hidden; box-shadow:var(--shadow); aspect-ratio:200/140; background:#cfe8f7}
+.pic .art svg{width:100%; height:100%; display:block}
+.pic .slot{min-height:58px; border-bottom:4px solid var(--ink); display:grid; place-items:center; font-size:clamp(22px,2.6vw,30px); font-weight:800; border-radius:10px 10px 0 0; cursor:pointer}
+.pic .slot.ok{color:var(--green); border-color:var(--green); background:var(--green-soft); animation:pop .35s cubic-bezier(.2,1.5,.4,1)}
+
+/* ---------- 1.30 compounds ---------- */
+.cwrap{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:20px; align-items:start}
+.crow{display:grid; grid-template-columns:64px auto minmax(110px,1fr) minmax(0,1.2fr); align-items:center; gap:10px 14px; padding:8px 10px; border-bottom:2px solid var(--line)}
+.crow:last-child{border-bottom:0}
+.crow .ball svg{width:60px; height:60px; display:block}
+.crow .kd{font-size:clamp(22px,2.6vw,28px); font-weight:800}
+.crow .slot{min-height:52px; border:3px dashed var(--line); border-radius:14px; display:grid; place-items:center; font-size:clamp(20px,2.4vw,26px); font-weight:800; cursor:pointer}
+.crow .slot.ok{border-style:solid; border-color:var(--green); background:var(--green-soft); color:var(--green); animation:pop .35s cubic-bezier(.2,1.5,.4,1)}
+.crow .res{font-size:clamp(18px,2.1vw,23px); font-weight:800; color:var(--muted); min-height:1em}
+.crow .res b{color:var(--ink)}
+.crow .res.show{animation:pop .4s cubic-bezier(.2,1.5,.4,1)}
+.cbank{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; background:var(--plate); border-radius:20px; padding:14px; position:sticky; top:calc(var(--navh,0px) + 80px)}
+.cbank .opt{display:flex; flex-direction:column; align-items:center; gap:4px; background:#fff; border-radius:16px; padding:8px; color:#23233a}
+.cbank .opt svg{width:64px; height:52px}
+.cbank .opt .chip{font-size:clamp(20px,2.3vw,25px)}
+.cbank .opt.used{opacity:.35}
+
+/* ---------- days of the week ---------- */
+.explain{display:grid; grid-template-columns:auto minmax(0,1fr); gap:16px; align-items:center; background:var(--sky-soft); border-radius:22px; padding:16px 20px; margin-bottom:18px}
+.explain .big{font-size:56px; line-height:1}
+.explain p{margin:0; font-size:clamp(19px,2.2vw,23px); font-weight:700}
+.explain .enx{direction:ltr; text-align:left; font-family:var(--f-display); font-weight:600; font-size:16px; color:var(--muted); margin-top:6px}
+.week{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:10px}
+.day{position:relative; border:3px solid var(--line); background:var(--surface); border-radius:20px; padding:12px 6px 10px; text-align:center; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; box-shadow:var(--shadow); transition:transform .2s, border-color .2s, background .2s}
+.day:hover{transform:translateY(-3px)}
+.day .ltr{font-size:clamp(34px,4.6vw,52px); font-weight:800; line-height:1.1; color:var(--dc)}
+.day .nm{font-size:clamp(17px,2vw,22px); font-weight:800; line-height:1.25}
+.day .numw{font-size:15px; color:var(--muted); font-weight:700; line-height:1.3}
+.day .numw .n{font-family:var(--f-display); font-size:22px; color:var(--dc); display:block}
+.day .enl{font-family:var(--f-display); direction:ltr; font-size:13px; color:var(--muted); font-weight:600}
+.day.on{border-color:var(--dc); background:color-mix(in srgb, var(--dc) 14%, var(--surface)); transform:translateY(-6px) scale(1.04)}
+.day.today::before{content:'הַיּוֹם'; position:absolute; top:-12px; inset-inline-start:50%; transform:translateX(50%); background:var(--ink); color:var(--bg); font-size:12px; font-weight:800; border-radius:999px; padding:1px 8px; white-space:nowrap}
+.day.first::after{content:'1️⃣'; position:absolute; top:-12px; inset-inline-end:-6px; font-size:22px}
+.day.hit{animation:pop .35s cubic-bezier(.2,1.5,.4,1)}
+.day.miss{animation:shake .4s}
+.spot{margin-top:18px; background:var(--plate); color:#23233a; border-radius:22px; padding:16px 20px; display:grid; grid-template-columns:auto minmax(0,1fr); gap:6px 20px; align-items:center; min-height:120px}
+.spot .sl{font-size:72px; font-weight:800; line-height:1; color:#23233a}
+.spot .st{font-size:clamp(26px,3.6vw,40px); font-weight:800; line-height:1.2}
+.spot .sx{font-size:clamp(17px,2vw,21px); font-weight:700; color:#5d5a70}
+.spot.pop{animation:pop .35s cubic-bezier(.2,1.5,.4,1)}
+.quiz{margin-top:18px; display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; background:var(--surface); border:2px solid var(--line); border-radius:18px; padding:12px 16px}
+.quiz .qq{font-size:clamp(22px,2.8vw,30px); font-weight:800}
+.quiz .qq .k{display:inline-block; min-width:56px; text-align:center; background:var(--gold); color:#23233a; border-radius:12px; padding:0 10px; margin-inline:4px}
+.quiz .fb{font-weight:800; font-size:20px}
+
+/* ---------- 1.28 listening table ---------- */
+.legend{display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; margin-bottom:12px; font-weight:700}
+.who{display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:4px 12px 4px 6px; font-weight:800; color:#fff}
+.who i{font-style:normal; display:inline-grid; place-items:center; width:26px; height:26px; border-radius:50%; background:#fff; font-size:15px}
+.who.k{background:var(--girl)} .who.k i{color:var(--girl)}
+.who.d{background:var(--boy)} .who.d i{color:var(--boy)}
+.clips{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:10px; margin-bottom:18px}
+.clip{display:grid; grid-template-columns:auto minmax(0,1fr); gap:4px 10px; align-items:center; background:var(--surface); border:2px solid var(--line); border-radius:16px; padding:8px 10px; cursor:pointer; text-align:start}
+.clip:hover{border-color:var(--ink)}
+.clip .pl{display:inline-grid; place-items:center; width:44px; height:44px; border-radius:50%; background:var(--green); color:#fff; font-size:18px; font-weight:800; font-family:var(--f-display); grid-row:span 2}
+.clip.played .pl{background:var(--muted)}
+.clip.now{border-color:var(--green); background:var(--green-soft)}
+.clip.now .pl{animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.12)}}
+.clip .ct{font-weight:800; font-size:18px}
+.clip .tx{font-size:18px; font-weight:700; line-height:1.35}
+.tblwrap{overflow-x:auto; border-radius:18px; border:2px solid var(--ink); background:var(--surface)}
+table.sch{border-collapse:collapse; width:100%; min-width:720px}
+table.sch th, table.sch td{border:2px solid var(--ink); text-align:center; padding:0}
+table.sch tr:first-child th{border-top:0} table.sch tr:last-child td, table.sch tr:last-child th{border-bottom:0}
+table.sch th:first-child{border-right:0} table.sch td:last-child, table.sch th:last-child{border-left:0}
+table.sch thead th{padding:8px 4px; font-size:17px; font-weight:800; line-height:1.25; background:var(--plate); color:#23233a}
+table.sch thead th small{display:block; font-size:15px; font-weight:700}
+table.sch thead th.shab{background:#e8e2f5}
+table.sch tbody th{padding:6px 8px; font-weight:800; font-size:18px; width:130px; background:var(--surface)}
+table.sch tbody th svg{width:40px; height:40px; display:block; margin:2px auto 0}
+table.sch td{height:84px; min-width:76px}
+table.sch td.shab{background:repeating-linear-gradient(135deg, transparent 0 8px, color-mix(in srgb, var(--line) 60%, transparent) 8px 10px)}
+.cell{width:100%; height:100%; min-height:82px; border:0; background:transparent; cursor:pointer; display:flex; flex-wrap:wrap; gap:4px; justify-content:center; align-content:center; padding:4px}
+.cell:hover{background:color-mix(in srgb, var(--gold) 14%, transparent)}
+.cell .who{padding:2px 8px; font-size:15px; animation:pop .25s cubic-bezier(.2,1.5,.4,1)}
+td.good{background:var(--green-soft)!important} td.bad{background:var(--coral-soft)!important}
+td.miss .cell::after{content:'?'; font-size:26px; font-weight:800; color:var(--coral)}
+td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
+.result{margin-top:14px; font-size:20px; font-weight:800}
+
+.fx{position:fixed; pointer-events:none; z-index:220; font-weight:800; font-family:var(--f-he); will-change:transform,opacity}
+
+@media (max-width:860px){
+  .pics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cwrap{grid-template-columns:1fr}
+  .cbank{position:static; grid-template-columns:repeat(3,minmax(0,1fr)); order:-1}
+  .week{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:520px){
+  .crow{grid-template-columns:52px auto minmax(0,1fr)}
+  .crow .ball svg{width:48px; height:48px}
+  .crow .res{grid-column:1 / -1}
+  .cbank{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .week{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .spot{grid-template-columns:1fr}
+  .explain{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important; transition:none!important} }
+</style>
+<style>
+/* Lesson 2.1–2.4: introduce yourself, Israeli food (2.2) + memory game, writing (2.3), reading letters with nikud (2.4), exit ticket */
+.tag.purple{background:#efe6fb}.steps a[data-c="purple"] b{background:#7a4cc2}
+.dlg{display:grid;gap:12px;max-width:760px}
+.say{display:flex;gap:12px;align-items:flex-start}
+.say.k{flex-direction:row-reverse}
+.say .who{flex:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:34px;background:var(--boy-soft)}
+.say.k .who{background:var(--girl-soft)}
+.say .bub{background:var(--surface);border:3px solid var(--boy);border-radius:20px;padding:10px 16px;font-size:clamp(21px,2.6vw,27px);font-weight:700;line-height:1.5}
+.say.k .bub{border-color:var(--girl)}
+.say .bub b{color:var(--boy)}.say.k .bub b{color:var(--girl)}
+.ear{border:0;background:var(--gold-soft);border-radius:50%;width:42px;height:42px;font-size:20px;cursor:pointer;flex:none;vertical-align:middle}
+.ear:hover{background:var(--gold)}
+.models{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:16px 0}
+.model{background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:14px 16px}
+.model h3{margin:0 0 6px;font-size:18px;color:var(--muted)}
+.model p{margin:0;font-size:clamp(21px,2.5vw,26px);font-weight:700;line-height:1.7}
+.me{display:grid;gap:12px}
+.me .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.me label.lb{font-weight:800;min-width:110px}
+.me input[type=text]{font:700 21px var(--f-he);padding:8px 12px;border:3px solid var(--line);border-radius:12px;min-width:220px}
+.chip{font:700 18px var(--f-he);border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 14px;cursor:pointer}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.mycard{background:linear-gradient(135deg,var(--gold-soft),var(--surface));border:3px dashed var(--gold);border-radius:22px;padding:16px 20px;font-size:clamp(23px,3vw,32px);font-weight:800;line-height:1.7;display:flex;gap:14px;align-items:center}
+.foods{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.food{background:var(--surface);border:2px solid var(--line);border-radius:18px;overflow:hidden;text-align:center;cursor:pointer;padding:0}
+.food img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.food span{display:block;padding:8px;font-size:22px;font-weight:800}
+.food:hover{border-color:var(--ink)}
+.sc{display:flex;gap:14px;align-items:center;text-decoration:none;color:var(--ink);background:var(--surface);border:3px solid var(--ink);border-radius:20px;padding:14px 18px;box-shadow:var(--shadow);max-width:560px;margin-top:16px}
+.sc:hover{transform:translateY(-2px)}.sc .ic{font-size:46px}.sc h3{margin:0;font-size:22px}.sc p{margin:2px 0 0;color:var(--muted)}.sc .go{margin-inline-start:auto;font-weight:800;color:var(--sky)}
+/* writing */
+.wgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.wbox{background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:10px;text-align:center}
+.wbox h3{margin:0 0 4px;font-size:30px}
+.pad{position:relative;width:100%;aspect-ratio:1;border-radius:14px;background:#fffdf8;overflow:hidden;touch-action:none}
+.pad svg.guide{position:absolute;inset:0;width:100%;height:100%}
+.pad canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair}
+.pad .model path{fill:none;stroke:#aab3c2;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:6 6}
+.pad .anim path{fill:none;stroke:var(--coral);stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+.wbox .row{display:flex;justify-content:center;gap:6px;margin-top:8px}
+.word{display:flex;gap:18px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:18px;background:var(--gold-soft);border-radius:20px;padding:14px}
+.word svg{height:90px;width:auto}
+.word .eq{font-size:36px;font-weight:800}
+/* reading */
+.modes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.subpick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.subpick .chip{font-size:24px;min-width:56px}
+.card{background:var(--surface);border:3px solid var(--line);border-radius:26px;box-shadow:var(--shadow);text-align:center;padding:18px;max-width:560px;margin:0 auto}
+.card .sy{font-size:clamp(120px,22vw,190px);line-height:1.25;font-weight:600;font-family:var(--f-he);min-height:1.3em}
+.card .snd{direction:ltr;font-family:var(--f-display);font-size:26px;font-weight:800;color:var(--sky);min-height:1.3em}
+.card .cnt{color:var(--muted);font-weight:700}
+.card .ctrl{display:flex;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.card.pop .sy{animation:pop .35s}
+@keyframes pop{from{transform:scale(.6);opacity:.3}}
+.ntable{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px;margin-top:16px;background:#e9dcb8;border-radius:18px;padding:10px}
+.ntable div{background:#fffaf0;border-radius:10px;text-align:center;padding:4px}
+.ntable b{display:block;font-size:15px}.ntable span{font-size:30px}
+/* exit ticket */
+.ticket{background:var(--surface);border:3px dashed var(--coral);border-radius:24px;padding:18px;max-width:820px}
+.ticket textarea{width:100%;min-height:96px;font:800 34px/1.5 var(--f-he);padding:10px 14px;border:3px solid var(--line);border-radius:14px;resize:vertical;direction:rtl}
+.keys{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;direction:rtl}
+.keys button{font:800 28px var(--f-he);min-width:54px;height:54px;border:2px solid var(--line);border-radius:12px;background:#fffaf0;cursor:pointer}
+.keys button.new{background:var(--sky-soft);border-color:var(--sky)}
+.keys button.wide{min-width:110px;font-size:18px}
+.keys button:hover{border-color:var(--ink)}
+.self{display:grid;gap:8px;margin-top:12px}
+.self .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;background:#fffaf0;border-radius:12px;padding:6px 10px;font-weight:700}
+.self .faces button{font-size:26px;border:2px solid transparent;background:none;border-radius:10px;cursor:pointer}
+.self .faces button.on{border-color:var(--ink);background:var(--gold-soft)}
+.done{margin-top:14px;background:var(--green-soft);border-radius:18px;padding:14px;font-size:clamp(26px,4vw,40px);font-weight:800;text-align:center}
+@media(max-width:760px){.foods,.wgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../olam-street-lessons/index.html'}">← חזרה</button></nav>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="crumb">Olam Street Lessons · רחוב העולם · יחידה 2 · אוֹכְלִים וְנֶהֱנִים</p>
+      <h1>רְחוֹב הָעוֹלָם <span style="direction:ltr;unicode-bidi:isolate;display:inline-block">2.1–2.4</span></h1>
+    </div>
+    <p class="he he-title">אוֹכֶל יִשְׂרְאֵלִי, כְּתִיבָה וּקְרִיאָה · עַמּוּדִים 4–6</p>
+  </header>
+
+  <nav class="steps" aria-label="שלבי השיעור">
+    <ol>
+      <li><a href="#s1" data-c="green"><b>1</b>2.1 מִי אֲנִי?</a></li>
+      <li><a href="#s2" data-c="sky"><b>2</b>2.2 אוֹכֶל יִשְׂרְאֵלִי</a></li>
+      <li><a href="#s3" data-c="gold"><b>3</b>2.3 כְּתִיבָה</a></li>
+      <li><a href="#s4" data-c="coral"><b>4</b>2.4 קְרִיאָה</a></li>
+      <li><a href="#s5" data-c="purple"><b>5</b>כַּרְטִיס יְצִיאָה</a></li>
+    </ol>
+  </nav>
+
+  <!-- ===== STEP 1: 2.1 introduce yourself ===== -->
+  <section class="step" id="s1">
+    <div class="step-head">
+      <span class="tag green"><span class="num">2.1</span>קִרְאוּ אֶת הַמִּשְׁפָּט · מִי אֲנִי?</span>
+      <button class="btn" id="enIntro" type="button" aria-pressed="false">הצג אנגלית</button>
+    </div>
+    <p class="lead">דָּן וְקֶרֶן מַכִּירִים. מַקְשִׁיבִים וְקוֹרְאִים.</p>
+    <div class="dlg">
+      <div class="say d"><div class="who">👦🏾</div><div class="bub"><b>דָּן:</b> שָׁלוֹם, אֲנִי דָּן! אַתְּ קֶרֶן? <button class="ear" type="button" data-say="שָׁלוֹם, אֲנִי דָּן! אַתְּ קֶרֶן?" aria-label="השמעה">🔊</button><div class="en" data-en hidden style="font-size:16px;color:var(--muted)">Hello, I'm Dan! Are you Keren?</div></div></div>
+      <div class="say k"><div class="who">👧🏻</div><div class="bub"><b>קֶרֶן:</b> כֵּן, אֲנִי קֶרֶן! אֲנִי גָּרָה בְּתֵל אָבִיב. <button class="ear" type="button" data-say="כֵּן, אֲנִי קֶרֶן! אֲנִי גָּרָה בְּתֵל אָבִיב." aria-label="השמעה">🔊</button><div class="en" data-en hidden style="font-size:16px;color:var(--muted)">Yes, I'm Keren! I live in Tel Aviv.</div></div></div>
+    </div>
+
+    <p class="lead" style="margin-top:22px">דֻּגְמָה: מְצִיגִים אֶת עַצְמֵנוּ — שֵׁם, אֵיפֹה גָּרִים, מָה אוֹהֲבִים</p>
+    <div class="models">
+      <div class="model"><h3>👦 בֵּן</h3><p>שָׁלוֹם! אֲנִי דָּן.<br>אֲנִי גָּר בְּתֵל אָבִיב.<br>אֲנִי אוֹהֵב פִּיצָה. <button class="ear" type="button" data-say="שָׁלוֹם! אֲנִי דָּן. אֲנִי גָּר בְּתֵל אָבִיב. אֲנִי אוֹהֵב פִּיצָה." aria-label="השמעה">🔊</button></p></div>
+      <div class="model"><h3>👧 בַּת</h3><p>שָׁלוֹם! אֲנִי קֶרֶן.<br>אֲנִי גָּרָה בְּחֵיפָה.<br>אֲנִי אוֹהֶבֶת פָלָאפֶל. <button class="ear" type="button" data-say="שָׁלוֹם! אֲנִי קֶרֶן. אֲנִי גָּרָה בְּחֵיפָה. אֲנִי אוֹהֶבֶת פָלָאפֶל." aria-label="השמעה">🔊</button></p></div>
+    </div>
+
+    <div class="panel me">
+      <p class="lead" style="margin:0">וְעַכְשָׁו אַתֶּם! 🙋</p>
+      <div class="row"><span class="lb">אֲנִי</span><button class="chip on" type="button" data-g="m">👦 בֵּן</button><button class="chip" type="button" data-g="f">👧 בַּת</button></div>
+      <div class="row"><label class="lb" for="myName">הַשֵּׁם שֶׁלִּי:</label><input type="text" id="myName" placeholder="הַשֵּׁם שֶׁלִּי"></div>
+      <div class="row"><label class="lb" for="myCity">אֲנִי גָּר/ה בְּ־</label><input type="text" id="myCity" placeholder="הָעִיר שֶׁלִּי"></div>
+      <div class="row"><span class="lb">אֲנִי אוֹהֵב/ת:</span><span id="likes"></span></div>
+      <div class="mycard" id="myCard"><button class="ear" id="mySay" type="button" aria-label="השמעה">🔊</button><span id="myText"></span></div>
+    </div>
+    <details class="note" style="margin-top:12px"><summary style="cursor:pointer;font-weight:800">📝 לַמּוֹרֶה — מַהֲלַךְ קָצָר</summary>
+      <p>1. הַמּוֹרֶה מַצִּיג אֶת עַצְמוֹ: "שָׁלוֹם! אֲנִי… אֲנִי גָּר בְּ… אֲנִי אוֹהֵב…". 2. קוֹרְאִים יַחַד אֶת הַשִּׂיחָה שֶׁל דָּן וְקֶרֶן. 3. כָּל תַּלְמִיד מְמַלֵּא אֶת הַכַּרְטִיס שֶׁלּוֹ וְאוֹמֵר אוֹתוֹ לַכִּתָּה (אוֹ בְּזוּגוֹת). שִׂימוּ לֵב לְ־גָּר / גָּרָה, אוֹהֵב / אוֹהֶבֶת.</p>
+    </details>
+  </section>
+
+  <!-- ===== STEP 2: 2.2 Israeli food + memory game ===== -->
+  <section class="step" id="s2">
+    <div class="step-head"><span class="tag sky"><span class="num">2.2</span>תַּרְגִּיל חֲשִׂיפָה: מָה בַּתְּמוּנָה?</span></div>
+    <p class="lead">אוֹכֶל יִשְׂרְאֵלִי — לוֹחֲצִים עַל תְּמוּנָה וְשׁוֹמְעִים.</p>
+    <div class="foods" id="foods"></div>
+    <a class="sc" href="../games/food-memory.html?mode=list&amp;start=1"><span class="ic">🍽️</span><div><h3>מִשְׂחַק זִכָּרוֹן: מַאֲכָלִים</h3><p>מְחַפְּשִׂים זוּגוֹת — וְשׁוֹמְעִים אֶת הַמִּלִּים</p></div><span class="go">◀</span></a>
+  </section>
+
+  <!-- ===== STEP 3: 2.3 writing ===== -->
+  <section class="step" id="s3">
+    <div class="step-head"><span class="tag gold"><span class="num">2.3</span>תַּרְגִּיל כְּתִיבָה</span></div>
+    <p class="lead">כִּתְבוּ אֶת הָאוֹתִיּוֹת בִּכְתַב יָד. הָאוֹתִיּוֹת א, ו, כ, ל — יוֹצְרוֹת אֶת הַמִּלָּה אוֹכֶל.</p>
+    <p class="sub">▶ הַדְגָּמָה — רוֹאִים אֵיךְ כּוֹתְבִים. אַחַר כָּךְ עוֹבְרִים עִם הָאֶצְבַּע (אוֹ הָעַכְבָּר) עַל הַקַּו. וְאָז כּוֹתְבִים בַּמַּחְבֶּרֶת!</p>
+    <div class="wgrid" id="wgrid"></div>
+    <div class="word" id="word"></div>
+  </section>
+
+  <!-- ===== STEP 4: 2.4 reading ===== -->
+  <section class="step" id="s4">
+    <div class="step-head"><span class="tag coral"><span class="num">2.4</span>תַּרְגִּיל קְרִיאָה</span></div>
+    <p class="lead">קִרְאוּ אֶת הָאוֹתִיּוֹת עִם הַנִּקּוּד. שׁוֹמְעִים — וְחוֹזְרִים בְּקוֹל!</p>
+    <div class="modes" id="modes">
+      <button class="btn" type="button" data-m="book" aria-pressed="true">📖 לְפִי הַסֵּפֶר</button>
+      <button class="btn" type="button" data-m="letter" aria-pressed="false">🔤 אוֹת אַחַת</button>
+      <button class="btn" type="button" data-m="vowel" aria-pressed="false">◌ֿ תְּנוּעָה אַחַת</button>
+      <button class="btn" type="button" data-m="mix" aria-pressed="false">🔀 עִרְבּוּב</button>
+      <span class="spacer"></span>
+      <label style="font-weight:700"><input type="checkbox" id="showSnd" checked> הַצֵּג צְלִיל</label>
+    </div>
+    <div class="subpick" id="subpick" hidden></div>
+    <div class="card" id="card">
+      <div class="cnt" id="cnt"></div>
+      <div class="sy" id="big"></div>
+      <div class="snd" id="snd"></div>
+      <div class="ctrl">
+        <button class="btn" id="prev" type="button">▶ הַקּוֹדֵם</button>
+        <button class="btn" id="again" type="button">🔊 שׁוּב</button>
+        <button class="btn primary big" id="next" type="button">הַבָּא ◀</button>
+      </div>
+    </div>
+    <div class="ntable" id="ntable" aria-label="סימני הניקוד"></div>
+  </section>
+
+  <!-- ===== STEP 5: exit ticket ===== -->
+  <section class="step" id="s5">
+    <div class="step-head"><span class="tag purple">🎟️ כַּרְטִיס יְצִיאָה</span></div>
+    <p class="lead">כִּתְבוּ מִלָּה אוֹ מִשְׁפָּט — רַק עִם אוֹתִיּוֹת שֶׁאַתֶּם כְּבָר מַכִּירִים.</p>
+    <p class="sub">הַמִּקְלֶדֶת מַרְאָה רַק אֶת הָאוֹתִיּוֹת שֶׁלָּמַדְנוּ. בְּכָחֹל — הָאוֹתִיּוֹת הַחֲדָשׁוֹת שֶׁל הַיּוֹם.</p>
+    <div class="ticket">
+      <label class="row" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-weight:800">🙋 הַשֵּׁם שֶׁלִּי: <input type="text" id="tName" style="font:700 20px var(--f-he);padding:6px 10px;border:2px solid var(--line);border-radius:10px"></label>
+      <textarea id="tText" aria-label="כרטיס יציאה" placeholder="כָּאן כּוֹתְבִים…"></textarea>
+      <div class="keys" id="keys"></div>
+      <details><summary style="cursor:pointer;font-weight:800">💡 רַעְיוֹנוֹת</summary><p style="font-size:22px;font-weight:700">אוֹכֶל · סָלָט · חָלָב · כֵּן · לֹא · אֲנִי אוֹהֵב סָלָט</p></details>
+      <div class="self" id="self"></div>
+      <div class="toolbar" style="margin:12px 0 0"><button class="btn primary big" id="tDone" type="button">✓ סִיַּמְתִּי</button><button class="btn" id="tClear" type="button">↺ מְנַקִּים</button></div>
+      <div class="done" id="tShow" hidden></div>
+    </div>
+  </section>
+  <p class="sub" style="font-size:14px">הַתְּמוּנוֹת וְהַתַּרְגִּילִים: "רְחוֹב הָעוֹלָם" יְחִידָה 2, עַמּוּדִים 4–6. לְשִׁמּוּשׁ בַּכִּתָּה.</p>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+/* voice */
+let heVoice = null;
+function pickVoice(){ const vs = 'speechSynthesis' in window ? speechSynthesis.getVoices() : []; heVoice = vs.find(v => /^(he|iw)/i.test(v.lang) && /natural|online/i.test(v.name)) || vs.find(v => /^(he|iw)/i.test(v.lang)) || null; }
+if ('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(t, rate){ if (!heVoice || !t) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = heVoice; u.lang = heVoice.lang; u.rate = rate || .85; speechSynthesis.speak(u); }
+document.querySelectorAll('[data-say]').forEach(b => b.onclick = () => say(b.dataset.say));
+let en = false;
+$('enIntro').onclick = () => { en = !en; $('enIntro').setAttribute('aria-pressed', en); $('enIntro').textContent = en ? 'הסתר אנגלית' : 'הצג אנגלית'; document.querySelectorAll('[data-en]').forEach(e => e.hidden = !en); };
+
+/* ---------- 1. my card ---------- */
+const FOODS = ['פִּיצָה', 'פָלָאפֶל', 'חוּמוּס', 'שׁוֹקוֹלָד', 'סָלָט', 'אָבוֹקָדוֹ', 'גְּבִינָה', 'פַּסְטָה', 'מַנְגּוֹ', 'שָׁוַרְמָה', 'שַׁקְשׁוּקָה', 'פֵּרוֹת'];
+let g = 'm', like = 'פִּיצָה';
+$('likes').innerHTML = FOODS.map(f => `<button class="chip${f === like ? ' on' : ''}" type="button" data-f="${f}">${f}</button>`).join(' ');
+function myText(){
+  const n = $('myName').value.trim() || '…', c = $('myCity').value.trim() || '…';
+  return `שָׁלוֹם! אֲנִי ${n}. אֲנִי ${g === 'f' ? 'גָּרָה' : 'גָּר'} בְּ${c}. אֲנִי ${g === 'f' ? 'אוֹהֶבֶת' : 'אוֹהֵב'} ${like}.`;
+}
+const paintMe = () => { $('myText').textContent = myText(); };
+document.querySelectorAll('[data-g]').forEach(b => b.onclick = () => { g = b.dataset.g; document.querySelectorAll('[data-g]').forEach(x => x.classList.toggle('on', x === b)); paintMe(); });
+$('likes').querySelectorAll('[data-f]').forEach(b => b.onclick = () => { like = b.dataset.f; $('likes').querySelectorAll('[data-f]').forEach(x => x.classList.toggle('on', x === b)); paintMe(); });
+['myName', 'myCity'].forEach(id => $(id).oninput = paintMe);
+$('mySay').onclick = () => say(myText().replace(/…/g, ''));
+paintMe();
+
+/* ---------- 2. Israeli food (2.2) ---------- */
+const ISR = [['olam-2.2-salad.jpg', 'סָלָט יִשְׂרְאֵלִי'], ['olam-2.2-falafel.jpg', 'פָלָאפֶל'], ['olam-2.2-hummus.jpg', 'חוּמוּס'], ['olam-2.2-shawarma.jpg', 'שָׁוַרְמָה']];
+$('foods').innerHTML = ISR.map(([f, w]) => `<button class="food" type="button" data-w="${w}"><img src="${f}" alt="${w}" loading="lazy"><span>${w}</span></button>`).join('');
+$('foods').querySelectorAll('.food').forEach(b => b.onclick = () => say(b.dataset.w));
+
+/* ---------- 3. writing (2.3): print-style cursive letters, drawn as strokes ---------- */
+const LET = [
+  { n: 'א', p: ['M28 18 L28 82', 'M80 32 A25 25 0 1 0 80 68'] },
+  { n: 'ו', p: ['M50 18 L50 82'] },
+  { n: 'כ', p: ['M26 20 L48 20 A30 30 0 0 1 48 80 L26 80'] },
+  { n: 'ל', p: ['M82 8 Q58 6 55 26 L53 72 Q52 92 37 90 Q24 88 29 74 Q34 63 53 70'] },
+];
+const GUIDE = '<line x1="0" y1="18" x2="100" y2="18" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="82" x2="100" y2="82" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="50" x2="100" y2="50" stroke="#f08a8a" stroke-width="1" stroke-dasharray="4 4"/>';
+$('wgrid').innerHTML = LET.map((l, i) => `<div class="wbox"><h3>${l.n}</h3><div class="pad" id="pad${i}"><svg class="guide" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${GUIDE}<g class="model">${l.p.map(d => `<path d="${d}"/>`).join('')}</g><g class="anim"></g></svg><canvas></canvas></div>
+  <div class="row"><button class="btn" type="button" data-demo="${i}">▶ הַדְגָּמָה</button><button class="btn" type="button" data-clear="${i}">↺</button></div></div>`).join('');
+LET.forEach((l, i) => {
+  const pad = $('pad' + i), cv = pad.querySelector('canvas'), ctx = cv.getContext('2d');
+  const fit = () => { const r = pad.getBoundingClientRect(); cv.width = r.width * devicePixelRatio; cv.height = r.height * devicePixelRatio; ctx.scale(devicePixelRatio, devicePixelRatio); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = Math.max(6, r.width / 22); ctx.strokeStyle = '#1f4fbf'; };
+  fit(); window.addEventListener('resize', fit);
+  let down = false, last = null;
+  const pt = e => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  cv.addEventListener('pointerdown', e => { down = true; last = pt(e); cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove', e => { if (!down) return; const p = pt(e); ctx.beginPath(); ctx.moveTo(...last); ctx.lineTo(...p); ctx.stroke(); last = p; });
+  const up = () => { down = false; }; cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+  pad.parentElement.querySelector('[data-clear]').onclick = () => { ctx.clearRect(0, 0, cv.width, cv.height); };
+  pad.parentElement.querySelector('[data-demo]').onclick = () => {
+    const g = pad.querySelector('.anim'); g.innerHTML = '';
+    let delay = 0;
+    l.p.forEach(d => { const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', d); g.appendChild(p);
+      const len = p.getTotalLength(); p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+      p.style.transition = `stroke-dashoffset ${Math.max(.6, len / 90)}s ease ${delay}s`; delay += Math.max(.6, len / 90) + .15;
+      requestAnimationFrame(() => requestAnimationFrame(() => { p.style.strokeDashoffset = 0; })); });
+    setTimeout(() => { g.innerHTML = ''; }, delay * 1000 + 1200);
+  };
+});
+/* the word אוֹכֶל in hand-writing, right to left */
+const wsvg = [...LET].map(l => `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#23233a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">${l.p.map(d => `<path d="${d}"/>`).join('')}</g></svg>`).join('');
+$('word').innerHTML = `<div style="display:flex;gap:2px">${wsvg}</div><span class="eq">=</span><span style="font-size:48px;font-weight:800">אוֹכֶל 🍽️</span><button class="ear" type="button" aria-label="השמעה">🔊</button>`;
+$('word').querySelector('.ear').onclick = () => say('אוֹכֶל');
+
+/* ---------- 4. reading (2.4): the letters with nikud, in the book's order ---------- */
+const DG = 'ּ', PT = 'ַ', KM = 'ָ', SH = 'ְ', HP = 'ֲ', HL = 'ֹ', KB = 'ֻ';
+const S = (l, v, d) => l + (d ? DG : '') + v;
+const OO = (l, d) => l + (d ? DG : '') + 'ו' + HL;          /* holam male */
+const UU = l => l + 'ו' + DG;                              /* shuruk */
+const P = 'פ', TS = 'צ', Q = 'ק', R = 'ר', L = 'ל';
+const BOOK = [
+  [S(P, PT, 1), 'pa', P, 'a'], [S(TS, KM), 'tsa', TS, 'a'], [S(P, SH, 1), 'pe', P, 'e'], [S(TS, HP), 'tsa', TS, 'a'], [S(Q, PT), 'ka', Q, 'a'],
+  [S(R, KM), 'ra', R, 'a'], [S(Q, HP), 'ka', Q, 'a'], [S(R, SH), 're', R, 'e'], [OO(P, 1), 'po', P, 'o'], [OO(Q), 'ko', Q, 'o'],
+  [UU(P), 'pu', P, 'u'], [UU(Q), 'ku', Q, 'u'], [OO(TS), 'tso', TS, 'o'], [OO(R), 'ro', R, 'o'], [UU(TS), 'tsu', TS, 'u'],
+  [UU(R), 'ru', R, 'u'], [S(P, KB, 1), 'pu', P, 'u'], [S(Q, KM), 'ka', Q, 'a'], [S(P, HP, 1), 'pa', P, 'a'], [S(L, HL), 'lo', L, 'o'],
+  [S(Q, SH), 'ke', Q, 'e'], [S(TS, HL), 'tso', TS, 'o'], [S(R, HL), 'ro', R, 'o'], [S(TS, KB), 'tsu', TS, 'u'], [S(R, KB), 'ru', R, 'u'],
+].map(([t, s, l, v]) => ({ t, s, l, v }));
+const LETTERS = [[P + DG, 'פּ'], [TS, 'צ'], [Q, 'ק'], [R, 'ר'], [L, 'ל']];
+const VOWELS = [['a', 'אַ · a'], ['e', 'אְ · e'], ['o', 'אוֹ · o'], ['u', 'אוּ · u']];
+let mode = 'book', sub = null, list = BOOK, idx = 0;
+function build(){
+  if (mode === 'book') list = BOOK;
+  else if (mode === 'letter') list = BOOK.filter(x => x.l === sub);
+  else if (mode === 'vowel') list = BOOK.filter(x => x.v === sub);
+  else list = shuffle(BOOK);
+  idx = 0; show(true);
+}
+function show(speak){
+  const it = list[idx];
+  $('big').textContent = it.t; $('snd').textContent = $('showSnd').checked ? it.s : '';
+  $('cnt').textContent = `${idx + 1} / ${list.length}`;
+  const c = $('card'); c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop');
+  $('prev').disabled = idx === 0;
+  $('next').textContent = idx === list.length - 1 ? '↺ מֵהַהַתְחָלָה' : 'הַבָּא ◀';
+  if (speak) setTimeout(() => say(it.t, .7), 120);
+}
+function subPicker(){
+  const box = $('subpick');
+  if (mode === 'letter' || mode === 'vowel'){
+    const opts = mode === 'letter' ? LETTERS.map(([k, t]) => [k === P + DG ? P : k, t]) : VOWELS;
+    if (!opts.some(o => o[0] === sub)) sub = opts[0][0];
+    box.innerHTML = opts.map(([k, t]) => `<button class="chip${k === sub ? ' on' : ''}" type="button" data-k="${k}">${t}</button>`).join('');
+    box.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { sub = b.dataset.k; subPicker(); build(); });
+    box.hidden = false;
+  } else box.hidden = true;
+}
+document.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { mode = b.dataset.m; document.querySelectorAll('[data-m]').forEach(x => x.setAttribute('aria-pressed', x === b)); subPicker(); build(); });
+$('next').onclick = () => { if (idx < list.length - 1) idx++; else { if (mode === 'mix') list = shuffle(BOOK); idx = 0; } show(true); };
+$('prev').onclick = () => { if (idx > 0){ idx--; show(true); } };
+$('again').onclick = () => say(list[idx].t, .7);
+$('showSnd').onchange = () => show(false);
+document.addEventListener('keydown', e => { const r = $('s4').getBoundingClientRect(); if (r.top > innerHeight || r.bottom < 0 || /input|textarea/i.test(document.activeElement.tagName)) return;
+  if (e.key === 'ArrowLeft'){ $('next').click(); e.preventDefault(); } else if (e.key === 'ArrowRight'){ $('prev').click(); e.preventDefault(); } });
+build(); show(false);
+/* the nikud signs, as on page 6 */
+const NT = [['קָמָץ', 'אָ'], ['פַּתָּח', 'אַ'], ['סֶגּוֹל', 'אֶ'], ['צֵירֶה', 'אֵ'], ['חֲטַף קָמָץ', 'אֳ'], ['חֲטַף פַּתָּח', 'אֲ'], ['חֲטַף סֶגּוֹל', 'אֱ'], ['קֻבּוּץ', 'אֻ'], ['חִירִיק', 'אִ'], ['חוֹלָם', 'וֹ'], ['שׁוּרוּק', 'וּ']];
+$('ntable').innerHTML = NT.map(([n, x]) => `<div><b>${n}</b><span>${x}</span></div>`).join('');
+
+/* ---------- 5. exit ticket ---------- */
+const KNOWN = ['א', 'ב', 'ג', 'ה', 'ו', 'ח', 'ט', 'כ', 'ל', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר'];
+const NEW = new Set(['א', 'ו', 'כ', 'ל', 'פ', 'צ', 'ק']);
+const ta = $('tText');
+$('keys').innerHTML = KNOWN.map(k => `<button type="button" data-key="${k}"${NEW.has(k) ? ' class="new"' : ''}>${k}</button>`).join('') +
+  '<button type="button" class="wide" data-key=" ">רֶוַח</button><button type="button" class="wide" data-key="⌫">⌫ מְחִיקָה</button>';
+const insert = s => { const a = ta.selectionStart ?? ta.value.length, b = ta.selectionEnd ?? ta.value.length; ta.value = ta.value.slice(0, a) + s + ta.value.slice(b); ta.selectionStart = ta.selectionEnd = a + s.length; ta.focus(); };
+$('keys').querySelectorAll('[data-key]').forEach(b => b.onclick = () => {
+  const k = b.dataset.key;
+  if (k === '⌫'){ const a = ta.selectionStart, e = ta.selectionEnd; if (a !== e){ ta.value = ta.value.slice(0, a) + ta.value.slice(e); ta.selectionStart = ta.selectionEnd = a; } else if (a > 0){ ta.value = ta.value.slice(0, a - 1) + ta.value.slice(a); ta.selectionStart = ta.selectionEnd = a - 1; } ta.focus(); }
+  else insert(k);
+});
+/* typing on a keyboard: keep only letters we know (and nikud, spaces, punctuation) */
+const allowed = new RegExp('[^' + KNOWN.join('') + 'ךםןףץ\\u0591-\\u05C7\\s.,!?\\-״׳"\']', 'g');
+ta.addEventListener('input', () => { const c = ta.selectionStart, before = ta.value.length; ta.value = ta.value.replace(allowed, ''); const d = before - ta.value.length; if (d) ta.selectionStart = ta.selectionEnd = Math.max(0, c - d); });
+const SELF = ['אֲנִי יָכוֹל/ה לְהַצִּיג אֶת עַצְמִי', 'אֲנִי כּוֹתֵב/ת א, ו, כ, ל', 'אֲנִי קוֹרֵא/ת פּ, צ, ק עִם נִקּוּד'];
+$('self').innerHTML = SELF.map((s, i) => `<div class="row"><span>${s}</span><span class="faces">${['😀', '🙂', '😕'].map(f => `<button type="button" data-s="${i}" aria-label="${f}">${f}</button>`).join('')}</span></div>`).join('');
+const rating = {};
+$('self').querySelectorAll('[data-s]').forEach(b => b.onclick = () => { rating[b.dataset.s] = b.textContent; $('self').querySelectorAll(`[data-s="${b.dataset.s}"]`).forEach(x => x.classList.toggle('on', x === b)); });
+$('tDone').onclick = () => {
+  const t = ta.value.trim(); if (!t){ ta.focus(); return; }
+  $('tShow').hidden = false;
+  $('tShow').innerHTML = `${$('tName').value.trim() ? $('tName').value.trim() + ': ' : ''}${t.replace(/[<>&]/g, '')} 🎉<div style="font-size:24px;margin-top:6px">${SELF.map((s, i) => rating[i] || '').join(' ')}</div>`;
+  say(t);
+};
+$('tClear').onclick = () => { ta.value = ''; $('tShow').hidden = true; };
+})();
+</script>
+<script>function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}setNavH();window.addEventListener('resize',setNavH);</script>
+</body>
+</html>
