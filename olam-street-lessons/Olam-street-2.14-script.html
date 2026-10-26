@@ -50,7 +50,7 @@ document.getElementById('out').innerHTML = ['keren', 'dan', 'roni'].map((me, v) 
   return `<div class="page" style="--c:${c.color};--soft:${c.soft}">
     <div class="hd"><div class="f">${CA.face(me)}</div><div><b>תַּסְרִיט — קוֹמִיקְס: בַּדֶּרֶךְ לַפֶּסְטִיבָל</b><span>רְחוֹב הָעוֹלָם <bdi dir="ltr">2.14</bdi> · עַמּוּד 11</span></div><div class="me">אֲנִי ${c.he}</div></div>
     ${B.map(([w, t]) => { const x = CA.chars[w]; return `<div class="l${w === me ? ' mine' : ''}" style="--c:${x.color};--soft:${x.soft}"><span class="n">${x.he}:</span><span>${t}</span></div>`; }).join('')}
-    <div class="foot"><span>קוֹרְאִים בְּקוֹל רָם. אַחֲרֵי 3 דַּקּוֹת — מַחֲלִיפִים תַּפְקִידִים!</span><span>גִּרְסָה ${v + 1} מִתּוֹךְ 3 · סֵט אֶחָד לְכָל קְבוּצָה</span></div>
+    <div class="foot"><span>קוֹרְאִים בְּקוֹל רָם, כְּמוֹ בְּהַצָּגָה — וְאַחַר כָּךְ מַחֲלִיפִים תַּפְקִידִים!</span><span>גִּרְסָה ${v + 1} מִתּוֹךְ 3</span></div>
   </div>`; }).join('');
 </script>
 </body>
