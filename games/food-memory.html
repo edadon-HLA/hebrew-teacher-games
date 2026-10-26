@@ -86,7 +86,7 @@ button{font-family:var(--f)}
     <div class="set">
       <h2>1. אֵיזֶה מִשְׂחָק?</h2>
       <div class="modes">
-        <button class="mode" type="button" data-m="list"><div class="pic">🥑🍕🧆</div><h3>הָרְשִׁימָה שֶׁלָּנוּ</h3><p>11 מַאֲכָלִים מֵהַשִּׁעוּר</p>
+        <button class="mode" type="button" data-m="list"><div class="pic">🥑🍕🧆</div><h3>הָרְשִׁימָה שֶׁלָּנוּ</h3><p>13 מַאֲכָלִים מֵהַשִּׁעוּר</p>
           <div class="list" id="listWords"></div></button>
         <button class="mode" type="button" data-m="more"><div class="pic">🍔🍉🥕🍰</div><h3>מוּרְחָב</h3><p>מַאֲכָלִים אַקְרָאִיִּים מֵרְשִׁימָה גְּדוֹלָה — וְאֶפְשָׁר לְהוֹסִיף זוּגוֹת</p></button>
       </div>
@@ -157,9 +157,11 @@ const SHAKSHUKA = `<svg viewBox="0 0 110 80" xmlns="http://www.w3.org/2000/svg">
   <g fill="#3c9a45"><circle cx="30" cy="54" r="2"/><circle cx="62" cy="28" r="2"/><circle cx="48" cy="22" r="2"/><circle cx="70" cy="56" r="2"/></g></svg>`;
 
 /* the class list (from the lesson) */
+const SABICH = `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><path d="M8 40 Q50 -6 92 40 L92 58 Q50 80 8 58Z" fill="#e8c27a" stroke="#b98a3e" stroke-width="3"/><path d="M14 42 Q50 8 86 42 Q50 52 14 42Z" fill="#7a3f86"/><path d="M22 41 Q50 16 78 41 Q50 47 22 41Z" fill="#a85bb3" opacity=".7"/><ellipse cx="38" cy="30" rx="11" ry="8" fill="#fff" stroke="#e3dccb" stroke-width="1.5"/><circle cx="38" cy="30" r="4.2" fill="#ffb703"/><ellipse cx="62" cy="29" rx="11" ry="8" fill="#fff" stroke="#e3dccb" stroke-width="1.5"/><circle cx="62" cy="29" r="4.2" fill="#ffb703"/><g fill="#d8432c"><circle cx="30" cy="42" r="3.4"/><circle cx="50" cy="39" r="3.4"/><circle cx="70" cy="42" r="3.4"/></g><g fill="#3c9a45"><circle cx="22" cy="40" r="2.2"/><circle cx="78" cy="40" r="2.2"/><circle cx="50" cy="31" r="2.2"/></g></svg>`;
+const ISR_SALAD = `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="60" rx="42" ry="9" fill="#00000018"/><path d="M8 34 Q50 -2 92 34 Q92 70 50 72 Q8 70 8 34Z" fill="#fff" stroke="#d6dde7" stroke-width="3"/><g><rect x="22" y="30" width="11" height="11" rx="2" fill="#e0452f" transform="rotate(12 27 35)"/><rect x="38" y="24" width="10" height="10" rx="2" fill="#e0452f" transform="rotate(-10 43 29)"/><rect x="60" y="30" width="11" height="11" rx="2" fill="#e0452f" transform="rotate(20 65 35)"/><rect x="30" y="44" width="11" height="11" rx="2" fill="#7bc65b" transform="rotate(-14 35 49)"/><rect x="50" y="40" width="12" height="12" rx="2" fill="#9bd36b" transform="rotate(8 56 46)"/><rect x="68" y="46" width="10" height="10" rx="2" fill="#7bc65b" transform="rotate(-6 73 51)"/><rect x="46" y="54" width="10" height="9" rx="2" fill="#e0452f" transform="rotate(18 51 58)"/></g><path d="M26 52 q8 -8 16 0" fill="none" stroke="#a259c6" stroke-width="3"/><path d="M60 58 q9 -9 17 -2" fill="none" stroke="#a259c6" stroke-width="3"/><g fill="#2f8f3c"><circle cx="40" cy="38" r="1.8"/><circle cx="58" cy="28" r="1.8"/><circle cx="72" cy="40" r="1.8"/></g></svg>`;
 const LIST = [
   ['אָבוֹקָדוֹ', '🥑'], ['גְּבִינָה', '🧀'], ['חוּמוּס', HUMMUS], ['מַנְגּוֹ', '🥭'], ['פַּסְטָה', '🍝'], ['פֵּרוֹת', '🍎🍌🍇'],
-  ['פִּיצָה', '🍕'], ['פָלָאפֶל', '🧆'], ['שׁוֹקוֹלָד', '🍫'], ['שָׁוַרְמָה', '🥙'], ['שַׁקְשׁוּקָה', SHAKSHUKA],
+  ['פִּיצָה', '🍕'], ['פָלָאפֶל', '🧆'], ['שׁוֹקוֹלָד', '🍫'], ['שָׁוַארְמָה', '🥙'], ['שַׁקְשׁוּקָה', SHAKSHUKA], ['סַבִּיח', SABICH], ['סָלָט יִשְׂרְאֵלִי', ISR_SALAD],
 ];
 /* more foods for the expanded game */
 const MORE = [
