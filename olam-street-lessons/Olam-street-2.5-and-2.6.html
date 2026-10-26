@@ -262,10 +262,12 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 .circ input{width:70%;max-width:200px;text-align:center;font:800 18px var(--f-he);border:0;border-bottom:3px solid currentColor;background:transparent;margin-top:8px;direction:rtl}
 .circ.a input{color:var(--boy)}.circ.b input{color:var(--girl)}
 .zone{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;align-content:center;flex:1;width:100%;padding:4px;direction:rtl}
-.zone.a{padding-inline-end:36%}.zone.b{padding-inline-start:36%}
+.zone.a{padding-right:36%}.zone.b{padding-left:36%}
 .mid{position:absolute;left:50%;top:0;transform:translateX(-50%);width:20%;height:100%;display:flex;flex-direction:column;align-items:center;z-index:2;pointer-events:none}
 .mid h4{margin:46px 0 4px;font-size:15px;color:var(--ink);direction:rtl;text-align:center;line-height:1.2}
 .mid .zone{pointer-events:auto;padding:0;width:100%}
+.venn[data-hot="a"] .circ.a,.venn[data-hot="b"] .circ.b,.venn[data-hot="both"] .circ{box-shadow:0 0 0 6px #f2b01eaa}
+.fchip.onlya,.fchip.onlyb{border-color:var(--sky)}.fchip.both{border-color:var(--green);background:var(--green-soft)}
 .zone.hot{outline:3px dashed var(--gold);outline-offset:-4px;border-radius:50%}
 .mini{border:2px solid var(--line);background:#fff;border-radius:12px;padding:2px 6px;display:flex;gap:4px;align-items:center;font-size:14px;font-weight:800;cursor:pointer}
 .mini svg{height:26px;width:auto}.mini .emo{font-size:24px}
@@ -371,7 +373,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
   <section class="step" id="s5">
     <div class="step-head"><span class="tag gold">גַּם וְגַם</span></div>
     <p class="lead">מָה אֲנִי אוֹהֵב / לֹא אוֹהֵב לֶאֱכֹל? מְדַבְּרִים בְּזוּגוֹת.</p>
-    <p class="sub">כּוֹתְבִים שְׁנֵי שֵׁמוֹת וְגוֹרְרִים מַאֲכָלִים: מִי אוֹהֵב אֶת מָה? מָה שֶׁשְּׁנֵיהֶם אוֹהֲבִים — בָּאֶמְצַע.</p>
+    <p class="sub">כּוֹתְבִים שְׁנֵי שֵׁמוֹת וְגוֹרְרִים מַאֲכָלִים לָעִגּוּל שֶׁל מִי שֶׁאוֹהֵב אוֹתָם. אִם שְׁנֵיהֶם אוֹהֲבִים — גּוֹרְרִים אֶת אוֹתוֹ מַאֲכָל לִשְׁנֵי הָעִגּוּלִים, וְהוּא עוֹבֵר לְבַד לָאֶמְצַע (גַּם וְגַם).</p>
     <div class="venn" id="venn">
       <div class="circ a"><input id="nameA" type="text" placeholder="שֵׁם: ___" aria-label="שם א"><div class="zone a" data-z="a"></div></div>
       <div class="circ b"><input id="nameB" type="text" placeholder="שֵׁם: ___" aria-label="שם ב"><div class="zone b" data-z="b"></div></div>
@@ -383,7 +385,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
       <button class="btn" id="vClear" type="button">↺ מְנַקִּים</button>
       <a class="btn" style="text-decoration:none" href="Olam-street-2.5-and-2.6-venn.pdf" target="_blank" rel="noopener">🖨️ גִּרְסָה לְהַדְפָּסָה (PDF)</a>
     </div>
-    <details class="tnote" open><summary>📝 מהלך קצר</summary><p>דֻּגְמָה: "אֲנִי אוֹהֵב לֶאֱכוֹל פָלָאפֶל. דָּנָה אוֹהֶבֶת לֶאֱכוֹל פִּיצָה. גַּם וְגַם: חוּמוּס." הַזּוּגוֹת מְדַבְּרִים 2 דַּקּוֹת וּמְמַלְּאִים אֶת הַדַּף הַמֻּדְפָּס (אוֹ מְמַלְּאִים כָּאן).</p></details>
+    <details class="tnote" open><summary>📝 מהלך קצר</summary><p>דֻּגְמָה: "אֲנִי אוֹהֵב לֶאֱכוֹל פָלָאפֶל. דָּנָה אוֹהֶבֶת לֶאֱכוֹל פִּיצָה. גַּם וְגַם: חוּמוּס." אֶפְשָׁר לִגְרֹר אֶת אוֹתוֹ מַאֲכָל פַּעֲמַיִם — פַּעַם לְכָל עִגּוּל. הַזּוּגוֹת מְדַבְּרִים 2 דַּקּוֹת וּמְמַלְּאִים אֶת הַדַּף הַמֻּדְפָּס (אוֹ מְמַלְּאִים כָּאן).</p></details>
   </section>
 
   <!-- ===== 6 exit ticket ===== -->
@@ -492,28 +494,47 @@ $('bank26').querySelectorAll('[data-f]').forEach(b => b.onclick = () => { blanks
 document.querySelectorAll('[data-sg]').forEach(b => b.onclick = () => { sg = b.dataset.sg; document.querySelectorAll('[data-sg]').forEach(x => x.classList.toggle('on', x === b)); drawStarters(); });
 drawStarters();
 
-/* ---------- 5. Venn ---------- */
-const where = {}; let selV = null;
+/* ---------- 5. Venn: a food can be dragged to the left circle, the right circle, or both (then it moves to the shared middle) ---------- */
+const likes = {};            /* food id -> { a: bool, b: bool } */
+let selV = null, justDragged = false;
+const vennEl = $('venn');
+function region(x, y){       /* which part of the diagram is this point in? */
+  const inside = c => { const r = c.getBoundingClientRect(), rx = r.width / 2, ry = r.height / 2; return ((x - r.left - rx) / rx) ** 2 + ((y - r.top - ry) / ry) ** 2 <= 1; };
+  const a = inside(vennEl.querySelector('.circ.a')), b = inside(vennEl.querySelector('.circ.b'));
+  return a && b ? 'both' : a ? 'a' : b ? 'b' : null;
+}
+function addTo(id, reg){
+  const l = likes[id] || (likes[id] = { a: false, b: false });
+  if (reg === 'a' || reg === 'both') l.a = true;
+  if (reg === 'b' || reg === 'both') l.b = true;      /* in both circles = in the shared area */
+}
 function drawVenn(){
-  document.querySelectorAll('#venn .zone').forEach(z => { z.innerHTML = ''; });
-  Object.entries(where).forEach(([id, zn]) => { const el = document.querySelector(`#venn .zone[data-z="${zn}"]`); const b = document.createElement('button'); b.type = 'button'; b.className = 'mini'; b.innerHTML = pic(byId[id]) + `<span>${byId[id].he}</span>`; b.title = 'לוחצים כדי להחזיר'; b.onclick = () => { delete where[id]; drawVenn(); }; el.appendChild(b); });
-  $('bankV').innerHTML = F.map(f => `<button class="fchip${where[f.id] ? ' used' : ''}${selV === f.id ? ' sel' : ''}" type="button" data-f="${f.id}">${pic(f)}<span>${f.he}</span></button>`).join('');
+  vennEl.querySelectorAll('.zone').forEach(z => { z.innerHTML = ''; });
+  Object.entries(likes).forEach(([id, l]) => {
+    if (!l.a && !l.b) return;
+    const zn = l.a && l.b ? 'both' : l.a ? 'a' : 'b';
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'mini'; b.innerHTML = pic(byId[id]) + `<span>${byId[id].he}</span>`;
+    b.title = zn === 'both' ? 'לוחצים כדי להחזיר' : 'לוחצים כדי להחזיר';
+    b.onclick = () => { if (zn === 'both') { l.a = l.b = false; } else l[zn] = false; drawVenn(); };
+    vennEl.querySelector(`.zone[data-z="${zn}"]`).appendChild(b);
+  });
+  $('bankV').innerHTML = F.map(f => { const l = likes[f.id]; const st = l && (l.a || l.b) ? (l.a && l.b ? ' both' : l.a ? ' onlya' : ' onlyb') : '';
+    return `<button class="fchip${st}${selV === f.id ? ' sel' : ''}" type="button" data-f="${f.id}">${pic(f)}<span>${f.he}</span></button>`; }).join('');
   $('bankV').querySelectorAll('[data-f]').forEach(b => { const id = b.dataset.f;
     b.onclick = () => { if (justDragged) return; selV = selV === id ? null : id; if (selV) say(byId[id].he); drawVenn(); };
     b.addEventListener('pointerdown', e => {
-      if ((e.button || 0) > 0) return; const sx = e.clientX, sy = e.clientY; let ghost = null, hot = null;
-      const zoneAt = ev => document.elementsFromPoint(ev.clientX, ev.clientY).find(x => x.classList && x.classList.contains('zone'));
+      if ((e.button || 0) > 0) return; const sx = e.clientX, sy = e.clientY; let ghost = null;
       const move = ev => { if (!ghost){ if (Math.hypot(ev.clientX - sx, ev.clientY - sy) < 8) return; ghost = b.cloneNode(true); ghost.classList.add('ghost'); document.body.appendChild(ghost); }
-        ev.preventDefault(); ghost.style.left = ev.clientX + 'px'; ghost.style.top = ev.clientY + 'px'; const z = zoneAt(ev) || null; if (z !== hot){ if (hot) hot.classList.remove('hot'); hot = z; if (hot) hot.classList.add('hot'); } };
+        ev.preventDefault(); ghost.style.left = ev.clientX + 'px'; ghost.style.top = ev.clientY + 'px'; vennEl.dataset.hot = region(ev.clientX, ev.clientY) || ''; };
       const up = ev => { document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); document.removeEventListener('pointercancel', up);
-        if (!ghost) return; ghost.remove(); if (hot) hot.classList.remove('hot'); justDragged = true; setTimeout(() => justDragged = false, 60);
-        const z = ev.type === 'pointerup' ? zoneAt(ev) : null; if (z){ where[id] = z.dataset.z; selV = null; drawVenn(); } };
+        vennEl.dataset.hot = ''; if (!ghost) return; ghost.remove(); justDragged = true; setTimeout(() => justDragged = false, 60);
+        const reg = ev.type === 'pointerup' ? region(ev.clientX, ev.clientY) : null; if (reg){ addTo(id, reg); selV = null; drawVenn(); } };
       document.addEventListener('pointermove', move, { passive: false }); document.addEventListener('pointerup', up); document.addEventListener('pointercancel', up);
     }); });
 }
-let justDragged = false;
-document.querySelectorAll('#venn .zone').forEach(z => z.addEventListener('click', e => { if (e.target.closest('.mini')) return; if (selV){ where[selV] = z.dataset.z; selV = null; drawVenn(); } }));
-$('vClear').onclick = () => { Object.keys(where).forEach(k => delete where[k]); selV = null; $('nameA').value = ''; $('nameB').value = ''; drawVenn(); };
+/* tap a food, then tap the left circle, the right circle or the overlap */
+vennEl.addEventListener('click', e => { if (e.target.closest('.mini, input') || !selV) return; const reg = region(e.clientX, e.clientY); if (reg){ addTo(selV, reg); selV = null; drawVenn(); } });
+$('vClear').onclick = () => { Object.keys(likes).forEach(k => delete likes[k]); selV = null; $('nameA').value = ''; $('nameB').value = ''; drawVenn(); };
 drawVenn();
 let tId = null;
 $('tmr').onclick = () => {
