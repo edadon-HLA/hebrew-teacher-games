@@ -1,16 +1,16 @@
 /* "How are you?" (Olam Street 2.7–2.9): the 7 answers in workbook order, drawn faces, and a boy / girl holding a feeling card.
- * FeelArt.feelings = [{ id, he, fem, en, syl }]  (fem = the girl's form when it differs)
+ * FeelArt.feelings = [{ id, he, fem, en, syl }]  (fem is unused: the teacher wants one form, the masculine, for everyone)
  * FeelArt.face(id)            -> <svg> of the face (viewBox 0 0 100 100)
  * FeelArt.person(g, name, id) -> <svg> of a boy ('m') or girl ('f') with a name tag, holding the feeling card
  * FeelArt.ask(g)              -> 'מָה שְׁלוֹמְךָ' / 'מָה שְׁלוֹמֵךְ'                                                  */
 (function () {
   var feelings = [
-    { id: 'excellent', he: 'מְצוּיָּן',      fem: 'מְצוּיֶּנֶת', en: 'Excellent',        syl: ['מְ', 'צוּ', 'יָּן'] },
+    { id: 'excellent', he: 'מְצוּיָּן',      fem: null, en: 'Excellent',        syl: ['מְ', 'צוּ', 'יָּן'] },
     { id: 'good',      he: 'טוֹב',           fem: null,           en: 'Good',             syl: ['טוֹב'] },
     { id: 'verygood',  he: 'טוֹב מְאוֹד',    fem: null,           en: 'Very good',        syl: ['טוֹב', 'מְ', 'אוֹד'] },
     { id: 'notgood',   he: 'לֹא טוֹב',       fem: null,           en: 'Not good',         syl: ['לֹא', 'טוֹב'] },
-    { id: 'perfect',   he: 'מֻשְׁלָם',       fem: 'מֻשְׁלֶמֶת',   en: 'Perfect',          syl: ['מֻשְׁ', 'לָם'] },
-    { id: 'great',     he: 'מְעֻלֶּה',       fem: 'מְעֻלָּה',      en: 'Great / Outstanding', syl: ['מְ', 'עֻ', 'לֶּה'] },
+    { id: 'perfect',   he: 'מֻשְׁלָם',       fem: null,   en: 'Perfect',          syl: ['מֻשְׁ', 'לָם'] },
+    { id: 'great',     he: 'מְעֻלֶּה',       fem: null,      en: 'Great / Outstanding', syl: ['מְ', 'עֻ', 'לֶּה'] },
     { id: 'soso',      he: 'כָּכָה כָּכָה',   fem: null,           en: 'So-so / Okay',     syl: ['כָּ', 'כָה', 'כָּ', 'כָה'] }
   ];
   var skin = '#ffd23f', ink = '#3b2a1a';
@@ -51,7 +51,7 @@
     face: face,
     person: person,
     ask: function (g) { return g === 'f' ? 'מָה שְׁלוֹמֵךְ' : 'מָה שְׁלוֹמְךָ'; },
-    answer: function (f, g) { return g === 'f' && f.fem ? f.fem : f.he; },
+    answer: function (f) { return f.he; },
     byId: function (id) { for (var i = 0; i < feelings.length; i++) if (feelings[i].id === id) return feelings[i]; }
   };
 })();

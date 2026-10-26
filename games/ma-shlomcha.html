@@ -186,7 +186,7 @@ function pick1(k, b, forced){
   const R = G.rounds[G.i];
   if (k === R.g){
     tone(true); b.classList.add('ok'); document.querySelectorAll('#choices .ans').forEach(x => { x.disabled = true; });
-    $('fb').className = 'fb ok'; $('fb').innerHTML = `נָכוֹן! ${R.g === 'f' ? 'לְבַת אוֹמְרִים שְׁלוֹמֵךְ (אַתְּ)' : 'לְבֵן אוֹמְרִים שְׁלוֹמְךָ (אַתָּה)'}<small>${R.name}</small>`;
+    $('fb').className = 'fb ok'; $('fb').innerHTML = `נָכוֹן! ${R.g === 'f' ? 'לְבַת אוֹמְרִים שְׁלוֹמֵךְ' : 'לְבֵן אוֹמְרִים שְׁלוֹמְךָ'}<small>${R.name}</small>`;
     say(`${FeelArt.ask(R.g)}, ${R.name}?`, () => {});
     if (!forced && G.r.tries === 0) G.r.s1 = true; else G.r.s1 = false;
     ctl([['הַבָּא: מָה עוֹנִים? ◀', 'big', step2]]);
@@ -203,7 +203,7 @@ function step2(){
   const others = shuffle(FL.filter(f => f !== R.feel)).slice(0, 2);
   $('choices').innerHTML = '';
   shuffle([R.feel, ...others]).forEach(f => { const b = document.createElement('button'); b.type = 'button'; b.className = 'ans'; b.textContent = `אֲנִי ${FeelArt.answer(f, R.g)}`; b.disabled = !G.r.open; b.onclick = () => pick2(f, b); $('choices').appendChild(b); });
-  classControls(() => $('choices').querySelectorAll('.ans').forEach(b => { if (b.textContent === `אֲנִי ${FeelArt.answer(R.feel, R.g)}`) pick2(R.feel, b, true); }));
+  classControls(() => $('choices').querySelectorAll('.ans').forEach(b => { if (b.textContent === `אֲנִי ${FeelArt.answer(R.feel)}`) pick2(R.feel, b, true); }));
 }
 function pick2(f, b, forced){
   if (G.r.step !== 2 || G.r.done) return; if (!G.r.open && !forced) return;
@@ -212,8 +212,8 @@ function pick2(f, b, forced){
     G.r.done = true; tone(true); b.classList.add('ok'); document.querySelectorAll('#choices .ans').forEach(x => { x.disabled = true; });
     const first = !forced && G.r.tries === 0 && G.r.s1; if (first) G.first++;
     [...$('dots').children][G.i].className = first ? 'y' : 'n'; $('score').textContent = '⭐ ' + G.first;
-    const ans = FeelArt.answer(R.feel, R.g), fem = R.g === 'f' && R.feel.fem ? ` (בֵּן: ${R.feel.he})` : '';
-    $('fb').className = 'fb ok'; $('fb').innerHTML = `נָכוֹן! ${first ? '⭐ ' : ''}אֲנִי ${ans}!<small>${R.feel.en}${fem}</small>`;
+    const ans = FeelArt.answer(R.feel, R.g);
+    $('fb').className = 'fb ok'; $('fb').innerHTML = `נָכוֹן! ${first ? '⭐ ' : ''}אֲנִי ${ans}!<small>${R.feel.en}</small>`;
     say(`${FeelArt.ask(R.g)}, ${R.name}? אֲנִי ${ans}!`);
     ctl([[G.i === ROUNDS - 1 ? 'סִיּוּם ◀' : 'הַבָּא ◀', 'big', () => { G.i++; if (G.i >= ROUNDS) finish(); else round(); }]]);
   } else {

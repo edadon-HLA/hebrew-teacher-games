@@ -16,7 +16,6 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 .c{border:1.5px dashed #6b6880;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6mm;gap:3mm;overflow:hidden}
 .c .w{font-size:34pt;font-weight:800;line-height:1.15}
 .c .f svg{width:60mm;height:60mm;display:block}
-.c .fem{font-size:13pt;font-weight:700;color:#6b6880}
 .c .tag{font-size:12pt;font-weight:800;color:#6b6880}
 .q{border-width:2px}
 .q.boy{background:#eaf3ff;border-color:#2a8bd0;color:#16527d}
@@ -24,6 +23,7 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 .q .em{font-size:70pt;line-height:1}
 .q .w{font-size:38pt}
 .q .sub{font-size:15pt;font-weight:700}
+.yn{border-width:2px}.yn .em{font-size:90pt;line-height:1;font-weight:800}.yn.yes{background:#e6f6ea;border-color:#2f9d55;color:#1d6a39}.yn.no{background:#fdeaee;border-color:#e2506a;color:#9a2b3d}
 .note{align-items:flex-start;justify-content:flex-start;text-align:right;font-size:12pt;line-height:1.55;color:#4a4a5e;border-style:dotted}
 .note b{font-size:14pt;color:#23233a}
 @media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
@@ -34,10 +34,11 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 <script src="../games/feel-art.js"></script>
 <script>
 const F = FeelArt.feelings;
-const q = (g) => `<div class="c q ${g === 'f' ? 'girl' : 'boy'}"><div class="em">${g === 'f' ? '👧' : '👦'}</div><div class="w">${FeelArt.ask(g)}?</div><div class="sub">${g === 'f' ? 'לְבַת · שָׁלוֹם + אַתְּ' : 'לְבֵן · שָׁלוֹם + אַתָּה'}</div></div>`;
-const fc = f => `<div class="c"><div class="f">${FeelArt.face(f.id)}</div><div class="w">${f.he}</div>${f.fem ? `<div class="fem">בַּת: ${f.fem}</div>` : '<div class="fem">&nbsp;</div>'}</div>`;
-const note = `<div class="c note"><div><b>🎴 כַּרְטִיסֵי תְּשׁוּבָה — רְחוֹב הָעוֹלָם <bdi dir="ltr">2.7–2.9</bdi></b><br>• מְחַלְּקִים סֵט לְכָל תַּלְמִיד בִּתְחִלַּת הַתִּרְגּוּל, וְאוֹסְפִים בַּסּוֹף — אֶפְשָׁר לְהִשְׁתַּמֵּשׁ שׁוּב.<br>• כְּשֶׁהַמּוֹרֶה סוֹפֵר "3… 2… 1… הָרִימוּ!" כֻּלָּם מַרְימִים כַּרְטִיס בְּאוֹתוֹ זְמַן.<br>• בְּזוּגוֹת: תַּלְמִיד א שׁוֹאֵל (שְׁלוֹמְךָ / שְׁלוֹמֵךְ), תַּלְמִיד ב מַרְאֶה כַּרְטִיס וְעוֹנֶה "אֲנִי ___".<br>• בַּת עוֹנָה בִּלְשׁוֹן נְקֵבָה: מְצוּיֶּנֶת · מֻשְׁלֶמֶת · מְעֻלָּה.</div></div>`;
-const cards = [q('m'), q('f'), ...F.map(fc), note];
+const q = (g) => `<div class="c q ${g === 'f' ? 'girl' : 'boy'}"><div class="em">${g === 'f' ? '👧' : '👦'}</div><div class="w">${FeelArt.ask(g)}?</div><div class="sub">${g === 'f' ? 'לְבַת' : 'לְבֵן'}</div></div>`;
+const fc = f => `<div class="c"><div class="f">${FeelArt.face(f.id)}</div><div class="w">${f.he}</div></div>`;
+const yn = ok => `<div class="c yn ${ok ? 'yes' : 'no'}"><div class="em">${ok ? '✔' : '✘'}</div><div class="w">${ok ? 'נָכוֹן' : 'לֹא נָכוֹן'}</div></div>`;
+const note = `<div class="c note"><div><b>🎴 כַּרְטִיסֵי תְּשׁוּבָה — רְחוֹב הָעוֹלָם <bdi dir="ltr">2.7–2.9</bdi></b><br>• מְחַלְּקִים סֵט לְכָל תַּלְמִיד בִּתְחִלַּת הַתִּרְגּוּל, וְאוֹסְפִים בַּסּוֹף — אֶפְשָׁר לְהִשְׁתַּמֵּשׁ שׁוּב.<br>• כְּשֶׁהַמּוֹרֶה סוֹפֵר "3… 2… 1… הָרִימוּ!" כֻּלָּם מַרְימִים כַּרְטִיס בְּאוֹתוֹ זְמַן.<br>• בְּזוּגוֹת: תַּלְמִיד א שׁוֹאֵל (שְׁלוֹמְךָ / שְׁלוֹמֵךְ), תַּלְמִיד ב מַרְאֶה כַּרְטִיס וְעוֹנֶה "אֲנִי ___".<br>• כַּרְטִיסֵי ✔ / ✘: הַמּוֹרֶה שׁוֹאֵל תַּלְמִיד "מָה שְׁלוֹמְךָ?" (נָכוֹן אוֹ לֹא נָכוֹן לְפִי הַמִּין), וְכָל הַכִּתָּה מַרְימָה ✔ אוֹ ✘.</div></div>`;
+const cards = [q('m'), q('f'), yn(true), yn(false), ...F.map(fc), note];
 let h = '';
 for (let i = 0; i < cards.length; i += 4) h += `<div class="page">${cards.slice(i, i + 4).join('')}</div>`;
 document.getElementById('out').innerHTML = h;

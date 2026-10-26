@@ -284,6 +284,8 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 .lc{font:700 clamp(30px,6vw,48px) var(--f-he);width:clamp(52px,10vw,76px);height:clamp(60px,12vw,88px);border:3px solid var(--sky);border-radius:14px;background:#fff;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;color:var(--ink)}
 .lc.sel{background:var(--gold-soft);border-color:var(--gold)}.lc.used{opacity:.25;pointer-events:none}.lc.dragging{opacity:.3}
 .lc.ghost{position:fixed;z-index:10000;pointer-events:none;transform:translate(-50%,-60%) rotate(-3deg);box-shadow:0 12px 26px #0004;opacity:1}
+.cw{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:14px;background:#fff0f0;border:3px solid var(--coral);border-radius:20px;padding:12px 16px;font-size:clamp(18px,2.3vw,22px);font-weight:700}
+.cw .ic{font-size:36px}.cw>div{flex:1;min-width:240px}.cw b{font-size:1.1em;color:#8a2b3d}
 .msg27{min-height:38px;text-align:center;font:800 24px var(--f-display);margin-top:8px}.msg27.ok{color:var(--green)}.msg27.no{color:var(--coral)}
 /* exit ticket */
 .ticket{background:var(--surface);border:3px dashed var(--coral);border-radius:24px;padding:18px;max-width:860px}
@@ -351,7 +353,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
       <div class="mini" id="mini"></div>
     </div>
     <div class="bar2"><button class="cdbtn" type="button" data-cd>🕒 3… 2… 1… הָרִימוּ!</button></div>
-    <details class="tnote"><summary>📝 מהלך קצר</summary><p>הַמּוֹרֶה פּוֹתֵחַ פָּנִים, אוֹמֵר אֶת הַמִּלָּה וְהַכִּתָּה חוֹזֶרֶת. אַחַר כָּךְ הַמּוֹרֶה מַרְאֶה פָּנִים וְסוֹפֵר "3… 2… 1… הָרִימוּ!" — כָּל תַּלְמִיד מַרְאֶה אֶת כַּרְטִיס הָרֶגֶשׁ הַמַּתְאִים וְאוֹמֵר "אֲנִי ___". בַּת אוֹמֶרֶת: מְצוּיֶּנֶת, מֻשְׁלֶמֶת, מְעֻלָּה.</p></details>
+    <details class="tnote"><summary>📝 מהלך קצר</summary><p>הַמּוֹרֶה פּוֹתֵחַ פָּנִים, אוֹמֵר אֶת הַמִּלָּה וְהַכִּתָּה חוֹזֶרֶת. אַחַר כָּךְ הַמּוֹרֶה מַרְאֶה פָּנִים וְסוֹפֵר "3… 2… 1… הָרִימוּ!" — כָּל תַּלְמִיד מַרְאֶה אֶת כַּרְטִיס הָרֶגֶשׁ הַמַּתְאִים וְאוֹמֵר "אֲנִי ___".</p></details>
   </section>
 
   <!-- ===== 3: game ===== -->
@@ -404,6 +406,8 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
       <div class="msg27" id="fillMsg"></div>
       <div class="bar2"><button class="btn" id="fillAgain" type="button">↺ מֵהַהַתְחָלָה</button></div>
     </div>
+<div class="bar2"><a class="rc" href="Olam-street-2.7-2.9-find-letters.pdf" target="_blank" rel="noopener">🖨️ דַּף הַקָּפָה לְהַדְפָּסָה (PDF) — כָּל תַּלְמִיד מַקִּיף אֶת הָאוֹת שֶׁהַמּוֹרֶה מְבַקֵּשׁ</a></div>
+    <div class="cw" role="note"><span class="ic">📝</span><div><b>עֲבוֹדַת כִּתָּה בַּחוֹבֶרֶת — עַמּוּד 8</b><br>כּוֹתְבִים אֶת הָאוֹתִיּוֹת מ, ה, ש, ל, ו, ךְ בִּכְתַב יָד (תַּרְגִּיל 2.8). אֶפְשָׁר לָתֵת עָלֶיהָ צִיּוּן (לֹא חוֹבָה).</div><a class="wb" href="https://online.fliphtml5.com/rechovhaolam/Rechov-HaOlam---Unit-2_03/#p=8" target="_blank" rel="noopener">📖 לַחוֹבֶרֶת (עַמּוּד 8)</a></div>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>עוֹבְרִים עַל אַרְבַּעַת הַשְּׁלָבִים עַל הַלּוּחַ (הַכִּתָּה אוֹמֶרֶת אֶת שֵׁם הָאוֹת). לְבַסּוֹף כָּל תַּלְמִיד כּוֹתֵב אֶת הָאוֹתִיּוֹת בַּחוֹבֶרֶת, עַמּוּד 8. אִם חֲסַר זְמַן — מְדַלְּגִים עַל שְׁלָבִים 3–4.</p></details>
   </section>
 
@@ -449,8 +453,8 @@ function countdown(){
 document.querySelectorAll('[data-cd]').forEach(b => b.onclick = countdown);
 
 /* ---------- 1. 2.7 two question cards ---------- */
-$('qpair').innerHTML = [['m', 'דָּן', 'boy', 'שְׁלוֹמְ<i>ךָ</i>', 'שָׁלוֹם + אַתָּה', 'לְבֵן'], ['f', 'קֶרֶן', 'girl', 'שְׁלוֹמֵ<i>ךְ</i>', 'שָׁלוֹם + אַתְּ', 'לְבַת']]
-  .map(([g, nm, cls, w, s, who]) => `<button class="qcard ${cls}" type="button" data-g="${g}">${FeelArt.person(g, nm, 'good')}<div class="qt">מָה ${w}?</div><div class="qs">(${s}) · ${who}</div></button>`).join('');
+$('qpair').innerHTML = [['m', 'דָּן', 'boy', 'שְׁלוֹמְ<i>ךָ</i>', 'לְבֵן'], ['f', 'קֶרֶן', 'girl', 'שְׁלוֹמֵ<i>ךְ</i>', 'לְבַת']]
+  .map(([g, nm, cls, w, who]) => `<button class="qcard ${cls}" type="button" data-g="${g}">${FeelArt.person(g, nm, 'good')}<div class="qt">מָה ${w}?</div><div class="qs">${who}</div></button>`).join('');
 $('qpair').querySelectorAll('.qcard').forEach(b => b.onclick = () => say(FeelArt.ask(b.dataset.g) + '?', .8));
 $('diffBtn').onclick = () => { $('diff').hidden = !$('diff').hidden; };
 
