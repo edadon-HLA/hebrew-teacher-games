@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>הַקִּיפוּ אֶת הָאוֹת · רחוב העולם 2.11 (להדפסה)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* One A4 page per student: 6 grids, the teacher says which letter to circle in each one */
+@page{size:A4;margin:9mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.page{width:192mm;height:279mm;margin:0 auto;display:flex;flex-direction:column;gap:4mm}
+.hd{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #e2506a;padding-bottom:2mm}
+.hd b{font-size:20pt;font-weight:800}.hd span{font-size:10pt;color:#6b6880}
+.name{font-size:12pt;font-weight:700;display:flex;gap:2mm;align-items:flex-end}.name i{flex:1;border-bottom:1.2px solid #23233a;height:6mm}
+.how{font-size:11pt;color:#4a4a5e;margin:0}
+.grids{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:4mm}
+.g{border:1.5px solid #cfd6e0;border-radius:3mm;padding:2.5mm;display:flex;flex-direction:column;gap:1.5mm}
+.g h4{margin:0;font-size:11pt;font-weight:800;display:flex;justify-content:space-between;align-items:center}
+.g h4 .n{background:#2a8bd0;color:#fff;border-radius:50%;width:6.5mm;height:6.5mm;display:inline-grid;place-items:center;font-size:10pt}
+.g h4 .t{border:1.2px dashed #9aa3b2;border-radius:2mm;min-width:12mm;height:8mm;display:inline-grid;place-items:center;font-size:16pt}
+.cells{flex:1;display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:1fr;direction:rtl}
+.cells span{display:grid;place-items:center;font-size:21pt;font-weight:700}
+.foot{font-size:9.5pt;color:#6b6880;display:flex;justify-content:space-between}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;padding:6mm;box-shadow:0 2px 12px #0003}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hd"><b>הַקִּיפוּ אֶת הָאוֹת</b><span>רְחוֹב הָעוֹלָם <bdi dir="ltr">2.11</bdi></span></div>
+  <div class="name">שֵׁם: <i></i></div>
+  <p class="how">הַמּוֹרֶה אוֹמֵר אוֹת (ב, ס, ד, ר, ט, ו) — מַקִּיפִים אֶת כָּל הַהַעְתֵּקִים שֶׁלָּהּ בַּטַּבְלָה. אֶפְשָׁר לִכְתֹּב אֶת הָאוֹת בַּמִּסְגֶּרֶת שֶׁלְּמַעְלָה.</p>
+  <div class="grids" id="grids"></div>
+  <div class="foot"><span>אַחֲרֵי הַהַקָּפָה: כּוֹתְבִים אֶת הָאוֹתִיּוֹת בַּחוֹבֶרֶת, עַמּוּד 9.</span><span>✏️ עֲבוֹדַת כִּתָּה</span></div>
+</div>
+<script>
+let seed = 2411;
+const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const TARGETS = ['ב', 'ס', 'ד', 'ר', 'ט', 'ו'];
+const CONF = ['ב', 'כ', 'ס', 'ם', 'ד', 'ר', 'ט', 'ו', 'ת', 'ח', 'ה', 'ג', 'נ', 'ל', 'ק', 'ע'];
+document.getElementById('grids').innerHTML = TARGETS.map((L, i) => {
+  const n = 5 + Math.floor(rnd() * 3), cells = Array(n).fill(L), pool = CONF.filter(c => c !== L);
+  while (cells.length < 30) cells.push(pool[Math.floor(rnd() * pool.length)]);
+  return `<div class="g"><h4><span class="n">${i + 1}</span><span>הַקִּיפוּ:</span><span class="t"></span></h4><div class="cells">${shuffle(cells).map(c => `<span>${c}</span>`).join('')}</div></div>`;
+}).join('');
+</script>
+</body>
+</html>
