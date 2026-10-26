@@ -22,6 +22,10 @@ service cloud.firestore {
     match /niflaotSchedule/{id} {
       allow read, write: if isOwner() || (signedIn() && exists(/databases/$(database)/documents/niflaotAccess/$(request.auth.token.email.lower())));
     }
+    // Manual lessons added on the Niflaot Lessons page (title, teacher notes, links): same access as the dates.
+    match /niflaotCustom/{id} {
+      allow read, write: if isOwner() || (signedIn() && exists(/databases/$(database)/documents/niflaotAccess/$(request.auth.token.email.lower())));
+    }
     // Exam definitions and teacher audio: students need to read them.
     match /examConfigs/{id} { allow read: if true; allow write: if isTeacher(); }
     match /audio/{id}       { allow read: if true; allow write: if isTeacher(); }
