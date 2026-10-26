@@ -474,7 +474,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
     <div class="stageF" id="mStage"></div>
     <div class="opts8" id="mOpts"></div>
     <div class="fbF" id="mFb" aria-live="polite"></div>
-    <div class="bar2"><button class="cdbtn" id="mCd" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn ghost" id="mReveal" type="button">👁 הַצִּיגוּ</button><button class="btn" id="mNext" type="button" hidden>הַבָּא ◀</button><a class="rc" href="Olam-street-2.10-2.13-response-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי תְּשׁוּבָה לְהַדְפָּסָה</a></div>
+    <div class="bar2"><button class="cdbtn" id="mCd" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn ghost" id="mReveal" type="button">👁 הַצִּיגוּ אֶת הַתְּשׁוּבָה</button><button class="btn" id="mNext" type="button" hidden>הַבָּא ◀</button><a class="rc" href="Olam-street-2.10-2.13-response-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי תְּשׁוּבָה לְהַדְפָּסָה</a></div>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>רָמָה 1: עַל הַלּוּחַ מוֹפִיעָה הַמִּלָּה — סוֹפְרִים 3-2-1, כֻּלָּם מַרְימִים אֶת כַּרְטִיס הַתְּמוּנָה, וְרַק אָז לוֹחֲצִים "הַצִּיגוּ". רָמָה 2: עַל הַלּוּחַ הַתְּמוּנָה — כֻּלָּם מַרְימִים אֶת כַּרְטִיס הַמִּלָּה. הַכַּרְטִיסִים דּוּ־צְדָדִיִּים: תְּמוּנָה מִצַּד אֶחָד וּמִלָּה מֵהַצַּד הַשֵּׁנִי.</p></details>
   </section>
 
@@ -702,19 +702,19 @@ function showRound(){
   $('mBar').style.width = (M.i / M.list.length * 100) + '%'; $('mFb').textContent = ''; $('mFb').className = 'fbF'; $('mNext').hidden = true; $('mCd').disabled = false;
   $('mStage').innerHTML = lv === 1 ? `<div><div class="bigw">${f.he}</div><button class="ear" id="mSay" type="button" aria-label="השמעה">🔊</button><div class="hint">הָרִימוּ אֶת כַּרְטִיס הַ<b>תְּמוּנָה</b></div></div>` : `<div>${pic(f)}<div class="hint">הָרִימוּ אֶת כַּרְטִיס הַ<b>מִּלָּה</b></div></div>`;
   if (lv === 1) $('mSay').onclick = () => say(f.he, 'f');
-  $('mOpts').innerHTML = FD.map(o => `<button class="o8" type="button" data-id="${o.id}" disabled>${lv === 1 ? pic(o) : `<b>${o.he}</b>`}</button>`).join('');
+  $('mOpts').innerHTML = FD.map(o => `<button class="o8" type="button" data-id="${o.id}">${lv === 1 ? pic(o) : `<b>${o.he}</b>`}</button>`).join('');
   $('mOpts').querySelectorAll('.o8').forEach(b => b.onclick = () => pick(b));
   if (lv === 1) setTimeout(() => say(f.he, 'f'), 200);
 }
 function pick(b, forced){
-  if (M.done || (!M.open && !forced)) return; const f = M.list[M.i];
+  if (M.done) return; const f = M.list[M.i];
   if (b.dataset.id === f.id){ M.done = true; b.classList.add('ok'); tone(true); $('mOpts').querySelectorAll('.o8').forEach(x => x.disabled = true);
     $('mFb').className = 'fbF ok'; $('mFb').textContent = `נָכוֹן! ${f.he}`; say(f.he, 'f'); burst($('mStage'), ['🎉', '⭐', '🍕', '🥑']);
     if (lv === 2) $('mStage').innerHTML = `<div>${pic(f)}<div class="bigw">${f.he}</div></div>`; else $('mStage').innerHTML = `<div>${pic(f)}<div class="bigw">${f.he}</div></div>`;
     $('mNext').hidden = false; $('mNext').textContent = M.i === M.list.length - 1 ? '↺ מֵהַהַתְחָלָה' : 'הַבָּא ◀'; }
-  else { b.classList.add('bad'); b.disabled = true; tone(false); $('mFb').className = 'fbF no'; $('mFb').textContent = 'לֹא בְּדִיּוּק — בּוֹדְקִים עוֹד פַּעַם 🙂'; M.open = false; $('mOpts').querySelectorAll('.o8:not(.bad)').forEach(x => x.disabled = true); }
+  else { b.classList.add('bad'); b.disabled = true; tone(false); $('mFb').className = 'fbF no'; $('mFb').textContent = 'לֹא בְּדִיּוּק — בּוֹדְקִים עוֹד פַּעַם 🙂'; }
 }
-$('mCd').onclick = () => countdown(() => { M.open = true; $('mOpts').querySelectorAll('.o8:not(.bad):not(.ok)').forEach(x => x.disabled = false); $('mFb').className = 'fbF'; $('mFb').textContent = 'עַכְשָׁיו הַמּוֹרֶה לוֹחֵץ עַל מַה שֶּׁהַכִּתָּה הֵרִימָה 👇'; });
+$('mCd').onclick = () => countdown(() => { $('mFb').className = 'fbF'; $('mFb').textContent = 'עַכְשָׁיו הַמּוֹרֶה לוֹחֵץ עַל הַתְּשׁוּבָה הַנְּכוֹנָה 👇'; });
 $('mReveal').onclick = () => { if (M.done) return; const f = M.list[M.i]; pick($('mOpts').querySelector(`[data-id="${f.id}"]`), true); };
 $('mNext').onclick = () => { if (M.i === M.list.length - 1) startMatch(); else { M.i++; showRound(); } };
 startMatch();
