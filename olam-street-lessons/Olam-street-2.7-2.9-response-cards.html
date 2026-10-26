@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כרטיסי תשובה · רחוב העולם 2.7–2.9 (להדפסה)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* One set of response cards per student: 4 big cards per A4 page (2 x 2). Cut along the dashed lines. */
+@page{size:A4;margin:8mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.page{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;page-break-after:always;break-after:page}
+.page:last-child{page-break-after:auto;break-after:auto}
+.c{border:1.5px dashed #6b6880;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6mm;gap:3mm;overflow:hidden}
+.c .w{font-size:34pt;font-weight:800;line-height:1.15}
+.c .f svg{width:60mm;height:60mm;display:block}
+.c .fem{font-size:13pt;font-weight:700;color:#6b6880}
+.c .tag{font-size:12pt;font-weight:800;color:#6b6880}
+.q{border-width:2px}
+.q.boy{background:#eaf3ff;border-color:#2a8bd0;color:#16527d}
+.q.girl{background:#ffeef6;border-color:#d6457f;color:#8e1f55}
+.q .em{font-size:70pt;line-height:1}
+.q .w{font-size:38pt}
+.q .sub{font-size:15pt;font-weight:700}
+.note{align-items:flex-start;justify-content:flex-start;text-align:right;font-size:12pt;line-height:1.55;color:#4a4a5e;border-style:dotted}
+.note b{font-size:14pt;color:#23233a}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="../games/feel-art.js"></script>
+<script>
+const F = FeelArt.feelings;
+const q = (g) => `<div class="c q ${g === 'f' ? 'girl' : 'boy'}"><div class="em">${g === 'f' ? '👧' : '👦'}</div><div class="w">${FeelArt.ask(g)}?</div><div class="sub">${g === 'f' ? 'לְבַת · שָׁלוֹם + אַתְּ' : 'לְבֵן · שָׁלוֹם + אַתָּה'}</div></div>`;
+const fc = f => `<div class="c"><div class="f">${FeelArt.face(f.id)}</div><div class="w">${f.he}</div>${f.fem ? `<div class="fem">בַּת: ${f.fem}</div>` : '<div class="fem">&nbsp;</div>'}</div>`;
+const note = `<div class="c note"><div><b>🎴 כַּרְטִיסֵי תְּשׁוּבָה — רְחוֹב הָעוֹלָם <bdi dir="ltr">2.7–2.9</bdi></b><br>• מְחַלְּקִים סֵט לְכָל תַּלְמִיד בִּתְחִלַּת הַתִּרְגּוּל, וְאוֹסְפִים בַּסּוֹף — אֶפְשָׁר לְהִשְׁתַּמֵּשׁ שׁוּב.<br>• כְּשֶׁהַמּוֹרֶה סוֹפֵר "3… 2… 1… הָרִימוּ!" כֻּלָּם מַרְימִים כַּרְטִיס בְּאוֹתוֹ זְמַן.<br>• בְּזוּגוֹת: תַּלְמִיד א שׁוֹאֵל (שְׁלוֹמְךָ / שְׁלוֹמֵךְ), תַּלְמִיד ב מַרְאֶה כַּרְטִיס וְעוֹנֶה "אֲנִי ___".<br>• בַּת עוֹנָה בִּלְשׁוֹן נְקֵבָה: מְצוּיֶּנֶת · מֻשְׁלֶמֶת · מְעֻלָּה.</div></div>`;
+const cards = [q('m'), q('f'), ...F.map(fc), note];
+let h = '';
+for (let i = 0; i < cards.length; i += 4) h += `<div class="page">${cards.slice(i, i + 4).join('')}</div>`;
+document.getElementById('out').innerHTML = h;
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כרטיס יציאה · רחוב העולם 2.7–2.9 (להדפסה)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&display=swap">
+<style>
+/* 4 exit tickets on one A4 page (2 x 2), cut along the dashed lines */
+@page{size:A4;margin:8mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.sheet{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.t{padding:5mm 5mm 4mm;border:1px dashed #9aa3b2;display:flex;flex-direction:column;gap:2.2mm;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e2506a;padding-bottom:1.5mm}
+.hd b{font-size:15pt;font-weight:800}
+.hd span{font-size:8.5pt;color:#6b6880}
+.name{font-size:11pt;font-weight:700;display:flex;gap:2mm;align-items:flex-end}
+.name i{flex:1;border-bottom:1.2px solid #23233a;height:6mm}
+.q{font-size:11pt;font-weight:800;margin-top:1mm}
+.task{font-size:14pt;font-weight:800;color:#16527d;text-align:center;background:#eaf3ff;border-radius:2mm;padding:1.5mm}
+.task.g{color:#8e1f55;background:#ffeef6}
+.ans{font-size:12pt;font-weight:700}
+.lines{display:flex;flex-direction:column;gap:3mm}
+.line{position:relative;height:11mm;border-top:1px solid #7bbfe6;border-bottom:1px solid #7bbfe6;background:#fcfbf7}
+.line::after{content:'';position:absolute;left:0;right:0;top:50%;border-top:1px dashed #f08a8a}
+.self{margin-top:auto;display:flex;flex-direction:column;gap:1.3mm;font-size:9.5pt}
+.self div{display:flex;justify-content:space-between;align-items:center;gap:2mm}
+.self .f{display:flex;gap:1.5mm;font-size:12pt;white-space:nowrap}
+.self .f span{display:inline-grid;place-items:center;width:6.5mm;height:6.5mm;border:1px solid #9aa3b2;border-radius:50%}
+.tip{font-size:8pt;color:#6b6880}
+@media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
+</style>
+</head>
+<body>
+<div class="sheet" id="sheet"></div>
+<script>
+const SELF = ['אֲנִי יָכוֹל/ה לַעֲנוֹת "אֲנִי ___"', 'אֲנִי יוֹדֵעַ/ת לִשְׁאֹל נָכוֹן (ךָ / ךְ)'];
+const one = `<div class="t">
+  <div class="hd"><b>🎟️ כַּרְטִיס יְצִיאָה</b><span>רְחוֹב הָעוֹלָם <bdi dir="ltr">2.7–2.9</bdi></span></div>
+  <div class="name">שֵׁם: <i></i></div>
+  <div class="q">1) עֲנוּ בְּמִשְׁפָּט:</div>
+  <div class="task">מָה שְׁלוֹמְךָ? / מָה שְׁלוֹמֵךְ?</div>
+  <div class="ans">אֲנִי ______________________</div>
+  <div class="lines"><div class="line"></div></div>
+  <div class="q">⭐ בּוֹנוּס — כִּתְבוּ אֶת הַשְּׁאֵלָה לְחָבֵר אוֹ לַחֲבֵרָה:</div>
+  <div class="lines"><div class="line"></div></div>
+  <div class="tip">מְצוּיָּן · טוֹב · טוֹב מְאוֹד · לֹא טוֹב · מֻשְׁלָם · מְעֻלֶּה · כָּכָה כָּכָה</div>
+  <div class="self">${SELF.map(s => `<div><span>${s}</span><span class="f"><span>😀</span><span>🙂</span><span>😕</span></span></div>`).join('')}</div>
+</div>`;
+document.getElementById('sheet').innerHTML = one.repeat(4);
+</script>
+</body>
+</html>
