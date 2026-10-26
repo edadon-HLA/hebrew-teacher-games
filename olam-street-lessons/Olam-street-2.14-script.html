@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>תסריט · רחוב העולם 2.14 (להדפסה)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* Readers' theater script: the comic as "speaker: line". Three pages — each highlights the lines of one role. One set per group of three. */
+@page{size:A4;margin:9mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.page{width:192mm;height:279mm;margin:0 auto;display:flex;flex-direction:column;gap:2.4mm;page-break-after:always;break-after:page}
+.page:last-child{page-break-after:auto;break-after:auto}
+.hd{display:flex;align-items:center;gap:4mm;border-bottom:3px solid var(--c);padding-bottom:2mm}
+.hd .f{width:22mm}.hd .f svg{width:100%;height:auto;display:block;border-radius:50%;border:1.2mm solid var(--c)}
+.hd b{font-size:20pt;font-weight:800;line-height:1.2}.hd span{display:block;font-size:11pt;color:#6b6880;font-weight:700}
+.hd .me{margin-inline-start:auto;font-size:15pt;font-weight:800;color:var(--c);border:2px solid var(--c);border-radius:3mm;padding:1.5mm 4mm}
+.l{display:flex;gap:3mm;align-items:flex-start;padding:1.6mm 2.6mm;border-radius:2.5mm;border:1.2px solid #e1e4ea;font-size:13.2pt;line-height:1.55;color:#555a68}
+.l .n{flex:none;font-weight:800;min-width:15mm;color:var(--c)}
+.l.mine{background:var(--soft);border:2px solid var(--c);color:#14141f;font-weight:800;font-size:14.2pt}
+.l.mine .n{font-size:14pt}
+.foot{margin-top:auto;font-size:9.5pt;color:#6b6880;display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="../games/comic-art.js"></script>
+<script>
+const CA = ComicArt;
+const B = [
+  ['keren', 'הַי, רוֹנִי! מָה שְׁלוֹמֵךְ?'],
+  ['roni', 'הֵיי, קֶרֶן! הֵיי, דָּן! מָה שְׁלוֹמְכֶם? אֲנִי בַּדֶּרֶךְ לַפֶּסְטִיבָל בְּנִצָּנִים!'],
+  ['dan', 'מְעֻלֶּה, גַּם אֲנַחְנוּ הוֹלְכִים לְפֶסְטִיבַל! אֲבָל אֲנַחְנוּ רְעֵבִים מַמָּשׁ, חָשַׁבְנוּ לַעֲצֹר בַּדֶּרֶךְ לֶאֱכֹל מַשֶּׁהוּ.'],
+  ['keren', 'גַּם אֲנִי רְעֵבָה. אֶשְׂמַח לְהִצְטָרֵף מָה אַתֶּם אוֹהֲבִים לֶאֱכֹל?'],
+  ['roni', 'אֲנִי אוֹהֶבֶת פִּיצָה, בִּמְיֻחָד עִם טוּנָה.'],
+  ['dan', 'פִּיצָה זֶה מְצֻיָּן! אֲנִי מַעֲדִיף פִּיצָה עִם הַרְבֵּה גְּבִינָה.'],
+  ['keren', 'גַּם אֲנִי אוֹהֶבֶת פִּיצָה, אֲבָל הָאֱמֶת שֶׁמִּתְחַשֵּׁק לִי מַמָּשׁ פַּסְטָה! אֶפְשָׁר לְהָכִין אוֹתָהּ בְּכָל מִינֵי רְטָבִים וּצְבָעִים.'],
+  ['roni', 'לְגַמְרֵי, פַּסְטָה זֶה גַּם טָעִים מְאוֹד! וְאִם כְּבָר מְדַבְּרִים עַל מָה לֶאֱכֹל, בּוֹאוּ נִבְחַר מָה נֹאכַל לְקִנּוּחַ – אֲנִי תָּמִיד בְּעַד שׁוֹקוֹלָד.'],
+  ['dan', 'שׁוֹקוֹלָד זֶה קִנּוּחַ מֻשְׁלָם! אֲנִי אוֹהֵב שׁוֹקוֹלָד מָרִיר.'],
+  ['keren', 'אֲנִי אוֹהֶבֶת שׁוֹקוֹלָד לָבָן עִם מַנְגּוֹ! זֶה פְּרִי כָּל כָּךְ מָתוֹק וְזֶה שִׁלּוּב מְצֻיָּן.'],
+  ['roni', 'אֵין סָפֵק, מַנְגּוֹ זֶה פְּרִי טָעִים. מִשְׁתַּלֵּב גַּם כְּקִנּוּחַ וְגַם בְּסָלָט עִם אָבוֹקָדוֹ. מֻשְׁלָם.'],
+  ['dan', 'וָאוּ, אֵיזֶה רַעְיוֹן מַגְנִיב! אֲנִי אַף פַּעַם לֹא אָכַלְתִּי מַנְגּוֹ בַּסָּלָט.'],
+  ['keren', 'זֶה נִשְׁמָע טָעִים! אוּלַי אֲנַחְנוּ יְכוֹלִים לִמְצֹא מַשֶּׁהוּ כָּזֶה בַּדֶּרֶךְ לַפֶּסְטִיבָל?'],
+  ['roni', 'אֲנִי מְקַוָּה... אֲנִי כְּבָר רְעֵבָה מַמָּשׁ. בּוֹאוּ נֵלֵךְ לְחַפֵּשׂ אֹכֶל לִפְנֵי שֶׁהַפֶּסְטִיבָל יַתְחִיל!'],
+  ['dan', 'כֵּן, קָדִימָה! אֲנִי רָעֵב!']
+];
+document.getElementById('out').innerHTML = ['keren', 'dan', 'roni'].map((me, v) => { const c = CA.chars[me];
+  return `<div class="page" style="--c:${c.color};--soft:${c.soft}">
+    <div class="hd"><div class="f">${CA.face(me)}</div><div><b>תַּסְרִיט — קוֹמִיקְס: בַּדֶּרֶךְ לַפֶּסְטִיבָל</b><span>רְחוֹב הָעוֹלָם <bdi dir="ltr">2.14</bdi> · עַמּוּד 11</span></div><div class="me">אֲנִי ${c.he}</div></div>
+    ${B.map(([w, t]) => { const x = CA.chars[w]; return `<div class="l${w === me ? ' mine' : ''}" style="--c:${x.color};--soft:${x.soft}"><span class="n">${x.he}:</span><span>${t}</span></div>`; }).join('')}
+    <div class="foot"><span>קוֹרְאִים בְּקוֹל רָם. אַחֲרֵי 3 דַּקּוֹת — מַחֲלִיפִים תַּפְקִידִים!</span><span>גִּרְסָה ${v + 1} מִתּוֹךְ 3 · סֵט אֶחָד לְכָל קְבוּצָה</span></div>
+  </div>`; }).join('');
+</script>
+</body>
+</html>

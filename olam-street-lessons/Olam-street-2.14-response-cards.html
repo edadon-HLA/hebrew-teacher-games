@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כרטיסי תשובה · רחוב העולם 2.14 (להדפסה)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* Page 1: the three character cards (one set per student). Page 2: ✔ / ✘ cards. Page 3 is the instruction sheet. Single-sided. */
+@page{size:A4;margin:8mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.page{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,1fr);page-break-after:always;break-after:page;position:relative}
+.page:last-child{page-break-after:auto;break-after:auto}
+.c{border:1.5px dashed #6b6880;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4mm;gap:3mm;overflow:hidden}
+.c .f svg{width:62mm;height:62mm;display:block;border-radius:50%;border:2mm solid var(--c)}
+.c .w{font-size:44pt;font-weight:800;line-height:1.1;color:var(--c)}
+.c.yn .mark{font-size:120pt;line-height:1;font-weight:800}
+.c.yn .w{font-size:30pt}
+.c.note{align-items:flex-start;justify-content:flex-start;text-align:right;font-size:12pt;line-height:1.7;color:#4a4a5e;border-style:dotted}
+.c.note b{font-size:14pt;color:#23233a}
+.lab{position:absolute;top:-1mm;left:0;right:0;text-align:center;font-size:8pt;color:#9aa3b2}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="../games/comic-art.js"></script>
+<script>
+const CA = ComicArt;
+const ch = id => `<div class="c" style="--c:${CA.chars[id].color}"><div class="f">${CA.face(id)}</div><div class="w">${CA.chars[id].he}</div></div>`;
+const yn = (ok) => `<div class="c yn" style="--c:${ok ? '#2f9d55' : '#e2506a'}"><div class="mark" style="color:${ok ? '#2f9d55' : '#e2506a'}">${ok ? '✔' : '✘'}</div><div class="w">${ok ? 'נָכוֹן' : 'לֹא נָכוֹן'}</div></div>`;
+const note = `<div class="c note"><div><b>🎴 כַּרְטִיסֵי תְּשׁוּבָה — רְחוֹב הָעוֹלָם <bdi dir="ltr">2.14</bdi></b><br>
+<b>עַמּוּד 1:</b> שְׁלוֹשָׁה כַּרְטִיסֵי דְּמוּת — קֶרֶן, דָּן, רוֹנִי. סֵט אֶחָד לְכָל תַּלְמִיד, גּוֹזְרִים לְאֹרֶךְ הַקַּוִּים הַמְּקֻוָּקָוִים.<br>
+<b>עַמּוּד 2:</b> ✔ נָכוֹן / ✘ לֹא נָכוֹן.<br>
+• "מִי אָמַר?" — הַמּוֹרֶה קוֹרֵא מִשְׁפָּט, סוֹפֵר "3… 2… 1… הָרִימוּ!" וְכֻלָּם מַרִימִים כַּרְטִיס דְּמוּת.<br>
+• "נָכוֹן אוֹ לֹא נָכוֹן?" — מַרִימִים ✔ אוֹ ✘.<br>
+• כַּרְטִיסֵי הָאֹכֶל מִשִּׁעוּר 2.10–2.13 מִשְׁתַּמְּשִׁים בָּהֶם שׁוּב ("מִי אוֹהֵב מָה?").<br>
+• מְחַלְּקִים בִּתְחִלַּת הַתִּרְגּוּל וְאוֹסְפִים בַּסּוֹף.</div></div>`;
+const page = (cells, label) => `<div class="page"><div class="lab">${label}</div>${cells.join('')}</div>`;
+document.getElementById('out').innerHTML =
+  page([ch('keren'), ch('dan'), ch('roni'), note], 'כַּרְטִיסֵי דְּמוּת') +
+  page([yn(true), yn(false), yn(true), yn(false)], '✔ / ✘ (שְׁנֵי סֵטִים בְּדַף)');
+</script>
+</body>
+</html>
