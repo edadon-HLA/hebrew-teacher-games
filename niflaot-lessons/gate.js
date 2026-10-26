@@ -60,6 +60,7 @@
         me.innerHTML = '👤 <span dir="ltr">' + esc(user.email) + '</span> · <button type="button" id="nk-out">יְצִיאָה</button>';
         d.body.appendChild(me); on('nk-out', function () { DB.signOut().then(function () { location.reload(); }); });
       }
+      window.NK_USER = user; d.dispatchEvent(new CustomEvent('nk-unlocked', { detail: user }));
       if (owner) admin(user);
     };
     if (d.body) show(); else d.addEventListener('DOMContentLoaded', show);

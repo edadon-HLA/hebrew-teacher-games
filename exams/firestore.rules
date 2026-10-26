@@ -18,6 +18,10 @@ service cloud.firestore {
       allow list: if isOwner();
       allow write: if isOwner();
     }
+    // When each Niflaot lesson is taught: the owner and every teacher on the niflaotAccess list may read and change it.
+    match /niflaotSchedule/{id} {
+      allow read, write: if isOwner() || (signedIn() && exists(/databases/$(database)/documents/niflaotAccess/$(request.auth.token.email.lower())));
+    }
     // Exam definitions and teacher audio: students need to read them.
     match /examConfigs/{id} { allow read: if true; allow write: if isTeacher(); }
     match /audio/{id}       { allow read: if true; allow write: if isTeacher(); }

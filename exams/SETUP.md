@@ -20,4 +20,5 @@ Notes
 - Every page in `niflaot-lessons/` loads `niflaot-lessons/gate.js`, which asks for Google sign-in and opens the page only for the owner or for emails on the **niflaotAccess** list.
 - The owner manages the list on the Niflaot Lessons page (box "ניהול גישה"). This list is separate from the Exams teachers list.
 - After changing `exams/firestore.rules`, paste it again in Firestore → **Rules** → **Publish**.
+- Under each lesson title on the Niflaot Lessons page, teachers can set the date the lesson is taught (Monday–Thursday); it is saved in Firestore (collection `niflaotSchedule`), so the rules must be published for it to work.
 - This is a login screen, not encryption: the files are still public in the GitHub repository.
