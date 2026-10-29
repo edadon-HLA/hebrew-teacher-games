@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כרטיסי תשובה · רחוב העולם 2.15–2.16 (להדפסה)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* One set per student, single-sided. Page 1: אוֹהֵב/ת, לֹא אוֹהֵב/ת, רָעֵב, לֹא רָעֵב. Page 2: טָעִים, לֹא טָעִים + instructions. All cards the same size. */
+@page{size:A4;margin:8mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.page{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;page-break-after:always;break-after:page;position:relative}
+.page:last-child{page-break-after:auto;break-after:auto}
+.c{border:1.5px dashed #6b6880;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4mm;gap:3mm;overflow:hidden}
+.c .big{width:62mm;height:62mm;border-radius:50%;border:2.4mm solid #23233a}
+.c .f svg{width:62mm;height:62mm;display:block;border-radius:50%;border:2mm solid var(--c);background:#fff}
+.c .w{font-size:40pt;font-weight:800;line-height:1.1;color:var(--c)}
+.c.note{grid-column:1/-1;align-items:flex-start;justify-content:flex-start;text-align:right;font-size:13pt;line-height:1.8;color:#4a4a5e;border-style:dotted}
+.c.note b{font-size:15pt;color:#23233a}
+.lab{position:absolute;top:-1mm;left:0;right:0;text-align:center;font-size:8pt;color:#9aa3b2}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="../games/hungry-art.js"></script>
+<script>
+const HA = HungryArt;
+const dot = (col, txt) => `<div class="c" style="--c:${col}"><div class="big" style="background:${col}"></div><div class="w">${txt}</div></div>`;
+const face = (mood, col, txt) => `<div class="c" style="--c:${col}"><div class="f">${HA.kid(mood, true)}</div><div class="w">${txt}</div></div>`;
+const note = `<div class="c note"><div><b>🎴 כַּרְטִיסֵי תְּשׁוּבָה — רְחוֹב הָעוֹלָם <bdi dir="ltr">2.15–2.16</bdi></b><br>
+<b>סֵט אֶחָד לְכָל תַּלְמִיד</b> (שִׁשָּׁה כַּרְטִיסִים). גּוֹזְרִים לְאֹרֶךְ הַקַּוִּים הַמְּקֻוָּקָוִים.<br>
+• <b>"זֶה אֲנִי?"</b> — 🟢 אוֹהֵב/ת · 🔴 לֹא אוֹהֵב/ת. מַרִימִים רַק אִם הַמִּשְׁפָּט מַתְאִים לָכֶם!<br>
+• <b>"רָעֵב אוֹ לֹא רָעֵב?"</b> — מַרִימִים רָעֵב אוֹ לֹא רָעֵב.<br>
+• <b>"טָעִים אוֹ לֹא טָעִים?"</b> — מַרִימִים טָעִים אוֹ לֹא טָעִים.<br>
+• "3… 2… 1… הָרִימוּ!" — כֻּלָּם יַחַד. מְחַלְּקִים בִּתְחִלַּת הַתִּרְגּוּל וְאוֹסְפִים בַּסּוֹף.</div></div>`;
+const page = (cells, label) => `<div class="page"><div class="lab">${label}</div>${cells.join('')}</div>`;
+document.getElementById('out').innerHTML =
+  page([dot('#2fbf5f', 'אוֹהֵב/ת'), dot('#e63946', 'לֹא אוֹהֵב/ת'), face('growl', '#e07a1f', 'רָעֵב'), face('full', '#2a8bd0', 'לֹא רָעֵב')], 'כַּרְטִיסִים 1–4') +
+  page([face('yum', '#2f9d55', 'טָעִים'), face('yuck', '#7a9a2a', 'לֹא טָעִים'), note], 'כַּרְטִיסִים 5–6 + הוֹרָאוֹת');
+</script>
+</body>
+</html>
