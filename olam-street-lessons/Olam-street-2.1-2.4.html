@@ -302,7 +302,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
       <li><a href="#s2" data-c="sky"><b>2</b>2.2 אוֹכֶל יִשְׂרְאֵלִי</a></li>
       <li><a href="#s3" data-c="gold"><b>3</b>2.3 כְּתִיבָה</a></li>
       <li><a href="#s4" data-c="coral"><b>4</b>2.4 קְרִיאָה</a></li>
-      <li><a href="#s5" data-c="purple"><b>5</b>כַּרְטִיס יְצִיאָה</a></li>
+      <li><a href="#s5" data-c="purple"><b>5</b>Exit Ticket</a></li>
     </ol>
   </nav>
 
@@ -382,16 +382,16 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 
   <!-- ===== STEP 5: exit ticket ===== -->
   <section class="step" id="s5">
-    <div class="step-head"><span class="tag purple">🎟️ כַּרְטִיס יְצִיאָה</span><a class="btn" style="text-decoration:none" href="Olam-street-2.1-2.4-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ גִּרְסָה לְהַדְפָּסָה (PDF · 4 בְּדַף)</a></div>
-    <p class="lead">כִּתְבוּ מִלָּה אוֹ מִשְׁפָּט — רַק עִם אוֹתִיּוֹת שֶׁאַתֶּם כְּבָר מַכִּירִים.</p>
-    <p class="sub">הַמִּקְלֶדֶת מַרְאָה רַק אֶת הָאוֹתִיּוֹת שֶׁלָּמַדְנוּ. בְּכָחֹל — הָאוֹתִיּוֹת הַחֲדָשׁוֹת שֶׁל הַיּוֹם.</p>
+    <div class="step-head"><span class="tag purple">🎟️ Exit Ticket</span><a class="btn" style="text-decoration:none" href="Olam-street-2.1-2.4-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ Printable version (PDF · 4 per page)</a></div>
+    <p class="lead" dir="ltr" style="text-align:left">Write a word or a sentence — only with letters you already know.</p>
+    <p class="sub" dir="ltr" style="text-align:left">The keyboard shows only the letters we learned. Blue = today's new letters.</p>
     <div class="ticket">
-      <label class="row" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-weight:800">🙋 הַשֵּׁם שֶׁלִּי: <input type="text" id="tName" style="font:700 20px var(--f-he);padding:6px 10px;border:2px solid var(--line);border-radius:10px"></label>
-      <textarea id="tText" aria-label="כרטיס יציאה" placeholder="כָּאן כּוֹתְבִים…"></textarea>
+      <label class="row" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-weight:800">🙋 Name: <input type="text" id="tName" style="font:700 20px var(--f-he);padding:6px 10px;border:2px solid var(--line);border-radius:10px"></label>
+      <textarea id="tText" aria-label="exit ticket" placeholder="Write here…"></textarea>
       <div class="keys" id="keys"></div>
-      <details><summary style="cursor:pointer;font-weight:800">💡 רַעְיוֹנוֹת</summary><p style="font-size:22px;font-weight:700">אוֹכֶל · סָלָט · חָלָב · כֵּן · לֹא · אֲנִי אוֹהֵב סָלָט</p></details>
+      <details><summary style="cursor:pointer;font-weight:800">💡 Ideas</summary><p style="font-size:22px;font-weight:700">אוֹכֶל · סָלָט · חָלָב · כֵּן · לֹא · אֲנִי אוֹהֵב סָלָט</p></details>
       <div class="self" id="self"></div>
-      <div class="toolbar" style="margin:12px 0 0"><button class="btn primary big" id="tDone" type="button">✓ סִיַּמְתִּי</button><button class="btn" id="tClear" type="button">↺ מְנַקִּים</button></div>
+      <div class="toolbar" style="margin:12px 0 0"><button class="btn primary big" id="tDone" type="button">✓ Done</button><button class="btn" id="tClear" type="button">↺ Clear</button></div>
       <div class="done" id="tShow" hidden></div>
     </div>
   </section>
@@ -527,7 +527,7 @@ const KNOWN = ['א', 'ב', 'ג', 'ה', 'ו', 'ח', 'ט', 'כ', 'ל', 'נ', 'ס',
 const NEW = new Set(['א', 'ו', 'כ', 'ל', 'פ', 'צ', 'ק']);
 const ta = $('tText');
 $('keys').innerHTML = KNOWN.map(k => `<button type="button" data-key="${k}"${NEW.has(k) ? ' class="new"' : ''}>${k}</button>`).join('') +
-  '<button type="button" class="wide" data-key=" ">רֶוַח</button><button type="button" class="wide" data-key="⌫">⌫ מְחִיקָה</button>';
+  '<button type="button" class="wide" data-key=" ">space</button><button type="button" class="wide" data-key="⌫">⌫ delete</button>';
 const insert = s => { const a = ta.selectionStart ?? ta.value.length, b = ta.selectionEnd ?? ta.value.length; ta.value = ta.value.slice(0, a) + s + ta.value.slice(b); ta.selectionStart = ta.selectionEnd = a + s.length; ta.focus(); };
 $('keys').querySelectorAll('[data-key]').forEach(b => b.onclick = () => {
   const k = b.dataset.key;
@@ -537,8 +537,8 @@ $('keys').querySelectorAll('[data-key]').forEach(b => b.onclick = () => {
 /* typing on a keyboard: keep only letters we know (and nikud, spaces, punctuation) */
 const allowed = new RegExp('[^' + KNOWN.join('') + 'ךםןףץ\\u0591-\\u05C7\\s.,!?\\-״׳"\']', 'g');
 ta.addEventListener('input', () => { const c = ta.selectionStart, before = ta.value.length; ta.value = ta.value.replace(allowed, ''); const d = before - ta.value.length; if (d) ta.selectionStart = ta.selectionEnd = Math.max(0, c - d); });
-const SELF = ['אֲנִי יָכוֹל/ה לְהַצִּיג אֶת עַצְמִי', 'אֲנִי כּוֹתֵב/ת א, ו, כ, ל', 'אֲנִי קוֹרֵא/ת פּ, צ, ק עִם נִקּוּד'];
-$('self').innerHTML = SELF.map((s, i) => `<div class="row"><span>${s}</span><span class="faces">${['😀', '🙂', '😕'].map(f => `<button type="button" data-s="${i}" aria-label="${f}">${f}</button>`).join('')}</span></div>`).join('');
+const SELF = ['I can introduce myself', 'I can write <bdi dir="rtl">א, ו, כ, ל</bdi>', 'I can read <bdi dir="rtl">פּ, צ, ק</bdi> with nikud'];
+$('self').innerHTML = SELF.map((s, i) => `<div class="row"><span dir="ltr">${s}</span><span class="faces">${['😀', '🙂', '😕'].map(f => `<button type="button" data-s="${i}" aria-label="${f}">${f}</button>`).join('')}</span></div>`).join('');
 const rating = {};
 $('self').querySelectorAll('[data-s]').forEach(b => b.onclick = () => { rating[b.dataset.s] = b.textContent; $('self').querySelectorAll(`[data-s="${b.dataset.s}"]`).forEach(x => x.classList.toggle('on', x === b)); });
 $('tDone').onclick = () => {

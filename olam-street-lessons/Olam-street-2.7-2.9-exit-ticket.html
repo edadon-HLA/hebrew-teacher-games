@@ -30,23 +30,26 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 .self .f{display:flex;gap:1.5mm;font-size:12pt;white-space:nowrap}
 .self .f span{display:inline-grid;place-items:center;width:6.5mm;height:6.5mm;border:1px solid #9aa3b2;border-radius:50%}
 .tip{font-size:8pt;color:#6b6880}
+.t{direction:ltr}.en{direction:ltr;text-align:left}.t .task,.t .ans{direction:rtl;text-align:right}.t bdi{unicode-bidi:isolate}
+.name span{font-size:11pt;font-weight:700;margin-inline-start:3mm}.name i.d{flex:.7}
+.bonus{font-size:10.5pt;font-weight:700;color:#16527d}
 @media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
 </style>
 </head>
 <body>
 <div class="sheet" id="sheet"></div>
 <script>
-const SELF = ['אֲנִי יָכוֹל/ה לַעֲנוֹת "אֲנִי ___"', 'אֲנִי יוֹדֵעַ/ת לִשְׁאֹל נָכוֹן (ךָ / ךְ)'];
+const SELF = ['I can answer <bdi dir="rtl">"אֲנִי ___"</bdi>', 'I can ask the right way (<bdi dir="rtl">ךָ / ךְ</bdi>)'];
 const one = `<div class="t">
-  <div class="hd"><b>🎟️ כַּרְטִיס יְצִיאָה</b><span>רְחוֹב הָעוֹלָם <bdi dir="ltr">2.7–2.9</bdi></span></div>
-  <div class="name">שֵׁם: <i></i></div>
-  <div class="q">1) עֲנוּ בְּמִשְׁפָּט:</div>
+  <div class="hd"><b>🎟️ Exit Ticket</b><span>Olam Street <bdi dir="ltr">2.7–2.9</bdi></span></div>
+  <div class="name">Name: <i></i><span>Date:</span><i class="d"></i></div>
+  <div class="q en">1) Answer in a sentence:</div>
   <div class="task">מָה שְׁלוֹמְךָ? / מָה שְׁלוֹמֵךְ?</div>
   <div class="ans">אֲנִי ______________________</div>
   <div class="lines"><div class="line"></div></div>
-  <div class="q">⭐ בּוֹנוּס — כִּתְבוּ אֶת הַשְּׁאֵלָה לְחָבֵר אוֹ לַחֲבֵרָה:</div>
+  <div class="q en">⭐ Bonus: Write the question to a classmate.</div>
   <div class="lines"><div class="line"></div></div>
-  <div class="tip">מְצוּיָּן · טוֹב · טוֹב מְאוֹד · לֹא טוֹב · מֻשְׁלָם · מְעֻלֶּה · כָּכָה כָּכָה</div>
+  <div class="tip en">Ideas: <bdi dir="rtl">מְצוּיָּן · טוֹב · טוֹב מְאוֹד · לֹא טוֹב · מֻשְׁלָם · מְעֻלֶּה · כָּכָה כָּכָה</bdi></div>
   <div class="self">${SELF.map(s => `<div><span>${s}</span><span class="f"><span>😀</span><span>🙂</span><span>😕</span></span></div>`).join('')}</div>
 </div>`;
 document.getElementById('sheet').innerHTML = one.repeat(4);

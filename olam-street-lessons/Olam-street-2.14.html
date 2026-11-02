@@ -462,7 +462,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
       <li><a href="#s3" data-c="green"><b>3</b>מִי אָמַר?</a></li>
       <li><a href="#s4" data-c="sky"><b>4</b>מִי אוֹהֵב מָה?</a></li>
       <li><a href="#s5" data-c="gold"><b>5</b>שִׂיחָה חוֹפְשִׁית</a></li>
-      <li><a href="#s6" data-c="purple"><b>6</b>כַּרְטִיס יְצִיאָה</a></li>
+      <li><a href="#s6" data-c="purple"><b>6</b>Exit Ticket</a></li>
     </ol>
   </nav>
 
@@ -580,15 +580,15 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 
   <!-- ===== 6 exit ticket ===== -->
   <section class="step" id="s6">
-    <div class="step-head"><span class="tag purple">🎟️ כַּרְטִיס יְצִיאָה</span><a class="btn" style="text-decoration:none" href="Olam-street-2.14-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ גִּרְסָה לְהַדְפָּסָה (PDF · 4 בְּדַף)</a></div>
-    <p class="lead">מָה אַתָּה אוֹהֵב לֶאֱכוֹל לְקִנּוּחַ? כִּתְבוּ: אֲנִי אוֹהֵב/ת לֶאֱכוֹל ___ לְקִנּוּחַ.</p>
+    <div class="step-head"><span class="tag purple">🎟️ Exit Ticket</span><a class="btn" style="text-decoration:none" href="Olam-street-2.14-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ Printable version (PDF · 4 per page)</a></div>
+    <p class="lead" dir="ltr" style="text-align:left">What do you like to eat for dessert? Write: <bdi dir="rtl">אֲנִי אוֹהֵב/ת לֶאֱכוֹל ___ לְקִנּוּחַ.</bdi></p>
     <div class="ticket">
-      <label style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-weight:800">🙋 הַשֵּׁם שֶׁלִּי: <input type="text" id="tNameIn" style="font:700 20px var(--f-he);padding:6px 10px;border:2px solid var(--line);border-radius:10px"></label>
-      <textarea id="tText" aria-label="כרטיס יציאה" placeholder="אֲנִי אוֹהֵב/ת לֶאֱכוֹל ___ לְקִנּוּחַ."></textarea>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-weight:800">🙋 Name: <input type="text" id="tNameIn" style="font:700 20px var(--f-he);padding:6px 10px;border:2px solid var(--line);border-radius:10px"></label>
+      <textarea id="tText" aria-label="exit ticket" placeholder="אֲנִי אוֹהֵב/ת לֶאֱכוֹל ___ לְקִנּוּחַ."></textarea>
       <div class="keys" id="keys"></div>
-      <p style="font-weight:800;margin:10px 0 4px">בּוֹנוּס: אֲנִי רָעֵב/ה?</p>
+      <p dir="ltr" style="font-weight:800;margin:10px 0 4px;text-align:left">Bonus: Are you hungry? Choose:</p>
       <div class="tabs2" id="hungry"><button class="chip" type="button" data-v="כֵּן">כֵּן</button><button class="chip" type="button" data-v="לֹא">לֹא</button></div>
-      <div class="toolbar" style="margin:12px 0 0"><button class="btn primary big" id="tDone" type="button">✓ סִיַּמְתִּי</button><button class="btn" id="tClr" type="button">↺ מְנַקִּים</button></div>
+      <div class="toolbar" style="margin:12px 0 0"><button class="btn primary big" id="tDone" type="button">✓ Done</button><button class="btn" id="tClr" type="button">↺ Clear</button></div>
       <div class="done" id="tShow" hidden></div>
     </div>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>3 דַּקּוֹת, כָּל תַּלְמִיד לְבַד. בַּגִּרְסָה הַמֻּדְפֶּסֶת — מְחַלְּקִים כַּרְטִיס לְכָל תַּלְמִיד וְאוֹסְפִים בַּיְּצִיאָה. בּוֹנוּס: מַקִּיפִים כֵּן אוֹ לֹא.</p></details>
@@ -813,7 +813,7 @@ $('ttBtn').onclick = () => {
 const ALPHA = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ך', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'];
 const LEARNED = new Set(['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ח', 'ט', 'כ', 'ל', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'מ', 'ש', 'ך']);
 const ta = $('tText');
-$('keys').innerHTML = ALPHA.map(k => `<button type="button" data-key="${k}"${LEARNED.has(k) ? ' class="new"' : ''}>${k}</button>`).join('') + '<button type="button" class="wide" data-key=" ">רֶוַח</button><button type="button" class="wide" data-key="⏎">שׁוּרָה</button><button type="button" class="wide" data-key="⌫">⌫ מְחִיקָה</button>';
+$('keys').innerHTML = ALPHA.map(k => `<button type="button" data-key="${k}"${LEARNED.has(k) ? ' class="new"' : ''}>${k}</button>`).join('') + '<button type="button" class="wide" data-key=" ">space</button><button type="button" class="wide" data-key="⏎">new line</button><button type="button" class="wide" data-key="⌫">⌫ delete</button>';
 const ins = s => { const a = ta.selectionStart ?? ta.value.length, b = ta.selectionEnd ?? ta.value.length; ta.value = ta.value.slice(0, a) + s + ta.value.slice(b); ta.selectionStart = ta.selectionEnd = a + s.length; ta.focus(); };
 $('keys').querySelectorAll('[data-key]').forEach(b => b.onclick = () => { const k = b.dataset.key;
   if (k === '⌫'){ const a = ta.selectionStart, e = ta.selectionEnd; if (a !== e){ ta.value = ta.value.slice(0, a) + ta.value.slice(e); ta.selectionStart = ta.selectionEnd = a; } else if (a > 0){ ta.value = ta.value.slice(0, a - 1) + ta.value.slice(a); ta.selectionStart = ta.selectionEnd = a - 1; } ta.focus(); }
