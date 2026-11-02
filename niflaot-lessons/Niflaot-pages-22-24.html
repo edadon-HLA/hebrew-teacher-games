@@ -118,6 +118,29 @@
 .n-round{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:6px 0 12px}
 .n-round button{width:104px;height:104px;border-radius:50%;border:4px solid var(--line);background:#fff;font-size:52px;cursor:pointer;display:grid;place-items:center}
 .n-round button.on{border-color:var(--coral);background:var(--coral-soft)}
+.n-round button.ph{background-size:cover;background-position:center;font-size:0}
+.n-round button.ph.on{box-shadow:0 0 0 4px var(--coral)}
+.n-photo{display:grid;place-items:center;font-size:80px;min-height:90px}
+.n-photo img{max-height:clamp(170px,32vh,300px);max-width:100%;border-radius:16px;display:block}
+.n-choices{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:10px 0 4px}
+.n-choices button{font:800 clamp(22px,3vw,30px) var(--f-he);border:3px solid var(--sky);background:#fff;border-radius:16px;padding:8px 18px;cursor:pointer;color:var(--ink);min-width:120px}
+.n-choices button.ok{background:var(--green-soft);border-color:var(--green)}
+.n-choices button.no{background:var(--coral-soft);border-color:var(--coral);opacity:.6}
+.n-src{background:#eef6fd;border:2px solid var(--sky);border-radius:14px;padding:8px 12px;font:700 18px/1.6 var(--f-he)}
+.n-trip .tp{display:flex;flex-direction:column;align-items:center;font:800 18px var(--f-he)}
+.n-trip .tp img{height:clamp(110px,18vw,170px);border-radius:12px}
+.n-sign{background:#1e8a4c;color:#fff;border-radius:10px;padding:6px 10px;font:800 17px/1.3 var(--f-he);text-align:center}
+.n-sign .n-flag svg{width:44px;height:32px;margin:0 auto 4px}
+.n-ptabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.n-ptabs button{font:800 18px var(--f-he);border:3px solid var(--line);background:#fff;border-radius:999px;padding:6px 16px;cursor:pointer;color:var(--ink)}
+.n-ptabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.n-pagewrap{position:relative;max-width:820px;margin:8px auto 0;border:2px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.n-pagewrap img{display:block;width:100%;height:auto}
+.n-spot{position:absolute;transform:translate(-50%,-50%);border:3px dashed #e2506a;background:rgba(255,240,200,.35);border-radius:10px;cursor:pointer;padding:0;display:grid;place-items:center;font:800 clamp(12px,2.1vw,22px)/1.1 var(--f-he);color:#1d6a39}
+.n-spot:hover{background:rgba(255,230,150,.6)}
+.n-spot span{visibility:hidden;background:#fff;border-radius:8px;padding:1px 6px;white-space:nowrap}
+.n-spot.on{border-style:solid;border-color:#2f9d55;background:rgba(220,242,227,.85)}.n-spot.on span{visibility:visible}
+.n-spot.q{color:#7a4cc2}
 .n-round button.done{border-color:var(--green)}
 .n-big{font-size:clamp(80px,14vw,130px);line-height:1.1}
 .m-card .flag svg,.n-flag svg{width:56px;height:40px;display:block;margin:0 auto 2px;border-radius:4px}
@@ -198,7 +221,7 @@
   <p class="lead">אֵיפֹה? בְּ...</p>
   <p class="sub">לוֹחֲצִים עַל תְּמוּנָה ⬅ שְׁאֵלָה ⬅ הַכִּתָּה מַרִימָה כַּרְטִיס עִיר ⬅ 3-2-1 הָרִימוּ! ⬅ מְגַלִּים.</p>
   <div class="n-round" id="wuRound"></div>
-  <div class="m-stage" id="wuSt"><div class="n-big" id="wuPic">👆</div><div class="m-q" id="wuQ">בּוֹחֲרִים תְּמוּנָה</div><div class="m-a" id="wuA"></div></div>
+  <div class="m-stage" id="wuSt"><div class="n-photo" id="wuPic">👆</div><div class="m-q" id="wuQ">בּוֹחֲרִים תְּמוּנָה</div><div class="n-choices" id="wuCh"></div><div class="m-a" id="wuA"></div></div>
   <div class="m-cards" id="wuCards"></div>
   <div class="m-bar c">
     <button class="m-cd" data-cd type="button">🕒 3… 2… 1… הָרִימוּ!</button>
@@ -209,6 +232,7 @@
   <details class="note"><summary>📝 מהלך קצר</summary>
     <p>חֲזָרָה עַל הַתַּבְנִית אֵיפֹה? בְּ... (מִנִּפְלָאוֹת א). בְּאַרְבַּע הַתְּמוּנוֹת שֶׁל הֶעָרִים כֻּלָּם מַרִימִים כַּרְטִיס עִיר: תֵּל אָבִיב, פָּרִיז, וָשִׁינְגְטוֹן, לוֹנְדוֹן. בִּשְׁתֵּי הָאַחֲרוֹנוֹת (טֶנִיס, חֲנוּת סְפּוֹרְט) עוֹנִים בְּקוֹל, וְאָז מְגַלִּים. הַקִּשּׁוּר לַמְּלִיאָה דּוֹרֵשׁ כְּנִיסָה לְמַטָּ"ח.</p>
     <p dir="ltr" style="text-align:left">Screen 1 of the Niflaot item can be shown instead of / after our version.</p>
+    <p dir="ltr" style="text-align:left;font-size:13px">Photos (Wikimedia Commons): Azrieli towers – Eurovaran, CC BY-SA 4.0 · Eiffel Tower – Benh LIEU SONG, public domain · White House – Diego Delso, CC BY-SA 3.0 · Big Ben – Julian Herzog, CC BY 4.0 · Kids tennis training – Николай Панченко, CC BY-SA 4.0 · Sports shop balls – Graf Foto, CC BY-SA 3.0.</p>
   </details>
 </section>
 
@@ -227,6 +251,7 @@
   <div class="m-bar c"><button class="btn ghost small" id="meReset" type="button">↺ טֶקְסְט מְקוֹרִי</button></div>
 
   <p class="lead" style="margin-top:22px">מֵאֵיפֹה הוּא? מֵאֵיפֹה הִיא?</p>
+  <p class="n-src">✨ הַתְּמוּנוֹת מִתּוֹךְ הַמְּלִיאָה שֶׁל נִפְלָאוֹת, מָסָךְ 2: דֶּיְוִיד עוֹמֵד לְיַד בִּיג בֶּן בְּלוֹנְדוֹן, שָׂרָה לְיַד מִגְדַּל אַייפֶל בְּפָרִיז — הֵם טָסִים בַּמָּטוֹס לְיִשְׂרָאֵל, וּבִשְׂדֵה הַתְּעוּפָה יֵשׁ שֶׁלֶט: "בְּרוּכִים הַבָּאִים לְיִשְׂרָאֵל".</p>
   <p class="sub">לוֹחֲצִים עַל יֶלֶד אוֹ יַלְדָּה ⬅ הַכִּתָּה מַרִימָה כַּרְטִיס (לוֹנְדוֹן / פָּרִיז) ⬅ 3-2-1 הָרִימוּ! ⬅ מְגַלִּים.</p>
   <div class="n-kids" id="lkKids"></div>
   <div class="m-stage" style="margin-top:12px"><div class="m-q" id="lkQ">בּוֹחֲרִים יֶלֶד אוֹ יַלְדָּה 👆</div><div class="n-trip" id="lkTrip"></div><div class="m-a" id="lkA"></div></div>
@@ -297,20 +322,24 @@
 
   <div class="m-cw" role="note" style="margin-top:22px">
     <h3>📘 עֲבוֹדַת כִּתָּה בַּסֵּפֶר — עַמּוּדִים 22-24</h3>
-    <p>כָּל תַּלְמִיד עוֹבֵד לְבַד בַּסֵּפֶר: תַּרְגִּיל 17, 18 וְ־19. לוֹחֲצִים עַל עַמּוּד כְּדֵי לִרְאוֹת אוֹתוֹ בְּמָסָךְ מָלֵא.</p>
-    <div class="n-warn">שִׂימוּ לֵב: בַּסֵּפֶר (עַמּוּד 23) דָּוִיד מִפָּרִיז וְשָׂרָה מִלּוֹנְדוֹן - זֶה סִפּוּר אַחֵר מֵהַמָּסָךְ.<br>אֶת הַמָּבוֹךְ בּוֹדְקִים עַל הַתְּמוּנָה שֶׁל הָעַמּוּד.</div>
-    <div class="n-pages">
-      <a href="pages-22-24/p22.png" data-light><img src="pages-22-24/p22.png" alt="נפלאות ג עמוד 22" loading="lazy">עַמּוּד 22</a>
-      <a href="pages-22-24/p23.png" data-light><img src="pages-22-24/p23.png" alt="נפלאות ג עמוד 23" loading="lazy">עַמּוּד 23</a>
-      <a href="pages-22-24/p24.png" data-light><img src="pages-22-24/p24.png" alt="נפלאות ג עמוד 24" loading="lazy">עַמּוּד 24</a>
+    <p>כָּל תַּלְמִיד עוֹבֵד לְבַד בַּסֵּפֶר: תַּרְגִּיל 17, 18 וְ־19. אַחַר כָּךְ בּוֹדְקִים יַחַד עַל הַדַּף שֶׁבַּמָּסָךְ: לוֹחֲצִים עַל מָקוֹם רֵיק וּמוֹפִיעָה הַתְּשׁוּבָה.</p>
+    <div class="n-warn">שִׂימוּ לֵב: בַּסֵּפֶר (עַמּוּד 23) דָּוִיד מִפָּרִיז וְשָׂרָה מִלּוֹנְדוֹן - זֶה סִפּוּר אַחֵר מֵהַמָּסָךְ.</div>
+    <div class="n-ptabs" id="pgTabs"><button type="button" data-pg="22" class="on">עַמּוּד 22 · תַּרְגִּיל 17</button><button type="button" data-pg="23">עַמּוּד 23 · תַּרְגִּיל 18</button><button type="button" data-pg="24">עַמּוּד 24 · תַּרְגִּיל 19</button></div>
+    <p class="sub" style="margin:6px 0">לוֹחֲצִים עַל מָקוֹם רֵיק בַּדַּף ⬅ מוֹפִיעָה הַתְּשׁוּבָה. לְחִיצָה נוֹסֶפֶת מַסְתִּירָה.</p>
+    <div class="n-pagewrap" id="pgWrap"><img id="pgImg" src="pages-22-24/p22.png" alt="נפלאות ג עמוד 22"><div id="pgSpots"></div></div>
+    <div class="m-bar c">
+      <button class="btn good" id="pgAll" type="button">👁 כָּל הַתְּשׁוּבוֹת בַּדַּף</button>
+      <button class="btn ghost" id="pgClr" type="button">↺ מַסְתִּירִים</button>
+      <a class="m-dl" href="pages-22-24/p22.png" id="pgFull" target="_blank" rel="noopener">🔍 מָסָךְ מָלֵא</a>
     </div>
+    <p class="sub" id="pgNote"></p>
     <div class="m-bar">
       <a class="m-dl" href="https://productplayer.cet.ac.il/niflaot3/e8374f19-fdff-451a-af90-5e056779e35c_86b4d33e-60f0-4371-8a5a-1f08fd5ab29e" target="_blank" rel="noopener">✨ עֲבוֹדָה בַּסֵּפֶר: עַמּוּדִים 24-22 (נִפְלָאוֹת)</a>
       <a class="m-dl" href="Niflaot-pages-22-24-book-copy.pdf" target="_blank" rel="noopener">🖨️ עַמּוּדִים 22-24 (PDF)</a>
     </div>
   </div>
   <details class="note"><summary>📝 מהלך קצר</summary>
-    <p>הַתַּלְמִידִים עוֹבְדִים בַּסְּפָרִים שֶׁלָּהֶם; הַתְּמוּנוֹת לַמָּסָךְ וּלְתַלְמִידִים שֶׁחָסְרוּ. אֶת הַמָּבוֹךְ בְּתַרְגִּיל 17 בּוֹדְקִים עַל תְּמוּנַת עַמּוּד 22 (אֵין חִשּׂוּף). תְּשׁוּבוֹת 18: דָּוִיד – פָּרִיז, שָׂרָה – לוֹנְדוֹן, לָבִיא – תֵּל אָבִיב, אֲרִיאֵל – מֶקְסִיקוֹ סִיטִי, מִרְיָם – סִידְנִי. בְּתַרְגִּיל 18 ב — אִם קָשֶׁה לִכְתֹּב אֶת שֵׁם הַמָּקוֹם, עוֹזְרִים. אִם חָסֵר זְמַן — אֶת עַמּוּד 24 גּוֹמְרִים יַחַד בַּבְּדִיקָה שֶׁל תַּרְגִּיל 19.</p>
+    <p>הַתַּלְמִידִים עוֹבְדִים בַּסְּפָרִים שֶׁלָּהֶם; הַתְּמוּנוֹת לַמָּסָךְ וּלְתַלְמִידִים שֶׁחָסְרוּ. תְּשׁוּבוֹת 17: תָּמִיר – תֵּל אָבִיב, מַתָּן וְאוּרִי – עַכּוֹ, דָּנָה – אֵילַת, סַבָּא וְסַבְתָּא – חֵיפָה. תְּשׁוּבוֹת 18: דָּוִיד – פָּרִיז, שָׂרָה – לוֹנְדוֹן, לָבִיא – תֵּל אָבִיב, אֲרִיאֵל – מֶקְסִיקוֹ סִיטִי, מִרְיָם – סִידְנִי. בְּתַרְגִּיל 18 ב — אִם קָשֶׁה לִכְתֹּב אֶת שֵׁם הַמָּקוֹם, עוֹזְרִים. אִם חָסֵר זְמַן — אֶת עַמּוּד 24 גּוֹמְרִים יַחַד בַּבְּדִיקָה שֶׁל תַּרְגִּיל 19.</p>
   </details>
 
   <p class="lead" style="margin-top:22px">בּוֹדְקִים יַחַד: תַּרְגִּיל 19 — בְּ אוֹ מִ?</p>
@@ -446,21 +475,38 @@ $('wsClr').onclick = () => { wBtns.forEach(b => b.classList.remove('on')); paint
 paint();
 
 /* ---------- 2. warm-up = screen 1 "אֵיפֹה? בְּ..." ---------- */
+/* photos: Wikimedia Commons (credits in the teacher note) */
+const WM = 'https://thumb.wikimedia.org/wikipedia/commons/thumb/';
+const PH = {
+  telaviv: WM + '8/8c/Israel_Tel_Aviv_-_Azrieli_towers.jpg/500px-Israel_Tel_Aviv_-_Azrieli_towers.jpg',
+  paris: WM + 'a/a8/Tour_Eiffel_Wikimedia_Commons.jpg/500px-Tour_Eiffel_Wikimedia_Commons.jpg',
+  washington: WM + 'd/d8/The_White_House%2C_Washington%2C_D.C._USA2.jpg/500px-The_White_House%2C_Washington%2C_D.C._USA2.jpg',
+  london: WM + 'f/f7/Big_Ben_Elizabeth_Tower_London_2023_01.jpg/500px-Big_Ben_Elizabeth_Tower_London_2023_01.jpg',
+  tennis: WM + '1/1b/Zvezdny_Astrakhan_Tennis_Kids_Training.jpg/500px-Zvezdny_Astrakhan_Tennis_Kids_Training.jpg',
+  sport: WM + 'a/a3/Engelhorn_sports_B%C3%A4lle.jpg/500px-Engelhorn_sports_B%C3%A4lle.jpg',
+};
+const CITY_CH = [['telaviv', 'תֵּל אָבִיב'], ['paris', 'פָּרִיז'], ['washington', 'וָשִׁינְגְטוֹן'], ['london', 'לוֹנְדוֹן']];
+const PLACE_CH = [['tennis', 'חוּג טֶנִיס'], ['sport', 'חֲנוּת סְפּוֹרְט'], ['park', 'פַּארְק']];
 const WU = [
-  { ic: '🏙️', q: 'אֵיפֹה שִׁיר וְיוֹנָתָן?', a: 'הֵם <b>בְּ</b>תֵל אָבִיב.', city: 'telaviv' },
-  { ic: '🗼', q: 'אֵיפֹה שִׁיר וְיוֹנָתָן?', a: 'הֵם <b>בְּ</b>פָרִיז.', city: 'paris' },
-  { ic: '🏛️', q: 'אֵיפֹה שִׁיר וְיוֹנָתָן?', a: 'הֵם <b>בְּ</b>וָשִׁינְגְטוֹן.', city: 'washington' },
-  { ic: '🕰️', q: 'אֵיפֹה שִׁיר וְיוֹנָתָן?', a: 'הֵם <b>בְּ</b>לוֹנְדוֹן.', city: 'london' },
-  { ic: '🎾', q: 'אֵיפֹה יוֹנָתָן?', a: 'יוֹנָתָן <b>בְּ</b>חוּג טֶנִיס.' },
-  { ic: '⚽', q: 'אֵיפֹה שִׁיר?', a: 'שִׁיר <b>בַּ</b>חֲנוּת סְפּוֹרְט.' },
+  { ph: 'telaviv', q: 'אֵיפֹה שִׁיר וְיוֹנָתָן?', a: 'הֵם <b>בְּ</b>תֵל אָבִיב.', city: 'telaviv', ch: CITY_CH, ok: 'telaviv' },
+  { ph: 'paris', q: 'אֵיפֹה שִׁיר וְיוֹנָתָן?', a: 'הֵם <b>בְּ</b>פָרִיז.', city: 'paris', ch: CITY_CH, ok: 'paris' },
+  { ph: 'washington', q: 'אֵיפֹה שִׁיר וְיוֹנָתָן?', a: 'הֵם <b>בְּ</b>וָשִׁינְגְטוֹן.', city: 'washington', ch: CITY_CH, ok: 'washington' },
+  { ph: 'london', q: 'אֵיפֹה שִׁיר וְיוֹנָתָן?', a: 'הֵם <b>בְּ</b>לוֹנְדוֹן.', city: 'london', ch: CITY_CH, ok: 'london' },
+  { ph: 'tennis', q: 'אֵיפֹה יוֹנָתָן?', a: 'יוֹנָתָן <b>בְּ</b>חוּג טֶנִיס.', ch: PLACE_CH, ok: 'tennis' },
+  { ph: 'sport', q: 'אֵיפֹה שִׁיר?', a: 'שִׁיר <b>בַּ</b>חֲנוּת סְפּוֹרְט.', ch: PLACE_CH, ok: 'sport' },
 ];
-const wuCards = cardRow($('wuCards'), [cityCard('telaviv', 'תֵּל אָבִיב'), cityCard('paris', 'פָּרִיז'), cityCard('washington', 'וָשִׁינְגְטוֹן'), cityCard('london', 'לוֹנְדוֹן')]);
+const wuCards = cardRow($('wuCards'), CITY_CH.map(([id, he]) => cityCard(id, he)));
 let wi = -1;
-$('wuRound').innerHTML = WU.map((w, i) => `<button type="button" data-i="${i}" aria-label="${w.q}">${w.ic}</button>`).join('');
+$('wuRound').innerHTML = WU.map((w, i) => `<button type="button" class="ph" data-i="${i}" aria-label="${w.q}" style="background-image:url('${PH[w.ph]}')"></button>`).join('');
 const wuBtns = [...$('wuRound').children];
+function wuDone(){ const w = WU[wi]; $('wuA').innerHTML = w.a; $('wuSt').className = 'm-stage yes'; if (w.city) wuCards.hit(w.city); else wuCards.clear(); wuBtns[wi].classList.add('done');
+  $('wuCh').querySelectorAll('button').forEach(b => { if (b.dataset.k === w.ok) b.classList.add('ok'); b.disabled = true; }); beep(880, .25); }
 wuBtns.forEach(b => b.onclick = () => { wi = +b.dataset.i; const w = WU[wi]; wuBtns.forEach(x => x.classList.toggle('on', x === b));
-  $('wuPic').textContent = w.ic; $('wuQ').textContent = w.q; $('wuA').innerHTML = ''; $('wuSt').className = 'm-stage'; wuCards.clear(); beep(620, .1); });
-$('wuRv').onclick = () => { if (wi < 0) return wuBtns[0].click(); const w = WU[wi]; $('wuA').innerHTML = w.a; $('wuSt').className = 'm-stage yes'; if (w.city) wuCards.hit(w.city); else wuCards.clear(); wuBtns[wi].classList.add('done'); beep(880, .25); };
+  $('wuPic').innerHTML = `<img src="${PH[w.ph]}" alt="">`; $('wuQ').textContent = w.q; $('wuA').innerHTML = ''; $('wuSt').className = 'm-stage'; wuCards.clear();
+  $('wuCh').innerHTML = w.ch.map(([k, he]) => `<button type="button" data-k="${k}">${he}</button>`).join('');
+  $('wuCh').querySelectorAll('button').forEach(c => c.onclick = () => { if (c.dataset.k === w.ok) wuDone(); else { c.classList.add('no'); c.textContent = '✘ ' + c.textContent; c.disabled = true; beep(260, .2); } });
+  beep(620, .1); });
+$('wuRv').onclick = () => { if (wi < 0) return wuBtns[0].click(); wuDone(); };
 
 /* ---------- 3b. teacher's own story (kept in this browser) ---------- */
 const ME_KEY = 'nk-22-24-me-v2', meDefault = $('mMe').innerHTML;
@@ -479,7 +525,8 @@ let lki = -1;
 const lkBtns = [...$('lkKids').children];
 lkBtns.forEach(b => b.onclick = () => { lki = +b.dataset.i; lkBtns.forEach(x => x.classList.toggle('on', x === b)); $('lkQ').textContent = LK[lki].q; $('lkTrip').innerHTML = ''; $('lkA').innerHTML = ''; lkCards.clear(); beep(620, .1); });
 $('lkRv').onclick = () => { if (lki < 0) return lkBtns[0].click(); const k = LK[lki];
-  $('lkTrip').innerHTML = `<span class="n-flag">${P.FLAGS[k.city]}<span class="lab">${k.cityHe}</span></span><span class="dash"></span>✈️<span class="dash"></span><span class="n-flag">${P.FLAGS.israel}<span class="lab">יִשְׂרָאֵל</span></span>`;
+  /* the two pictures from the class item, screen 2 (globe/plane, then the airport) */
+  $('lkTrip').innerHTML = `<span class="tp"><img src="pages-22-24/${k.k}-globe.png" alt="">${k.cityHe} ⬅ יִשְׂרָאֵל</span><span style="font-size:40px">✈️</span><span class="tp"><img src="pages-22-24/${k.k}-airport.png" alt="">בְּרוּכִים הַבָּאִים לְיִשְׂרָאֵל</span>`;
   $('lkA').innerHTML = k.a; lkCards.hit(k.city); beep(880, .25); };
 
 /* ---------- 3d. questions to the class ---------- */
@@ -521,8 +568,31 @@ $('t2Next').onclick = () => { ti = (ti + 1) % TF.length; tfShow(); }; $('t2Prev'
 $('t2Sum').onclick = () => { $('t2SumBox').hidden = !$('t2SumBox').hidden; };
 tfShow();
 
-/* ---------- 4b. book pages: click for full screen ---------- */
-document.querySelectorAll('[data-light]').forEach(a => a.onclick = e => { e.preventDefault(); $('nLight').querySelector('img').src = a.getAttribute('href'); $('nLight').classList.add('on'); });
+/* ---------- 4b. book pages 22-24: the real page with clickable answer spots ----------
+ * spot = [x, y, w, h, answer] in image pixels (pages are 957 px wide); the maze answers were traced by the planner */
+const PG = {
+  22: { h: 1107, note: 'תַּרְגִּיל 17 א: לוֹחֲצִים עַל הַמִּשְׁבֶּצֶת מִתַּחַת לְכָל שֶׁלֶט — מִי גָּר שָׁם. 17 ב: לוֹחֲצִים עַל הַקַּוִּים.', spots: [
+    [725, 797, 130, 34, 'מַתָּן וְאוּרִי'], [548, 797, 130, 34, 'סַבָּא וְסַבְתָּא'], [377, 797, 130, 34, 'תָּמִיר'], [205, 797, 130, 34, 'דָּנָה'],
+    [318, 914, 170, 34, 'עַכּוֹ'], [378, 965, 290, 34, 'גָּר בְּתֵל אָבִיב'], [592, 1013, 300, 34, 'אֵיפֹה דָּנָה גָּרָה'],
+    [592, 1061, 310, 34, 'אֵיפֹה סַבָּא וְסַבְתָּא גָּרִים'], [210, 1064, 190, 34, 'גָּרִים בְּחֵיפָה']] },
+  23: { h: 1106, note: 'תַּרְגִּיל 18 א: לוֹחֲצִים עַל הַקַּו בְּכָל בּוּעָה. 18 ב: כָּל תַּלְמִיד כּוֹתֵב מֵאֵיפֹה הוּא.', spots: [
+    [640, 470, 190, 34, 'פָּרִיז'], [228, 432, 185, 34, 'לוֹנְדוֹן'], [195, 588, 210, 34, 'תֵּל אָבִיב'], [640, 893, 190, 34, 'סִידְנִי'],
+    [218, 918, 250, 34, 'מֶקְסִיקוֹ סִיטִי'], [600, 1057, 240, 34, 'כָּל אֶחָד כּוֹתֵב ✍', 'q']] },
+  24: { h: 1105, note: 'תַּרְגִּיל 19: לוֹחֲצִים עַל כָּל מָקוֹם רֵיק — בְּ אוֹ מִ.', spots: [
+    [545, 844, 50, 32, 'מִ'], [700, 884, 46, 32, 'בְּ'], [455, 884, 50, 32, 'בְּ'], [622, 952, 50, 32, 'בְּ']] },
+};
+let pgCur = 22;
+function pgShow(n){
+  pgCur = n; const p = PG[n];
+  $('pgImg').src = `pages-22-24/p${n}.png`; $('pgImg').alt = 'נפלאות ג עמוד ' + n; $('pgFull').href = `pages-22-24/p${n}.png`; $('pgNote').textContent = p.note;
+  $('pgSpots').innerHTML = p.spots.map(([x, y, w, h, a, c]) => `<button type="button" class="n-spot ${c || ''}" style="left:${x / 9.57}%;top:${y / p.h * 100}%;width:${w / 9.57}%;height:${h / p.h * 100}%"><span>${a}</span></button>`).join('');
+  $('pgSpots').querySelectorAll('.n-spot').forEach(b => b.onclick = () => { b.classList.toggle('on'); if (b.classList.contains('on')) beep(820, .15); });
+  $('pgTabs').querySelectorAll('button').forEach(b => b.classList.toggle('on', +b.dataset.pg === n));
+}
+$('pgTabs').querySelectorAll('button').forEach(b => b.onclick = () => pgShow(+b.dataset.pg));
+$('pgAll').onclick = () => { $('pgSpots').querySelectorAll('.n-spot').forEach(b => b.classList.add('on')); beep(880, .25); };
+$('pgClr').onclick = () => $('pgSpots').querySelectorAll('.n-spot').forEach(b => b.classList.remove('on'));
+pgShow(22);
 $('nLight').onclick = () => $('nLight').classList.remove('on');
 document.addEventListener('keydown', e => { if (e.key === 'Escape') $('nLight').classList.remove('on'); });
 
