@@ -466,6 +466,21 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 .s9-frame .a .w{background:var(--sky)}.s9-frame .b .w{background:var(--coral)}
 .s9-frame small{font-size:.8em;color:var(--muted);font-weight:700}
 /* reading path */
+/* 2.20 reading = the 2.4 engine (CSS copied from Olam-street-2.1-2.4.html) */
+.modes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.subpick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.subpick .chip{font-size:24px;min-width:56px}
+.card{background:var(--surface);border:3px solid var(--line);border-radius:26px;box-shadow:var(--shadow);text-align:center;padding:18px;max-width:560px;margin:0 auto}
+.card .sy{font-size:clamp(120px,22vw,190px);line-height:1.25;font-weight:600;font-family:var(--f-he);min-height:1.3em}
+.card .snd{direction:ltr;font-family:var(--f-display);font-size:26px;font-weight:800;color:var(--sky);min-height:1.3em}
+.card .cnt{color:var(--muted);font-weight:700}
+.card .ctrl{display:flex;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.card.pop .sy{animation:pop .35s}
+@keyframes pop{from{transform:scale(.6);opacity:.3}}
+.ntable{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px;margin-top:16px;background:#e9dcb8;border-radius:18px;padding:10px}
+.ntable div{background:#fffaf0;border-radius:10px;text-align:center;padding:4px}
+.ntable b{display:block;font-size:15px}.ntable span{font-size:30px}
+.subpick .chip{cursor:pointer}.subpick .chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .s9-path{background:var(--surface);border:3px solid var(--line);border-radius:24px;padding:6px;max-width:1000px;margin:0 auto}
 .s9-path svg{display:block;width:100%;height:auto}
 .s9-path .dots{fill:none;stroke:#9aa3b2;stroke-width:5;stroke-dasharray:2 12;stroke-linecap:round}
@@ -600,16 +615,25 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
   <section class="step" id="s5">
     <div class="step-head"><span class="tag gold"><span class="num">2.20</span>תַּרְגִּיל קְרִיאָה</span><a class="wb" href="https://online.fliphtml5.com/rechovhaolam/Rechov-HaOlam---Unit-2_03/#p=15" target="_blank" rel="noopener">📖 עַמּוּד 15</a></div>
     <div class="cw" role="note"><span class="ic">📝</span><div><b>עֲבוֹדָה בַּחוֹבֶרֶת — עַמּוּד 15:</b> קוֹרְאִים לְבַד בְּשֶׁקֶט אֶת הַשְּׁבִיל.</div><a class="wb" href="https://online.fliphtml5.com/rechovhaolam/Rechov-HaOlam---Unit-2_03/#p=15" target="_blank" rel="noopener">📖 עַמּוּד 15</a></div>
-    <p class="lead" style="margin-top:16px">קִרְאוּ אֶת הָאוֹתִיּוֹת עִם הַנִּקּוּד — קוֹרְאִים יַחַד</p>
-    <div class="s9-path"><svg viewBox="0 0 1000 600" id="pathSvg" role="img" aria-label="שביל הקריאה"></svg></div>
-    <div class="s9-ctl">
-      <button class="btn primary big" id="pNext" type="button">▶ קוֹרְאִים</button>
-      <button class="btn" id="pPrev" type="button">▶ הַקּוֹדֵם</button>
-      <button class="btn" id="pAuto" type="button">⏯ אוֹטוֹמָטִי</button>
-      <label>🐢 <input type="range" id="pSpeed" min="0.8" max="3" step="0.1" value="1.8" aria-label="מהירות"> 🐇 <span id="pSpeedV" dir="ltr">1.8s</span></label>
-      <button class="btn" id="pSay" type="button">🔊</button>
-      <button class="btn ghost" id="pClr" type="button">↺ מֵהַהַתְחָלָה</button>
-      <span class="r-count" id="pCnt" dir="ltr" style="font-weight:800;color:var(--muted)">0 / 36</span>
+    <p class="lead" style="margin-top:16px">קִרְאוּ אֶת הָאוֹתִיּוֹת עִם הַנִּקּוּד. שׁוֹמְעִים — וְחוֹזְרִים בְּקוֹל!</p>
+    <div class="modes" id="modes">
+      <button class="btn" type="button" data-m="book" aria-pressed="true">📖 לְפִי הַסֵּפֶר</button>
+      <button class="btn" type="button" data-m="letter" aria-pressed="false">🔤 אוֹת אַחַת</button>
+      <button class="btn" type="button" data-m="vowel" aria-pressed="false">◌ֿ תְּנוּעָה אַחַת</button>
+      <button class="btn" type="button" data-m="mix" aria-pressed="false">🔀 עִרְבּוּב</button>
+      <span class="spacer"></span>
+      <label style="font-weight:700"><input type="checkbox" id="showSnd" checked> הַצֵּג צְלִיל</label>
+    </div>
+    <div class="subpick" id="subpick" hidden></div>
+    <div class="card" id="card">
+      <div class="cnt" id="cnt"></div>
+      <div class="sy" id="big"></div>
+      <div class="snd" id="snd"></div>
+      <div class="ctrl">
+        <button class="btn" id="prev" type="button">▶ הַקּוֹדֵם</button>
+        <button class="btn" id="again" type="button">🔊 שׁוּב</button>
+        <button class="btn primary big" id="next" type="button">הַבָּא ◀</button>
+      </div>
     </div>
 
     <p class="lead" style="margin-top:22px">אֵיזוֹ הֲבָרָה אָמַרְתִּי?</p>
@@ -618,8 +642,9 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
     <div class="s9-four" id="gFour"></div>
     <div class="bar2" style="justify-content:center;margin-top:12px"><button class="s9-peek" id="gPeek" type="button">👁 לַמּוֹרֶה (לוֹחֲצִים וּמַחֲזִיקִים)</button><span class="s9-peekout" id="gPeekOut"></span><button class="cdbtn" id="cdG" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn primary big" id="gRev" type="button">👁 הַצִּיגוּ</button><button class="btn primary" id="gNext" type="button">הַבָּא ◀</button><button class="btn ghost" id="gNew" type="button">↺ שׁוּב</button><a class="rc" href="Olam-street-2.19-and-2.20-number-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי מִסְפָּרִים 1–4</a></div>
 
-    <div class="s9-nik" id="nik"><span class="lab">סִימָנֵי הַנִּקּוּד</span></div>
-    <details class="tnote" open><summary>📝 מהלך קצר</summary><p>1. קוֹדֶם כָּל תַּלְמִיד קוֹרֵא לְבַד בַּחוֹבֶרֶת, בְּלַחַשׁ. 2. אַחַר כָּךְ קוֹרְאִים יַחַד עַל הַלּוּחַ: "▶ קוֹרְאִים" מַדְלִיק הֲבָרָה אַחַת בְּכָל פַּעַם (אוֹ "אוֹטוֹמָטִי" עִם מְהִירוּת), וְכָל הַכִּתָּה קוֹרֵאת בְּקוֹל. שִׂימוּ לֵב: בְּסוֹף הַשּׁוּרָה הַשְּׁלִישִׁית וְהָרְבִיעִית יֵשׁ ט בְּלִי נִקּוּד, כְּמוֹ בַּחוֹבֶרֶת. 3. "אֵיזוֹ הֲבָרָה אָמַרְתִּי?" — הַמּוֹרֶה מַחֲזִיק אֶת "👁 לַמּוֹרֶה" כְּדֵי לִרְאוֹת מָה לוֹמַר, אוֹמֵר אֶת הַהֲבָרָה, סוֹפְרִים, וְלוֹחֲצִים עַל הַתֵּבָה. אִם אֵין זְמַן — קוֹרְאִים יַחַד רַק אֶת שְׁתֵּי הַשּׁוּרוֹת הָרִאשׁוֹנוֹת.</p></details>
+    <p class="sub" style="margin:16px 0 0;font-weight:800">סִימָנֵי הַנִּקּוּד</p>
+    <div class="ntable" id="ntable" aria-label="סימני הניקוד" style="margin-top:6px"></div>
+    <details class="tnote" open><summary>📝 מהלך קצר</summary><p>1. קוֹדֶם כָּל תַּלְמִיד קוֹרֵא לְבַד בַּחוֹבֶרֶת, בְּלַחַשׁ. 2. אַחַר כָּךְ קוֹרְאִים יַחַד עַל הַלּוּחַ, כְּמוֹ בְּ־2.4: "לְפִי הַסֵּפֶר" — הֲבָרָה אַחַת בְּכָל פַּעַם, בַּסֵּדֶר שֶׁל הַחוֹבֶרֶת; שׁוֹמְעִים ("🔊 שׁוּב") וְכָל הַכִּתָּה חוֹזֶרֶת בְּקוֹל. אַחַר כָּךְ "אוֹת אַחַת", "תְּנוּעָה אַחַת" אוֹ "עִרְבּוּב". חִצִּים בַּמִּקְלֶדֶת עוֹבְדִים גַּם. שִׂימוּ לֵב: פַּעֲמַיִם יֵשׁ ט בְּלִי נִקּוּד, כְּמוֹ בַּחוֹבֶרֶת. 3. "אֵיזוֹ הֲבָרָה אָמַרְתִּי?" — הַמּוֹרֶה מַחֲזִיק אֶת "👁 לַמּוֹרֶה" כְּדֵי לִרְאוֹת מָה לוֹמַר, אוֹמֵר אֶת הַהֲבָרָה, סוֹפְרִים, וְלוֹחֲצִים עַל הַתֵּבָה. אִם אֵין זְמַן — קוֹרְאִים יַחַד רַק אֶת שְׁתֵּי הַשּׁוּרוֹת הָרִאשׁוֹנוֹת.</p></details>
     <div class="cw" role="note"><span class="ic">📝</span><div><b>עֲבוֹדַת כִּתָּה בַּחוֹבֶרֶת — עַמּוּד 15</b> · קְרִיאַת הַשְּׁבִיל. אֶפְשָׁר לָתֵת צִיּוּן (לֹא חוֹבָה).</div></div>
   </section>
 
@@ -783,29 +808,47 @@ const PATH = ['חַ', 'סַ', 'לַ', 'טַ', 'חֹ', 'סֹ', 'לֹ', 'טֹ', '�
   'הַ', 'חָ', 'סָ', 'לָ', 'חוּ', 'סוּ', 'לוּ', 'טוּ', 'הוּ',
   'הָ', 'חִ', 'סִ', 'לִ', 'טִ', 'חֹ', 'סֹ', 'לֹ', 'ט',
   'הִ', 'חִ', 'סִ', 'לִ', 'טִ', 'חֹ', 'סֹ', 'לֹ', 'ט'];
-const XS = j => 920 - j * 106, YS = r => 95 + r * 135;
-const pos = PATH.map((_, k) => { const r = Math.floor(k / 9), j = k % 9; return [XS(r % 2 ? 8 - j : j), YS(r)]; });
-let d = `M975 ${YS(0)} L${pos[0][0]} ${pos[0][1]}`;
-for (let k = 1; k < PATH.length; k++){
-  const [x0, y0] = pos[k - 1], [x1, y1] = pos[k];
-  if (y0 === y1) d += ` L${x1} ${y1}`; else { const side = x0 > 500 ? 1 : -1, cx = x0 + side * 60; d += ` C${cx} ${y0} ${cx} ${y1} ${x1} ${y1}`; }
+/* the 2.4 reading engine (one big card, book order, modes: book / one letter / one vowel / mix) */
+const SNDL = { 'ח': 'kh', 'ס': 's', 'ל': 'l', 'ט': 't', 'ה': 'h' };
+const vowelOf = s => /וּ/.test(s) ? 'u' : /ֹ/.test(s) ? 'o' : /ִ/.test(s) ? 'i' : /[ַָ]/.test(s) ? 'a' : '';
+const BOOK = PATH.map(t => { const l = t[0], v = vowelOf(t); return { t, l, v, s: SNDL[l] + (v || '') }; });
+const LETTERS = [['ח', 'ח'], ['ס', 'ס'], ['ל', 'ל'], ['ט', 'ט'], ['ה', 'ה']];
+const VOWELS = [['a', 'אַ אָ · a'], ['o', 'אֹ · o'], ['u', 'אוּ · u'], ['i', 'אִ · i']];
+let mode = 'book', sub = null, list = BOOK, idx = 0;
+function build(){
+  if (mode === 'book') list = BOOK;
+  else if (mode === 'letter') list = BOOK.filter(x => x.l === sub);
+  else if (mode === 'vowel') list = BOOK.filter(x => x.v === sub);
+  else list = shuffle(BOOK);
+  idx = 0; show(true);
 }
-const last = pos[PATH.length - 1];
-let svg = `<path class="dots" d="${d} L${last[0] + 50} ${last[1]}"/>`;
-svg += `<circle cx="975" cy="${YS(0)}" r="13" fill="var(--green)"/><path d="M${last[0] + 46} ${last[1] - 16} L${last[0] + 70} ${last[1]} L${last[0] + 46} ${last[1] + 16}Z" fill="var(--coral)"/>`;
-svg += PATH.map((s, k) => `<g class="sy" data-k="${k}"><circle cx="${pos[k][0]}" cy="${pos[k][1]}" r="46"/><text x="${pos[k][0]}" y="${pos[k][1] + 2}">${s}</text></g>`).join('');
-$('pathSvg').innerHTML = svg;
-const SY = [...$('pathSvg').querySelectorAll('.sy')];
-let pk = -1, autoT = null;
-function light(k){ pk = k; SY.forEach((g, i) => { g.classList.toggle('on', i === k); g.classList.toggle('read', i < k); }); $('pCnt').textContent = (k + 1) + ' / ' + PATH.length; if (k >= 0) tone(true, 620); }
-SY.forEach((g, i) => g.onclick = () => light(i));
-const pNext = () => { if (pk >= PATH.length - 1){ stopAuto(); tone(true); burst($('pathSvg'), ['⭐', '🎉']); return; } light(pk + 1); };
-$('pNext').onclick = pNext; $('pPrev').onclick = () => { if (pk > 0) light(pk - 1); };
-function stopAuto(){ clearInterval(autoT); autoT = null; $('pAuto').textContent = '⏯ אוֹטוֹמָטִי'; }
-$('pAuto').onclick = () => { if (autoT) return stopAuto(); $('pAuto').textContent = '⏸ עוֹצְרִים'; if (pk >= PATH.length - 1) light(-1); pNext(); autoT = setInterval(pNext, +$('pSpeed').value * 1000); };
-$('pSpeed').oninput = () => { $('pSpeedV').textContent = $('pSpeed').value + 's'; if (autoT){ clearInterval(autoT); autoT = setInterval(pNext, +$('pSpeed').value * 1000); } };
-$('pSay').onclick = () => { if (pk >= 0 && PATH[pk] !== 'ט') say(PATH[pk], .7); };
-$('pClr').onclick = () => { stopAuto(); light(-1); $('pCnt').textContent = '0 / ' + PATH.length; };
+function show(speak){
+  const it = list[idx];
+  $('big').textContent = it.t; $('snd').textContent = $('showSnd').checked ? it.s : '';
+  $('cnt').textContent = `${idx + 1} / ${list.length}`;
+  const c = $('card'); c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop');
+  $('prev').disabled = idx === 0;
+  $('next').textContent = idx === list.length - 1 ? '↺ מֵהַהַתְחָלָה' : 'הַבָּא ◀';
+  if (speak && it.v) setTimeout(() => say(it.t, .7), 120);
+}
+function subPicker(){
+  const box = $('subpick');
+  if (mode === 'letter' || mode === 'vowel'){
+    const opts = mode === 'letter' ? LETTERS : VOWELS;
+    if (!opts.some(o => o[0] === sub)) sub = opts[0][0];
+    box.innerHTML = opts.map(([k, t]) => `<button class="chip${k === sub ? ' on' : ''}" type="button" data-k="${k}">${t}</button>`).join('');
+    box.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { sub = b.dataset.k; subPicker(); build(); });
+    box.hidden = false;
+  } else box.hidden = true;
+}
+document.querySelectorAll('#modes [data-m]').forEach(b => b.onclick = () => { mode = b.dataset.m; document.querySelectorAll('#modes [data-m]').forEach(x => x.setAttribute('aria-pressed', x === b)); subPicker(); build(); });
+$('next').onclick = () => { if (idx < list.length - 1) idx++; else { if (mode === 'mix') list = shuffle(BOOK); idx = 0; } show(true); };
+$('prev').onclick = () => { if (idx > 0){ idx--; show(true); } };
+$('again').onclick = () => { if (list[idx].v) say(list[idx].t, .7); };
+$('showSnd').onchange = () => show(false);
+document.addEventListener('keydown', e => { const r = $('card').getBoundingClientRect(); if (r.top > innerHeight || r.bottom < 0 || /input|textarea/i.test(document.activeElement.tagName)) return;
+  if (e.key === 'ArrowLeft'){ $('next').click(); e.preventDefault(); } else if (e.key === 'ArrowRight'){ $('prev').click(); e.preventDefault(); } });
+build(); show(false);
 
 /* ---------- 5b. "which syllable did I say?" ---------- */
 const SET = [...new Set(PATH.filter(s => s !== 'ט'))];
@@ -836,7 +879,7 @@ newGame();
 
 /* ---------- 5c. nikud chart (as in the book: the mark on א) ---------- */
 const NIK = [['קָמָץ', 'אָ'], ['פַּתָּח', 'אַ'], ['סֶגּוֹל', 'אֶ'], ['צֵירֵה', 'אֵ'], ['חֲטַף־קָמָץ', 'אֳ'], ['חֲטַף־פַּתָּח', 'אֲ'], ['חֲטַף־סֶגּוֹל', 'אֱ'], ['קֻבּוּץ', 'אֻ'], ['חִירִיק', 'אִ'], ['חוֹלָם', 'אֹ'], ['שׁוּרוּק', 'וּ']];
-$('nik').insertAdjacentHTML('beforeend', NIK.map(([n, m]) => `<div><b>${n}</b><span>${m}</span></div>`).join(''));
+$('ntable').innerHTML = NIK.map(([n, m]) => `<div><b>${n}</b><span>${m}</span></div>`).join('');
 
 /* ---------- exit ticket ---------- */
 const ALPHA = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ך', 'ל', 'מ', 'ם', 'נ', 'ן', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'];
