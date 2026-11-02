@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="gate.js?v=1793100000"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>נפלאות ג — עמודים 22–24 · מֵאֵיפֹה הֵם?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="lesson-kit.css?v=1792519767">
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+<style>
+/* Niflaot pages 22-24 — class names start with m- so they never clash with lesson-kit.css */
+.m-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+.m-bar.c{justify-content:center}
+.m-cd{font:800 18px var(--f-he);border:0;border-radius:12px;padding:10px 18px;background:var(--coral);color:#fff;cursor:pointer}
+.m-cd:hover{filter:brightness(.93)}
+.m-dl{display:inline-flex;gap:8px;align-items:center;text-decoration:none;font:700 16px var(--f-he);background:#fff;color:#16527d;border:2px solid var(--sky);border-radius:12px;padding:8px 14px}
+.m-dl:hover{background:#f0f7fd}
+.m-count{font:800 22px var(--f-display);color:var(--muted);direction:ltr;unicode-bidi:isolate}
+.m-cw{background:var(--gold-soft);border:3px solid #e5c05a;border-radius:20px;padding:14px 18px;margin:10px 0}
+.m-cw h3{margin:0 0 4px;font:800 22px var(--f-display)}
+.m-cw p{margin:0 0 8px}
+.m-copy{width:100%;height:min(78vh,900px);border:2px solid var(--line);border-radius:12px;background:#e9e9ee;display:block}
+.m-en{direction:ltr;text-align:left}
+
+/* 1. word search */
+.m-ws{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:16px;align-items:start}
+.m-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;max-width:720px;margin:0 auto;width:100%}
+.m-cell{font:800 clamp(22px,3.6vw,38px)/1 var(--f-he);aspect-ratio:1;background:#fff;border:3px solid var(--line);border-radius:12px;display:grid;place-items:center}
+.m-cell.on{border-color:var(--green);background:var(--green-soft);box-shadow:0 0 0 3px var(--green) inset}
+.m-cell.hl{border-color:var(--coral);background:var(--coral-soft)}
+.m-words{display:grid;gap:8px}
+.m-word{font:800 24px var(--f-he);background:#f3ecff;border:2px solid #7a4cc2;border-radius:12px;padding:6px 10px;cursor:pointer;color:var(--ink)}
+.m-word.on{background:var(--green-soft);border-color:var(--green);text-decoration:line-through}
+
+/* 2 + 3c: stage and city cards */
+.m-stage{width:min(620px,100%);margin:0 auto;background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);padding:14px;text-align:center}
+.m-stage.yes{background:var(--green-soft);border-color:var(--green)}
+.m-stage svg{height:clamp(140px,26vh,220px);width:auto}
+.m-q{font:800 clamp(30px,5vw,46px)/1.3 var(--f-he)}
+.m-a{font:800 clamp(24px,4vw,36px)/1.5 var(--f-he);min-height:56px;color:#1d6a39}
+.m-a b,.m-rule b,.m-sent b{color:#7a4cc2}
+.m-cards{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:12px}
+.m-card{min-width:120px;background:#fff;border:3px solid var(--ink);border-radius:18px;padding:6px 16px;text-align:center;font:800 32px/1.3 var(--f-he);transition:.15s}
+.m-card .ic{display:block;font-size:30px}
+.m-card.big{font-size:72px;min-width:150px;line-height:1.15}
+.m-card.big small{display:block;font:800 18px var(--f-he);color:#7a4cc2}
+.m-card.hide{opacity:.2}
+.m-card.hit{border-color:var(--green);background:var(--green-soft);transform:scale(1.06)}
+
+/* 3a rule card, 3b teacher example */
+.m-rule{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.m-rule > div{background:#f3ecff;border:3px solid #7a4cc2;border-radius:20px;padding:14px;text-align:center}
+.m-rule .k{font:800 clamp(30px,5vw,44px)/1.3 var(--f-he)}
+.m-rule .k span{color:var(--coral);margin:0 6px}
+.m-rule .e{font:700 24px var(--f-he);margin-top:6px}
+.m-rule .en{font:700 15px var(--f-display);color:var(--muted);direction:ltr}
+.m-me{background:#fff;border:3px dashed var(--sky);border-radius:20px;padding:12px 16px;font:800 clamp(26px,4vw,36px)/1.6 var(--f-he);text-align:center;outline:none}
+.m-me:focus{border-style:solid;background:#f7fbff}
+
+/* 3c interactive map */
+.m-mapwrap{background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);padding:8px}
+.m-mapwrap svg{display:block;width:100%;height:auto}
+.m-kid{cursor:pointer}
+.m-kid .ring{fill:transparent;stroke:transparent;stroke-width:4}
+.m-kid:hover .ring{stroke:var(--sky)}
+.m-kid.cur .ring{fill:#fff4d6;stroke:var(--coral)}
+.m-kid.done .ring{fill:var(--green-soft);stroke:var(--green)}
+.m-arrow{stroke:#7a4cc2;stroke-width:4;stroke-dasharray:9 6;fill:none;opacity:0;transition:opacity .3s}
+.m-arrow.on{opacity:1}
+.city.hit circle{fill:var(--green);r:11}
+
+/* 4b check */
+.m-sent{font:800 clamp(28px,4.6vw,44px)/1.7 var(--f-he);text-align:center;background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);padding:18px 14px}
+.m-sent .gap{display:inline-block;min-width:1.6em;border-bottom:4px solid var(--coral);background:var(--coral-soft);border-radius:8px 8px 0 0;color:transparent}
+.m-sent .fill{background:var(--green-soft);border-radius:10px;padding:0 6px}
+.m-tagx{font:700 16px var(--f-he);color:var(--muted);text-align:center;margin-bottom:4px}
+
+/* 4c pair talk */
+.m-talk{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(220px,1fr);gap:16px;align-items:center}
+.m-prompts{display:grid;gap:10px}
+.m-pr{background:#fff;border:3px solid var(--line);border-radius:18px;padding:10px 14px;font:800 clamp(22px,3.4vw,30px)/1.5 var(--f-he)}
+.m-pr .ar{color:var(--coral);margin:0 6px}
+.m-pr b{color:#7a4cc2}
+.m-timer{background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);padding:12px;text-align:center}
+.m-timer .t{font:800 clamp(56px,10vw,90px)/1 var(--f-display);direction:ltr}
+.m-timer .t.end{color:var(--coral)}
+.m-timer .rd{font:800 20px var(--f-he);color:var(--muted)}
+.m-rounds{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.m-rounds button.on{background:var(--sky);color:#fff}
+
+/* 5 exit ticket */
+.m-ex{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.m-ex .box{background:#fff;border:3px solid var(--line);border-radius:18px;padding:12px 16px}
+.m-ex .he{font:700 24px/2 var(--f-he);direction:rtl;text-align:right}
+.m-ex .o{color:#16527d;font-weight:800;white-space:nowrap}
+.m-ex .o span{padding:0 4px;border-radius:50%}
+.m-ex.show .o span.r{outline:3px solid var(--green);background:var(--green-soft);border-radius:999px}
+.m-ex .line{display:inline-block;min-width:120px;border-bottom:2px solid var(--ink)}
+
+/* countdown overlay */
+#mCd{position:fixed;inset:0;z-index:10001;background:rgba(35,35,58,.9);color:#fff;display:none;place-items:center;text-align:center;font:800 min(40vw,320px)/1 var(--f-display)}
+#mCd.on{display:grid}#mCd small{display:block;font-size:min(9vw,80px);margin-top:10px}
+
+@media(max-width:760px){.m-ws,.m-rule,.m-talk,.m-ex{grid-template-columns:1fr}.m-grid{gap:3px}.m-cell{border-width:2px;border-radius:8px}}
+</style>
+</head>
+<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><a href="https://eldar1234334.github.io/SpellQuest-AlphaBet/" target="_blank" rel="noopener">🧙 SpellQuest AlphaBet</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../niflaot-lessons/index.html'}">← חזרה</button></nav>
+
+<div class="wrap">
+<header class="top">
+  <div><p class="crumb">NIFLAOT LESSONS · נִפְלָאוֹת ג · עַמּוּדִים 22–24</p><h1>מֵאֵיפֹה הֵם?</h1></div>
+  <p class="he-title">אֲנִי מִ... · אֲנִי גָּר בְּ...</p>
+</header>
+<nav class="steps"><ol>
+  <li><a href="#s1"><b>1</b> כַּרְטִיס כְּנִיסָה</a></li><li><a href="#s2"><b>2</b> חִמּוּם</a></li><li><a href="#s3"><b>3</b> בְּ אוֹ מִ?</a></li><li><a href="#s4"><b>4</b> עוֹשִׂים</a></li><li><a href="#s5"><b>5</b> Exit Ticket</a></li><li><a href="#s6"><b>🖨️</b> הַדְפָּסָה</a></li>
+</ol></nav>
+
+<!-- ===== 1 entry ticket ===== -->
+<section class="step" id="s1">
+  <span class="tag"><span class="tnum">1</span> כַּרְטִיס כְּנִיסָה · 2–3 דַּקּוֹת</span>
+  <p class="lead">תַּפְזֹרֶת — מוֹצְאִים אֶת הַמִּלִּים</p>
+  <p class="sub">הַמִּלִּים כְּתוּבוֹת מִיָּמִין לִשְׂמֹאל אוֹ מִלְמַעְלָה לְמַטָּה. עַל הַמָּסָךְ — לוֹחֲצִים עַל מִלָּה בָּרְשִׁימָה כְּדֵי לְסַמֵּן אוֹתָהּ בַּתַּפְזֹרֶת.</p>
+  <div class="panel">
+    <div class="m-ws">
+      <div class="m-grid" id="mGrid"></div>
+      <div class="m-words" id="mWords"></div>
+    </div>
+    <div class="m-bar c">
+      <span class="m-count" id="mFound">0 / 8</span>
+      <button class="btn good" id="wsAll" type="button">👁 הַצִּיגוּ אֶת כָּל הַמִּלִּים</button>
+      <button class="btn ghost" id="wsClr" type="button">↺ מֵהַהַתְחָלָה</button>
+      <a class="m-dl" href="Niflaot-pages-22-24-word-search.pdf" target="_blank" rel="noopener">🖨️ דַּף תַּפְזֹרֶת (PDF)</a>
+    </div>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>מְחַלְּקִים דַּף לְכָל תַּלְמִיד כְּשֶׁהֵם נִכְנָסִים. מַקִּיפִים לְבַד, בְּשֶׁקֶט. בַּסּוֹף תַּלְמִידִים אוֹמְרִים מִלָּה, הַמּוֹרֶה לוֹחֵץ עָלֶיהָ וְקוֹרְאִים יַחַד. שִׂימוּ לֵב: אֵיפֹה נִמְצֵאת גַּם בְּתוֹךְ מֵאֵיפֹה, וְגָּר בְּתוֹךְ גָּרָה.</p>
+  </details>
+</section>
+
+<!-- ===== 2 warm-up ===== -->
+<section class="step" id="s2">
+  <span class="tag green"><span class="tnum">2</span> חִמּוּם · 3–5 דַּקּוֹת</span>
+  <p class="lead">מֵאֵיפֹה הוּא? מֵאֵיפֹה הִיא?</p>
+  <p class="sub">חֲזָרָה עַל הַשִּׁעוּר הַקּוֹדֵם. הַמּוֹרֶה שׁוֹאֵל, הַכִּתָּה סוֹפֶרֶת 3-2-1 וּמַרִימָה כַּרְטִיס עִיר — וְרַק אָז מְגַלִּים.</p>
+  <div class="m-stage" id="wuSt">
+    <svg viewBox="-60 0 120 120" id="wuPic" aria-hidden="true"></svg>
+    <div class="m-q" id="wuQ"></div>
+    <div class="m-a" id="wuA"></div>
+  </div>
+  <div class="m-cards" id="wuCards"></div>
+  <div class="m-bar c">
+    <button class="btn ghost" id="wuPrev" type="button">▶ הקודם</button>
+    <span class="m-count" id="wuCnt"></span>
+    <button class="btn ghost" id="wuNext" type="button">הבא ◀</button>
+  </div>
+  <div class="m-bar c">
+    <button class="m-cd" data-cd type="button">🕒 3… 2… 1… הָרִימוּ!</button>
+    <button class="btn good" id="wuRv" type="button">👁 הַצִּיגוּ תְּשׁוּבָה</button>
+    <a class="m-dl" href="Niflaot-pages-22-24-response-cards.pdf" target="_blank" rel="noopener">🖨️ כַּרְטִיסֵי עָרִים (PDF)</a>
+    <a class="m-dl" href="https://productplayer.cet.ac.il/niflaot3/e8374f19-fdff-451a-af90-5e056779e35c_78f4e962-7f39-4f57-9c71-960dc6eeb554" target="_blank" rel="noopener">✨ מְלִיאָה: מֵאֵיפֹה אַתָּה? מֵאֵיפֹה אַתְּ? (נִפְלָאוֹת)</a>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>כָּל תַּלְמִיד מַחֲזִיק שְׁלוֹשָׁה כַּרְטִיסִים: לוֹנְדוֹן, פָּרִיז, יִשְׂרָאֵל. שׁוֹאֲלִים "מֵאֵיפֹה דָּוִיד?" — 3-2-1 הָרִימוּ — מְגַלִּים: דָּוִיד בָּא מִפָּרִיז. עַכְשָׁו הוּא גָּר בְּיִשְׂרָאֵל. אַחַר כָּךְ "מֵאֵיפֹה שָׂרָה?". מְבַקְּשִׁים מִתַּלְמִיד לוֹמַר אֶת הַמִּשְׁפָּט הַמָּלֵא. הַקִּשּׁוּר לַמְּלִיאָה שֶׁל נִפְלָאוֹת דּוֹרֵשׁ כְּנִיסָה לְמַטָּ"ח.</p>
+  </details>
+</section>
+
+<!-- ===== 3 lecturing ===== -->
+<section class="step" id="s3">
+  <span class="tag sky"><span class="tnum">3</span> הַסְבֵּר · 10 דַּקּוֹת</span>
+  <p class="lead">בְּ — אֵיפֹה אֲנִי גָּר עַכְשָׁו · מִ — מֵאֵיפֹה אֲנִי בָּא</p>
+  <div class="m-rule">
+    <div><div class="k">אֵיפֹה?<span>⬅</span><b>בְּ...</b></div><div class="e">אֲנִי גָּרָה <b>בְּ</b>חֵיפָה.</div><div class="en">where? (now) → <bdi dir="rtl">בְּ</bdi> = in</div></div>
+    <div><div class="k">מֵאֵיפֹה?<span>⬅</span><b>מִ...</b></div><div class="e">אֲנִי בָּאָה <b>מִ</b>לּוֹנְדוֹן.</div><div class="en">from where? → <bdi dir="rtl">מִ</bdi> = from</div></div>
+  </div>
+
+  <p class="lead" style="margin-top:22px">הַדֻּגְמָה שֶׁל הַמּוֹרֶה</p>
+  <p class="sub">לוֹחֲצִים עַל הַטֶּקְסְט וּמְשַׁנִּים אוֹתוֹ (נִשְׁמָר בַּמַּחְשֵׁב הַזֶּה).</p>
+  <div class="m-me" id="mMe" contenteditable="true" spellcheck="false">אֲנִי גָּר/גָּרָה בְּ... <br>אֲנִי בָּא/בָּאָה מִ...</div>
+  <div class="m-bar c"><button class="btn ghost small" id="meReset" type="button">↺ טֶקְסְט מְקוֹרִי</button></div>
+
+  <p class="lead" style="margin-top:22px">מֵאֵיפֹה הֵם? (עַמּוּד 23)</p>
+  <p class="sub">לוֹחֲצִים עַל יֶלֶד אוֹ יַלְדָּה ⬅ הַכִּתָּה מַרִימָה כַּרְטִיס עִיר ⬅ 3-2-1 הָרִימוּ! ⬅ מְגַלִּים אֶת הַחֵץ וְאֶת הַמִּשְׁפָּט.</p>
+  <div class="m-mapwrap"><svg viewBox="0 0 1000 560" id="mMap" role="img" aria-label="מפה עם חמש ערים וחמישה ילדים"></svg></div>
+  <div class="m-stage" style="margin-top:12px"><div class="m-q" id="mapQ">בּוֹחֲרִים יֶלֶד אוֹ יַלְדָּה 👆</div><div class="m-a" id="mapA"></div></div>
+  <div class="m-cards" id="mapCards"></div>
+  <div class="m-bar c">
+    <button class="m-cd" data-cd type="button">🕒 3… 2… 1… הָרִימוּ!</button>
+    <button class="btn good" id="mapRv" type="button">👁 הַצִּיגוּ אֶת הַחֵץ</button>
+    <button class="btn ghost" id="mapAll" type="button">הַצִּיגוּ הַכֹּל</button>
+    <button class="btn ghost" id="mapClr" type="button">↺</button>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>מַצִּיגִים אֶת כַּרְטִיס הַכְּלָל וּמַסְבִּירִים: שְׁאֵלָה עִם אֵיפֹה — עוֹנִים עִם בְּ; שְׁאֵלָה עִם מֵאֵיפֹה — עוֹנִים עִם מִ. הַתַּבְנִית אֵיפֹה...? בְּ... מֻכֶּרֶת מִנִּפְלָאוֹת א — זוֹ רַק חֲזָרָה. הַמּוֹרֶה מְסַפֵּר עַל עַצְמוֹ (הַדֻּגְמָה הַנִּתֶּנֶת לַעֲרִיכָה). בַּמַּפָּה: לְכָל תַּלְמִיד חֲמִשָּׁה כַּרְטִיסֵי עִיר (בְּלִי יִשְׂרָאֵל). אַחֲרֵי הַגִּלּוּי — הַכִּתָּה אוֹמֶרֶת יַחַד: "הוּא מִפָּרִיז", וְאֶפְשָׁר גַּם בְּגוּף רִאשׁוֹן: "אֲנִי מִפָּרִיז".</p>
+  </details>
+</section>
+
+<!-- ===== 4 do it ===== -->
+<section class="step" id="s4">
+  <span class="tag"><span class="tnum">4</span> עוֹשִׂים · 15–20 דַּקּוֹת</span>
+  <div class="m-cw" role="note">
+    <h3>📘 עֲבוֹדַת כִּתָּה בַּסֵּפֶר — עַמּוּדִים 22-24</h3>
+    <p>כָּל תַּלְמִיד עוֹבֵד לְבַד בַּסֵּפֶר: תַּרְגִּיל 17 (אֵיפֹה כָּל אֶחָד גָּר?), תַּרְגִּיל 18 (מֵאֵיפֹה הֵם?) וְתַרְגִּיל 19 (בְּ, מִ).</p>
+    <div class="m-bar">
+      <a class="m-dl" href="https://productplayer.cet.ac.il/niflaot3/e8374f19-fdff-451a-af90-5e056779e35c_86b4d33e-60f0-4371-8a5a-1f08fd5ab29e" target="_blank" rel="noopener">✨ עֲבוֹדָה בַּסֵּפֶר: עַמּוּדִים 24-22 (נִפְלָאוֹת)</a>
+      <a class="m-dl" href="Niflaot-pages-22-24-book-copy.html" target="_blank" rel="noopener">🔍 עַמּוּדִים 22-24 (הֶעְתֵּק) — מָסָךְ מָלֵא</a>
+      <a class="m-dl" href="Niflaot-pages-22-24-book-copy.pdf" target="_blank" rel="noopener">🖨️ הֶעְתֵּק (PDF)</a>
+    </div>
+    <iframe class="m-copy" src="Niflaot-pages-22-24-book-copy.html" title="עמודים 22-24 (העתק)" loading="lazy"></iframe>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>הַתַּלְמִידִים עוֹבְדִים בַּסְּפָרִים שֶׁלָּהֶם; הַהֶעְתֵּק לַמָּסָךְ וּלְתַלְמִידִים שֶׁחָסְרוּ. אֶת הַמָּבוֹךְ בְּתַרְגִּיל 17 בּוֹדְקִים בַּסֵּפֶר (אֵין חִשּׂוּף עַל הַמָּסָךְ). בְּתַרְגִּיל 18 ב — אִם קָשֶׁה לִכְתֹּב אֶת שֵׁם הַמָּקוֹם, עוֹזְרִים לָהֶם בַּכְּתִיבָה.</p>
+  </details>
+
+  <p class="lead" style="margin-top:22px">בּוֹדְקִים יַחַד: תַּרְגִּיל 19 — בְּ אוֹ מִ?</p>
+  <p class="sub">הַמִּשְׁפָּט עַל הַמָּסָךְ, הַמָּקוֹם הָרֵיק מְסֻמָּן. כֻּלָּם מַרִימִים בְּ אוֹ מִ — 3-2-1 הָרִימוּ! — וְאָז מְגַלִּים.</p>
+  <div class="m-tagx" id="chkTag"></div>
+  <div class="m-sent" id="chkS"></div>
+  <div class="m-cards" id="chkCards"></div>
+  <div class="m-bar c">
+    <button class="btn ghost" id="chkPrev" type="button">▶ הקודם</button>
+    <span class="m-count" id="chkCnt"></span>
+    <button class="btn ghost" id="chkNext" type="button">הבא ◀</button>
+  </div>
+  <div class="m-bar c">
+    <button class="m-cd" data-cd type="button">🕒 3… 2… 1… הָרִימוּ!</button>
+    <button class="btn good" id="chkRv" type="button">👁 הַצִּיגוּ תְּשׁוּבָה</button>
+    <a class="m-dl" href="Niflaot-pages-22-24-response-cards.pdf" target="_blank" rel="noopener">🖨️ כַּרְטִיסֵי בְּ / מִ (PDF)</a>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>אַרְבָּעָה מְקוֹמוֹת רֵיקִים מִתַּרְגִּיל 19, וְאַחֲרֵיהֶם אַרְבָּעָה מִשְׁפָּטִים נוֹסָפִים. אַחֲרֵי כָּל גִּלּוּי שׁוֹאֲלִים: "לָמָּה בְּ? לָמָּה מִ?" (גָּר / יָשֵׁן ⬅ בְּ; בָּא / מֵאֵיפֹה ⬅ מִ). אַחֲרֵי תַּרְגִּיל 19 כְּדַאי לְבַקֵּשׁ מֵהַתַּלְמִידִים לְהָבִיא תְּמוּנָה שֶׁל סַבָּא וְסַבְתָּא שֶׁלָּהֶם וּלְסַפֵּר מֵאֵיפֹה הֵם.</p>
+  </details>
+
+  <p class="lead" style="margin-top:22px">פּוֹנִים וּמְדַבְּרִים 🗣️</p>
+  <p class="sub">בְּזוּגוֹת. בְּכָל סִבּוּב — בֶּן זוּג חָדָשׁ.</p>
+  <div class="m-talk">
+    <div class="m-prompts" id="talkP"></div>
+    <div class="m-timer">
+      <div class="m-rounds" id="talkR"></div>
+      <div class="rd" id="talkRd"></div>
+      <div class="t" id="talkT">2:00</div>
+      <div class="m-bar c">
+        <button class="btn good" id="talkGo" type="button">▶ הַתְחָלָה</button>
+        <button class="btn ghost" id="talkStop" type="button">⏸</button>
+        <button class="btn ghost small" data-min="1" type="button">1′</button>
+        <button class="btn ghost small" data-min="2" type="button">2′</button>
+        <button class="btn ghost small" data-min="3" type="button">3′</button>
+      </div>
+    </div>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>סִבּוּב 1: מֵאֵיפֹה אַתָּה / אַתְּ? סִבּוּב 2: אֵיפֹה אַתָּה גָּר / אַתְּ גָּרָה? סִבּוּב 3: מְסַפְּרִים לַכִּתָּה עַל בֶּן הַזּוּג: "הוּא מִ... הוּא גָּר בְּ...". כְּשֶׁהַזְּמַן נִגְמָר נִשְׁמָע צְלִיל — מַחְלִיפִים בֶּן זוּג.</p>
+  </details>
+</section>
+
+<!-- ===== 5 exit ticket ===== -->
+<section class="step" id="s5">
+  <div class="m-bar" style="margin-bottom:0"><span class="tag" style="background:#ece6fb;border-color:#7a5bd1;color:#3b2a82">🎟️ Exit Ticket · 3–5 min</span><span style="flex:1"></span><a class="m-dl" href="Niflaot-pages-22-24-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ Printable version (PDF · 4 per page)</a></div>
+  <p class="lead m-en" dir="ltr">Work alone.</p>
+  <div class="m-ex" id="mEx">
+    <div class="box"><p class="sub m-en" dir="ltr"><b>Part 1 — Complete the sentences about yourself:</b></p>
+      <div class="he">אֲנִי מִ<span class="line"></span>.<br>אֲנִי גָּר / גָּרָה בְּ<span class="line"></span>.</div></div>
+    <div class="box"><p class="sub m-en" dir="ltr"><b>Part 2 — Circle <bdi dir="rtl">בְּ</bdi> or <bdi dir="rtl">מִ</bdi>:</b></p>
+      <div class="he">1. דָּוִיד בָּא <span class="o">( <span>בְּ</span> / <span class="r">מִ</span> )</span> פָּרִיז.<br>2. עַכְשָׁו הוּא גָּר <span class="o">( <span class="r">בְּ</span> / <span>מִ</span> )</span> יִשְׂרָאֵל.<br>3. דָּנָה גָּרָה <span class="o">( <span class="r">בְּ</span> / <span>מִ</span> )</span> אֵילַת.</div></div>
+  </div>
+  <div class="m-bar c">
+    <button class="btn good" id="exShow" type="button">👁 Show answers</button>
+    <button class="btn ghost" id="exClr" type="button">↺ Hide</button>
+  </div>
+  <p class="sub m-en" dir="ltr"><b>Reflection:</b> Today I can say where I live and where I come from: yes / almost / not yet.</p>
+  <p class="sub m-en" dir="ltr"><b>Homework (optional):</b> Bring a photo of your grandparents and tell where they are from.</p>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>כָּל תַּלְמִיד מְמַלֵּא לְבַד אֶת הַכַּרְטִיס הַמֻּדְפָּס. תְּשׁוּבוֹת חֵלֶק 2: מִ, בְּ, בְּ. הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.</p>
+  </details>
+</section>
+
+<!-- ===== printables ===== -->
+<section class="step" id="s6">
+  <span class="tag sky"><span class="tnum">🖨️</span> לְהַדְפָּסָה</span>
+  <div class="shortcuts" style="margin-top:12px">
+    <a class="sc" href="Niflaot-pages-22-24-word-search.pdf" target="_blank" rel="noopener"><span class="ic">🔎</span><div><h3>תַּפְזֹרֶת</h3><p>כַּרְטִיס כְּנִיסָה · דַּף אֶחָד</p></div><span class="go">◀</span></a>
+    <a class="sc" href="Niflaot-pages-22-24-response-cards.pdf" target="_blank" rel="noopener"><span class="ic">🃏</span><div><h3>כַּרְטִיסֵי תְּשׁוּבָה</h3><p>6 עָרִים · בְּ / מִ</p></div><span class="go">◀</span></a>
+    <a class="sc" href="Niflaot-pages-22-24-exit-ticket.pdf" target="_blank" rel="noopener"><span class="ic">🎟️</span><div><h3>Exit Ticket</h3><p>4 per A4 page</p></div><span class="go">◀</span></a>
+    <a class="sc" href="Niflaot-pages-22-24-book-copy.pdf" target="_blank" rel="noopener"><span class="ic">📘</span><div><h3>עַמּוּדִים 22-24 (הֶעְתֵּק)</h3><p>לַמָּסָךְ וּלְתַלְמִידִים שֶׁחָסְרוּ</p></div><span class="go">◀</span></a>
+  </div>
+</section>
+<p class="src">הַתַּרְגִּילִים: "נִפְלָאוֹת ג", עַמּוּדִים 22–24 (מט"ח). הַהֶעְתֵּק הוּקְלַד מֵחָדָשׁ. לְשִׁמּוּשׁ בַּכִּתָּה בִּלְבַד.</p>
+</div>
+<div id="mCd" aria-live="assertive"><div id="mCdT">3</div></div>
+<script src="pages-22-24/data.js?v=1"></script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const P = window.P2224;
+
+/* ---------- sounds ---------- */
+let ac;
+const beep = (f, d = .15, v = .14) => { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; g.gain.value = v; o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + d); } catch (e) {} };
+const chime = () => { [660, 880, 1100].forEach((f, i) => setTimeout(() => beep(f, .35, .16), i * 220)); };
+
+/* ---------- 3-2-1 countdown ---------- */
+let cdBusy = false;
+function countdown(){
+  if (cdBusy) return; cdBusy = true;
+  const ov = $('mCd'), t = $('mCdT'); let n = 3; ov.classList.add('on'); t.textContent = n; beep(520);
+  const tick = setInterval(() => {
+    n--; if (n > 0){ t.textContent = n; beep(520); return; }
+    clearInterval(tick); t.innerHTML = 'הָרִימוּ!<small>🃏</small>'; beep(880, .3);
+    setTimeout(() => { ov.classList.remove('on'); cdBusy = false; }, 1300);
+  }, 1000);
+}
+document.querySelectorAll('[data-cd]').forEach(b => b.onclick = countdown);
+
+/* card row helper: cards = [{id, html}] ; returns {hit(id), clear()} */
+function cardRow(el, cards, cls = ''){
+  el.innerHTML = ''; const m = {};
+  cards.forEach(c => { const d = document.createElement('div'); d.className = 'm-card ' + cls; d.innerHTML = c.html; el.appendChild(d); m[c.id] = d; });
+  return {
+    hit: id => Object.entries(m).forEach(([k, d]) => { d.classList.toggle('hit', k === id); d.classList.toggle('hide', k !== id); }),
+    clear: () => Object.values(m).forEach(d => d.classList.remove('hit', 'hide')),
+  };
+}
+const CITY_IC = { london: '🎡', paris: '🗼', israel: '<svg viewBox="0 0 44 32" width="1.4em" height="1em" style="vertical-align:middle"><rect width="44" height="32" fill="#fff" stroke="#ccd" /><rect y="3" width="44" height="4" fill="#1f4fb0"/><rect y="25" width="44" height="4" fill="#1f4fb0"/><path d="M22 9.5L27.6 19H16.4Z M22 22.5L16.4 13H27.6Z" fill="none" stroke="#1f4fb0" stroke-width="1.6"/></svg>', telaviv: '🏖️', mexico: '🌵', sydney: '🦘' };
+const cityCard = (id, he) => ({ id, html: `<span class="ic">${CITY_IC[id]}</span>${he}` });
+
+/* ---------- 1. word search ---------- */
+const cells = [];
+P.GRID.forEach((row, r) => row.forEach((ch, c) => { const d = document.createElement('div'); d.className = 'm-cell'; d.textContent = ch; $('mGrid').appendChild(d); (cells[r] = cells[r] || [])[c] = d; }));
+const wBtns = P.WORDS.map(w => {
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'm-word'; b.textContent = w.he;
+  b.onclick = () => { b.classList.toggle('on'); paint(); beep(b.classList.contains('on') ? 760 : 420, .12); };
+  $('mWords').appendChild(b); return b;
+});
+function paint(){
+  cells.flat().forEach(d => d.classList.remove('on'));
+  let n = 0;
+  P.WORDS.forEach((w, i) => { if (!wBtns[i].classList.contains('on')) return; n++; P.cellsOf(w).forEach(([r, c]) => cells[r][c].classList.add('on')); });
+  $('mFound').textContent = n + ' / ' + P.WORDS.length;
+}
+$('wsAll').onclick = () => { wBtns.forEach(b => b.classList.add('on')); paint(); beep(880, .25); };
+$('wsClr').onclick = () => { wBtns.forEach(b => b.classList.remove('on')); paint(); };
+paint();
+
+/* ---------- 2. warm-up ---------- */
+const WU = [
+  { k: 'david', q: 'מֵאֵיפֹה דָּוִיד?', ans: 'paris', a: 'דָּוִיד בָּא <b>מִ</b>פָּרִיז. עַכְשָׁו הוּא גָּר <b>בְּ</b>יִשְׂרָאֵל.' },
+  { k: 'sara',  q: 'מֵאֵיפֹה שָׂרָה?',  ans: 'london', a: 'שָׂרָה בָּאָה <b>מִ</b>לּוֹנְדוֹן.' },
+];
+const wuCards = cardRow($('wuCards'), [cityCard('london', 'לוֹנְדוֹן'), cityCard('paris', 'פָּרִיז'), cityCard('israel', 'יִשְׂרָאֵל')]);
+let wi = 0, wRev = false;
+function wuShow(){
+  const it = WU[wi]; wRev = false; $('wuSt').className = 'm-stage';
+  $('wuPic').innerHTML = P.person(it.k, 0, 2, 1); $('wuQ').textContent = it.q; $('wuA').innerHTML = '';
+  $('wuCnt').textContent = (wi + 1) + ' / ' + WU.length; wuCards.clear();
+}
+function wuReveal(){ const it = WU[wi]; wRev = true; $('wuSt').className = 'm-stage yes'; $('wuA').innerHTML = it.a; wuCards.hit(it.ans); beep(880, .25); }
+const wuGo = d => { wi = (wi + d + WU.length) % WU.length; wuShow(); };
+$('wuRv').onclick = () => wRev ? wuGo(1) : wuReveal();
+$('wuNext').onclick = () => wuGo(1); $('wuPrev').onclick = () => wuGo(-1);
+wuShow();
+
+/* ---------- 3b. teacher's own example (kept in this browser) ---------- */
+const ME_KEY = 'nk-22-24-me', meDefault = $('mMe').innerHTML;
+try { const v = localStorage.getItem(ME_KEY); if (v) $('mMe').innerHTML = v; } catch (e) {}
+$('mMe').addEventListener('input', () => { try { localStorage.setItem(ME_KEY, $('mMe').innerHTML); } catch (e) {} });
+$('meReset').onclick = () => { $('mMe').innerHTML = meDefault; try { localStorage.removeItem(ME_KEY); } catch (e) {} };
+
+/* ---------- 3c. interactive map (p.23) ---------- */
+const MX = 40, MY = 200, MW = 920;
+const kx = [880, 690, 500, 310, 120];
+let svg = `<defs><marker id="mAr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7a4cc2"/></marker></defs>`;
+svg += P.worldMap(MX, MY, MW, { idp: 'mc', fs: 26, r: 8 });
+P.KIDS18.forEach((k, i) => {
+  const x = kx[i]; const [cx, cy] = P.cityXY(k.city, MX, MY, MW);
+  svg += `<path class="m-arrow" id="ar${i}" d="M${x} 176 L${cx.toFixed(1)} ${(cy - 12).toFixed(1)}" marker-end="url(#mAr)"/>`;
+  svg += `<g class="m-kid" id="kid${i}" tabindex="0" role="button" aria-label="${k.name}"><rect class="ring" x="${x - 78}" y="4" width="156" height="180" rx="20"/>${P.person(k.k, x, 14, 1.05)}
+    <text x="${x}" y="172" text-anchor="middle" font-size="28" font-weight="800" fill="#23233a">${k.name}</text></g>`;
+});
+$('mMap').innerHTML = svg;
+const mapCards = cardRow($('mapCards'), P.KIDS18.map(k => cityCard(k.city, P.CITIES[k.city].he)));
+let mi = -1, mRev = false; const done = new Set();
+function mapPick(i){
+  mi = i; mRev = false; const k = P.KIDS18[i];
+  P.KIDS18.forEach((_, j) => $('kid' + j).classList.toggle('cur', j === i));
+  $('mapQ').innerHTML = `מֵאֵיפֹה ${k.name}?`; $('mapA').innerHTML = ''; mapCards.clear(); beep(620, .1);
+}
+function mapReveal(i){
+  const k = P.KIDS18[i]; $('ar' + i).classList.add('on'); $('kid' + i).classList.add('done'); $('mc-' + k.city).classList.add('hit');
+  done.add(i);
+  if (i === mi){ mRev = true; $('mapA').innerHTML = k.ans.replace(/ מִ/, ' <b>מִ</b>'); mapCards.hit(k.city); beep(880, .25); }
+}
+P.KIDS18.forEach((_, i) => { const g = $('kid' + i); g.onclick = () => mapPick(i); g.onkeydown = e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); mapPick(i); } }; });
+$('mapRv').onclick = () => {
+  if (mi < 0) return mapPick(0);
+  if (!mRev) return mapReveal(mi);
+  const nx = P.KIDS18.findIndex((_, j) => !done.has(j)); if (nx >= 0) mapPick(nx);
+};
+$('mapAll').onclick = () => { P.KIDS18.forEach((_, i) => mapReveal(i)); $('mapQ').textContent = 'מֵאֵיפֹה הֵם?'; $('mapA').innerHTML = P.KIDS18.map(k => k.name + ': ' + k.ans.replace(/ מִ/, ' <b>מִ</b>')).join('<br>'); mapCards.clear(); };
+$('mapClr').onclick = () => { mi = -1; mRev = false; done.clear(); document.querySelectorAll('.m-arrow, .m-kid, #mMap .city').forEach(e => e.classList.remove('on', 'cur', 'done', 'hit')); $('mapQ').textContent = 'בּוֹחֲרִים יֶלֶד אוֹ יַלְדָּה 👆'; $('mapA').innerHTML = ''; mapCards.clear(); };
+
+/* ---------- 4b. בְּ / מִ check: exercise 19, then 4 more ---------- */
+const CHK = [
+  { t: 'תַּרְגִּיל 19 · 1', pre: 'סַבָּא מֹשֶׁה וְסַבְתָּא חַנָּה ', w: 'מֶקְסִיקוֹ', full: '<b>מִ</b>מֶּקְסִיקוֹ', post: '.', a: 'm' },
+  { t: 'תַּרְגִּיל 19 · 2', pre: 'עַכְשָׁו הֵם גָּרִים ', w: 'יִשְׂרָאֵל', full: '<b>בְּ</b>יִשְׂרָאֵל', post: '.', a: 'b' },
+  { t: 'תַּרְגִּיל 19 · 3', pre: 'יֵשׁ לָהֶם בַּיִת גָּדוֹל ', w: 'תֵּל אָבִיב', full: '<b>בְּ</b>תֵל אָבִיב', post: '.', a: 'b' },
+  { t: 'תַּרְגִּיל 19 · 4', pre: 'אֲנַחְנוּ יְשֵׁנִים ', w: 'תֵּל אָבִיב', full: '<b>בְּ</b>תֵל אָבִיב', post: '.', a: 'b' },
+  { t: 'עוֹד מִשְׁפָּט · 5', pre: 'דָּנָה גָּרָה ', w: 'אֵילַת', full: '<b>בְּ</b>אֵילַת', post: '.', a: 'b' },
+  { t: 'עוֹד מִשְׁפָּט · 6', pre: 'אֲרִיאֵל ', w: 'מֶקְסִיקוֹ סִיטִי', full: '<b>מִ</b>מֶּקְסִיקוֹ סִיטִי', post: '.', a: 'm' },
+  { t: 'עוֹד מִשְׁפָּט · 7', pre: 'מִרְיָם ', w: 'סִידְנִי', full: '<b>מִ</b>סִּידְנִי', post: '.', a: 'm' },
+  { t: 'עוֹד מִשְׁפָּט · 8', pre: 'אֲנִי גָּרָה ', w: 'חֵיפָה', full: '<b>בְּ</b>חֵיפָה', post: '.', a: 'b' },
+];
+const chkCards = cardRow($('chkCards'), [{ id: 'b', html: 'בְּ<small>אֵיפֹה?</small>' }, { id: 'm', html: 'מִ<small>מֵאֵיפֹה?</small>' }], 'big');
+let ci = 0, cRev = false;
+function chkShow(){
+  const it = CHK[ci]; cRev = false; chkCards.clear();
+  $('chkTag').textContent = it.t; $('chkS').innerHTML = `${it.pre}<span class="gap">מִ</span>${it.w}${it.post}`;
+  $('chkCnt').textContent = (ci + 1) + ' / ' + CHK.length;
+}
+function chkReveal(){ const it = CHK[ci]; cRev = true; $('chkS').innerHTML = `${it.pre}<span class="fill">${it.full}</span>${it.post}`; chkCards.hit(it.a); beep(880, .25); }
+const chkGo = d => { ci = (ci + d + CHK.length) % CHK.length; chkShow(); };
+$('chkRv').onclick = () => cRev ? chkGo(1) : chkReveal();
+$('chkNext').onclick = () => chkGo(1); $('chkPrev').onclick = () => chkGo(-1);
+chkShow();
+
+/* ---------- 4c. pair talk: 3 rounds + timer ---------- */
+const ROUNDS = [
+  ['<b>מֵאֵיפֹה</b> אַתָּה? / <b>מֵאֵיפֹה</b> אַתְּ?<span class="ar">⬅</span>אֲנִי <b>מִ</b>...'],
+  ['<b>אֵיפֹה</b> אַתָּה גָּר? / <b>אֵיפֹה</b> אַתְּ גָּרָה?<span class="ar">⬅</span>אֲנִי גָּר / גָּרָה <b>בְּ</b>...'],
+  ['סַפְּרוּ עַל בֶּן / בַּת הַזּוּג:', 'הוּא <b>מִ</b>... · הִיא <b>מִ</b>...', 'הוּא גָּר <b>בְּ</b>... · הִיא גָּרָה <b>בְּ</b>...'],
+];
+let round = 0, secs = 120, left = 120, timer = null;
+ROUNDS.forEach((_, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'btn ghost small'; b.textContent = 'סִבּוּב ' + (i + 1); b.onclick = () => setRound(i); $('talkR').appendChild(b); });
+function setRound(i){
+  round = i; stop(); left = secs; draw();
+  $('talkR').querySelectorAll('button').forEach((b, j) => b.classList.toggle('on', j === i));
+  $('talkP').innerHTML = ROUNDS[i].map(t => `<div class="m-pr">${t}</div>`).join('');
+  $('talkRd').textContent = i ? 'בֶּן זוּג חָדָשׁ! 🔄' : 'סִבּוּב רִאשׁוֹן';
+}
+const draw = () => { $('talkT').textContent = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0'); $('talkT').classList.toggle('end', left === 0); };
+function stop(){ clearInterval(timer); timer = null; }
+$('talkGo').onclick = () => { if (timer) return; if (left === 0) left = secs; beep(700, .12); timer = setInterval(() => { left--; draw(); if (left <= 0){ stop(); chime(); } }, 1000); };
+$('talkStop').onclick = stop;
+document.querySelectorAll('[data-min]').forEach(b => b.onclick = () => { secs = +b.dataset.min * 60; stop(); left = secs; draw(); });
+setRound(0);
+
+/* ---------- 5. exit ticket answers ---------- */
+$('exShow').onclick = () => { $('mEx').classList.add('show'); beep(880, .2); };
+$('exClr').onclick = () => $('mEx').classList.remove('show');
+})();
+</script>
+</body>
+</html>

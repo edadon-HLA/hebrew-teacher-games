@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כַּרְטִיסֵי תְּשׁוּבָה — עָרִים · בְּ / מִ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@700;800&display=swap" rel="stylesheet">
+<style>
+/* page 1-2: 6 city cards (3 x 2 per page); page 3: בְּ / מִ cards (2 per page) — cut along the dashed lines */
+@page{size:A4;margin:8mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.sheet{width:194mm;height:281mm;margin:0 auto;display:grid;page-break-after:always}
+.sheet:last-child{page-break-after:auto}
+.s6{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr}
+.s2{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+.c{border:1.5px dashed #9aa3b2;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;gap:2mm;padding:3mm}
+.c .ic{font-size:30pt;line-height:1}
+.c b{font-size:40pt;font-weight:800;line-height:1.15;text-align:center}
+.c.city b.long{font-size:31pt}
+.c.bm b{font-size:230pt;line-height:1.05}
+.c.bm small{font:800 22pt 'Rubik','Noto Sans Hebrew',sans-serif;color:#7a4cc2}
+.c.wu{background:#fff8e6}
+.c.wu small{font-size:11pt;color:#9a7a20;font-weight:700}
+@media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div class="sheet s6">
+  <div class="c city wu"><span class="ic">🎡</span><b>לוֹנְדוֹן</b><small>★ warm-up</small></div>
+  <div class="c city wu"><span class="ic">🗼</span><b>פָּרִיז</b><small>★ warm-up</small></div>
+  <div class="c city wu"><span class="ic"><svg viewBox="0 0 44 32" width="1.4em" height="1em" style="vertical-align:middle"><rect width="44" height="32" fill="#fff" stroke="#ccd" /><rect y="3" width="44" height="4" fill="#1f4fb0"/><rect y="25" width="44" height="4" fill="#1f4fb0"/><path d="M22 9.5L27.6 19H16.4Z M22 22.5L16.4 13H27.6Z" fill="none" stroke="#1f4fb0" stroke-width="1.6"/></svg></span><b>יִשְׂרָאֵל</b><small>★ warm-up</small></div>
+  <div class="c city"><span class="ic">🏖️</span><b>תֵּל אָבִיב</b></div>
+  <div class="c city"><span class="ic">🌵</span><b class="long">מֶקְסִיקוֹ סִיטִי</b></div>
+  <div class="c city"><span class="ic">🦘</span><b>סִידְנִי</b></div>
+</div>
+<div class="sheet s2">
+  <div class="c bm"><b>בְּ</b><small>אֵיפֹה? · where</small></div>
+  <div class="c bm"><b>מִ</b><small>מֵאֵיפֹה? · from where</small></div>
+</div>
+</body>
+</html>
