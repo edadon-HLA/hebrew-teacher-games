@@ -141,6 +141,16 @@
 .n-spot span{visibility:hidden;background:#fff;border-radius:8px;padding:1px 6px;white-space:nowrap}
 .n-spot.on{border-style:solid;border-color:#2f9d55;background:rgba(220,242,227,.85)}.n-spot.on span{visibility:visible}
 .n-spot.q{color:#7a4cc2}
+.n-pgbank{position:sticky;top:calc(var(--navh,64px) + 4px);z-index:20;background:#fffaf0;border:2px dashed #e5c05a;border-radius:16px;padding:8px 10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:8px auto;max-width:820px;box-shadow:0 4px 12px #0001}
+.n-pgbank .sub{width:100%;text-align:center}
+.n-chip{font:800 clamp(18px,2.2vw,24px) var(--f-he);border:3px solid var(--sky);background:#fff;border-radius:12px;padding:4px 12px;cursor:grab;color:#23233a;touch-action:none;user-select:none;-webkit-user-select:none}
+.n-chip.sel{background:var(--gold-soft);border-color:var(--gold)}.n-chip.used{opacity:.25;pointer-events:none}
+.n-ghost{position:fixed;z-index:10003;pointer-events:none;transform:translate(-50%,-60%) rotate(-3deg);box-shadow:0 10px 24px #0004}
+.n-drop span{visibility:visible;background:transparent;padding:0}
+.n-drop.full{background:rgba(255,255,255,.95);border-style:solid;border-color:var(--sky)}
+.n-drop.hot{background:rgba(255,230,150,.8);border-color:var(--gold)}
+.n-drop.ok{background:rgba(220,242,227,.95);border-color:#2f9d55}.n-drop.ok span::after{content:' ✔';color:#2f9d55}
+.n-drop.bad{background:rgba(253,227,231,.95);border-color:#e2506a}.n-drop.bad span::after{content:' ✘';color:#e2506a}
 .n-pick{font:inherit;cursor:pointer;color:var(--ink);position:relative}
 .m-cards .n-pick{font-size:clamp(28px,3.6vw,40px);min-width:150px;padding:10px 18px}.m-cards .n-pick .ic{font-size:40px}.m-cards .n-pick .flag svg{width:70px;height:50px}
 .n-pick:hover:not(:disabled){border-color:var(--sky);transform:translateY(-2px)}
@@ -336,29 +346,18 @@
     <h3>📘 עֲבוֹדַת כִּתָּה בַּסֵּפֶר — עַמּוּדִים 22-24</h3>
     <p>כָּל תַּלְמִיד עוֹבֵד לְבַד בַּסֵּפֶר: תַּרְגִּיל 17, 18 וְ־19. אַחַר כָּךְ בּוֹדְקִים יַחַד בַּתַּרְגִּילִים שֶׁעַל הַמָּסָךְ.</p>
     <div class="n-warn">שִׂימוּ לֵב: בַּסֵּפֶר (עַמּוּד 23) דָּוִיד מִפָּרִיז וְשָׂרָה מִלּוֹנְדוֹן - זֶה סִפּוּר אַחֵר מֵהַמָּסָךְ.</div>
-    <p class="sub" style="margin:6px 0">אַחֲרֵי שֶׁכָּל תַּלְמִיד עָבַד בַּסֵּפֶר — בּוֹדְקִים יַחַד עַל הַמָּסָךְ: גּוֹרְרִים (אוֹ לוֹחֲצִים) כָּל מִלָּה לַמָּקוֹם הַנָּכוֹן, וְאָז "✓ בּוֹדְקִים".</p>
-    <div class="n-ptabs" id="bkTabs"><button type="button" data-bk="b17" class="on">עַמּוּד 22 · תַּרְגִּיל 17</button><button type="button" data-bk="b18">עַמּוּד 23 · תַּרְגִּיל 18</button><button type="button" data-bk="b19">עַמּוּד 24 · תַּרְגִּיל 19</button></div>
-    <div class="n-bk" id="b17">
-      <p class="lead">17 א · אֵיפֹה כָּל אֶחָד גָּר?</p>
-      <p class="sub">עוֹקְבִים אַחֲרֵי הַקַּוִּים בַּתְּמוּנָה, וְגוֹרְרִים כָּל שֵׁם לַשֶּׁלֶט הַנָּכוֹן.</p>
-      <div class="n-crop-wrap" id="c17"></div>
-      <div class="panel" id="ex17a"></div>
-      <p class="lead" style="margin-top:16px">17 ב · הַשְׁלִימוּ.</p>
-      <div class="panel" id="ex17b"></div>
+    <div class="n-ptabs" id="pgTabs"><button type="button" data-pg="22" class="on">עַמּוּד 22 · תַּרְגִּיל 17</button><button type="button" data-pg="23">עַמּוּד 23 · תַּרְגִּיל 18</button><button type="button" data-pg="24">עַמּוּד 24 · תַּרְגִּיל 19</button></div>
+    <p class="sub" style="margin:6px 0">גּוֹרְרִים תְּשׁוּבָה מֵהַתֵּבָה אֶל הַמִּשְׁבֶּצֶת בַּדַּף (אוֹ לוֹחֲצִים עַל תְּשׁוּבָה וְאָז עַל הַמִּשְׁבֶּצֶת). לְחִיצָה עַל מִשְׁבֶּצֶת מְלֵאָה מַחְזִירָה אֶת הַתְּשׁוּבָה לַתֵּבָה.</p>
+    <div class="n-pgbank" id="pgBank"></div>
+    <div class="n-pagewrap" id="pgWrap"><img id="pgImg" src="pages-22-24/p22.png" alt="נפלאות ג עמוד 22"><div id="pgSpots"></div></div>
+    <div class="msg" id="pgMsg" style="text-align:center;font:800 22px var(--f-he);min-height:32px;margin-top:6px"></div>
+    <div class="m-bar c">
+      <button class="btn good" id="pgCheck" type="button">✓ בּוֹדְקִים</button>
+      <button class="btn ghost small" id="pgAll" type="button">הצגת התשובות</button>
+      <button class="btn ghost small" id="pgClr" type="button">↺ מההתחלה</button>
+      <a class="m-dl" href="pages-22-24/p22.png" id="pgFull" target="_blank" rel="noopener">🔍 מָסָךְ מָלֵא</a>
     </div>
-    <div class="n-bk" id="b18" hidden>
-      <p class="lead">18 א · מֵאֵיפֹה הֵם? הַשְׁלִימוּ.</p>
-      <p class="sub">עוֹקְבִים אַחֲרֵי הַחִצִּים בַּמַּפָּה, וְגוֹרְרִים כָּל עִיר לַיֶּלֶד הַנָּכוֹן.</p>
-      <div class="n-crop-wrap" id="c18"></div>
-      <div class="panel" id="ex18a"></div>
-      <p class="lead" style="margin-top:16px">18 ב · מֵאֵיפֹה אַתֶּם? כִּתְבוּ.</p>
-      <div class="panel"><div class="sent" style="font:800 28px var(--f-he)">אֲנִי מִ <input class="textline" aria-label="כתיבה" placeholder="..." style="font:800 26px var(--f-he);min-width:220px"></div></div>
-    </div>
-    <div class="n-bk" id="b19" hidden>
-      <p class="lead">19 · הַשְׁלִימוּ: בְּ, מִ.</p>
-      <div class="n-crop-wrap" id="c19"></div>
-      <div class="panel" id="ex19"></div>
-    </div>
+    <p class="sub" id="pgNote"></p>
     <div class="m-bar">
       <a class="m-dl" href="https://productplayer.cet.ac.il/niflaot3/e8374f19-fdff-451a-af90-5e056779e35c_86b4d33e-60f0-4371-8a5a-1f08fd5ab29e" target="_blank" rel="noopener">✨ עֲבוֹדָה בַּסֵּפֶר: עַמּוּדִים 24-22 (נִפְלָאוֹת)</a>
       <a class="m-dl" href="Niflaot-pages-22-24-book-copy.pdf" target="_blank" rel="noopener">🖨️ עַמּוּדִים 22-24 (PDF)</a>
@@ -606,62 +605,74 @@ $('t2Next').onclick = () => { ti = (ti + 1) % TF.length; tfShow(); }; $('t2Prev'
 $('t2Sum').onclick = () => { $('t2SumBox').hidden = !$('t2SumBox').hidden; };
 tfShow();
 
-/* ---------- 4b. book pages 22-24 as interactive exercises (pictures cropped from the real pages, drag / tap words — NK.fillBlanks) ---------- */
-/* crop(page, x, y, w, h, width): a piece of the page image, shown at the given width (image pixels; pages are 957 px wide) */
-const crop = (pg, x, y, w, h, show) => { const s = show / w; return `<div class="n-crop" style="width:${show}px;height:${Math.round(h * s)}px;background-image:url(pages-22-24/p${pg}.png);background-size:${Math.round(957 * s)}px auto;background-position:-${Math.round(x * s)}px -${Math.round(y * s)}px"></div>`; };
-const addPics = (root, pics) => root.querySelectorAll('.fitem:not(.bankbox)').forEach((it, i) => { if (pics[i]) it.insertAdjacentHTML('afterbegin', `<div class="n-pic">${pics[i]}</div>`); });
-$('bkTabs').querySelectorAll('button').forEach(b => b.onclick = () => { $('bkTabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); ['b17', 'b18', 'b19'].forEach(id => $(id).hidden = id !== b.dataset.bk); });
-/* p.22 ex.17 א: the maze (portraits, lines, signs) + drag the names to the signs (answers traced by the planner) */
-$('c17').innerHTML = crop(22, 130, 385, 680, 430, 640);
-NK.fillBlanks($('ex17a'), {
-  bank: ['תָּמִיר', 'מַתָּן וְאוּרִי', 'דָּנָה', 'סַבָּא וְסַבְתָּא'],
-  items: [
-    { parts: ['עַכּוֹ: ', { a: 'מַתָּן וְאוּרִי' }] },
-    { parts: ['חֵיפָה: ', { a: 'סַבָּא וְסַבְתָּא' }] },
-    { parts: ['תֵּל אָבִיב: ', { a: 'תָּמִיר' }] },
-    { parts: ['אֵילַת: ', { a: 'דָּנָה' }] },
-  ]
-});
-addPics($('ex17a'), [crop(22, 663, 703, 127, 75, 120), crop(22, 485, 703, 127, 75, 120), crop(22, 315, 703, 127, 75, 120), crop(22, 143, 703, 127, 75, 120)]);
-/* p.22 ex.17 ב */
-NK.fillBlanks($('ex17b'), {
-  bank: ['עַכּוֹ', 'תֵּל אָבִיב', 'חֵיפָה', 'אֵיפֹה', 'גָּר', 'גָּרָה', 'גָּרִים', 'גָּרִים'],
-  items: [
-    { parts: ['אֵיפֹה מַתָּן וְאוּרִי גָּרִים? הֵם גָּרִים בְּ', { a: 'עַכּוֹ' }, '.'] },
-    { parts: ['אֵיפֹה תָּמִיר גָּר? הוּא ', { a: 'גָּר' }, ' בְּ', { a: 'תֵּל אָבִיב' }, '.'] },
-    { parts: [{ a: 'אֵיפֹה' }, ' דָּנָה ', { a: 'גָּרָה' }, '? הִיא גָּרָה בְּאֵילַת.'] },
-    { parts: ['אֵיפֹה סַבָּא וְסַבְתָּא ', { a: 'גָּרִים' }, '? סַבָּא וְסַבְתָּא ', { a: 'גָּרִים' }, ' בְּ', { a: 'חֵיפָה' }, '.'] },
-  ]
-});
-addPics($('ex17b'), [crop(22, 465, 440, 120, 115, 64), crop(22, 650, 440, 125, 115, 64), crop(22, 315, 440, 125, 115, 64), crop(22, 145, 440, 130, 115, 64)]);
-/* p.23 ex.18 א: the map with the arrows + each child with a blank */
-$('c18').innerHTML = crop(23, 340, 520, 470, 270, 560);
-NK.fillBlanks($('ex18a'), {
-  bank: ['לוֹנְדוֹן', 'פָּרִיז', 'תֵּל אָבִיב', 'מֶקְסִיקוֹ סִיטִי', 'סִידְנִי'],
-  items: [
-    { parts: ['אֲנִי דָּוִיד. אֲנִי מִ', { a: 'פָּרִיז' }, '.'] },
-    { parts: ['אֲנִי שָׂרָה. אֲנִי מִ', { a: 'לוֹנְדוֹן' }, '.'] },
-    { parts: ['אֲנִי לָבִיא. אֲנִי מִ', { a: 'תֵּל אָבִיב' }, '.'] },
-    { parts: ['אֲנִי אֲרִיאֵל. אֲנִי מִ', { a: 'מֶקְסִיקוֹ סִיטִי' }, '.'] },
-    { parts: ['אֲנִי מִרְיָם. אֲנִי מִ', { a: 'סִידְנִי' }, '.'] },
-  ]
-});
-addPics($('ex18a'), [crop(23, 770, 385, 95, 165, 90), crop(23, 350, 370, 85, 150, 82), crop(23, 190, 615, 90, 165, 90), crop(23, 375, 815, 100, 160, 96), crop(23, 760, 810, 105, 160, 100)]);
-/* p.24 ex.19: the family picture + drag בְּ / מִ into the girl's text */
-$('c19').innerHTML = crop(24, 200, 150, 548, 540, 420) + crop(24, 150, 765, 180, 270, 120);
-NK.fillBlanks($('ex19'), {
-  bank: ['בְּ', 'בְּ', 'בְּ', 'מִ'],
-  hint: 'אַתֶּם רוֹאִים? זֹאת הַמִּשְׁפָּחָה שֶׁלִּי.',
-  items: [
-    { parts: ['סַבָּא מֹשֶׁה וְסַבְתָּא חַנָּה ', { a: 'מִ' }, 'מֶקְסִיקוֹ.'] },
-    { parts: ['עַכְשָׁו הֵם גָּרִים ', { a: 'בְּ' }, 'יִשְׂרָאֵל.'] },
-    { parts: ['יֵשׁ לָהֶם בַּיִת גָּדוֹל ', { a: 'בְּ' }, 'תֵל אָבִיב.'] },
-    { parts: ['בַּחֹפֶשׁ הַגָּדוֹל אֲנַחְנוּ נוֹסְעִים לְסַבָּא וְסַבְתָּא.'] },
-    { parts: ['אֲנַחְנוּ יְשֵׁנִים ', { a: 'בְּ' }, 'תֵל אָבִיב.'] },
-  ]
-});
-$('nLight').onclick = () => $('nLight').classList.remove('on');
-document.addEventListener('keydown', e => { if (e.key === 'Escape') $('nLight').classList.remove('on'); });
+/* ---------- 4b. book pages 22-24: the real page with drop boxes on the blanks + a box of options (drag or tap-tap) ----------
+ * spot = [x, y, w, h, answer] in image pixels (pages are 957 px wide); bank = the answers + a few wrong options */
+const PG = {
+  22: { h: 1107, note: 'תַּרְגִּיל 17 א: גּוֹרְרִים כָּל שֵׁם אֶל הַמִּשְׁבֶּצֶת מִתַּחַת לַשֶּׁלֶט שֶׁלּוֹ (עוֹקְבִים אַחֲרֵי הַקַּוִּים). 17 ב: גּוֹרְרִים אֶת הַמִּלִּים לַקַּוִּים.',
+    spots: [[725, 797, 130, 34, 'מַתָּן וְאוּרִי'], [548, 797, 130, 34, 'סַבָּא וְסַבְתָּא'], [377, 797, 130, 34, 'תָּמִיר'], [205, 797, 130, 34, 'דָּנָה'],
+      [318, 914, 170, 34, 'עַכּוֹ'], [378, 965, 290, 34, 'גָּר בְּתֵל אָבִיב'], [592, 1013, 300, 34, 'אֵיפֹה דָּנָה גָּרָה'],
+      [592, 1061, 310, 34, 'אֵיפֹה סַבָּא וְסַבְתָּא גָּרִים'], [210, 1064, 190, 34, 'גָּרִים בְּחֵיפָה']],
+    extra: ['יוֹנָתָן', 'אֵילַת', 'גָּר בְּעַכּוֹ', 'אֵיפֹה תָּמִיר גָּר'] },
+  23: { h: 1106, note: 'תַּרְגִּיל 18 א: עוֹקְבִים אַחֲרֵי הַחֵץ שֶׁל כָּל יֶלֶד, וְגוֹרְרִים אֶת הָעִיר לַבּוּעָה שֶׁלּוֹ. 18 ב: כָּל תַּלְמִיד כּוֹתֵב בַּסֵּפֶר.',
+    spots: [[640, 470, 190, 34, 'פָּרִיז'], [228, 432, 185, 34, 'לוֹנְדוֹן'], [195, 588, 210, 34, 'תֵּל אָבִיב'], [640, 893, 190, 34, 'סִידְנִי'], [218, 918, 250, 34, 'מֶקְסִיקוֹ סִיטִי']],
+    extra: ['יִשְׂרָאֵל', 'וָשִׁינְגְטוֹן', 'חֵיפָה'] },
+  24: { h: 1105, note: 'תַּרְגִּיל 19: גּוֹרְרִים בְּ אוֹ מִ לְכָל מָקוֹם רֵיק.',
+    spots: [[545, 844, 50, 32, 'מִ'], [700, 884, 46, 32, 'בְּ'], [455, 884, 50, 32, 'בְּ'], [622, 952, 50, 32, 'בְּ']],
+    extra: ['מִ', 'לְ'] },
+};
+const plainHe = s => s.replace(/[֑-ׇ]/g, '');
+let pgCur = 22, pgSel = null, pgJust = false;
+function pgShow(n){
+  pgCur = n; const p = PG[n]; pgSel = null; $('pgMsg').textContent = '';
+  $('pgImg').src = `pages-22-24/p${n}.png`; $('pgImg').alt = 'נפלאות ג עמוד ' + n; $('pgFull').href = `pages-22-24/p${n}.png`; $('pgNote').textContent = p.note;
+  $('pgSpots').innerHTML = p.spots.map(([x, y, w, h, a], i) => `<button type="button" class="n-spot n-drop" data-i="${i}" style="left:${x / 9.57}%;top:${y / p.h * 100}%;width:${w / 9.57}%;height:${h / p.h * 100}%"><span></span></button>`).join('');
+  const words = NK.shuffle([...p.spots.map(s => s[4]), ...p.extra]);
+  $('pgBank').innerHTML = `<div class="sub" style="margin:0 0 4px">תֵּבַת תְּשׁוּבוֹת:</div>` + words.map((w, i) => `<button type="button" class="chip n-chip" data-w="${i}">${w}</button>`).join('');
+  $('pgSpots').querySelectorAll('.n-drop').forEach(s => s.onclick = () => {
+    if (s.dataset.chip != null){ pgRelease(s); return; }
+    if (pgSel){ pgPut(pgSel, s); }
+  });
+  $('pgBank').querySelectorAll('.n-chip').forEach(c => {
+    c.onclick = () => { if (pgJust || c.classList.contains('used')) return; $('pgBank').querySelectorAll('.n-chip.sel').forEach(x => x.classList.remove('sel')); c.classList.add('sel'); pgSel = c; };
+    pgDrag(c);
+  });
+  $('pgTabs').querySelectorAll('button').forEach(b => b.classList.toggle('on', +b.dataset.pg === n));
+}
+function pgPut(chip, s){
+  if (s.dataset.chip != null) pgRelease(s);
+  s.dataset.chip = chip.dataset.w; s.querySelector('span').textContent = chip.textContent; s.classList.add('full'); s.classList.remove('ok', 'bad');
+  chip.classList.add('used'); chip.classList.remove('sel'); pgSel = null; beep(700, .1);
+}
+function pgRelease(s){
+  const c = $('pgBank').querySelector(`[data-w="${s.dataset.chip}"]`); if (c) c.classList.remove('used');
+  delete s.dataset.chip; s.querySelector('span').textContent = ''; s.classList.remove('full', 'ok', 'bad');
+}
+function pgDrag(chip){
+  chip.addEventListener('pointerdown', e => {
+    if ((e.button || 0) > 0 || chip.classList.contains('used')) return;
+    const sx = e.clientX, sy = e.clientY; let ghost = null, hot = null;
+    const over = ev => document.elementsFromPoint(ev.clientX, ev.clientY).find(x => x.classList && x.classList.contains('n-drop'));
+    const move = ev => { if (!ghost){ if (Math.hypot(ev.clientX - sx, ev.clientY - sy) < 8) return; ghost = chip.cloneNode(true); ghost.classList.add('n-ghost'); document.body.appendChild(ghost); }
+      ev.preventDefault(); ghost.style.left = ev.clientX + 'px'; ghost.style.top = ev.clientY + 'px'; const t = over(ev); if (t !== hot){ if (hot) hot.classList.remove('hot'); hot = t || null; if (hot) hot.classList.add('hot'); } };
+    const up = ev => { document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); document.removeEventListener('pointercancel', up);
+      if (!ghost) return; ghost.remove(); if (hot) hot.classList.remove('hot'); pgJust = true; setTimeout(() => { pgJust = false; }, 60);
+      const t = ev.type === 'pointerup' ? over(ev) : null; if (t) pgPut(chip, t); };
+    document.addEventListener('pointermove', move, { passive: false }); document.addEventListener('pointerup', up); document.addEventListener('pointercancel', up);
+  });
+}
+$('pgTabs').querySelectorAll('button').forEach(b => b.onclick = () => pgShow(+b.dataset.pg));
+$('pgCheck').onclick = () => { const p = PG[pgCur]; let ok = 0, empty = 0;
+  $('pgSpots').querySelectorAll('.n-drop').forEach(s => { const a = p.spots[+s.dataset.i][4]; if (s.dataset.chip == null){ empty++; s.classList.remove('ok', 'bad'); return; }
+    const good = plainHe(s.querySelector('span').textContent) === plainHe(a); s.classList.toggle('ok', good); s.classList.toggle('bad', !good); if (good) ok++; });
+  const n = p.spots.length; $('pgMsg').style.color = ok === n ? 'var(--green)' : 'var(--coral)';
+  $('pgMsg').textContent = empty ? 'עוֹד לֹא מִלֵּאתֶם הַכֹּל 🙂' : ok === n ? 'כָּל הַכָּבוֹד! הַכֹּל נָכוֹן! 🎉' : `${ok} מִתּוֹךְ ${n} נְכוֹנִים — לוֹחֲצִים עַל מִשְׁבֶּצֶת אֲדֻמָּה וּמְתַקְּנִים`;
+  beep(ok === n && !empty ? 880 : 300, .25); };
+$('pgAll').onclick = () => { const p = PG[pgCur];
+  $('pgSpots').querySelectorAll('.n-drop').forEach(s => { if (s.dataset.chip != null) pgRelease(s); const a = p.spots[+s.dataset.i][4];
+    const c = [...$('pgBank').querySelectorAll('.n-chip')].find(x => !x.classList.contains('used') && x.textContent === a); if (c) pgPut(c, s); s.classList.add('ok'); });
+  $('pgMsg').style.color = 'var(--green)'; $('pgMsg').textContent = 'הַתְּשׁוּבוֹת הַנְּכוֹנוֹת'; };
+$('pgClr').onclick = () => pgShow(pgCur);
+pgShow(22);
 
 /* ---------- 4c. בְּ / מִ check: exercise 19, then 4 sentences from the screen story ---------- */
 const CHK = [
