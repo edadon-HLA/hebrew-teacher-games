@@ -29,21 +29,24 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 .self .f span{display:inline-grid;place-items:center;width:6.5mm;height:6.5mm;border:1px solid #9aa3b2;border-radius:50%}
 .bonus{font-size:11pt;font-weight:800;margin-top:1mm}
 .tip{font-size:8pt;color:#6b6880}
+.t{direction:ltr}.en{direction:ltr;text-align:left}.t .task,.t .ans{direction:rtl;text-align:right}.t bdi{unicode-bidi:isolate}
+.name span{font-size:11pt;font-weight:700;margin-inline-start:3mm}.name i.d{flex:.7}
+.bonus{font-size:10.5pt;font-weight:700;color:#16527d}
 @media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
 </style>
 </head>
 <body>
 <div class="sheet" id="sheet"></div>
 <script>
-const SELF = ['אֲנִי יָכוֹל/ה לִכְתֹּב מִשְׁפָּט שָׁלֵם', 'אֲנִי יוֹדֵעַ/ת לוֹמַר מָה אֲנִי אוֹהֵב לֶאֱכוֹל לְקִנּוּחַ'];
+const SELF = ['I can write a full sentence', 'I can say what I like to eat for dessert'];
 const one = `<div class="t">
-  <div class="hd"><b>🎟️ כַּרְטִיס יְצִיאָה</b><span>רְחוֹב הָעוֹלָם <bdi dir="ltr">2.14</bdi></span></div>
-  <div class="name">שֵׁם: <i></i></div>
-  <div class="q">מָה אַתָּה אוֹהֵב לֶאֱכוֹל לְקִנּוּחַ? כִּתְבוּ:</div>
+  <div class="hd"><b>🎟️ Exit Ticket</b><span>Olam Street <bdi dir="ltr">2.14</bdi></span></div>
+  <div class="name">Name: <i></i><span>Date:</span><i class="d"></i></div>
+  <div class="q en">What do you like to eat for dessert? Write:</div>
   <div class="task">אֲנִי אוֹהֵב/ת לֶאֱכוֹל ________ לְקִנּוּחַ.</div>
   <div class="lines"><div class="line"></div><div class="line"></div></div>
-  <div class="tip">רַעְיוֹנוֹת: שׁוֹקוֹלָד · מַנְגּוֹ · פִּיצָה · סָלָט · סוּשִׁי</div>
-  <div class="bonus">בּוֹנוּס: אֲנִי רָעֵב/ה?   כֵּן  /  לֹא</div>
+  <div class="tip en">Ideas: <bdi dir="rtl">שׁוֹקוֹלָד · מַנְגּוֹ · פִּיצָה · סָלָט · סוּשִׁי</bdi></div>
+  <div class="bonus en">Bonus: Are you hungry? Circle: <bdi dir="rtl">כֵּן / לֹא</bdi></div>
   <div class="self">${SELF.map(s => `<div><span>${s}</span><span class="f"><span>😀</span><span>🙂</span><span>😕</span></span></div>`).join('')}</div>
 </div>`;
 document.getElementById('sheet').innerHTML = one.repeat(4);

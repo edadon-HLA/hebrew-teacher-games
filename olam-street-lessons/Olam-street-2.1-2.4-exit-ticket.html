@@ -31,6 +31,9 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 .self .f{display:flex;gap:1.5mm;font-size:12pt;white-space:nowrap}
 .self .f span{display:inline-grid;place-items:center;width:6.5mm;height:6.5mm;border:1px solid #9aa3b2;border-radius:50%}
 .tip{font-size:8pt;color:#6b6880}
+.t{direction:ltr}.en{direction:ltr;text-align:left}.t .task,.t .ans{direction:rtl;text-align:right}.t bdi{unicode-bidi:isolate}
+.name span{font-size:11pt;font-weight:700;margin-inline-start:3mm}.name i.d{flex:.7}
+.bonus{font-size:10.5pt;font-weight:700;color:#16527d}
 @media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
 </style>
 </head>
@@ -39,15 +42,15 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 <script>
 const KNOWN = ['א', 'ב', 'ג', 'ה', 'ו', 'ח', 'ט', 'כ', 'ל', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר'];
 const NEW = new Set(['א', 'ו', 'כ', 'ל', 'פ', 'צ', 'ק']);
-const SELF = ['אֲנִי יָכוֹל/ה לְהַצִּיג אֶת עַצְמִי', 'אֲנִי כּוֹתֵב/ת א, ו, כ, ל', 'אֲנִי קוֹרֵא/ת פּ, צ, ק עִם נִקּוּד'];
+const SELF = ['I can introduce myself', 'I can write <bdi dir="rtl">א, ו, כ, ל</bdi>', 'I can read <bdi dir="rtl">פּ, צ, ק</bdi> with nikud'];
 const one = `<div class="t">
-  <div class="hd"><b>🎟️ כַּרְטִיס יְצִיאָה</b><span>רְחוֹב הָעוֹלָם <bdi dir="ltr">2.1–2.4</bdi></span></div>
-  <div class="name">שֵׁם: <i></i></div>
-  <div class="know">הָאוֹתִיּוֹת שֶׁאֲנִי מַכִּיר/ה (בְּכָחֹל — חֲדָשׁוֹת):</div>
+  <div class="hd"><b>🎟️ Exit Ticket</b><span>Olam Street <bdi dir="ltr">2.1–2.4</bdi></span></div>
+  <div class="name">Name: <i></i><span>Date:</span><i class="d"></i></div>
+  <div class="q en">The letters I know (new ones in blue):</div>
   <div class="letters">${KNOWN.map(k => `<span${NEW.has(k) ? ' class="new"' : ''}>${k}</span>`).join('')}</div>
-  <div class="q">כִּתְבוּ מִלָּה אוֹ מִשְׁפָּט — רַק עִם הָאוֹתִיּוֹת הָאֵלֶּה:</div>
+  <div class="q en">Write a word or a sentence — only with these letters:</div>
   <div class="lines"><div class="line"></div><div class="line"></div><div class="line"></div></div>
-  <div class="tip">רַעְיוֹנוֹת: אוֹכֶל · סָלָט · חָלָב · כֵּן · לֹא</div>
+  <div class="tip en">Ideas: <bdi dir="rtl">אוֹכֶל · סָלָט · חָלָב · כֵּן · לֹא</bdi></div>
   <div class="self">${SELF.map(s => `<div><span>${s}</span><span class="f"><span>😀</span><span>🙂</span><span>😕</span></span></div>`).join('')}</div>
 </div>`;
 document.getElementById('sheet').innerHTML = one.repeat(4);

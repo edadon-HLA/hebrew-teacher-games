@@ -318,7 +318,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
       <li><a href="#s3" data-c="green"><b>3</b>2.6 מִשְׁפָּטִים</a></li>
       <li><a href="#s4" data-c="sky"><b>4</b>מִשְׂחָק</a></li>
       <li><a href="#s5" data-c="gold"><b>5</b>גַּם וְגַם</a></li>
-      <li><a href="#s6" data-c="purple"><b>6</b>כַּרְטִיס יְצִיאָה</a></li>
+      <li><a href="#s6" data-c="purple"><b>6</b>Exit Ticket</a></li>
     </ol>
   </nav>
 
@@ -346,7 +346,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
     <p style="margin:8px 0"><a class="btn" style="text-decoration:none" href="https://www.youtube.com/watch?v=bLC9oAaGJbo" target="_blank" rel="noopener">▶ פִּתְחוּ בְּיוּטְיוּב</a></p>
     <p class="sub">לוֹחֲצִים עַל הַמַּאֲכָל (אוֹ עַל הַלּוּחַ) — מוֹסִיפִים קַו. כָּל חֲמִשָּׁה קַוִּים — חֲבִילָה.</p>
     <div class="tallies" id="tallies"></div>
-    <div class="toolbar" style="margin-top:12px"><button class="btn primary big" id="whatCame" type="button">🔍 מָה יָצָא?</button><button class="btn" id="tClear" type="button">↺ מְנַקִּים</button></div>
+    <div class="toolbar" style="margin-top:12px"><button class="btn primary big" id="whatCame" type="button">🔍 מָה יָצָא?</button><button class="btn" id="tClear" type="button">↺ Clear</button></div>
     <div class="sum" id="sum">סִכּוּם: בְּיִשְׂרָאֵל הֲכִי אוֹהֲבִים לֶאֱכוֹל <span class="res">___</span></div>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>צוֹפִים פַּעֲמַיִם. בַּצְּפִיָּה הָרִאשׁוֹנָה — רַק לִשְׁמֹעַ. בַּשְּׁנִיָּה — תַּלְמִיד אֶחָד אַחֲרֵי הַסִּרְטוֹן מוֹסִיף קַוִּים בַּלּוּחַ וְהַכִּתָּה סוֹפֶרֶת יַחַד. בַּסּוֹף לוֹחֲצִים "מָה יָצָא?".</p></details>
   </section>
@@ -390,14 +390,14 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 
   <!-- ===== 6 exit ticket ===== -->
   <section class="step" id="s6">
-    <div class="step-head"><span class="tag purple">🎟️ כַּרְטִיס יְצִיאָה</span><a class="btn" style="text-decoration:none" href="Olam-street-2.5-and-2.6-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ גִּרְסָה לְהַדְפָּסָה (PDF · 4 בְּדַף)</a></div>
-    <p class="lead">כִּתְבוּ מִשְׁפָּט: אֲנִי אוֹהֵב/ת לֶאֱכוֹל ___ &nbsp;·&nbsp; בּוֹנוּס: אֲנִי לֹא אוֹהֵב/ת לֶאֱכוֹל ___</p>
-    <p class="sub">הַמִּקְלֶדֶת מְלֵאָה. בְּכָחֹל — הָאוֹתִיּוֹת שֶׁכְּבָר לָמַדְנוּ.</p>
+    <div class="step-head"><span class="tag purple">🎟️ Exit Ticket</span><a class="btn" style="text-decoration:none" href="Olam-street-2.5-and-2.6-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ Printable version (PDF · 4 per page)</a></div>
+    <p class="lead" dir="ltr" style="text-align:left">Write a sentence: <bdi dir="rtl">אֲנִי אוֹהֵב/ת לֶאֱכוֹל ___</bdi> &nbsp;·&nbsp; Bonus: <bdi dir="rtl">אֲנִי לֹא אוֹהֵב/ת לֶאֱכוֹל ___</bdi></p>
+    <p class="sub" dir="ltr" style="text-align:left">Full keyboard. Blue = letters we have already learned.</p>
     <div class="ticket">
-      <label style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-weight:800">🙋 הַשֵּׁם שֶׁלִּי: <input type="text" id="tName" style="font:700 20px var(--f-he);padding:6px 10px;border:2px solid var(--line);border-radius:10px"></label>
-      <textarea id="tText" aria-label="כרטיס יציאה" placeholder="כָּאן כּוֹתְבִים…"></textarea>
+      <label style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-weight:800">🙋 Name: <input type="text" id="tName" style="font:700 20px var(--f-he);padding:6px 10px;border:2px solid var(--line);border-radius:10px"></label>
+      <textarea id="tText" aria-label="exit ticket" placeholder="Write here…"></textarea>
       <div class="keys" id="keys"></div>
-      <div class="toolbar" style="margin:12px 0 0"><button class="btn primary big" id="tDone" type="button">✓ סִיַּמְתִּי</button><button class="btn" id="tClr" type="button">↺ מְנַקִּים</button></div>
+      <div class="toolbar" style="margin:12px 0 0"><button class="btn primary big" id="tDone" type="button">✓ Done</button><button class="btn" id="tClr" type="button">↺ מְנַקִּים</button></div>
       <div class="done" id="tShow" hidden></div>
     </div>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>3 דַּקּוֹת, כָּל תַּלְמִיד לְבַד. בַּגִּרְסָה הַמֻּדְפֶּסֶת — מְחַלְּקִים כַּרְטִיס לְכָל תַּלְמִיד וְאוֹסְפִים בַּיְּצִיאָה.</p></details>
@@ -548,7 +548,7 @@ $('tmr').onclick = () => {
 const ALPHA = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'];
 const LEARNED = new Set(['א', 'ב', 'ג', 'ה', 'ו', 'ח', 'ט', 'כ', 'ל', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר']);
 const ta = $('tText');
-$('keys').innerHTML = ALPHA.map(k => `<button type="button" data-key="${k}"${LEARNED.has(k) ? ' class="new"' : ''}>${k}</button>`).join('') + '<button type="button" class="wide" data-key=" ">רֶוַח</button><button type="button" class="wide" data-key="⏎">שׁוּרָה</button><button type="button" class="wide" data-key="⌫">⌫ מְחִיקָה</button>';
+$('keys').innerHTML = ALPHA.map(k => `<button type="button" data-key="${k}"${LEARNED.has(k) ? ' class="new"' : ''}>${k}</button>`).join('') + '<button type="button" class="wide" data-key=" ">space</button><button type="button" class="wide" data-key="⏎">new line</button><button type="button" class="wide" data-key="⌫">⌫ delete</button>';
 const ins = s => { const a = ta.selectionStart ?? ta.value.length, b = ta.selectionEnd ?? ta.value.length; ta.value = ta.value.slice(0, a) + s + ta.value.slice(b); ta.selectionStart = ta.selectionEnd = a + s.length; ta.focus(); };
 $('keys').querySelectorAll('[data-key]').forEach(b => b.onclick = () => { const k = b.dataset.key;
   if (k === '⌫'){ const a = ta.selectionStart, e = ta.selectionEnd; if (a !== e){ ta.value = ta.value.slice(0, a) + ta.value.slice(e); ta.selectionStart = ta.selectionEnd = a; } else if (a > 0){ ta.value = ta.value.slice(0, a - 1) + ta.value.slice(a); ta.selectionStart = ta.selectionEnd = a - 1; } ta.focus(); }
