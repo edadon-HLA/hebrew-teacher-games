@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כַּרְטִיסֵי תְּשׁוּבָה — עָרִים · ✔ / ✘ · בְּ / מִ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@700;800&display=swap" rel="stylesheet">
+<style>
+/* page 1: city cards (6 per page: תֵּל אָבִיב, וָשִׁינְגְטוֹן + the 3 flag cards + one spare blank); page 2: ✔ / ✘; page 3: בְּ / מִ — cut along the dashed lines */
+@page{size:A4;margin:8mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.sheet{width:194mm;height:281mm;margin:0 auto;display:grid;page-break-after:always}
+.sheet:last-child{page-break-after:auto}
+.s6{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr}
+.s2{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+.c{border:1.5px dashed #9aa3b2;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;gap:3mm;padding:3mm}
+.c .ic{font-size:34pt;line-height:1}
+.c .fl svg{width:46mm;height:33mm;display:block;border-radius:2mm}
+.c b{font-size:40pt;font-weight:800;line-height:1.15;text-align:center}
+.c.bm b{font-size:230pt;line-height:1.05}
+.c.bm small{font:800 22pt 'Rubik','Noto Sans Hebrew',sans-serif;color:#7a4cc2}
+.c.yn b{font:800 200pt/1 'Rubik',Arial,sans-serif}
+.c.yn small{font:800 30pt 'Noto Sans Hebrew',sans-serif}
+.c.empty{border-color:transparent}
+@media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+<script src="pages-22-24/data.js?v=2"></script>
+</head>
+<body>
+<div class="sheet s6" id="cities"></div>
+<div class="sheet s2">
+  <div class="c yn"><b style="color:#2f9d55">✔</b><small style="color:#2f9d55">נָכוֹן</small></div>
+  <div class="c yn"><b style="color:#e2506a">✘</b><small style="color:#e2506a">לֹא נָכוֹן</small></div>
+</div>
+<div class="sheet s2">
+  <div class="c bm"><b>בְּ</b><small>אֵיפֹה? · where</small></div>
+  <div class="c bm"><b>מִ</b><small>מֵאֵיפֹה? · from where</small></div>
+</div>
+<script>
+const F = P2224.FLAGS;
+document.getElementById('cities').innerHTML = [
+  `<div class="c"><span class="fl">${F.london}</span><b>לוֹנְדוֹן</b></div>`,
+  `<div class="c"><span class="fl">${F.paris}</span><b>פָּרִיז</b></div>`,
+  `<div class="c"><span class="fl">${F.israel}</span><b>יִשְׂרָאֵל</b></div>`,
+  `<div class="c"><span class="ic">🏙️</span><b>תֵּל אָבִיב</b></div>`,
+  `<div class="c"><span class="ic">🏛️</span><b>וָשִׁינְגְטוֹן</b></div>`,
+  `<div class="c empty"></div>`,
+].join('');
+</script>
+</body>
+</html>
