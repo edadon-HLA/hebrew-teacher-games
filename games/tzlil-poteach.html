@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>צְלִיל פּוֹתֵחַ — כֵּן / לֹא</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fdf7ef;--ink:#23233a;--muted:#6b6880;--line:#eadfce;--coral:#e2506a;--green:#2f9d55;--green-soft:#dcf2e3;--coral-soft:#fde3e7;--sky:#2a8bd0;--gold:#f2b01e}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.5 'Noto Sans Hebrew','Rubik',Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:14px 14px 40px}
+h1{margin:4px 0 0;font:800 clamp(28px,5vw,42px) 'Rubik',Arial,sans-serif}
+.ask{margin:2px 0 10px;font:800 clamp(26px,4.5vw,40px) 'Rubik',Arial,sans-serif;color:var(--coral)}
+.ask b{background:#fff;border:3px solid var(--coral);border-radius:14px;padding:0 14px;margin:0 4px}
+.top{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:8px}
+.btn{font:700 18px 'Noto Sans Hebrew',Arial,sans-serif;border:0;border-radius:12px;padding:10px 18px;background:var(--sky);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:hover{filter:brightness(.93)}.btn.ghost{background:#fff;color:#16527d;border:2px solid var(--sky)}
+.btn.go{background:var(--coral);font-size:22px;padding:12px 22px}
+.btn.rv{background:var(--green);font-size:22px;padding:12px 22px}
+.btn.sm{font-size:15px;padding:6px 12px}
+.chk{display:inline-flex;gap:6px;align-items:center;font-weight:700;font-size:16px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 12px;cursor:pointer;user-select:none}
+.chk input{width:18px;height:18px}
+.stage{width:min(760px,100%);background:#fff;border:3px solid var(--ink);border-radius:26px;box-shadow:0 8px 24px rgba(35,35,58,.12);padding:18px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:background .2s,border-color .2s}
+.stage.yes{background:var(--green-soft);border-color:var(--green)}.stage.no{background:var(--coral-soft);border-color:var(--coral)}
+.pic{width:100%;height:clamp(200px,40vh,340px);display:grid;place-items:center}
+.pic img{max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply}.pic .emo{font-size:clamp(120px,24vh,220px);line-height:1}
+.word{min-height:78px;font:800 clamp(40px,8vw,68px)/1.3 'Noto Sans Hebrew',Arial,sans-serif;text-align:center}
+.word b{color:var(--coral)}.word.q{color:#b9b2c9}
+.verdict{min-height:64px;font:800 clamp(28px,5vw,44px) 'Rubik',Arial,sans-serif;text-align:center}
+.verdict.yes{color:var(--green)}.verdict.no{color:var(--coral)}
+.nav{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap;justify-content:center}
+.cnt{font-weight:800;color:var(--muted);min-width:70px;text-align:center}
+.cards{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.hint{max-width:760px;color:var(--muted);font-size:15px;text-align:center;margin-top:10px}
+#cdOv{position:fixed;inset:0;z-index:50;background:rgba(35,35,58,.88);display:none;place-items:center;color:#fff;font:800 min(40vw,320px)/1 'Rubik',Arial,sans-serif;text-align:center}
+#cdOv.on{display:grid}#cdOv small{display:block;font-size:min(10vw,90px);margin-top:10px}
+</style>
+</head>
+<body>
+<h1>🔊 צְלִיל פּוֹתֵחַ</h1>
+<p class="ask">מַתְחִיל בְּ<b id="letter">שׁ</b>?</p>
+
+<div class="top">
+  <label class="chk" id="setPick" hidden>אוֹת: <select id="setSel"></select></label>
+  <label class="chk"><input type="checkbox" id="optWord"> הַצִּיגוּ אֶת הַמִּלָּה מֵרֹאשׁ</label>
+  <label class="chk"><input type="checkbox" id="optVoice"> 🔊 הַקְרָאָה בְּקוֹל</label>
+  <button class="btn ghost sm" id="shuf" type="button">🔀 עֶרְבּוּב</button>
+</div>
+
+<div class="stage" id="stage">
+  <div class="pic" id="pic"></div>
+  <div class="word q" id="word">?</div>
+  <div class="verdict" id="verdict"></div>
+</div>
+
+<div class="nav">
+  <button class="btn ghost" id="prev" type="button">▶ הקודם</button>
+  <span class="cnt" id="cnt"></span>
+  <button class="btn ghost" id="next" type="button">הבא ◀</button>
+</div>
+<div class="nav">
+  <button class="btn go" id="cd" type="button">🕒 3… 2… 1… הָרִימוּ!</button>
+  <button class="btn rv" id="rv" type="button">👁 הַצִּיגוּ תְּשׁוּבָה</button>
+</div>
+<div class="cards">
+  <a class="btn ghost sm" id="cardsPdf" href="tzlil/cards-yes-no.pdf" target="_blank" rel="noopener">🖨️ כַּרְטִיסֵי ✔ / ✘ לְהַדְפָּסָה (PDF)</a>
+</div>
+<p class="hint">כָּל תַּלְמִיד מַחְזִיק כַּרְטִיס ✔ (מַתְחִיל בַּצְּלִיל) וְכַרְטִיס ✘ (לֹא מַתְחִיל). סוֹפְרִים 3-2-1, כֻּלָּם מַרִימִים — וְרַק אָז מְגַלִּים אֶת הַתְּשׁוּבָה. קִצּוּרִי מִקְלָדֶת: רֶוַח = הַבָּא, ← → = מַעֲבָר.</p>
+
+<div id="cdOv" aria-live="assertive"><div id="cdTxt">3</div></div>
+
+<script src="tzlil-sets.js"></script>
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const sets = window.TZLIL_SETS, keys = Object.keys(sets);
+const q = new URLSearchParams(location.search);
+let key = sets[q.get('letter')] ? q.get('letter') : keys[0];
+let S = sets[key], order = [], i = 0, revealed = false;
+const nikud = /[֑-ׇ]/;
+
+/* optional letter picker (appears once there is more than one set) */
+if (keys.length > 1) { $('setPick').hidden = false; $('setSel').innerHTML = keys.map(k => `<option value="${k}"${k === key ? ' selected' : ''}>${sets[k].title}</option>`).join(''); $('setSel').onchange = e => { key = e.target.value; load(); }; }
+$('optWord').checked = q.get('word') === '1';
+
+function firstLetterHTML(w) {
+  const m = w.match(/^([א-ת][֑-ׇ]*)([\s\S]*)$/);
+  return m ? `<b>${m[1]}</b>${m[2]}` : w;
+}
+function say(t) {
+  if (!$('optVoice').checked || !window.speechSynthesis) return;
+  const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang));
+  if (!v) return;
+  speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = v; u.lang = v.lang; u.rate = .8; speechSynthesis.speak(u);
+}
+let ac; const beep = (f, d = .15, v = .15) => { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; g.gain.value = v; o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + d); } catch (e) {} };
+
+function load() {
+  S = sets[key]; $('letter').textContent = S.first; document.title = 'צְלִיל פּוֹתֵחַ — ' + S.title;
+  order = S.items.map((_, k) => k); i = 0; show();
+}
+function show() {
+  const it = S.items[order[i]]; revealed = false;
+  $('stage').className = 'stage';
+  $('pic').innerHTML = it.pic ? `<img src="${it.pic}" alt="">` : `<div class="emo" aria-hidden="true">${it.emo}</div>`;
+  const w = $('word'); if ($('optWord').checked) { w.className = 'word'; w.innerHTML = firstLetterHTML(it.he); } else { w.className = 'word q'; w.textContent = '?'; }
+  $('verdict').className = 'verdict'; $('verdict').textContent = '';
+  $('cnt').textContent = (i + 1) + ' / ' + order.length;
+}
+function reveal() {
+  const it = S.items[order[i]]; revealed = true;
+  $('word').className = 'word'; $('word').innerHTML = firstLetterHTML(it.he);
+  $('stage').className = 'stage ' + (it.yes ? 'yes' : 'no');
+  const v = $('verdict'); v.className = 'verdict ' + (it.yes ? 'yes' : 'no');
+  v.textContent = it.yes ? '✔ כֵּן! מַתְחִיל בְּ' + S.first : '✘ לֹא — לֹא מַתְחִיל בְּ' + S.first;
+  beep(it.yes ? 880 : 300, .25); say(it.he);
+}
+const go = d => { i = (i + d + order.length) % order.length; show(); };
+function countdown() {
+  const ov = $('cdOv'), t = $('cdTxt'); let n = 3; ov.classList.add('on'); t.textContent = n; beep(520);
+  const tick = setInterval(() => {
+    n--; if (n > 0) { t.textContent = n; beep(520); }
+    else { clearInterval(tick); t.innerHTML = 'הָרִימוּ!<small>✔ / ✘</small>'; beep(880, .3); setTimeout(() => ov.classList.remove('on'), 1300); }
+  }, 1000);
+}
+$('cd').onclick = countdown;
+$('rv').onclick = () => revealed ? go(1) : reveal();
+$('next').onclick = () => go(1); $('prev').onclick = () => go(-1);
+$('optWord').onchange = () => { if (!revealed) show(); };
+$('shuf').onclick = () => { for (let k = order.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [order[k], order[j]] = [order[j], order[k]]; } i = 0; show(); };
+document.addEventListener('keydown', e => {
+  if (/INPUT|SELECT/.test(e.target.tagName)) return;
+  if (e.key === 'ArrowLeft') go(1); else if (e.key === 'ArrowRight') go(-1);
+  else if (e.key === ' ') { e.preventDefault(); revealed ? go(1) : reveal(); }
+});
+load();
+})();
+</script>
+</body>
+</html>
