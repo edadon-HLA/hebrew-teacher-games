@@ -618,7 +618,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
     <p class="lead" style="margin-top:16px">בּוֹדְקִים יַחַד</p>
     <div class="t2-key" id="lKey"></div>
     <div class="bar2" style="justify-content:center;margin-top:10px"><button class="btn primary big" id="lCheck" type="button">✔ בּוֹדְקִים</button><button class="btn" id="lAll" type="button">הַכֹּל</button><button class="btn ghost" id="lClr" type="button">↺</button></div>
-    <details class="tnote" open><summary>📝 מהלך קצר</summary><p>1. כָּל תַּלְמִיד מַקְשִׁיב וְכוֹתֵב אֶת הַמִּסְפָּר בַּחוֹבֶרֶת. הַהַקְלָטָה הַמְּקוֹרִית נִמְצֵאת בַּחוֹבֶרֶת הַמְּקֻוֶּנֶת, עַמּוּד 16 (סֵמֶל רַמְקוֹל). אִם אֵין הַקְלָטָה — פּוֹתְחִים "אֵין הַקְלָטָה?" וְהַמַּחְשֵׁב (אוֹ הַמּוֹרֶה) קוֹרֵא: "מִסְפָּר 1: מַיִם…". 2. בּוֹדְקִים יַחַד: כָּל לְחִיצָה עַל "בּוֹדְקִים" מְמַלֵּאת מִסְפָּר אֶחָד. שִׂימוּ לֵב: הַמַּפְתֵּחַ כָּאן לְפִי הַתַּסְרִיט שֶׁל הַמּוֹרֶה; אִם בַּהַקְלָטָה הַסֵּדֶר אַחֵר — בּוֹדְקִים לְפִי הַהַקְלָטָה.</p></details>
+    <details class="tnote" open><summary>📝 מהלך קצר</summary><p>1. כָּל תַּלְמִיד מַקְשִׁיב וְכוֹתֵב אֶת הַמִּסְפָּר בַּחוֹבֶרֶת. הַהַקְלָטָה הַמְּקוֹרִית נִמְצֵאת בַּחוֹבֶרֶת הַמְּקֻוֶּנֶת, עַמּוּד 16 (סֵמֶל רַמְקוֹל). אִם אֵין הַקְלָטָה — פּוֹתְחִים "אֵין הַקְלָטָה?" וְהַמַּחְשֵׁב (אוֹ הַמּוֹרֶה) קוֹרֵא אֶת אוֹתָן הוֹרָאוֹת: "כִּתְבוּ אֶת הַמִּסְפָּר 1 מִתַּחַת לַמִּלָּה פַּסְטָה…". 2. בּוֹדְקִים יַחַד: כָּל לְחִיצָה עַל "בּוֹדְקִים" מְמַלֵּאת מִסְפָּר אֶחָד.</p></details>
   </section>
 
   <!-- ===== 3 listening game, 2 levels ===== -->
@@ -784,12 +784,12 @@ function speakSpot(){ const f = SP[cur], sp = [...$('spSyl').children]; let k = 
   const tick = () => { sp.forEach(s => s.classList.remove('on')); if (k < sp.length){ sp[k++].classList.add('on'); setTimeout(tick, 520); } }; tick(); say(f.he, .75); }
 
 /* ---------- 2. 2.22 listening: teacher script (fallback) + check together ---------- */
-/* KEY = the teacher script order (spec). If the book recording uses a different order, change only this list. */
-const KEY = ['water', 'banana', 'cheese', 'cereal', 'milk', 'pizza', 'tuna', 'salad', 'chocolate', 'pasta'];
+/* KEY = the order of the book recording (2.22, workbook p.16), as typed by the teacher */
+const KEY = ['pasta', 'milk', 'banana', 'pizza', 'cheese', 'salad', 'water', 'chocolate', 'tuna', 'cereal'];
 const NUM_HE = ['אַחַת', 'שְׁתַּיִם', 'שָׁלוֹשׁ', 'אַרְבַּע', 'חָמֵשׁ', 'שֵׁשׁ', 'שֶׁבַע', 'שְׁמוֹנֶה', 'תֵּשַׁע', 'עֶשֶׂר'];
 let li = -1;
-const line = i => `מִסְפָּר ${i + 1}: ${BY[KEY[i]].he}`;
-function lPlay(i){ li = i; $('lNow').textContent = line(i); $('lCnt').textContent = (i + 1) + ' / ' + KEY.length; say(`מִסְפָּר ${NUM_HE[i]}. ${BY[KEY[i]].he}.`, .75); }
+const line = i => `כִּתְבוּ אֶת הַמִּסְפָּר ${i + 1} מִתַּחַת לַמִּלָּה ${BY[KEY[i]].he}.`;
+function lPlay(i){ li = i; $('lNow').textContent = line(i); $('lCnt').textContent = (i + 1) + ' / ' + KEY.length; say(`כִּתְבוּ אֶת הַמִּסְפָּר ${NUM_HE[i]} מִתַּחַת לַמִּלָּה ${BY[KEY[i]].he}.`, .75); }
 $('lGo').onclick = () => lPlay(0);
 $('lAgain').onclick = () => { if (li >= 0) lPlay(li); };
 $('lNext').onclick = () => { if (li < KEY.length - 1) setTimeout(() => lPlay(li + 1), 400); };
