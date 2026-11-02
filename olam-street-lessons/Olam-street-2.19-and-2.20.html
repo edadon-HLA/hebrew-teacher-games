@@ -619,7 +619,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
     <div class="bar2" style="justify-content:center;margin-top:12px"><button class="s9-peek" id="gPeek" type="button">👁 לַמּוֹרֶה (לוֹחֲצִים וּמַחֲזִיקִים)</button><span class="s9-peekout" id="gPeekOut"></span><button class="cdbtn" id="cdG" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn primary big" id="gRev" type="button">👁 הַצִּיגוּ</button><button class="btn primary" id="gNext" type="button">הַבָּא ◀</button><button class="btn ghost" id="gNew" type="button">↺ שׁוּב</button><a class="rc" href="Olam-street-2.19-and-2.20-number-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי מִסְפָּרִים 1–4</a></div>
 
     <div class="s9-nik" id="nik"><span class="lab">סִימָנֵי הַנִּקּוּד</span></div>
-    <details class="tnote" open><summary>📝 מהלך קצר</summary><p>1. קוֹדֶם כָּל תַּלְמִיד קוֹרֵא לְבַד בַּחוֹבֶרֶת, בְּלַחַשׁ. 2. אַחַר כָּךְ קוֹרְאִים יַחַד עַל הַלּוּחַ: "▶ קוֹרְאִים" מַדְלִיק הֲבָרָה אַחַת בְּכָל פַּעַם (אוֹ "אוֹטוֹמָטִי" עִם מְהִירוּת), וְכָל הַכִּתָּה קוֹרֵאת בְּקוֹל. שִׂימוּ לֵב: בְּמִסְפָּר 27 וּ־36 יֵשׁ ט בְּלִי נִקּוּד, כְּמוֹ בַּחוֹבֶרֶת. 3. "אֵיזוֹ הֲבָרָה אָמַרְתִּי?" — הַמּוֹרֶה מַחֲזִיק אֶת "👁 לַמּוֹרֶה" כְּדֵי לִרְאוֹת מָה לוֹמַר, אוֹמֵר אֶת הַהֲבָרָה, סוֹפְרִים, וְלוֹחֲצִים עַל הַתֵּבָה. אִם אֵין זְמַן — קוֹרְאִים יַחַד רַק 1–18.</p></details>
+    <details class="tnote" open><summary>📝 מהלך קצר</summary><p>1. קוֹדֶם כָּל תַּלְמִיד קוֹרֵא לְבַד בַּחוֹבֶרֶת, בְּלַחַשׁ. 2. אַחַר כָּךְ קוֹרְאִים יַחַד עַל הַלּוּחַ: "▶ קוֹרְאִים" מַדְלִיק הֲבָרָה אַחַת בְּכָל פַּעַם (אוֹ "אוֹטוֹמָטִי" עִם מְהִירוּת), וְכָל הַכִּתָּה קוֹרֵאת בְּקוֹל. שִׂימוּ לֵב: בְּסוֹף הַשּׁוּרָה הַשְּׁלִישִׁית וְהָרְבִיעִית יֵשׁ ט בְּלִי נִקּוּד, כְּמוֹ בַּחוֹבֶרֶת. 3. "אֵיזוֹ הֲבָרָה אָמַרְתִּי?" — הַמּוֹרֶה מַחֲזִיק אֶת "👁 לַמּוֹרֶה" כְּדֵי לִרְאוֹת מָה לוֹמַר, אוֹמֵר אֶת הַהֲבָרָה, סוֹפְרִים, וְלוֹחֲצִים עַל הַתֵּבָה. אִם אֵין זְמַן — קוֹרְאִים יַחַד רַק אֶת שְׁתֵּי הַשּׁוּרוֹת הָרִאשׁוֹנוֹת.</p></details>
     <div class="cw" role="note"><span class="ic">📝</span><div><b>עֲבוֹדַת כִּתָּה בַּחוֹבֶרֶת — עַמּוּד 15</b> · קְרִיאַת הַשְּׁבִיל. אֶפְשָׁר לָתֵת צִיּוּן (לֹא חוֹבָה).</div></div>
   </section>
 
@@ -793,7 +793,7 @@ for (let k = 1; k < PATH.length; k++){
 const last = pos[PATH.length - 1];
 let svg = `<path class="dots" d="${d} L${last[0] + 50} ${last[1]}"/>`;
 svg += `<circle cx="975" cy="${YS(0)}" r="13" fill="var(--green)"/><path d="M${last[0] + 46} ${last[1] - 16} L${last[0] + 70} ${last[1]} L${last[0] + 46} ${last[1] + 16}Z" fill="var(--coral)"/>`;
-svg += PATH.map((s, k) => `<g class="sy" data-k="${k}"><circle cx="${pos[k][0]}" cy="${pos[k][1]}" r="46"/><text x="${pos[k][0]}" y="${pos[k][1] + 2}">${s}</text><text class="num" x="${pos[k][0]}" y="${pos[k][1] + 64}">${k + 1}</text></g>`).join('');
+svg += PATH.map((s, k) => `<g class="sy" data-k="${k}"><circle cx="${pos[k][0]}" cy="${pos[k][1]}" r="46"/><text x="${pos[k][0]}" y="${pos[k][1] + 2}">${s}</text></g>`).join('');
 $('pathSvg').innerHTML = svg;
 const SY = [...$('pathSvg').querySelectorAll('.sy')];
 let pk = -1, autoT = null;
