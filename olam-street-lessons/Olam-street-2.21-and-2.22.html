@@ -543,6 +543,21 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 .t2-it b{display:block;font-size:clamp(18px,2.2vw,24px)}
 .t2-it .box{width:64px;height:58px;margin:6px auto 0;border:3px solid #23233a;border-radius:10px;background:#fff;display:grid;place-items:center;font:800 38px var(--f-display);color:var(--coral)}
 .t2-it.on{border-color:var(--green);background:var(--green-soft)}
+button.t2-it{font:inherit;color:var(--ink);cursor:pointer;width:100%;position:relative}
+button.t2-it:hover{border-color:var(--sky)}
+.t2-it .box{width:76px;height:66px;font-size:42px;color:#1f4fbf}
+.t2-it .mk{min-height:34px;font:800 26px var(--f-display);margin-top:4px}
+.t2-it.ok{border-color:var(--green);background:var(--green-soft)}.t2-it.ok .mk{color:var(--green)}
+.t2-it.no{border-color:var(--coral);background:var(--coral-soft)}.t2-it.no .mk{color:var(--coral)}
+.t2-it.show .box{color:var(--green)}
+.t2-pick{position:fixed;inset:0;z-index:9995;background:rgba(20,20,35,.55);display:flex;align-items:center;justify-content:center;padding:14px}
+.t2-pick[hidden]{display:none}
+.t2-pick .pbox{background:var(--surface);border-radius:22px;padding:16px;max-width:460px;width:100%;text-align:center;box-shadow:0 12px 40px #0005}
+.t2-pick .ph{font:800 32px var(--f-he);margin-bottom:10px}
+.t2-pick .pg{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;direction:ltr}
+.t2-pick button{font:800 30px var(--f-display);height:66px;border:3px solid var(--line);border-radius:16px;background:#fff;color:#23233a;cursor:pointer}
+.t2-pick button:hover{border-color:var(--sky)}.t2-pick button.on{background:var(--sky);color:#fff;border-color:var(--sky)}
+.t2-pick .pr{display:flex;gap:10px;justify-content:center;margin-top:12px}.t2-pick .pr button{font:800 22px var(--f-he);padding:0 20px;height:54px}
 .t2-table{max-width:520px;margin:0 auto 12px}.t2-table svg{width:100%;height:auto;display:block}
 .s9-frame .w{flex:none}
 .t2-cnt{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -617,8 +632,8 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
     </details>
     <p class="lead" style="margin-top:16px">בּוֹדְקִים יַחַד</p>
     <div class="t2-key" id="lKey"></div>
-    <div class="bar2" style="justify-content:center;margin-top:10px"><button class="btn primary big" id="lCheck" type="button">✔ בּוֹדְקִים</button><button class="btn" id="lAll" type="button">הַכֹּל</button><button class="btn ghost" id="lClr" type="button">↺</button></div>
-    <details class="tnote" open><summary>📝 מהלך קצר</summary><p>1. כָּל תַּלְמִיד מַקְשִׁיב וְכוֹתֵב אֶת הַמִּסְפָּר בַּחוֹבֶרֶת. הַהַקְלָטָה הַמְּקוֹרִית נִמְצֵאת בַּחוֹבֶרֶת הַמְּקֻוֶּנֶת, עַמּוּד 16 (סֵמֶל רַמְקוֹל). אִם אֵין הַקְלָטָה — פּוֹתְחִים "אֵין הַקְלָטָה?" וְהַמַּחְשֵׁב (אוֹ הַמּוֹרֶה) קוֹרֵא אֶת אוֹתָן הוֹרָאוֹת: "כִּתְבוּ אֶת הַמִּסְפָּר 1 מִתַּחַת לַמִּלָּה פַּסְטָה…". 2. בּוֹדְקִים יַחַד: כָּל לְחִיצָה עַל "בּוֹדְקִים" מְמַלֵּאת מִסְפָּר אֶחָד.</p></details>
+    <div class="bar2" style="justify-content:center;margin-top:10px"><button class="btn primary big" id="lCheck" type="button">✔ בּוֹדְקִים</button><button class="btn" id="lAll" type="button">הַכֹּל</button><button class="btn ghost" id="lClr" type="button">🗑 מְחַק</button></div>
+    <details class="tnote" open><summary>📝 מהלך קצר</summary><p>1. כָּל תַּלְמִיד מַקְשִׁיב וְכוֹתֵב אֶת הַמִּסְפָּר בַּחוֹבֶרֶת. הַהַקְלָטָה הַמְּקוֹרִית נִמְצֵאת בַּחוֹבֶרֶת הַמְּקֻוֶּנֶת, עַמּוּד 16 (סֵמֶל רַמְקוֹל). אִם אֵין הַקְלָטָה — פּוֹתְחִים "אֵין הַקְלָטָה?" וְהַמַּחְשֵׁב (אוֹ הַמּוֹרֶה) קוֹרֵא אֶת אוֹתָן הוֹרָאוֹת: "כִּתְבוּ אֶת הַמִּסְפָּר 1 מִתַּחַת לַמִּלָּה פַּסְטָה…". 2. בּוֹדְקִים יַחַד: לוֹחֲצִים עַל תְּמוּנָה וּבוֹחֲרִים מִסְפָּר (לְפִי מָה שֶׁהַכִּתָּה אוֹמֶרֶת). "בּוֹדְקִים" מְסַמֵּן ✔ / ✘ וּמַרְאֶה אֶת הַמִּסְפָּר הַנָּכוֹן. "הַכֹּל" מַצִּיג אֶת כָּל הַתְּשׁוּבוֹת, "מְחַק" מְנַקֶּה.</p></details>
   </section>
 
   <!-- ===== 3 listening game, 2 levels ===== -->
@@ -793,12 +808,27 @@ function lPlay(i){ li = i; $('lNow').textContent = line(i); $('lCnt').textConten
 $('lGo').onclick = () => lPlay(0);
 $('lAgain').onclick = () => { if (li >= 0) lPlay(li); };
 $('lNext').onclick = () => { if (li < KEY.length - 1) setTimeout(() => lPlay(li + 1), 400); };
-$('lKey').innerHTML = F10.map(f => `<div class="t2-it" data-id="${f.id}"><div class="pp">${pic(f)}</div><b>${f.he}</b><div class="box"></div></div>`).join('');
-let lk = 0;
-function fillKey(i){ const id = KEY[i], el = $('lKey').querySelector(`[data-id="${id}"]`); el.classList.add('on'); el.querySelector('.box').textContent = i + 1; tone(true, 600 + i * 30); }
-$('lCheck').onclick = () => { if (lk >= KEY.length) return; fillKey(lk); lk++; if (lk === KEY.length){ tone(true); burst($('lKey'), ['⭐', '🎉']); } };
-$('lAll').onclick = () => { while (lk < KEY.length){ fillKey(lk); lk++; } };
-$('lClr').onclick = () => { lk = 0; $('lKey').querySelectorAll('.t2-it').forEach(e => { e.classList.remove('on'); e.querySelector('.box').textContent = ''; }); };
+/* the teacher taps a picture -> number picker 1-10 -> the number goes into that picture's box; "בּוֹדְקִים" marks ✔ / ✘ */
+$('lKey').innerHTML = F10.map(f => `<button class="t2-it" type="button" data-id="${f.id}" aria-label="${f.he}: בחירת מספר"><div class="pp">${pic(f)}</div><b>${f.he}</b><div class="box"></div><div class="mk"></div></button>`).join('');
+const ans = {}; let pickFor = null;
+const right = id => KEY.indexOf(id) + 1;
+const items = () => [...$('lKey').querySelectorAll('.t2-it')];
+function drawKey(){ items().forEach(el => { const v = ans[el.dataset.id]; el.querySelector('.box').textContent = v || ''; el.classList.remove('on', 'ok', 'no', 'show'); el.querySelector('.mk').textContent = ''; }); }
+const picker = document.createElement('div'); picker.className = 't2-pick'; picker.hidden = true;
+picker.innerHTML = '<div class="pbox"><div class="ph" id="pkH"></div><div class="pg">' + Array.from({ length: 10 }, (_, i) => `<button type="button" data-pk="${i + 1}">${i + 1}</button>`).join('') + '</div><div class="pr"><button type="button" data-pk="0" class="clr">מְחַק</button><button type="button" data-x class="cls">✕</button></div></div>';
+document.body.appendChild(picker);
+items().forEach(el => el.onclick = () => { pickFor = el.dataset.id; $('pkH').textContent = BY[pickFor].he; picker.querySelectorAll("[data-pk]").forEach(b => b.classList.toggle("on", +b.dataset.pk === ans[pickFor])); picker.hidden = false; });
+picker.querySelectorAll("[data-pk]").forEach(b => b.onclick = () => { const n = +b.dataset.pk;
+  if (n){ Object.keys(ans).forEach(k => { if (ans[k] === n && k !== pickFor) delete ans[k]; }); ans[pickFor] = n; } else delete ans[pickFor];
+  picker.hidden = true; drawKey(); tone(true, 520 + n * 25); });
+picker.querySelector('[data-x]').onclick = () => { picker.hidden = true; };
+picker.addEventListener('click', e => { if (e.target === picker) picker.hidden = true; });
+$('lCheck').onclick = () => { let good = 0;
+  items().forEach(el => { const id = el.dataset.id, v = ans[id], r = right(id), ok = v === r; el.classList.remove('on', 'show'); el.classList.toggle('ok', ok); el.classList.toggle('no', !ok);
+    el.querySelector('.mk').textContent = ok ? '✔' : `✘ ${r}`; if (ok) good++; });
+  if (good === KEY.length){ tone(true); burst($('lKey'), ['⭐', '🎉']); } else tone(false); };
+$('lAll').onclick = () => { items().forEach(el => { const id = el.dataset.id; ans[id] = right(id); }); drawKey(); items().forEach(el => el.classList.add('show')); tone(true); };
+$('lClr').onclick = () => { Object.keys(ans).forEach(k => delete ans[k]); drawKey(); };
 
 /* ---------- 3. listening game, 2 levels (engine from 2.10–2.13; level 2 = voice only) ---------- */
 let lv = 1, nCards = 10, M = null;
