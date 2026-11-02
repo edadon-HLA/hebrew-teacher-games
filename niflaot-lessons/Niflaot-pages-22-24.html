@@ -141,6 +141,17 @@
 .n-spot span{visibility:hidden;background:#fff;border-radius:8px;padding:1px 6px;white-space:nowrap}
 .n-spot.on{border-style:solid;border-color:#2f9d55;background:rgba(220,242,227,.85)}.n-spot.on span{visibility:visible}
 .n-spot.q{color:#7a4cc2}
+.n-pick{font:inherit;cursor:pointer;color:var(--ink);position:relative}
+.m-cards .n-pick{font-size:clamp(28px,3.6vw,40px);min-width:150px;padding:10px 18px}.m-cards .n-pick .ic{font-size:40px}.m-cards .n-pick .flag svg{width:70px;height:50px}
+.n-pick:hover:not(:disabled){border-color:var(--sky);transform:translateY(-2px)}
+.n-pick:disabled{cursor:default}
+.n-pick .mk{position:absolute;top:2px;left:8px;font:800 26px var(--f-display)}
+.n-pick.hit .mk{color:var(--green)}.n-pick.no{border-color:var(--coral);background:var(--coral-soft);opacity:.55}.n-pick.no .mk{color:var(--coral)}
+.n-crop{background-repeat:no-repeat;border-radius:12px;border:2px solid var(--line);max-width:100%;flex:none}
+.n-crop-wrap{display:flex;gap:12px;justify-content:center;align-items:flex-end;flex-wrap:wrap;margin:8px 0 12px}
+.fitem:has(.n-pic){display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.n-pic .n-crop{border-width:1px}
+.n-bk .panel{margin-top:6px}
 .n-round button.done{border-color:var(--green)}
 .n-big{font-size:clamp(80px,14vw,130px);line-height:1.1}
 .m-card .flag svg,.n-flag svg{width:56px;height:40px;display:block;margin:0 auto 2px;border-radius:4px}
@@ -219,7 +230,7 @@
 <section class="step" id="s2">
   <span class="tag green"><span class="tnum">2</span> חִמּוּם · 3–5 דַּקּוֹת · מְלִיאָה, מָסָךְ 1</span>
   <p class="lead">אֵיפֹה? בְּ...</p>
-  <p class="sub">לוֹחֲצִים עַל תְּמוּנָה ⬅ שְׁאֵלָה ⬅ הַכִּתָּה מַרִימָה כַּרְטִיס עִיר ⬅ 3-2-1 הָרִימוּ! ⬅ מְגַלִּים.</p>
+  <p class="sub">בּוֹחֲרִים תְּמוּנָה ⬅ שְׁאֵלָה ⬅ הַכִּתָּה מַרִימָה כַּרְטִיס (3-2-1 הָרִימוּ!) ⬅ הַמּוֹרֶה לוֹחֵץ עַל הַתְּשׁוּבָה הַנְּכוֹנָה לְמַטָּה: ✔ אוֹ ✘.</p>
   <div class="n-round" id="wuRound"></div>
   <div class="m-stage" id="wuSt"><div class="n-photo" id="wuPic">👆</div><div class="m-q" id="wuQ">בּוֹחֲרִים תְּמוּנָה</div><div class="n-choices" id="wuCh"></div><div class="m-a" id="wuA"></div></div>
   <div class="m-cards" id="wuCards"></div>
@@ -250,16 +261,6 @@
   <div class="m-me" id="mMe" contenteditable="true" spellcheck="false">עַכְשָׁו אֲנִי גָּרָה בְּאָמֶרִיקָה, אֲבָל אֲנִי לֹא מֵאָמֶרִיקָה. אֲנִי בָּאָה מִיִּשְׂרָאֵל.</div>
   <div class="m-bar c"><button class="btn ghost small" id="meReset" type="button">↺ טֶקְסְט מְקוֹרִי</button></div>
 
-  <p class="lead" style="margin-top:22px">מֵאֵיפֹה הוּא? מֵאֵיפֹה הִיא?</p>
-  <p class="n-src">✨ הַתְּמוּנוֹת מִתּוֹךְ הַמְּלִיאָה שֶׁל נִפְלָאוֹת, מָסָךְ 2: דֶּיְוִיד עוֹמֵד לְיַד בִּיג בֶּן בְּלוֹנְדוֹן, שָׂרָה לְיַד מִגְדַּל אַייפֶל בְּפָרִיז — הֵם טָסִים בַּמָּטוֹס לְיִשְׂרָאֵל, וּבִשְׂדֵה הַתְּעוּפָה יֵשׁ שֶׁלֶט: "בְּרוּכִים הַבָּאִים לְיִשְׂרָאֵל".</p>
-  <p class="sub">לוֹחֲצִים עַל יֶלֶד אוֹ יַלְדָּה ⬅ הַכִּתָּה מַרִימָה כַּרְטִיס (לוֹנְדוֹן / פָּרִיז) ⬅ 3-2-1 הָרִימוּ! ⬅ מְגַלִּים.</p>
-  <div class="n-kids" id="lkKids"></div>
-  <div class="m-stage" style="margin-top:12px"><div class="m-q" id="lkQ">בּוֹחֲרִים יֶלֶד אוֹ יַלְדָּה 👆</div><div class="n-trip" id="lkTrip"></div><div class="m-a" id="lkA"></div></div>
-  <div class="m-cards" id="lkCards"></div>
-  <div class="m-bar c">
-    <button class="m-cd" data-cd type="button">🕒 3… 2… 1… הָרִימוּ!</button>
-    <button class="btn good" id="lkRv" type="button">👁 הַצִּיגוּ תְּשׁוּבָה</button>
-  </div>
 
   <p class="lead" style="margin-top:22px">וְאַתֶּם? הַמּוֹרֶה שׁוֹאֵל</p>
   <div class="n-qs" id="qsBox"></div>
@@ -320,19 +321,44 @@
     <p>קוֹרְאִים אֶת הַטֶּקְסְט (אוֹ מַשְׁמִיעִים אוֹתוֹ בַּמְּלִיאָה, מָסָךְ 3). כָּל תַּלְמִיד עוֹשֶׂה לְבַד אֶת דַּף הַמְּשִׂימָה. בְּדִיקָה: מְשִׂימָה 1 — לוֹחֲצִים עַל שֵׁם, כֻּלָּם מַרִימִים כַּרְטִיס דֶּגֶל (לוֹנְדוֹן / פָּרִיז / יִשְׂרָאֵל), 3-2-1, וְהַשֵּׁם קוֹפֵץ לַתֵּבָה. מְשִׂימָה 2 — מִשְׁפָּט אֶחָד בְּכָל פַּעַם, ✔ / ✘. בַּסּוֹף הַמּוֹרֶה קוֹרֵא אֶת הַסִּכּוּם.</p>
   </details>
 
+  <p class="lead" style="margin-top:26px">מֵאֵיפֹה הוּא? מֵאֵיפֹה הִיא? · מְלִיאָה, מָסָךְ 2</p>
+  <p class="n-src">✨ הַתְּמוּנוֹת מִתּוֹךְ הַמְּלִיאָה שֶׁל נִפְלָאוֹת, מָסָךְ 2: דֶּיְוִיד עוֹמֵד לְיַד בִּיג בֶּן בְּלוֹנְדוֹן, שָׂרָה לְיַד מִגְדַּל אַייפֶל בְּפָרִיז — הֵם טָסִים בַּמָּטוֹס לְיִשְׂרָאֵל, וּבִשְׂדֵה הַתְּעוּפָה יֵשׁ שֶׁלֶט: "בְּרוּכִים הַבָּאִים לְיִשְׂרָאֵל".</p>
+  <p class="sub">בּוֹחֲרִים יֶלֶד אוֹ יַלְדָּה ⬅ הַכִּתָּה מַרִימָה כַּרְטִיס (3-2-1 הָרִימוּ!) ⬅ לוֹחֲצִים עַל הַתְּשׁוּבָה הַנְּכוֹנָה: ✔ ⬅ הַתְּמוּנוֹת מֵהַמְּלִיאָה.</p>
+  <div class="n-kids" id="lkKids"></div>
+  <div class="m-stage" style="margin-top:12px"><div class="m-q" id="lkQ">בּוֹחֲרִים יֶלֶד אוֹ יַלְדָּה 👆</div><div class="n-trip" id="lkTrip"></div><div class="m-a" id="lkA"></div></div>
+  <div class="m-cards" id="lkCards"></div>
+  <div class="m-bar c">
+    <button class="m-cd" data-cd type="button">🕒 3… 2… 1… הָרִימוּ!</button>
+    <button class="btn good" id="lkRv" type="button">👁 הַצִּיגוּ תְּשׁוּבָה</button>
+  </div>
+
   <div class="m-cw" role="note" style="margin-top:22px">
     <h3>📘 עֲבוֹדַת כִּתָּה בַּסֵּפֶר — עַמּוּדִים 22-24</h3>
-    <p>כָּל תַּלְמִיד עוֹבֵד לְבַד בַּסֵּפֶר: תַּרְגִּיל 17, 18 וְ־19. אַחַר כָּךְ בּוֹדְקִים יַחַד עַל הַדַּף שֶׁבַּמָּסָךְ: לוֹחֲצִים עַל מָקוֹם רֵיק וּמוֹפִיעָה הַתְּשׁוּבָה.</p>
+    <p>כָּל תַּלְמִיד עוֹבֵד לְבַד בַּסֵּפֶר: תַּרְגִּיל 17, 18 וְ־19. אַחַר כָּךְ בּוֹדְקִים יַחַד בַּתַּרְגִּילִים שֶׁעַל הַמָּסָךְ.</p>
     <div class="n-warn">שִׂימוּ לֵב: בַּסֵּפֶר (עַמּוּד 23) דָּוִיד מִפָּרִיז וְשָׂרָה מִלּוֹנְדוֹן - זֶה סִפּוּר אַחֵר מֵהַמָּסָךְ.</div>
-    <div class="n-ptabs" id="pgTabs"><button type="button" data-pg="22" class="on">עַמּוּד 22 · תַּרְגִּיל 17</button><button type="button" data-pg="23">עַמּוּד 23 · תַּרְגִּיל 18</button><button type="button" data-pg="24">עַמּוּד 24 · תַּרְגִּיל 19</button></div>
-    <p class="sub" style="margin:6px 0">לוֹחֲצִים עַל מָקוֹם רֵיק בַּדַּף ⬅ מוֹפִיעָה הַתְּשׁוּבָה. לְחִיצָה נוֹסֶפֶת מַסְתִּירָה.</p>
-    <div class="n-pagewrap" id="pgWrap"><img id="pgImg" src="pages-22-24/p22.png" alt="נפלאות ג עמוד 22"><div id="pgSpots"></div></div>
-    <div class="m-bar c">
-      <button class="btn good" id="pgAll" type="button">👁 כָּל הַתְּשׁוּבוֹת בַּדַּף</button>
-      <button class="btn ghost" id="pgClr" type="button">↺ מַסְתִּירִים</button>
-      <a class="m-dl" href="pages-22-24/p22.png" id="pgFull" target="_blank" rel="noopener">🔍 מָסָךְ מָלֵא</a>
+    <p class="sub" style="margin:6px 0">אַחֲרֵי שֶׁכָּל תַּלְמִיד עָבַד בַּסֵּפֶר — בּוֹדְקִים יַחַד עַל הַמָּסָךְ: גּוֹרְרִים (אוֹ לוֹחֲצִים) כָּל מִלָּה לַמָּקוֹם הַנָּכוֹן, וְאָז "✓ בּוֹדְקִים".</p>
+    <div class="n-ptabs" id="bkTabs"><button type="button" data-bk="b17" class="on">עַמּוּד 22 · תַּרְגִּיל 17</button><button type="button" data-bk="b18">עַמּוּד 23 · תַּרְגִּיל 18</button><button type="button" data-bk="b19">עַמּוּד 24 · תַּרְגִּיל 19</button></div>
+    <div class="n-bk" id="b17">
+      <p class="lead">17 א · אֵיפֹה כָּל אֶחָד גָּר?</p>
+      <p class="sub">עוֹקְבִים אַחֲרֵי הַקַּוִּים בַּתְּמוּנָה, וְגוֹרְרִים כָּל שֵׁם לַשֶּׁלֶט הַנָּכוֹן.</p>
+      <div class="n-crop-wrap" id="c17"></div>
+      <div class="panel" id="ex17a"></div>
+      <p class="lead" style="margin-top:16px">17 ב · הַשְׁלִימוּ.</p>
+      <div class="panel" id="ex17b"></div>
     </div>
-    <p class="sub" id="pgNote"></p>
+    <div class="n-bk" id="b18" hidden>
+      <p class="lead">18 א · מֵאֵיפֹה הֵם? הַשְׁלִימוּ.</p>
+      <p class="sub">עוֹקְבִים אַחֲרֵי הַחִצִּים בַּמַּפָּה, וְגוֹרְרִים כָּל עִיר לַיֶּלֶד הַנָּכוֹן.</p>
+      <div class="n-crop-wrap" id="c18"></div>
+      <div class="panel" id="ex18a"></div>
+      <p class="lead" style="margin-top:16px">18 ב · מֵאֵיפֹה אַתֶּם? כִּתְבוּ.</p>
+      <div class="panel"><div class="sent" style="font:800 28px var(--f-he)">אֲנִי מִ <input class="textline" aria-label="כתיבה" placeholder="..." style="font:800 26px var(--f-he);min-width:220px"></div></div>
+    </div>
+    <div class="n-bk" id="b19" hidden>
+      <p class="lead">19 · הַשְׁלִימוּ: בְּ, מִ.</p>
+      <div class="n-crop-wrap" id="c19"></div>
+      <div class="panel" id="ex19"></div>
+    </div>
     <div class="m-bar">
       <a class="m-dl" href="https://productplayer.cet.ac.il/niflaot3/e8374f19-fdff-451a-af90-5e056779e35c_86b4d33e-60f0-4371-8a5a-1f08fd5ab29e" target="_blank" rel="noopener">✨ עֲבוֹדָה בַּסֵּפֶר: עַמּוּדִים 24-22 (נִפְלָאוֹת)</a>
       <a class="m-dl" href="Niflaot-pages-22-24-book-copy.pdf" target="_blank" rel="noopener">🖨️ עַמּוּדִים 22-24 (PDF)</a>
@@ -419,7 +445,8 @@
 </div>
 <div id="mCd" aria-live="assertive"><div id="mCdT">3</div></div>
 <div class="n-light" id="nLight"><img alt=""></div>
-<script src="pages-22-24/data.js?v=2"></script>
+<script src="lesson-kit.js?v=1792421680"></script>
+<script src="pages-22-24/data.js?v=3"></script>
 <script>
 (() => {
 'use strict';
@@ -495,18 +522,26 @@ const WU = [
   { ph: 'tennis', q: 'אֵיפֹה יוֹנָתָן?', a: 'יוֹנָתָן <b>בְּ</b>חוּג טֶנִיס.', ch: PLACE_CH, ok: 'tennis' },
   { ph: 'sport', q: 'אֵיפֹה שִׁיר?', a: 'שִׁיר <b>בַּ</b>חֲנוּת סְפּוֹרְט.', ch: PLACE_CH, ok: 'sport' },
 ];
-const wuCards = cardRow($('wuCards'), CITY_CH.map(([id, he]) => cityCard(id, he)));
-let wi = -1;
+/* clickable answer cards: the big cards ARE the answer buttons (✔ / ✘ on click) */
+function choiceRow(el, choices, ok, onRight){
+  el.innerHTML = choices.map(c => `<button type="button" class="m-card n-pick" data-k="${c.id}">${c.html}<span class="mk"></span></button>`).join('');
+  const all = [...el.children];
+  const right = () => { all.forEach(b => { b.disabled = true; b.classList.toggle('hit', b.dataset.k === ok); b.classList.toggle('hide', b.dataset.k !== ok); }); el.querySelector(`[data-k="${ok}"] .mk`).textContent = '✔'; onRight(); };
+  all.forEach(b => b.onclick = () => { if (b.dataset.k === ok) right(); else { b.classList.add('no'); b.querySelector('.mk').textContent = '✘'; b.disabled = true; beep(260, .2); } });
+  return right;
+}
+const PLACE_IC = { tennis: '🎾', sport: '⚽', park: '🌳' };
+let wi = -1, wuRight = null;
 $('wuRound').innerHTML = WU.map((w, i) => `<button type="button" class="ph" data-i="${i}" aria-label="${w.q}" style="background-image:url('${PH[w.ph]}')"></button>`).join('');
 const wuBtns = [...$('wuRound').children];
-function wuDone(){ const w = WU[wi]; $('wuA').innerHTML = w.a; $('wuSt').className = 'm-stage yes'; if (w.city) wuCards.hit(w.city); else wuCards.clear(); wuBtns[wi].classList.add('done');
-  $('wuCh').querySelectorAll('button').forEach(b => { if (b.dataset.k === w.ok) b.classList.add('ok'); b.disabled = true; }); beep(880, .25); }
-wuBtns.forEach(b => b.onclick = () => { wi = +b.dataset.i; const w = WU[wi]; wuBtns.forEach(x => x.classList.toggle('on', x === b));
-  $('wuPic').innerHTML = `<img src="${PH[w.ph]}" alt="">`; $('wuQ').textContent = w.q; $('wuA').innerHTML = ''; $('wuSt').className = 'm-stage'; wuCards.clear();
-  $('wuCh').innerHTML = w.ch.map(([k, he]) => `<button type="button" data-k="${k}">${he}</button>`).join('');
-  $('wuCh').querySelectorAll('button').forEach(c => c.onclick = () => { if (c.dataset.k === w.ok) wuDone(); else { c.classList.add('no'); c.textContent = '✘ ' + c.textContent; c.disabled = true; beep(260, .2); } });
-  beep(620, .1); });
-$('wuRv').onclick = () => { if (wi < 0) return wuBtns[0].click(); wuDone(); };
+function wuDone(){ const w = WU[wi]; $('wuA').innerHTML = w.a; $('wuSt').className = 'm-stage yes'; wuBtns[wi].classList.add('done'); beep(880, .25); }
+function wuPick(i){ wi = i; const w = WU[wi]; wuBtns.forEach((x, j) => x.classList.toggle('on', j === i));
+  $('wuPic').innerHTML = `<img src="${PH[w.ph]}" alt="">`; $('wuQ').textContent = w.q; $('wuA').innerHTML = ''; $('wuSt').className = 'm-stage';
+  const ch = w.ch.map(([id, he]) => w.city ? cityCard(id, he) : { id, html: `<span class="ic">${PLACE_IC[id]}</span>${he}` });
+  wuRight = choiceRow($('wuCards'), ch, w.ok, wuDone); }
+wuBtns.forEach(b => b.onclick = () => { wuPick(+b.dataset.i); beep(620, .1); });
+$('wuRv').onclick = () => { if (wuRight) wuRight(); };
+wuPick(0);
 
 /* ---------- 3b. teacher's own story (kept in this browser) ---------- */
 const ME_KEY = 'nk-22-24-me-v2', meDefault = $('mMe').innerHTML;
@@ -520,14 +555,17 @@ const LK = [
   { k: 'sara', name: 'שָׂרָה', q: 'מֵאֵיפֹה שָׂרָה?', city: 'paris', cityHe: 'פָּרִיז', a: 'שָׂרָה בָּאָה <b>מִ</b>פָּרִיז. עַכְשָׁו הִיא <b>בְּ</b>יִשְׂרָאֵל.' },
 ];
 $('lkKids').innerHTML = LK.map((k, i) => `<button class="n-kid" type="button" data-i="${i}"><svg viewBox="-50 0 120 120">${P.screenKid(k.k, 0, 2, 1)}${P.suitcase(30, 66)}</svg>${k.name}</button>`).join('');
-const lkCards = cardRow($('lkCards'), [flagCard('london', 'לוֹנְדוֹן'), flagCard('paris', 'פָּרִיז')]);
-let lki = -1;
+let lki = -1, lkRight = null;
 const lkBtns = [...$('lkKids').children];
-lkBtns.forEach(b => b.onclick = () => { lki = +b.dataset.i; lkBtns.forEach(x => x.classList.toggle('on', x === b)); $('lkQ').textContent = LK[lki].q; $('lkTrip').innerHTML = ''; $('lkA').innerHTML = ''; lkCards.clear(); beep(620, .1); });
-$('lkRv').onclick = () => { if (lki < 0) return lkBtns[0].click(); const k = LK[lki];
+function lkDone(){ const k = LK[lki];
   /* the two pictures from the class item, screen 2 (globe/plane, then the airport) */
   $('lkTrip').innerHTML = `<span class="tp"><img src="pages-22-24/${k.k}-globe.png" alt="">${k.cityHe} ⬅ יִשְׂרָאֵל</span><span style="font-size:40px">✈️</span><span class="tp"><img src="pages-22-24/${k.k}-airport.png" alt="">בְּרוּכִים הַבָּאִים לְיִשְׂרָאֵל</span>`;
-  $('lkA').innerHTML = k.a; lkCards.hit(k.city); beep(880, .25); };
+  $('lkA').innerHTML = k.a; beep(880, .25); }
+function lkPick(i){ lki = i; lkBtns.forEach((x, j) => x.classList.toggle('on', j === i)); $('lkQ').textContent = LK[lki].q; $('lkTrip').innerHTML = ''; $('lkA').innerHTML = '';
+  lkRight = choiceRow($('lkCards'), [flagCard('london', 'לוֹנְדוֹן'), flagCard('paris', 'פָּרִיז'), flagCard('israel', 'יִשְׂרָאֵל')], LK[lki].city, lkDone); }
+lkBtns.forEach(b => b.onclick = () => { lkPick(+b.dataset.i); beep(620, .1); });
+$('lkRv').onclick = () => { if (lkRight) lkRight(); };
+lkPick(0);
 
 /* ---------- 3d. questions to the class ---------- */
 const QS = [
@@ -568,31 +606,60 @@ $('t2Next').onclick = () => { ti = (ti + 1) % TF.length; tfShow(); }; $('t2Prev'
 $('t2Sum').onclick = () => { $('t2SumBox').hidden = !$('t2SumBox').hidden; };
 tfShow();
 
-/* ---------- 4b. book pages 22-24: the real page with clickable answer spots ----------
- * spot = [x, y, w, h, answer] in image pixels (pages are 957 px wide); the maze answers were traced by the planner */
-const PG = {
-  22: { h: 1107, note: 'תַּרְגִּיל 17 א: לוֹחֲצִים עַל הַמִּשְׁבֶּצֶת מִתַּחַת לְכָל שֶׁלֶט — מִי גָּר שָׁם. 17 ב: לוֹחֲצִים עַל הַקַּוִּים.', spots: [
-    [725, 797, 130, 34, 'מַתָּן וְאוּרִי'], [548, 797, 130, 34, 'סַבָּא וְסַבְתָּא'], [377, 797, 130, 34, 'תָּמִיר'], [205, 797, 130, 34, 'דָּנָה'],
-    [318, 914, 170, 34, 'עַכּוֹ'], [378, 965, 290, 34, 'גָּר בְּתֵל אָבִיב'], [592, 1013, 300, 34, 'אֵיפֹה דָּנָה גָּרָה'],
-    [592, 1061, 310, 34, 'אֵיפֹה סַבָּא וְסַבְתָּא גָּרִים'], [210, 1064, 190, 34, 'גָּרִים בְּחֵיפָה']] },
-  23: { h: 1106, note: 'תַּרְגִּיל 18 א: לוֹחֲצִים עַל הַקַּו בְּכָל בּוּעָה. 18 ב: כָּל תַּלְמִיד כּוֹתֵב מֵאֵיפֹה הוּא.', spots: [
-    [640, 470, 190, 34, 'פָּרִיז'], [228, 432, 185, 34, 'לוֹנְדוֹן'], [195, 588, 210, 34, 'תֵּל אָבִיב'], [640, 893, 190, 34, 'סִידְנִי'],
-    [218, 918, 250, 34, 'מֶקְסִיקוֹ סִיטִי'], [600, 1057, 240, 34, 'כָּל אֶחָד כּוֹתֵב ✍', 'q']] },
-  24: { h: 1105, note: 'תַּרְגִּיל 19: לוֹחֲצִים עַל כָּל מָקוֹם רֵיק — בְּ אוֹ מִ.', spots: [
-    [545, 844, 50, 32, 'מִ'], [700, 884, 46, 32, 'בְּ'], [455, 884, 50, 32, 'בְּ'], [622, 952, 50, 32, 'בְּ']] },
-};
-let pgCur = 22;
-function pgShow(n){
-  pgCur = n; const p = PG[n];
-  $('pgImg').src = `pages-22-24/p${n}.png`; $('pgImg').alt = 'נפלאות ג עמוד ' + n; $('pgFull').href = `pages-22-24/p${n}.png`; $('pgNote').textContent = p.note;
-  $('pgSpots').innerHTML = p.spots.map(([x, y, w, h, a, c]) => `<button type="button" class="n-spot ${c || ''}" style="left:${x / 9.57}%;top:${y / p.h * 100}%;width:${w / 9.57}%;height:${h / p.h * 100}%"><span>${a}</span></button>`).join('');
-  $('pgSpots').querySelectorAll('.n-spot').forEach(b => b.onclick = () => { b.classList.toggle('on'); if (b.classList.contains('on')) beep(820, .15); });
-  $('pgTabs').querySelectorAll('button').forEach(b => b.classList.toggle('on', +b.dataset.pg === n));
-}
-$('pgTabs').querySelectorAll('button').forEach(b => b.onclick = () => pgShow(+b.dataset.pg));
-$('pgAll').onclick = () => { $('pgSpots').querySelectorAll('.n-spot').forEach(b => b.classList.add('on')); beep(880, .25); };
-$('pgClr').onclick = () => $('pgSpots').querySelectorAll('.n-spot').forEach(b => b.classList.remove('on'));
-pgShow(22);
+/* ---------- 4b. book pages 22-24 as interactive exercises (pictures cropped from the real pages, drag / tap words — NK.fillBlanks) ---------- */
+/* crop(page, x, y, w, h, width): a piece of the page image, shown at the given width (image pixels; pages are 957 px wide) */
+const crop = (pg, x, y, w, h, show) => { const s = show / w; return `<div class="n-crop" style="width:${show}px;height:${Math.round(h * s)}px;background-image:url(pages-22-24/p${pg}.png);background-size:${Math.round(957 * s)}px auto;background-position:-${Math.round(x * s)}px -${Math.round(y * s)}px"></div>`; };
+const addPics = (root, pics) => root.querySelectorAll('.fitem:not(.bankbox)').forEach((it, i) => { if (pics[i]) it.insertAdjacentHTML('afterbegin', `<div class="n-pic">${pics[i]}</div>`); });
+$('bkTabs').querySelectorAll('button').forEach(b => b.onclick = () => { $('bkTabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); ['b17', 'b18', 'b19'].forEach(id => $(id).hidden = id !== b.dataset.bk); });
+/* p.22 ex.17 א: the maze (portraits, lines, signs) + drag the names to the signs (answers traced by the planner) */
+$('c17').innerHTML = crop(22, 130, 385, 680, 430, 640);
+NK.fillBlanks($('ex17a'), {
+  bank: ['תָּמִיר', 'מַתָּן וְאוּרִי', 'דָּנָה', 'סַבָּא וְסַבְתָּא'],
+  items: [
+    { parts: ['עַכּוֹ: ', { a: 'מַתָּן וְאוּרִי' }] },
+    { parts: ['חֵיפָה: ', { a: 'סַבָּא וְסַבְתָּא' }] },
+    { parts: ['תֵּל אָבִיב: ', { a: 'תָּמִיר' }] },
+    { parts: ['אֵילַת: ', { a: 'דָּנָה' }] },
+  ]
+});
+addPics($('ex17a'), [crop(22, 663, 703, 127, 75, 120), crop(22, 485, 703, 127, 75, 120), crop(22, 315, 703, 127, 75, 120), crop(22, 143, 703, 127, 75, 120)]);
+/* p.22 ex.17 ב */
+NK.fillBlanks($('ex17b'), {
+  bank: ['עַכּוֹ', 'תֵּל אָבִיב', 'חֵיפָה', 'אֵיפֹה', 'גָּר', 'גָּרָה', 'גָּרִים', 'גָּרִים'],
+  items: [
+    { parts: ['אֵיפֹה מַתָּן וְאוּרִי גָּרִים? הֵם גָּרִים בְּ', { a: 'עַכּוֹ' }, '.'] },
+    { parts: ['אֵיפֹה תָּמִיר גָּר? הוּא ', { a: 'גָּר' }, ' בְּ', { a: 'תֵּל אָבִיב' }, '.'] },
+    { parts: [{ a: 'אֵיפֹה' }, ' דָּנָה ', { a: 'גָּרָה' }, '? הִיא גָּרָה בְּאֵילַת.'] },
+    { parts: ['אֵיפֹה סַבָּא וְסַבְתָּא ', { a: 'גָּרִים' }, '? סַבָּא וְסַבְתָּא ', { a: 'גָּרִים' }, ' בְּ', { a: 'חֵיפָה' }, '.'] },
+  ]
+});
+addPics($('ex17b'), [crop(22, 465, 440, 120, 115, 64), crop(22, 650, 440, 125, 115, 64), crop(22, 315, 440, 125, 115, 64), crop(22, 145, 440, 130, 115, 64)]);
+/* p.23 ex.18 א: the map with the arrows + each child with a blank */
+$('c18').innerHTML = crop(23, 340, 520, 470, 270, 560);
+NK.fillBlanks($('ex18a'), {
+  bank: ['לוֹנְדוֹן', 'פָּרִיז', 'תֵּל אָבִיב', 'מֶקְסִיקוֹ סִיטִי', 'סִידְנִי'],
+  items: [
+    { parts: ['אֲנִי דָּוִיד. אֲנִי מִ', { a: 'פָּרִיז' }, '.'] },
+    { parts: ['אֲנִי שָׂרָה. אֲנִי מִ', { a: 'לוֹנְדוֹן' }, '.'] },
+    { parts: ['אֲנִי לָבִיא. אֲנִי מִ', { a: 'תֵּל אָבִיב' }, '.'] },
+    { parts: ['אֲנִי אֲרִיאֵל. אֲנִי מִ', { a: 'מֶקְסִיקוֹ סִיטִי' }, '.'] },
+    { parts: ['אֲנִי מִרְיָם. אֲנִי מִ', { a: 'סִידְנִי' }, '.'] },
+  ]
+});
+addPics($('ex18a'), [crop(23, 770, 385, 95, 165, 90), crop(23, 350, 370, 85, 150, 82), crop(23, 190, 615, 90, 165, 90), crop(23, 375, 815, 100, 160, 96), crop(23, 760, 810, 105, 160, 100)]);
+/* p.24 ex.19: the family picture + drag בְּ / מִ into the girl's text */
+$('c19').innerHTML = crop(24, 200, 150, 548, 540, 420) + crop(24, 150, 765, 180, 270, 120);
+NK.fillBlanks($('ex19'), {
+  bank: ['בְּ', 'בְּ', 'בְּ', 'מִ'],
+  hint: 'אַתֶּם רוֹאִים? זֹאת הַמִּשְׁפָּחָה שֶׁלִּי.',
+  items: [
+    { parts: ['סַבָּא מֹשֶׁה וְסַבְתָּא חַנָּה ', { a: 'מִ' }, 'מֶקְסִיקוֹ.'] },
+    { parts: ['עַכְשָׁו הֵם גָּרִים ', { a: 'בְּ' }, 'יִשְׂרָאֵל.'] },
+    { parts: ['יֵשׁ לָהֶם בַּיִת גָּדוֹל ', { a: 'בְּ' }, 'תֵל אָבִיב.'] },
+    { parts: ['בַּחֹפֶשׁ הַגָּדוֹל אֲנַחְנוּ נוֹסְעִים לְסַבָּא וְסַבְתָּא.'] },
+    { parts: ['אֲנַחְנוּ יְשֵׁנִים ', { a: 'בְּ' }, 'תֵל אָבִיב.'] },
+  ]
+});
 $('nLight').onclick = () => $('nLight').classList.remove('on');
 document.addEventListener('keydown', e => { if (e.key === 'Escape') $('nLight').classList.remove('on'); });
 
