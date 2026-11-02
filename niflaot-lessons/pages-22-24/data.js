@@ -121,5 +121,26 @@ const MAZE_PEOPLE = [
   { id: 'sabasavta', he: 'סַבָּא וְסַבְתָּא', who: ['saba', 'savta'] },
 ];
 const MAZE_SIGNS = [ { id: 'akko', he: 'עַכּוֹ' }, { id: 'haifa', he: 'חֵיפָה' }, { id: 'telaviv', he: 'תֵּל אָבִיב' }, { id: 'eilat', he: 'אֵילַת' } ];
-return { kid, person, PEOPLE, CITIES, KIDS18, worldMap, cityXY, GRID, WORDS, cellsOf, MAZE_PEOPLE, MAZE_SIGNS };
+/* ---------- v2: flags, the class-item kids (screen 2) and the park picture (screen 3) ---------- */
+const FLAGS = {
+  israel: '<svg viewBox="0 0 44 32" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="32" fill="#fff" stroke="#ccd"/><rect y="3" width="44" height="4" fill="#1f4fb0"/><rect y="25" width="44" height="4" fill="#1f4fb0"/><path d="M22 9.5L27.6 19H16.4Z M22 22.5L16.4 13H27.6Z" fill="none" stroke="#1f4fb0" stroke-width="1.6"/></svg>',
+  london: '<svg viewBox="0 0 44 32" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="32" fill="#1f3a8a"/><path d="M0 0L44 32M44 0L0 32" stroke="#fff" stroke-width="6"/><path d="M0 0L44 32M44 0L0 32" stroke="#c8102e" stroke-width="2"/><path d="M22 0V32M0 16H44" stroke="#fff" stroke-width="10"/><path d="M22 0V32M0 16H44" stroke="#c8102e" stroke-width="6"/></svg>',
+  paris: '<svg viewBox="0 0 44 32" xmlns="http://www.w3.org/2000/svg"><rect width="15" height="32" fill="#1f3a8a"/><rect x="15" width="14" height="32" fill="#fff"/><rect x="29" width="15" height="32" fill="#d7263d"/><rect width="44" height="32" fill="none" stroke="#ccd"/></svg>',
+};
+const SCREEN = {
+  david: { hair: '#e8c35a', shirt: '#c62f3a' },             /* boy: blond, red shirt */
+  sara:  { hair: '#6b4423', shirt: '#d13b4a', girl: true },  /* girl: long brown hair, red dress */
+  shir:  { hair: '#6b4423', shirt: '#f2c230', girl: true },  /* Shir: yellow shirt */
+  yonatan: { hair: '#3b2a1a', shirt: '#2a6fd0' },           /* Yonatan: blue cap (drawn below) */
+};
+const suitcase = (x, y) => `<g transform="translate(${x} ${y})"><rect x="0" y="8" width="34" height="40" rx="5" fill="#8a5a2c" stroke="#4a2e14" stroke-width="2.5"/><path d="M10 8 V2 H24 V8" fill="none" stroke="#4a2e14" stroke-width="3"/><path d="M0 22 H34" stroke="#f2c230" stroke-width="3"/></g>`;
+const cap = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-25 22 Q-24 4 0 4 Q24 4 25 22Z" fill="#1f4fb0"/><path d="M-6 20 H34 Q30 26 -6 24Z" fill="#163a85"/></g>`;
+function screenKid(k, x, y, s){ let g = kid(Object.assign({ x, y, s }, SCREEN[k])); if (k === 'yonatan') g += cap(x, y, s); return g; }
+function park(){
+  return `<svg viewBox="0 0 420 220" xmlns="http://www.w3.org/2000/svg"><rect width="420" height="220" rx="16" fill="#d8ecfa"/><circle cx="360" cy="40" r="22" fill="#ffd34d"/>
+    <rect y="150" width="420" height="70" fill="#8fce6b"/><rect x="60" y="80" width="14" height="80" fill="#8a5a2c"/><circle cx="67" cy="70" r="40" fill="#3c9a45"/><circle cx="40" cy="90" r="24" fill="#3c9a45"/><circle cx="96" cy="88" r="26" fill="#3c9a45"/>
+    ${screenKid('yonatan', 190, 62, 1)}${screenKid('shir', 300, 62, 1)}<circle cx="245" cy="182" r="14" fill="#fff" stroke="#23233a" stroke-width="2.5"/><path d="M233 178 L257 186 M245 168 V196" stroke="#23233a" stroke-width="2"/></svg>`;
+}
+
+return { kid, person, PEOPLE, CITIES, KIDS18, worldMap, cityXY, GRID, WORDS, cellsOf, MAZE_PEOPLE, MAZE_SIGNS, FLAGS, SCREEN, suitcase, screenKid, park };
 })();
