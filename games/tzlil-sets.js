@@ -1,4 +1,4 @@
-/* Picture sets for "צליל פותח" (games/tzlil-poteach.html) and the Niflaot reading lessons.
+/* Picture sets for "תּוֹפְסִים צְלִיל" (games/tofsim-tzlil.html) and the Niflaot reading lessons.
  * One entry per letter (key = the ?letter= value). Add a new letter here and the game and lessons can use it.
  *   letter: the letter as shown      sound: English label for the sound
  *   items:  { he: word with nikud, yes: starts with the sound, pic: image under games/tzlil/ | emo: emoji }

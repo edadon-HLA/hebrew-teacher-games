@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>צְלִיל פּוֹתֵחַ — כֵּן / לֹא</title>
+<title>תּוֹפְסִים צְלִיל — כֵּן / לֹא</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#fdf7ef;--ink:#23233a;--muted:#6b6880;--line:#eadfce;--coral:#e2506a;--green:#2f9d55;--green-soft:#dcf2e3;--coral-soft:#fde3e7;--sky:#2a8bd0;--gold:#f2b01e}
@@ -20,6 +20,9 @@ h1{margin:4px 0 0;font:800 clamp(28px,5vw,42px) 'Rubik',Arial,sans-serif}
 .btn.sm{font-size:15px;padding:6px 12px}
 .chk{display:inline-flex;gap:6px;align-items:center;font-weight:700;font-size:16px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 12px;cursor:pointer;user-select:none}
 .chk input{width:18px;height:18px}
+.pick{display:inline-flex;gap:8px;align-items:center;font-weight:700;font-size:16px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:4px 12px}
+.pick .lt{font:800 28px 'Noto Sans Hebrew',Arial,sans-serif;min-width:48px;height:44px;border:2px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;margin-inline-start:4px}
+.pick .lt.on{border-color:var(--coral);background:var(--coral-soft);color:#7e2335}
 .stage{width:min(760px,100%);background:#fff;border:3px solid var(--ink);border-radius:26px;box-shadow:0 8px 24px rgba(35,35,58,.12);padding:18px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:background .2s,border-color .2s}
 .stage.yes{background:var(--green-soft);border-color:var(--green)}.stage.no{background:var(--coral-soft);border-color:var(--coral)}
 .pic{width:100%;height:clamp(200px,40vh,340px);display:grid;place-items:center}
@@ -37,11 +40,11 @@ h1{margin:4px 0 0;font:800 clamp(28px,5vw,42px) 'Rubik',Arial,sans-serif}
 </style>
 </head>
 <body>
-<h1>🔊 צְלִיל פּוֹתֵחַ</h1>
+<h1>🔊 תּוֹפְסִים צְלִיל</h1>
 <p class="ask">מַתְחִיל בְּ<b id="letter">שׁ</b>?</p>
 
 <div class="top">
-  <label class="chk" id="setPick" hidden>אוֹת: <select id="setSel"></select></label>
+  <div class="pick" id="setPick" role="group" aria-label="בחירת אות"><span>בְּחֲרוּ אוֹת:</span><span id="setBtns"></span></div>
   <label class="chk"><input type="checkbox" id="optWord"> הַצִּיגוּ אֶת הַמִּלָּה מֵרֹאשׁ</label>
   <label class="chk"><input type="checkbox" id="optVoice"> 🔊 הַקְרָאָה בְּקוֹל</label>
   <button class="btn ghost sm" id="shuf" type="button">🔀 עֶרְבּוּב</button>
@@ -79,8 +82,10 @@ let key = sets[q.get('letter')] ? q.get('letter') : keys[0];
 let S = sets[key], order = [], i = 0, revealed = false;
 const nikud = /[֑-ׇ]/;
 
-/* optional letter picker (appears once there is more than one set) */
-if (keys.length > 1) { $('setPick').hidden = false; $('setSel').innerHTML = keys.map(k => `<option value="${k}"${k === key ? ' selected' : ''}>${sets[k].title}</option>`).join(''); $('setSel').onchange = e => { key = e.target.value; load(); }; }
+/* letter picker: one button per set in tzlil-sets.js; ?letter=key opens with that letter selected (default: the first set) */
+$('setBtns').innerHTML = keys.map(k => `<button type="button" class="lt" data-k="${k}" aria-label="${sets[k].title}">${sets[k].title}</button>`).join('');
+const markPick = () => document.querySelectorAll('#setBtns .lt').forEach(b => b.classList.toggle('on', b.dataset.k === key));
+$('setBtns').onclick = e => { const b = e.target.closest('.lt'); if (!b) return; key = b.dataset.k; try { history.replaceState(null, '', '?letter=' + key); } catch (x) {} load(); };
 $('optWord').checked = q.get('word') === '1';
 
 function firstLetterHTML(w) {
@@ -96,7 +101,7 @@ function say(t) {
 let ac; const beep = (f, d = .15, v = .15) => { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; g.gain.value = v; o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + d); } catch (e) {} };
 
 function load() {
-  S = sets[key]; $('letter').textContent = S.first; document.title = 'צְלִיל פּוֹתֵחַ — ' + S.title;
+  S = sets[key]; markPick(); $('letter').textContent = S.first; document.title = 'תּוֹפְסִים צְלִיל — ' + S.title;
   order = S.items.map((_, k) => k); i = 0; show();
 }
 function show() {
