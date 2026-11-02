@@ -1,6 +1,7 @@
 /* The 7 Israeli street foods of Olam Street Unit 2 (page 7): drawn pictures + emoji.
  * FoodArt.foods = [{ id, he, pic }] in workbook order; pic is an emoji or an <svg> string (FoodArt.html(pic) draws either).
- * FoodArt.saladItems = the 8 Israeli-salad ingredients (2.19); FoodArt.extra = { salad, breakfast, hummusPita } pictures. */
+ * FoodArt.saladItems = the 8 Israeli-salad ingredients (2.19); FoodArt.foods4 = the 10 foods of 2.22 (book order);
+ * FoodArt.extra = { salad, breakfast, hummusPita, breakfastTable } pictures. */
 (function () {
   var HUMMUS = `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="46" rx="47" ry="30" fill="#dfe9f3"/><ellipse cx="50" cy="43" rx="37" ry="23" fill="#ecd29f"/>
   <path d="M24 44 Q50 22 76 44 Q50 62 24 44" fill="none" stroke="#d2b06c" stroke-width="3"/><ellipse cx="50" cy="43" rx="13" ry="7" fill="#d9a400" opacity=".75"/>
@@ -67,12 +68,33 @@
     { id: 'salt',     he: 'מֶלַח',         pic: SALT },
     { id: 'pepper',   he: 'פִּלְפֵּל',       pic: PEPPER }
   ];
+  /* lesson 2.21–2.22 (workbook p.16): new food and drink words */
+  var WATER = `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="76" rx="22" ry="3.5" fill="#00000018"/><path d="M30 6 H70 L64 74 Q63 77 60 77 H40 Q37 77 36 74Z" fill="#eef7ff" stroke="#8fb3d6" stroke-width="2.5"/><path d="M32.5 30 H67.5 L64 73 Q63.5 75 61 75 H39 Q36.5 75 36 73Z" fill="#7cc4f2" opacity=".85"/><ellipse cx="50" cy="30" rx="17.5" ry="3" fill="#a9dbfa"/><path d="M38 36 L41 70" stroke="#fff" stroke-width="3.5" stroke-linecap="round" opacity=".7"/><g fill="#fff" opacity=".8"><circle cx="54" cy="50" r="2"/><circle cx="58" cy="62" r="1.6"/><circle cx="49" cy="42" r="1.3"/></g></svg>`;
+  var MILK = `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="76" rx="40" ry="4" fill="#00000018"/><path d="M14 22 L24 8 H48 L58 22Z" fill="#dbe8f5" stroke="#6a87a8" stroke-width="2"/><rect x="33" y="3" width="10" height="6" rx="1" fill="#2a8bd0"/><rect x="14" y="22" width="44" height="54" rx="2" fill="#fff" stroke="#6a87a8" stroke-width="2.5"/><rect x="14" y="40" width="44" height="18" fill="#2a8bd0"/><path d="M24 49 q6 -7 12 0 q6 7 12 0" fill="none" stroke="#fff" stroke-width="3"/><path d="M64 34 H90 L87 76 H67Z" fill="#f4f8fc" stroke="#8fb3d6" stroke-width="2.5"/><path d="M65 42 H89 L87 75 H67Z" fill="#fff"/><ellipse cx="77" cy="42" rx="12" ry="2.6" fill="#f3f6fa" stroke="#d6dde7" stroke-width="1"/></svg>`;
+  var CHEESE = `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="52" cy="74" rx="40" ry="5" fill="#00000018"/><path d="M10 40 L66 18 L92 34 L92 62 L36 72 L10 62Z" fill="#f7c843" stroke="#c9961a" stroke-width="2.5" stroke-linejoin="round"/><path d="M10 40 L36 50 L92 34 M36 50 V72" fill="none" stroke="#c9961a" stroke-width="2.5" stroke-linejoin="round"/><path d="M10 40 L66 18 L92 34 L36 50Z" fill="#ffdd6b"/><g fill="#e0ad2a"><ellipse cx="50" cy="32" rx="5" ry="2.5"/><ellipse cx="68" cy="30" rx="3.5" ry="1.8"/><ellipse cx="34" cy="40" rx="3" ry="1.5"/><circle cx="60" cy="56" r="4.5"/><circle cx="78" cy="52" r="3"/><circle cx="46" cy="62" r="3"/><circle cx="22" cy="54" r="3.5"/></g></svg>`;
+  var BANANA = `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="74" rx="38" ry="4.5" fill="#00000018"/><g stroke="#b88a12" stroke-width="2.2" stroke-linejoin="round"><path d="M70 10 C40 14 16 34 18 58 C26 46 46 32 74 22Z" fill="#f2cf3a"/><path d="M72 12 C52 26 38 48 46 72 C50 56 62 38 78 22Z" fill="#f7db52"/><path d="M74 12 C70 34 70 56 86 72 C86 54 84 34 80 18Z" fill="#f2cf3a"/></g><path d="M66 6 L80 10 L78 20 L68 18Z" fill="#6b4a1a"/><g fill="#5a3e12"><circle cx="18" cy="58" r="2"/><circle cx="46" cy="72" r="2"/><circle cx="86" cy="72" r="2"/></g></svg>`;
+  var CEREAL = `<svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="74" rx="38" ry="5" fill="#00000018"/><path d="M80 10 L66 40" stroke="#9aa3b2" stroke-width="5" stroke-linecap="round"/><g fill="#f0a63a" stroke="#c97d1a" stroke-width="1.2"><path d="M22 34 l8 -6 l9 3 l-4 8z"/><path d="M36 26 l9 -3 l6 6 l-8 5z"/><path d="M52 28 l9 -2 l5 7 l-9 3z"/><path d="M66 32 l8 1 l2 8 l-9 -1z"/><path d="M28 38 l9 -2 l4 6 l-9 2z"/><path d="M44 34 l8 -1 l3 7 l-9 1z"/><path d="M58 36 l9 0 l1 7 l-9 -1z"/></g><path d="M12 38 H88 Q86 70 50 72 Q14 70 12 38Z" fill="#fff" stroke="#d6dde7" stroke-width="3"/><path d="M14 38 H86" stroke="#f3f6fa" stroke-width="4"/><path d="M24 50 q26 10 52 0" fill="none" stroke="#2a8bd0" stroke-width="3" opacity=".6"/></svg>`;
+  var BREAKFAST_TABLE = `<svg viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="156" height="86" rx="12" fill="#e8c9a0" stroke="#b98a5a" stroke-width="3"/><path d="M2 30 H158 M2 60 H158" stroke="#d9b486" stroke-width="2"/><g transform="translate(6 6) scale(.62)">${SALAD.replace(/^<svg[^>]*>|<\/svg>$/g, '')}</g><circle cx="98" cy="30" r="24" fill="#fff" stroke="#d6dde7" stroke-width="2.5"/><path d="M82 26 q3 -9 12 -7 q9 -2 10 7 q3 9 -7 10 q-11 3 -15 -10z" fill="#fff" stroke="#ece6d6" stroke-width="1.2"/><circle cx="93" cy="28" r="5" fill="#ffb703"/><path d="M98 34 q3 -8 11 -6 q8 -1 9 6 q2 8 -6 9 q-10 3 -14 -9z" fill="#fff" stroke="#ece6d6" stroke-width="1.2"/><circle cx="108" cy="35" r="4.5" fill="#ffb703"/><g transform="translate(118 46) scale(.4)">${CHEESE.replace(/^<svg[^>]*>|<\/svg>$/g, '')}</g><g><path d="M20 58 h34 a10 10 0 0 1 0 20 h-34z" fill="#e0a458" stroke="#a8691f" stroke-width="2"/><path d="M23 62 h28 a6 6 0 0 1 0 12 h-28z" fill="#f6e3b4"/><path d="M56 62 h26 a9 9 0 0 1 0 18 h-26z" fill="#e0a458" stroke="#a8691f" stroke-width="2"/><path d="M59 65 h20 a5 5 0 0 1 0 11 h-20z" fill="#f6e3b4"/></g><g transform="translate(130 4) scale(.3)">${WATER.replace(/^<svg[^>]*>|<\/svg>$/g, '')}</g></svg>`;
+  /* exercise 2.22 (workbook p.16), in the book order: row 1 then row 2, right to left */
+  var foods4 = [
+    { id: 'pizza',     he: 'פִּיצָה',     pic: '🍕' },
+    { id: 'pasta',     he: 'פַּסְטָה',    pic: '🍝' },
+    { id: 'water',     he: 'מַיִם',      pic: WATER },
+    { id: 'milk',      he: 'חָלָב',      pic: MILK },
+    { id: 'cheese',    he: 'גְּבִינָה',   pic: CHEESE },
+    { id: 'banana',    he: 'בָּנָנָה',    pic: BANANA },
+    { id: 'salad',     he: 'סָלָט',      pic: SALAD },
+    { id: 'chocolate', he: 'שׁוֹקוֹלָד',  pic: '🍫' },
+    { id: 'tuna',      he: 'טוּנָה',     pic: TUNA },
+    { id: 'cereal',    he: 'דְּגָנִים',   pic: CEREAL }
+  ];
   window.FoodArt = {
+    foods4: foods4,
     foods: foods,
     foods2: foods2,
     foods3: foods3,
     saladItems: saladItems,
-    extra: { salad: SALAD, breakfast: BREAKFAST, hummusPita: HUMMUS_PITA },
+    extra: { salad: SALAD, breakfast: BREAKFAST, hummusPita: HUMMUS_PITA, breakfastTable: BREAKFAST_TABLE },
     html: function (pic) { return pic.charAt(0) === '<' ? pic : '<span class="emo">' + pic + '</span>'; }
   };
 })();

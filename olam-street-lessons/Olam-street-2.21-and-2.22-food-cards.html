@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כרטיסי תשובה · רחוב העולם 2.21–2.22 · מָה שְׁמַעְתֶּם? (להדפסה)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* 10 food cards, same size as the 2.10–2.13 cards (2 x 4 per A4).
+   Pages 1–4: DOUBLE-SIDED (picture front, word back) — print duplex, flip on the LONG edge. The 5 new words come first (page 1).
+   Pages 5–7: the same cards single-sided (pictures, then words) + instructions. */
+@page{size:A4;margin:8mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.page{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,1fr);direction:ltr;page-break-after:always;break-after:page;position:relative}
+.page:last-child{page-break-after:auto;break-after:auto}
+.c{border:1.5px dashed #6b6880;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3mm;gap:2mm;overflow:hidden;direction:rtl}
+.c.empty{border-color:transparent}
+.c.pic svg{height:40mm;width:auto;max-width:86mm}
+.c.pic .emo{font-size:96pt;line-height:1}
+.c.word .w{font-size:32pt;font-weight:800;line-height:1.2;padding:0 2mm}
+.c.back{background:#fffaf0}
+.c .new{font-size:9pt;font-weight:800;color:#2f9d55}
+.c.note{align-items:flex-start;justify-content:flex-start;text-align:right;font-size:11.5pt;line-height:1.6;color:#4a4a5e;border-style:dotted;grid-column:span 2;grid-row:span 2}
+.c.note b{font-size:13pt;color:#23233a}
+.lab{position:absolute;top:-1mm;left:0;right:0;text-align:center;font-size:8pt;color:#9aa3b2;direction:rtl}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="../games/food-art.js"></script>
+<script>
+const BY = Object.fromEntries(FoodArt.foods4.map(f => [f.id, f]));
+const NEW = ['water', 'milk', 'cheese', 'banana', 'cereal'];
+const F = [...NEW, 'pizza', 'pasta', 'salad', 'chocolate', 'tuna'].map(k => BY[k]);
+const isNew = f => NEW.includes(f.id);
+const front = f => f ? `<div class="c pic">${FoodArt.html(f.pic)}${isNew(f) ? '<span class="new">★</span>' : ''}</div>` : '<div class="c empty"></div>';
+const back = f => f ? `<div class="c word back"><div class="w">${f.he}</div></div>` : '<div class="c empty"></div>';
+const word = f => `<div class="c word"><div class="w">${f.he}</div></div>`;
+const page = (cells, label) => `<div class="page">${label ? `<div class="lab">${label}</div>` : ''}${cells.join('')}</div>`;
+let html = '';
+/* duplex: 8 per sheet; the back rows are mirrored so each word sits behind its picture */
+for (let s = 0; s < F.length; s += 8){
+  const set = F.slice(s, s + 8); while (set.length < 8) set.push(null);
+  const backs = []; for (let r = 0; r < 4; r++){ backs.push(back(set[r * 2 + 1])); backs.push(back(set[r * 2])); }
+  html += page(set.map(front), 'דּוּ־צְדָדִי · צַד קִדְמִי — תְּמוּנוֹת (★ = מִלָּה חֲדָשָׁה)') + page(backs, 'דּוּ־צְדָדִי · צַד אֲחוֹרִי — מִלִּים (הוֹפְכִים עַל הַצַּד הָאָרֹךְ)');
+}
+/* single-sided: pictures, then words, then instructions */
+const note = `<div class="c note"><div><b>🎴 כַּרְטִיסֵי תְּשׁוּבָה — רְחוֹב הָעוֹלָם <bdi dir="ltr">2.21–2.22</bdi></b><br>
+<b>דּוּ־צְדָדִי (עַמּוּדִים 1–4):</b> מַדְפִּיסִים דּוּ־צְדָדִי וְהוֹפְכִים עַל הַצַּד הָאָרֹךְ. גּוֹזְרִים לְאֹרֶךְ הַקַּוִּים.<br>
+<b>חַד־צְדָדִי (עַמּוּדִים 5–7):</b> כַּרְטִיסֵי תְּמוּנָה וְכַרְטִיסֵי מִלָּה.<br>
+• 5 כַּרְטִיסִים בִּלְבַד? מְחַלְּקִים רַק אֶת הַמִּלִּים הַחֲדָשׁוֹת (★): מַיִם, חָלָב, גְּבִינָה, בָּנָנָה, דְּגָנִים — וּבוֹחֲרִים "5 כַּרְטִיסִים" בָּאֲתָר.<br>
+• רָמָה 1: הָאֲתָר אוֹמֵר וּמַרְאֶה אֶת הַמִּלָּה — מַרִימִים תְּמוּנָה. רָמָה 2: הָאֲתָר רַק אוֹמֵר — מַרִימִים מִלָּה.<br>
+• "3… 2… 1… הָרִימוּ!" — כֻּלָּם יַחַד.</div></div>`;
+const singles = [...F.map(front), ...F.map(word)];
+html += page(singles.slice(0, 8), 'חַד־צְדָדִי · כַּרְטִיסֵי תְּמוּנָה') + page(singles.slice(8, 16), 'חַד־צְדָדִי') + page([...singles.slice(16), '<div class="c empty"></div>', '<div class="c empty"></div>', note], 'חַד־צְדָדִי · כַּרְטִיסֵי מִלָּה');
+document.getElementById('out').innerHTML = html;
+</script>
+</body>
+</html>
