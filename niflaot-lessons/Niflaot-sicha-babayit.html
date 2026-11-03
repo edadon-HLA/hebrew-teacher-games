@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="gate.js?v=1793100000"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>נפלאות — שִׂיחָה בַּבַּיִת הֶחָדָשׁ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="lesson-kit.css?v=1792519767">
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+<style>
+/* Niflaot pages 22-24 — class names start with m- so they never clash with lesson-kit.css */
+.m-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+.m-bar.c{justify-content:center}
+.m-cd{font:800 18px var(--f-he);border:0;border-radius:12px;padding:10px 18px;background:var(--coral);color:#fff;cursor:pointer}
+.m-cd:hover{filter:brightness(.93)}
+.m-dl{display:inline-flex;gap:8px;align-items:center;text-decoration:none;font:700 16px var(--f-he);background:#fff;color:#16527d;border:2px solid var(--sky);border-radius:12px;padding:8px 14px}
+.m-dl:hover{background:#f0f7fd}
+.m-count{font:800 22px var(--f-display);color:var(--muted);direction:ltr;unicode-bidi:isolate}
+.m-cw{background:var(--gold-soft);border:3px solid #e5c05a;border-radius:20px;padding:14px 18px;margin:10px 0}
+.m-cw h3{margin:0 0 4px;font:800 22px var(--f-display)}
+.m-cw p{margin:0 0 8px}
+.m-copy{width:100%;height:min(78vh,900px);border:2px solid var(--line);border-radius:12px;background:#e9e9ee;display:block}
+.m-en{direction:ltr;text-align:left}
+
+/* 1. word search */
+.m-ws{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:16px;align-items:start}
+.m-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;max-width:720px;margin:0 auto;width:100%}
+.m-cell{font:800 clamp(22px,3.6vw,38px)/1 var(--f-he);aspect-ratio:1;background:#fff;border:3px solid var(--line);border-radius:12px;display:grid;place-items:center}
+.m-cell.on{border-color:var(--green);background:var(--green-soft);box-shadow:0 0 0 3px var(--green) inset}
+.m-cell.hl{border-color:var(--coral);background:var(--coral-soft)}
+.m-words{display:grid;gap:8px}
+.m-word{font:800 24px var(--f-he);background:#f3ecff;border:2px solid #7a4cc2;border-radius:12px;padding:6px 10px;cursor:pointer;color:var(--ink)}
+.m-word.on{background:var(--green-soft);border-color:var(--green);text-decoration:line-through}
+
+/* 2 + 3c: stage and city cards */
+.m-stage{width:min(620px,100%);margin:0 auto;background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);padding:14px;text-align:center}
+.m-stage.yes{background:var(--green-soft);border-color:var(--green)}
+.m-stage svg{height:clamp(140px,26vh,220px);width:auto}
+.m-q{font:800 clamp(30px,5vw,46px)/1.3 var(--f-he)}
+.m-a{font:800 clamp(24px,4vw,36px)/1.5 var(--f-he);min-height:56px;color:#1d6a39}
+.m-a b,.m-rule b,.m-sent b{color:#7a4cc2}
+.m-cards{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:12px}
+.m-card{min-width:120px;background:#fff;border:3px solid var(--ink);border-radius:18px;padding:6px 16px;text-align:center;font:800 32px/1.3 var(--f-he);transition:.15s}
+.m-card .ic{display:block;font-size:30px}
+.m-card.big{font-size:72px;min-width:150px;line-height:1.15}
+.m-card.big small{display:block;font:800 18px var(--f-he);color:#7a4cc2}
+.m-card.hide{opacity:.2}
+.m-card.hit{border-color:var(--green);background:var(--green-soft);transform:scale(1.06)}
+
+/* 3a rule card, 3b teacher example */
+.m-rule{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.m-rule > div{background:#f3ecff;border:3px solid #7a4cc2;border-radius:20px;padding:14px;text-align:center}
+.m-rule .k{font:800 clamp(30px,5vw,44px)/1.3 var(--f-he)}
+.m-rule .k span{color:var(--coral);margin:0 6px}
+.m-rule .e{font:700 24px var(--f-he);margin-top:6px}
+.m-rule .en{font:700 15px var(--f-display);color:var(--muted);direction:ltr}
+.m-me{background:#fff;border:3px dashed var(--sky);border-radius:20px;padding:12px 16px;font:800 clamp(26px,4vw,36px)/1.6 var(--f-he);text-align:center;outline:none}
+.m-me:focus{border-style:solid;background:#f7fbff}
+
+/* 3c interactive map */
+.m-mapwrap{background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);padding:8px}
+.m-mapwrap svg{display:block;width:100%;height:auto}
+.m-kid{cursor:pointer}
+.m-kid .ring{fill:transparent;stroke:transparent;stroke-width:4}
+.m-kid:hover .ring{stroke:var(--sky)}
+.m-kid.cur .ring{fill:#fff4d6;stroke:var(--coral)}
+.m-kid.done .ring{fill:var(--green-soft);stroke:var(--green)}
+.m-arrow{stroke:#7a4cc2;stroke-width:4;stroke-dasharray:9 6;fill:none;opacity:0;transition:opacity .3s}
+.m-arrow.on{opacity:1}
+.city.hit circle{fill:var(--green);r:11}
+
+/* 4b check */
+.m-sent{font:800 clamp(28px,4.6vw,44px)/1.7 var(--f-he);text-align:center;background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);padding:18px 14px}
+.m-sent .gap{display:inline-block;min-width:1.6em;border-bottom:4px solid var(--coral);background:var(--coral-soft);border-radius:8px 8px 0 0;color:transparent}
+.m-sent .fill{background:var(--green-soft);border-radius:10px;padding:0 6px}
+.m-tagx{font:700 16px var(--f-he);color:var(--muted);text-align:center;margin-bottom:4px}
+
+/* 4c pair talk */
+.m-talk{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(220px,1fr);gap:16px;align-items:center}
+.m-prompts{display:grid;gap:10px}
+.m-pr{background:#fff;border:3px solid var(--line);border-radius:18px;padding:10px 14px;font:800 clamp(22px,3.4vw,30px)/1.5 var(--f-he)}
+.m-pr .ar{color:var(--coral);margin:0 6px}
+.m-pr b{color:#7a4cc2}
+.m-timer{background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);padding:12px;text-align:center}
+.m-timer .t{font:800 clamp(56px,10vw,90px)/1 var(--f-display);direction:ltr}
+.m-timer .t.end{color:var(--coral)}
+.m-timer .rd{font:800 20px var(--f-he);color:var(--muted)}
+.m-rounds{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.m-rounds button.on{background:var(--sky);color:#fff}
+
+/* 5 exit ticket */
+.m-ex{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.m-ex .box{background:#fff;border:3px solid var(--line);border-radius:18px;padding:12px 16px}
+.m-ex .he{font:700 24px/2 var(--f-he);direction:rtl;text-align:right}
+.m-ex .o{color:#16527d;font-weight:800;white-space:nowrap}
+.m-ex .o span{padding:0 4px;border-radius:50%}
+.m-ex.show .o span.r{outline:3px solid var(--green);background:var(--green-soft);border-radius:999px}
+.m-ex .line{display:inline-block;min-width:120px;border-bottom:2px solid var(--ink)}
+
+/* countdown overlay */
+#mCd{position:fixed;inset:0;z-index:10001;background:rgba(35,35,58,.9);color:#fff;display:none;place-items:center;text-align:center;font:800 min(40vw,320px)/1 var(--f-display)}
+#mCd.on{display:grid}#mCd small{display:block;font-size:min(9vw,80px);margin-top:10px}
+
+@media(max-width:760px){.m-ws,.m-rule,.m-talk,.m-ex{grid-template-columns:1fr}.m-grid{gap:3px}.m-cell{border-width:2px;border-radius:8px}}
+</style>
+<style>
+/* v2 additions (prefix n-) */
+.n-round{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:6px 0 12px}
+.n-round button{width:104px;height:104px;border-radius:50%;border:4px solid var(--line);background:#fff;font-size:52px;cursor:pointer;display:grid;place-items:center}
+.n-round button.on{border-color:var(--coral);background:var(--coral-soft)}
+.n-round button.ph{background-size:cover;background-position:center;font-size:0}
+.n-round button.ph.on{box-shadow:0 0 0 4px var(--coral)}
+.n-photo{display:grid;place-items:center;font-size:80px;min-height:90px}
+.n-photo img{max-height:clamp(170px,32vh,300px);max-width:100%;border-radius:16px;display:block}
+.n-choices{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:10px 0 4px}
+.n-choices button{font:800 clamp(22px,3vw,30px) var(--f-he);border:3px solid var(--sky);background:#fff;border-radius:16px;padding:8px 18px;cursor:pointer;color:var(--ink);min-width:120px}
+.n-choices button.ok{background:var(--green-soft);border-color:var(--green)}
+.n-choices button.no{background:var(--coral-soft);border-color:var(--coral);opacity:.6}
+.n-src{background:#eef6fd;border:2px solid var(--sky);border-radius:14px;padding:8px 12px;font:700 18px/1.6 var(--f-he)}
+.n-trip .tp{display:flex;flex-direction:column;align-items:center;font:800 18px var(--f-he)}
+.n-trip .tp img{height:clamp(110px,18vw,170px);border-radius:12px}
+.n-sign{background:#1e8a4c;color:#fff;border-radius:10px;padding:6px 10px;font:800 17px/1.3 var(--f-he);text-align:center}
+.n-sign .n-flag svg{width:44px;height:32px;margin:0 auto 4px}
+.n-ptabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.n-ptabs button{font:800 18px var(--f-he);border:3px solid var(--line);background:#fff;border-radius:999px;padding:6px 16px;cursor:pointer;color:var(--ink)}
+.n-ptabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.n-pagewrap{position:relative;max-width:820px;margin:8px auto 0;border:2px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.n-pagewrap img{display:block;width:100%;height:auto}
+.n-spot{position:absolute;transform:translate(-50%,-50%);border:3px dashed #e2506a;background:rgba(255,240,200,.35);border-radius:10px;cursor:pointer;padding:0;display:grid;place-items:center;font:800 clamp(12px,2.1vw,22px)/1.1 var(--f-he);color:#1d6a39}
+.n-spot:hover{background:rgba(255,230,150,.6)}
+.n-spot span{visibility:hidden;background:#fff;border-radius:8px;padding:1px 6px;white-space:nowrap}
+.n-spot.on{border-style:solid;border-color:#2f9d55;background:rgba(220,242,227,.85)}.n-spot.on span{visibility:visible}
+.n-spot.q{color:#7a4cc2}
+.n-pgbank{position:sticky;top:calc(var(--navh,64px) + 4px);z-index:20;background:#fffaf0;border:2px dashed #e5c05a;border-radius:16px;padding:8px 10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:8px auto;max-width:820px;box-shadow:0 4px 12px #0001}
+.n-pgbank .sub{width:100%;text-align:center}
+.n-chip{font:800 clamp(18px,2.2vw,24px) var(--f-he);border:3px solid var(--sky);background:#fff;border-radius:12px;padding:4px 12px;cursor:grab;color:#23233a;touch-action:none;user-select:none;-webkit-user-select:none}
+.n-chip.sel{background:var(--gold-soft);border-color:var(--gold)}.n-chip.used{opacity:.25;pointer-events:none}
+.n-ghost{position:fixed;z-index:10003;pointer-events:none;transform:translate(-50%,-60%) rotate(-3deg);box-shadow:0 10px 24px #0004}
+.n-drop span{visibility:visible;background:transparent;padding:0}
+.n-drop.full{background:rgba(255,255,255,.95);border-style:solid;border-color:var(--sky)}
+.n-drop.hot{background:rgba(255,230,150,.8);border-color:var(--gold)}
+.n-drop.ok{background:rgba(220,242,227,.95);border-color:#2f9d55}.n-drop.ok span::after{content:' ✔';color:#2f9d55}
+.n-drop.bad{background:rgba(253,227,231,.95);border-color:#e2506a}.n-drop.bad span::after{content:' ✘';color:#e2506a}
+.n-pick{font:inherit;cursor:pointer;color:var(--ink);position:relative}
+.m-cards .n-pick{font-size:clamp(28px,3.6vw,40px);min-width:150px;padding:10px 18px}.m-cards .n-pick .ic{font-size:40px}.m-cards .n-pick .flag svg{width:70px;height:50px}
+.n-pick:hover:not(:disabled){border-color:var(--sky);transform:translateY(-2px)}
+.n-pick:disabled{cursor:default}
+.n-pick .mk{position:absolute;top:2px;left:8px;font:800 26px var(--f-display)}
+.n-pick.hit .mk{color:var(--green)}.n-pick.no{border-color:var(--coral);background:var(--coral-soft);opacity:.55}.n-pick.no .mk{color:var(--coral)}
+.n-crop{background-repeat:no-repeat;border-radius:12px;border:2px solid var(--line);max-width:100%;flex:none}
+.n-crop-wrap{display:flex;gap:12px;justify-content:center;align-items:flex-end;flex-wrap:wrap;margin:8px 0 12px}
+.fitem:has(.n-pic){display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.n-pic .n-crop{border-width:1px}
+.n-bk .panel{margin-top:6px}
+.n-round button.done{border-color:var(--green)}
+.n-big{font-size:clamp(80px,14vw,130px);line-height:1.1}
+.m-card .flag svg,.n-flag svg{width:56px;height:40px;display:block;margin:0 auto 2px;border-radius:4px}
+.n-kids{display:flex;gap:28px;justify-content:center;flex-wrap:wrap}
+.n-kid{background:#fff;border:4px solid var(--line);border-radius:22px;padding:8px 16px;cursor:pointer;text-align:center;font:800 26px var(--f-he);color:var(--ink)}
+.n-kid svg{height:170px;width:auto;display:block;margin:0 auto}
+.n-kid.on{border-color:var(--coral);background:var(--coral-soft)}
+.n-trip{display:flex;align-items:center;justify-content:center;gap:10px;font-size:46px;margin:6px 0;min-height:70px}
+.n-trip .dash{flex:0 1 160px;border-top:5px dashed var(--sky);height:0}
+.n-trip .lab{display:block;font:800 18px var(--f-he)}
+.n-trip .n-flag svg{width:64px;height:46px}
+.n-qs{font:800 clamp(26px,4vw,40px)/1.5 var(--f-he);text-align:center;background:#fff;border:3px dashed var(--sky);border-radius:22px;padding:14px}
+.n-qs small{display:block;font-size:.65em;color:var(--muted)}
+.n-text{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+.n-card{background:#fff;border:3px solid #7a4cc2;border-radius:22px;padding:14px 18px}
+.n-card h3{margin:0;font:800 30px var(--f-he);color:#7a4cc2}
+.n-card .ins{font:800 20px var(--f-he);margin:2px 0 8px}
+.n-card p{margin:0;font:700 clamp(22px,2.8vw,28px)/1.75 var(--f-he)}
+.n-card svg{width:100%;height:auto;display:block;margin-top:10px;border-radius:14px}
+.n-task h4{margin:0 0 8px;font:800 22px var(--f-he)}
+.n-boxes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.n-box{background:#fff;border:3px solid var(--line);border-radius:18px;padding:8px;text-align:center}
+.n-box b{display:block;font:800 22px var(--f-he)}
+.n-slot{min-height:44px;margin-top:6px;border-bottom:3px solid #9aa3b2;font:800 24px var(--f-he);color:#1d6a39}
+.n-slot.full{border-color:var(--green);background:var(--green-soft);border-radius:10px 10px 0 0}
+.n-bank{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+.n-bank button{font:800 26px var(--f-he);border:3px solid var(--sky);background:#fff;border-radius:14px;padding:6px 16px;cursor:pointer;color:var(--ink)}
+.n-bank button.on{background:var(--gold-soft);border-color:var(--gold)}
+.n-bank button.used{opacity:.25;pointer-events:none}
+.n-tf{font:800 clamp(24px,3.6vw,36px)/1.5 var(--f-he);text-align:center;background:#fff;border:3px solid var(--ink);border-radius:20px;padding:12px}
+.n-tf .v{font:800 clamp(30px,5vw,48px) var(--f-display);min-height:56px}.n-tf .v.y{color:var(--green)}.n-tf .v.n{color:var(--coral)}
+.n-sum{font:800 clamp(22px,3vw,30px)/1.6 var(--f-he);text-align:center;background:var(--green-soft);border-radius:18px;padding:10px;margin-top:10px}
+.n-pages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.n-pages a{display:block;background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px;text-align:center;text-decoration:none;color:var(--ink);font:800 18px var(--f-he)}
+.n-pages img{width:100%;height:auto;display:block;border-radius:8px}
+.n-light{position:fixed;inset:0;z-index:10002;background:rgba(20,20,35,.92);display:none;align-items:center;justify-content:center;padding:10px;cursor:zoom-out}
+.n-light.on{display:flex}.n-light img{max-width:100%;max-height:100%;background:#fff;border-radius:8px}
+.n-warn{background:#fff3d6;border:2px solid var(--gold);border-radius:12px;padding:8px 12px;font:700 17px var(--f-he);margin:8px 0}
+@media(max-width:760px){.n-text,.n-boxes,.n-pages{grid-template-columns:1fr}}
+</style>
+<style>
+/* sicha-babayit additions (prefix q-) */
+.q-cet{display:inline-flex;gap:8px;align-items:center;text-decoration:none;font:800 18px var(--f-he);background:#eef2ff;color:#3730a3;border:2px solid #7a5bd1;border-radius:14px;padding:10px 16px;margin:6px 0}
+.q-cet:hover{background:#e0e7ff}
+.q-pic{display:grid;place-items:center;min-height:40px}.q-pic img{max-height:clamp(150px,28vh,260px);max-width:100%;border-radius:14px;display:block}
+.q-num{font:800 18px var(--f-he);color:var(--muted);text-align:center}
+.q-sent{font:800 clamp(28px,4.4vw,44px)/1.6 var(--f-he);text-align:center}
+.q-sent .gap{display:inline-block;min-width:2.4em;border-bottom:4px solid var(--coral);background:var(--coral-soft);border-radius:8px 8px 0 0;color:transparent}
+.q-sent .fill{background:var(--green-soft);border-radius:10px;padding:0 6px}
+.q-lines{display:grid;gap:10px;max-width:860px;margin:10px auto}
+.q-line{display:flex;gap:12px;align-items:center;background:#fff;border:3px solid var(--line);border-radius:18px;padding:8px 14px;font:700 clamp(20px,2.8vw,28px)/1.5 var(--f-he)}
+.q-line b{flex:none;min-width:70px;color:#7a4cc2}
+.q-roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:720px;margin:10px auto}
+.q-roles div{background:#fff;border:3px solid var(--ink);border-radius:20px;text-align:center;padding:12px;font:800 clamp(28px,4vw,40px) var(--f-he)}
+.q-roles span{display:block;font-size:46px}
+.q-choice .m-card{min-width:160px}
+.m-cards .n-pick{font-size:clamp(26px,3.6vw,40px);min-width:150px;padding:10px 18px}
+.m-cards .n-pick small{display:block;font:800 18px var(--f-he);color:var(--muted)}
+.m-cards .n-pick .ab{display:block;font:800 22px var(--f-display);color:#7a4cc2}
+@media(max-width:760px){.q-roles{grid-template-columns:1fr}}
+</style>
+</head>
+<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><a href="https://eldar1234334.github.io/SpellQuest-AlphaBet/" target="_blank" rel="noopener">🧙 SpellQuest AlphaBet</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../niflaot-lessons/index.html'}">← חזרה</button></nav>
+
+<div class="wrap">
+<header class="top">
+  <div><p class="crumb">NIFLAOT LESSONS · נִפְלָאוֹת ג · מְלִיאָה: שִׂיחָה בַּבַּיִת הֶחָדָשׁ</p><h1>שִׂיחָה בַּבַּיִת הֶחָדָשׁ</h1></div>
+  <p class="he-title">מְבַשֵּׁל / מְבַשֶּׁלֶת · מִיָּה מְבַקֶּשֶׁת עַגְבָנִיּוֹת</p>
+</header>
+<nav class="steps"><ol>
+  <li><a href="#s1"><b>1</b> כַּרְטִיס כְּנִיסָה</a></li><li><a href="#s2"><b>2</b> בְּ אוֹ מִ?</a></li><li><a href="#s3"><b>3</b> מָה הֵם עוֹשִׂים?</a></li><li><a href="#s4"><b>4</b> עוֹשִׂים</a></li><li><a href="#s5"><b>5</b> Exit Ticket</a></li><li><a href="#s6"><b>🖨️</b> הַדְפָּסָה</a></li>
+</ol></nav>
+
+<!-- ===== 1 entry ticket ===== -->
+<section class="step" id="s1">
+  <span class="tag"><span class="tnum">1</span> כַּרְטִיס כְּנִיסָה · 2–3 דַּקּוֹת</span>
+  <p class="lead">תַּפְזֹרֶת — מוֹצְאִים אֶת הַמִּלִּים</p>
+  <p class="sub">הַמִּלִּים כְּתוּבוֹת מִיָּמִין לִשְׂמֹאל אוֹ מִלְמַעְלָה לְמַטָּה. עַל הַמָּסָךְ — לוֹחֲצִים עַל מִלָּה בָּרְשִׁימָה כְּדֵי לְסַמֵּן אוֹתָהּ בַּתַּפְזֹרֶת.</p>
+  <div class="panel">
+    <div class="m-ws">
+      <div class="m-grid" id="mGrid"></div>
+      <div class="m-words" id="mWords"></div>
+    </div>
+    <div class="m-bar c">
+      <span class="m-count" id="mFound">0 / 8</span>
+      <button class="btn good" id="wsAll" type="button">👁 הַצִּיגוּ אֶת כָּל הַמִּלִּים</button>
+      <button class="btn ghost" id="wsClr" type="button">↺ מֵהַהַתְחָלָה</button>
+      <a class="m-dl" href="Niflaot-sicha-babayit-word-search.pdf" target="_blank" rel="noopener">🖨️ דַּף תַּפְזֹרֶת (PDF)</a>
+    </div>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>מְחַלְּקִים דַּף לְכָל תַּלְמִיד כְּשֶׁהֵם נִכְנָסִים. מַקִּיפִים לְבַד, בְּשֶׁקֶט. בַּסּוֹף תַּלְמִידִים אוֹמְרִים מִלָּה, הַמּוֹרֶה לוֹחֵץ עָלֶיהָ וְקוֹרְאִים יַחַד. שִׂימוּ לֵב: מְבַשֵּׁל נִמְצֵאת גַּם בְּתוֹךְ מְבַשֶּׁלֶת.</p>
+  </details>
+</section>
+
+<!-- ===== 2 warm-up ===== -->
+<section class="step" id="s2">
+  <span class="tag green"><span class="tnum">2</span> חִמּוּם · 3–5 דַּקּוֹת · חֲזָרָה עַל 11/10</span>
+  <p class="lead">אֵיפֹה? בְּ... · מֵאֵיפֹה? מִ...</p>
+  <p class="sub">הַכִּתָּה מַרִימָה בְּ אוֹ מִ (3-2-1 הָרִימוּ!) ⬅ הַמּוֹרֶה לוֹחֵץ עַל הַתְּשׁוּבָה הַנְּכוֹנָה לְמַטָּה: ✔ אוֹ ✘.</p>
+  <div id="qWU"></div>
+  <div class="m-bar c"><a class="q-cet" href="https://productplayer.cet.ac.il/niflaot3/e8374f19-fdff-451a-af90-5e056779e35c_78f4e962-7f39-4f57-9c71-960dc6eeb554" target="_blank" rel="noopener">✨ מְלִיאָה: מֵאֵיפֹה אַתָּה? מֵאֵיפֹה אַתְּ?</a><a class="m-dl" href="Niflaot-sicha-babayit-response-cards.pdf" target="_blank" rel="noopener">🖨️ כַּרְטִיסֵי תְּשׁוּבָה (PDF)</a></div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>חֲזָרָה עַל הַשִּׁעוּר שֶׁל יוֹם שְׁלִישִׁי. אַרְבָּעָה מִשְׁפָּטִים: כָּל תַּלְמִיד מַחֲזִיק כַּרְטִיס בְּ וְכַרְטִיס מִ. 3-2-1 הָרִימוּ — וְהַמּוֹרֶה לוֹחֵץ עַל הַתְּשׁוּבָה. אַחֲרֵי כָּל מִשְׁפָּט שׁוֹאֲלִים: "לָמָּה מִ? לָמָּה בְּ?" (בָּא ⬅ מִ; גָּרִים / אֵיפֹה ⬅ בְּ).</p>
+    <p dir="ltr" style="text-align:left;font-size:13px">Photos: Azrieli towers (Tel Aviv) – Eurovaran, CC BY-SA 4.0, Wikimedia Commons. David/Sara pictures: Niflaot class item screen 2 (CET).</p>
+  </details>
+</section>
+
+<!-- ===== 3 lecturing ===== -->
+<section class="step" id="s3">
+  <span class="tag sky"><span class="tnum">3</span> הַסְבֵּר · 10 דַּקּוֹת</span>
+  <p class="lead">מָה הֵם עוֹשִׂים?</p>
+  <a class="q-cet" href="https://productplayer.cet.ac.il/niflaot3/e8374f19-fdff-451a-af90-5e056779e35c_9b94ce19-2468-4846-bbe7-6824822f7930#page=page_1" target="_blank" rel="noopener">✨ נִפְלָאוֹת: שִׂיחָה בַּבַּיִת הֶחָדָשׁ — מָסָךְ 1 (מָה הֵם עוֹשִׂים?)</a>
+  <p class="sub">הַמּוֹרֶה מַרְאֶה אֶת הַקּוֹמִיקְס בַּמְּלִיאָה, קוֹרֵא — וְהַכִּתָּה חוֹזֶרֶת:</p>
+  <div class="q-lines">
+    <div class="q-line"><b>נוֹעַם:</b>אַבָּא, מָה אַתָּה מְבַשֵּׁל לָנוּ הַיּוֹם?</div>
+    <div class="q-line"><b>אַבָּא:</b>הַיּוֹם אֲנִי מְבַשֵּׁל פַּסְטָה עִם גְּבִינָה וְעִם בְּרוֹקוֹלִי.</div>
+    <div class="q-line"><b>נוֹעַם:</b>אִמָּא, מָה אַתְּ מְבַשֶּׁלֶת לָנוּ?</div>
+    <div class="q-line"><b>אִמָּא:</b>אֲנִי מְבַשֶּׁלֶת מָרָק עִם עַגְבָנִיּוֹת.</div>
+  </div>
+  <div class="m-rule" style="margin-top:16px">
+    <div><div class="k">הוּא מְבַשֵּׁ<b>ל</b></div><div class="e">אַבָּא מְבַשֵּׁל פַּסְטָה.</div><div class="en">הֵם מְבַשְּׁ<b>לִים</b></div></div>
+    <div><div class="k">הִיא מְבַשֶּׁ<b>לֶת</b></div><div class="e">אִמָּא מְבַשֶּׁלֶת מָרָק.</div><div class="en">הֵן מְבַשְּׁ<b>לוֹת</b></div></div>
+  </div>
+  <p class="lead" style="margin-top:22px">מִי מְבַשֵּׁל? מִי מְבַשֶּׁלֶת?</p>
+  <p class="sub">הַכִּתָּה מַרִימָה מְבַשֵּׁל אוֹ מְבַשֶּׁלֶת (3-2-1 הָרִימוּ!) ⬅ הַמּוֹרֶה לוֹחֵץ עַל הַתְּשׁוּבָה.</p>
+  <div id="qMB"></div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>מַצִּיגִים אֶת מָסָךְ 1 בַּמְּלִיאָה (הַקּוֹמִיקְס בַּמִּטְבָּח) וְקוֹרְאִים אֶת אַרְבַּע הַשּׁוּרוֹת. בְּכַרְטִיס הַכְּלָל מַדְגִּישִׁים אֶת הַסִּיּוּמוֹת: הוּא מְבַשֵּׁל, הִיא מְבַשֶּׁלֶת, הֵם מְבַשְּׁלִים, הֵן מְבַשְּׁלוֹת. אַחַר כָּךְ אַרְבָּעָה מִשְׁפָּטִים עִם כַּרְטִיסֵי מְבַשֵּׁל / מְבַשֶּׁלֶת.</p>
+  </details>
+</section>
+
+<!-- ===== 4 do it ===== -->
+<section class="step" id="s4">
+  <span class="tag"><span class="tnum">4</span> עוֹשִׂים · 15–20 דַּקּוֹת</span>
+  <p class="lead">א · מְצַלְּמוֹת אוֹ מְצַיְּרוֹת?</p>
+  <a class="q-cet" href="https://productplayer.cet.ac.il/niflaot3/e8374f19-fdff-451a-af90-5e056779e35c_9b94ce19-2468-4846-bbe7-6824822f7930#page=page_2" target="_blank" rel="noopener">✨ נִפְלָאוֹת: שִׂיחָה בַּבַּיִת הֶחָדָשׁ — מָסָךְ 2 (מְצַלְּמוֹת אוֹ מְצַיְּרוֹת?)</a>
+  <p class="sub">קוֹדֶם מְשַׂחֲקִים בַּמְּלִיאָה. אַחַר כָּךְ בּוֹדְקִים כָּאן: הַכִּתָּה מַרִימָה א אוֹ ב (3-2-1 הָרִימוּ!) ⬅ הַמּוֹרֶה לוֹחֵץ עַל הַפֹּעַל הַנָּכוֹן.</p>
+  <div id="qVB"></div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>"תְּמוּנָה N" — מִסְפַּר הַתְּמוּנָה בְּמָסָךְ 2 שֶׁל הַמְּלִיאָה, כְּדֵי לַחְזֹר אֵלֶיהָ. אַחֲרֵי הַבְּדִיקָה — מִשְׂחַק פַּנְטוֹמִימָה: מִתְנַדֵּב שׁוֹמֵעַ פֹּעַל בְּלַחַשׁ וּמַצִּיג אוֹתוֹ, וְהַכִּתָּה עוֹנָה בְּמִשְׁפָּט מָלֵא, לְמָשָׁל: "הוּא מְצַיֵּר".</p>
+  </details>
+
+  <p class="lead" style="margin-top:22px">ב · מִיָּה מְבַקֶּשֶׁת עַגְבָנִיּוֹת</p>
+  <div class="m-bar">
+    <a class="q-cet" href="https://productplayer.cet.ac.il/niflaot3/e8374f19-fdff-451a-af90-5e056779e35c_9b94ce19-2468-4846-bbe7-6824822f7930#page=page_3" target="_blank" rel="noopener">✨ נִפְלָאוֹת — מָסָךְ 3 (אֲנַחְנוּ שׁוֹמְעִים שִׂיחָה)</a>
+    <a class="q-cet" href="https://productplayer.cet.ac.il/niflaot3/e8374f19-fdff-451a-af90-5e056779e35c_9b94ce19-2468-4846-bbe7-6824822f7930#page=page_4" target="_blank" rel="noopener">✨ נִפְלָאוֹת — מָסָךְ 4 (מִיָּה מְבַקֶּשֶׁת עַגְבָנִיּוֹת)</a>
+  </div>
+  <p class="sub">שׁוֹמְעִים אֶת הַשִּׂיחָה בַּמְּלִיאָה (מָסָךְ 3), וְאַחַר כָּךְ עוֹנִים עַל הַשְּׁאֵלוֹת בְּמָסָךְ 4. שְׁאֵלָה 2 גַּם כָּאן — כַּרְטִיסֵי 1 / 2 / 3:</p>
+  <div id="qQ2"></div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>הַהַאֲזָנָה הָרִאשׁוֹנָה — רַק שׁוֹמְעִים (מָסָךְ 3). בַּשְּׁנִיָּה — עוֹנִים עַל הַשְּׁאֵלוֹת בְּמָסָךְ 4; שְׁאֵלוֹת 1 וְ־3 עוֹנִים שָׁם. שְׁאֵלָה 2 עוֹנִים גַּם כָּאן עִם כַּרְטִיסֵי 1 / 2 / 3.</p>
+  </details>
+
+  <p class="lead" style="margin-top:22px">ג · אֲנַחְנוּ עוֹשִׂים הַצָּגָה</p>
+  <a class="q-cet" href="https://productplayer.cet.ac.il/niflaot3/e8374f19-fdff-451a-af90-5e056779e35c_9b94ce19-2468-4846-bbe7-6824822f7930#page=page_5" target="_blank" rel="noopener">✨ נִפְלָאוֹת — מָסָךְ 5 (אֲנַחְנוּ עוֹשִׂים הַצָּגָה)</a>
+  <p class="sub">בִּקְבוּצוֹת שֶׁל שְׁלוֹשָׁה: כָּל אֶחָד לוֹקֵחַ תַּפְקִיד וּמַצִּיגִים אֶת הַשִּׂיחָה. אֲבִיזָרִים: עַגְבָנִיּוֹת, סִיר, כּוֹבָעִים.</p>
+  <div class="q-roles"><div><span>👩</span>אִמָּא</div><div><span>👦</span>יוֹנָתָן</div><div><span>👧</span>מִיָּה</div></div>
+  <div class="m-talk" style="grid-template-columns:1fr">
+    <div class="m-timer" style="max-width:360px;margin:0 auto">
+      <div class="rd">⏱ זְמַן לְהַצָּגָה</div>
+      <div class="t" id="talkT">3:00</div>
+      <div class="m-bar c">
+        <button class="btn good" id="talkGo" type="button">▶ הַתְחָלָה</button>
+        <button class="btn ghost" id="talkStop" type="button">⏸</button>
+        <button class="btn ghost small" data-min="2" type="button">2′</button>
+        <button class="btn ghost small" data-min="3" type="button">3′</button>
+        <button class="btn ghost small" data-min="5" type="button">5′</button>
+      </div>
+    </div>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>מְחַלְּקִים אֶת כַּרְטִיסֵי הַתַּפְקִיד (אִמָּא, יוֹנָתָן, מִיָּה). כָּל קְבוּצָה מְתַרְגֶּלֶת 3 דַּקּוֹת וְאָז מַצִּיגָה. אֵין תַּסְרִיט כָּתוּב — הַשִּׂיחָה הִיא מִן הַהַקְלָטָה בַּמְּלִיאָה.</p>
+  </details>
+</section>
+
+<!-- ===== 5 exit ticket ===== -->
+<section class="step" id="s5">
+  <div class="m-bar" style="margin-bottom:0"><span class="tag" style="background:#ece6fb;border-color:#7a5bd1;color:#3b2a82">🎟️ Exit Ticket · 3–5 min</span><span style="flex:1"></span><a class="m-dl" href="Niflaot-sicha-babayit-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ Printable version (PDF · 4 per page)</a></div>
+  <p class="lead m-en" dir="ltr">Work alone. Circle the right word:</p>
+  <div id="qEX"></div>
+  <p class="sub m-en" dir="ltr"><b>Write one sentence: What do you cook?</b> <bdi dir="rtl">אֲנִי מְבַשֵּׁל / מְבַשֶּׁלֶת ________.</bdi></p>
+  <p class="sub m-en" dir="ltr"><b>Reflection:</b> Today I can say what he / she does: yes / almost / not yet.</p>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>כָּל תַּלְמִיד מְמַלֵּא לְבַד אֶת הַכַּרְטִיס הַמֻּדְפָּס. תְּשׁוּבוֹת: 1 מְבַשֵּׁל, 2 מְבַשֶּׁלֶת, 3 מְצַיְּרוֹת. עַל הַמָּסָךְ אֶפְשָׁר לִבְדֹּק יַחַד בַּסּוֹף. הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.</p>
+  </details>
+</section>
+
+<!-- ===== printables ===== -->
+<section class="step" id="s6">
+  <span class="tag sky"><span class="tnum">🖨️</span> לְהַדְפָּסָה</span>
+  <div class="shortcuts" style="margin-top:12px">
+    <a class="sc" href="Niflaot-sicha-babayit-word-search.pdf" target="_blank" rel="noopener"><span class="ic">🔎</span><div><h3>תַּפְזֹרֶת</h3><p>כַּרְטִיס כְּנִיסָה · דַּף אֶחָד</p></div><span class="go">◀</span></a>
+    <a class="sc" href="Niflaot-sicha-babayit-response-cards.pdf" target="_blank" rel="noopener"><span class="ic">🃏</span><div><h3>כַּרְטִיסֵי תְּשׁוּבָה</h3><p>מְבַשֵּׁל / מְבַשֶּׁלֶת · א / ב · 1 2 3 · בְּ / מִ · תַּפְקִידִים</p></div><span class="go">◀</span></a>
+    <a class="sc" href="Niflaot-sicha-babayit-exit-ticket.pdf" target="_blank" rel="noopener"><span class="ic">🎟️</span><div><h3>Exit Ticket</h3><p>4 per A4 page</p></div><span class="go">◀</span></a>
+  </div>
+</section>
+<p class="src">הַמְּלִיאָה "שִׂיחָה בַּבַּיִת הֶחָדָשׁ": "נִפְלָאוֹת ג" (מט"ח) — בַּקִּשּׁוּרִים. לְשִׁמּוּשׁ בַּכִּתָּה בִּלְבַד.</p>
+</div>
+<div id="mCd" aria-live="assertive"><div id="mCdT">3</div></div>
+<script src="sicha-babayit/data.js?v=1"></script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const D = window.SICHA;
+
+/* ---------- sounds + 3-2-1 countdown (as in 22-24) ---------- */
+let ac;
+const beep = (f, d = .15, v = .14) => { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; g.gain.value = v; o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + d); } catch (e) {} };
+const chime = () => { [660, 880, 1100].forEach((f, i) => setTimeout(() => beep(f, .35, .16), i * 220)); };
+let cdBusy = false;
+function countdown(){
+  if (cdBusy) return; cdBusy = true;
+  const ov = $('mCd'), t = $('mCdT'); let n = 3; ov.classList.add('on'); t.textContent = n; beep(520);
+  const tick = setInterval(() => {
+    n--; if (n > 0){ t.textContent = n; beep(520); return; }
+    clearInterval(tick); t.innerHTML = 'הָרִימוּ!<small>🃏</small>'; beep(880, .3);
+    setTimeout(() => { ov.classList.remove('on'); cdBusy = false; }, 1300);
+  }, 1000);
+}
+
+/* ---------- 1. word search ---------- */
+const cells = [];
+D.GRID.forEach((row, r) => row.forEach((ch, c) => { const d = document.createElement('div'); d.className = 'm-cell'; d.textContent = ch; $('mGrid').appendChild(d); (cells[r] = cells[r] || [])[c] = d; }));
+const wBtns = D.WORDS.map(w => {
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'm-word'; b.textContent = w.he;
+  b.onclick = () => { b.classList.toggle('on'); paint(); beep(b.classList.contains('on') ? 760 : 420, .12); };
+  $('mWords').appendChild(b); return b;
+});
+function paint(){
+  cells.flat().forEach(d => d.classList.remove('on')); let n = 0;
+  D.WORDS.forEach((w, i) => { if (!wBtns[i].classList.contains('on')) return; n++; D.cellsOf(w).forEach(([r, c]) => cells[r][c].classList.add('on')); });
+  $('mFound').textContent = n + ' / ' + D.WORDS.length;
+}
+$('wsAll').onclick = () => { wBtns.forEach(b => b.classList.add('on')); paint(); beep(880, .25); };
+$('wsClr').onclick = () => { wBtns.forEach(b => b.classList.remove('on')); paint(); };
+paint();
+
+/* ---------- card question: one item at a time, the answer CARDS are clickable (✔ / ✘), then the full sentence ----------
+ * item = { num?, pic?, pre, post, full, ch:[{id, html}], ok }   (pre ___ post; full = the sentence with the answer filled) */
+function cardQuiz(root, items){
+  root.innerHTML = `<div class="m-stage" style="margin-top:8px"><div class="q-num"></div><div class="q-pic"></div><div class="q-sent"></div></div>
+    <div class="m-cards q-choice"></div>
+    <div class="m-bar c"><button class="btn ghost" data-a="prev" type="button">▶ הקודם</button><span class="m-count"></span><button class="btn ghost" data-a="next" type="button">הבא ◀</button>
+    <button class="m-cd" data-a="cd" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn good" data-a="rv" type="button">👁 הַצִּיגוּ תְּשׁוּבָה</button></div>`;
+  const st = root.querySelector('.m-stage'), q = s => root.querySelector(s);
+  let i = 0, done = false;
+  function right(){ const it = items[i]; done = true; st.classList.add('yes'); q('.q-sent').innerHTML = it.full;
+    q('.q-choice').querySelectorAll('.n-pick').forEach(b => { b.disabled = true; const ok = b.dataset.k === it.ok; b.classList.toggle('hit', ok); b.classList.toggle('hide', !ok); if (ok) b.querySelector('.mk').textContent = '✔'; });
+    beep(880, .25); }
+  function show(){
+    const it = items[i]; done = false; st.classList.remove('yes');
+    q('.q-num').textContent = it.num || ''; q('.q-pic').innerHTML = it.pic ? `<img src="${it.pic}" alt="">` : '';
+    q('.q-sent').innerHTML = it.pre != null ? `${it.pre}<span class="gap">_</span>${it.post || ''}` : (it.q || '');
+    q('.q-choice').innerHTML = it.ch.map(c => `<button type="button" class="m-card n-pick" data-k="${c.id}">${c.html}<span class="mk"></span></button>`).join('');
+    q('.q-choice').querySelectorAll('.n-pick').forEach(b => b.onclick = () => { if (done) return; if (b.dataset.k === it.ok) right(); else { b.classList.add('no'); b.querySelector('.mk').textContent = '✘'; b.disabled = true; beep(260, .2); } });
+    q('.m-count').textContent = (i + 1) + ' / ' + items.length;
+  }
+  q('[data-a="prev"]').onclick = () => { i = (i + items.length - 1) % items.length; show(); };
+  q('[data-a="next"]').onclick = () => { i = (i + 1) % items.length; show(); };
+  q('[data-a="cd"]').onclick = countdown;
+  q('[data-a="rv"]').onclick = () => { if (!done) right(); else q('[data-a="next"]').click(); };
+  show();
+}
+const BM = [{ id: 'b', html: 'בְּ<small>אֵיפֹה?</small>' }, { id: 'm', html: 'מִ<small>מֵאֵיפֹה?</small>' }];
+
+/* ---------- 2. warm-up: בְּ / מִ with Tuesday's pictures ---------- */
+const AZRIELI = 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Israel_Tel_Aviv_-_Azrieli_towers.jpg/500px-Israel_Tel_Aviv_-_Azrieli_towers.jpg';
+cardQuiz($('qWU'), [
+  { pic: 'pages-22-24/david-globe.png', pre: 'דֶּיְוִיד בָּא ', post: 'לוֹנְדוֹן.', full: 'דֶּיְוִיד בָּא <span class="fill"><b>מִ</b>לּוֹנְדוֹן</span>.', ch: BM, ok: 'm' },
+  { pic: 'pages-22-24/sara-globe.png', pre: 'שָׂרָה בָּאָה ', post: 'פָּרִיז.', full: 'שָׂרָה בָּאָה <span class="fill"><b>מִ</b>פָּרִיז</span>.', ch: BM, ok: 'm' },
+  { pic: 'pages-22-24/david-airport.png', pre: 'עַכְשָׁו הֵם גָּרִים ', post: 'יִשְׂרָאֵל.', full: 'עַכְשָׁו הֵם גָּרִים <span class="fill"><b>בְּ</b>יִשְׂרָאֵל</span>.', ch: BM, ok: 'b' },
+  { pic: AZRIELI, pre: 'שִׁיר וְיוֹנָתָן ', post: 'תֵּל אָבִיב.', full: 'שִׁיר וְיוֹנָתָן <span class="fill"><b>בְּ</b>תֵל אָבִיב</span>.', ch: BM, ok: 'b' },
+]);
+
+/* ---------- 3d. מְבַשֵּׁל / מְבַשֶּׁלֶת ---------- */
+const MB = [{ id: 'm', html: 'מְבַשֵּׁל<small>הוּא · אַתָּה</small>' }, { id: 'f', html: 'מְבַשֶּׁלֶת<small>הִיא · אַתְּ</small>' }];
+cardQuiz($('qMB'), [
+  { pre: 'אַבָּא ', post: ' פַּסְטָה.', full: 'אַבָּא <span class="fill">מְבַשֵּׁ<b>ל</b></span> פַּסְטָה.', ch: MB, ok: 'm' },
+  { pre: 'אִמָּא ', post: ' מָרָק.', full: 'אִמָּא <span class="fill">מְבַשֶּׁ<b>לֶת</b></span> מָרָק.', ch: MB, ok: 'f' },
+  { pre: 'נוֹעַם, מָה אַתָּה ', post: '?', full: 'נוֹעַם, מָה אַתָּה <span class="fill">מְבַשֵּׁ<b>ל</b></span>?', ch: MB, ok: 'm' },
+  { pre: 'אִמָּא, מָה אַתְּ ', post: '?', full: 'אִמָּא, מָה אַתְּ <span class="fill">מְבַשֶּׁ<b>לֶת</b></span>?', ch: MB, ok: 'f' },
+]);
+
+/* ---------- 4a. verb check (screen 2): picture number + 2 verbs, the correct one on side א or ב ---------- */
+const VB = [['מְדַבֵּר', 'מְצַיֵּר'], ['מְצַלְּמִים', 'מְסַדְּרִים'], ['מְדַבְּרוֹת', 'מְצַיְּרוֹת'], ['מְחַפֵּשׂ', 'מְבַקֵּשׁ'], ['מְטַיְּלִים', 'מְנַצְּחִים'],
+  ['מְנַצֵּחַ', 'מְבַקֵּשׁ'], ['מְצַיְּרוֹת', 'מְצַלְּמוֹת'], ['מְשַׂחֶקֶת', 'מְסַדֶּרֶת'], ['מְבַשֵּׁל', 'מְסַפֵּר']];
+const SIDE = ['a', 'b', 'b', 'a', 'b', 'a', 'a', 'b', 'a'];   /* where the correct verb sits: א (right) or ב (left) */
+cardQuiz($('qVB'), VB.map(([good, bad], n) => {
+  const a = SIDE[n] === 'a' ? good : bad, b = SIDE[n] === 'a' ? bad : good;
+  return { num: 'תְּמוּנָה ' + (n + 1) + ' בְּמָסָךְ 2', q: 'מָה הוּא עוֹשֶׂה? מָה הֵם עוֹשִׂים?', full: `<span class="fill">${good}</span>`,
+    ch: [{ id: 'a', html: `<span class="ab">א</span>${a}` }, { id: 'b', html: `<span class="ab">ב</span>${b}` }], ok: SIDE[n] };
+}));
+
+/* ---------- 4b. question 2 (screen 4) ---------- */
+cardQuiz($('qQ2'), [{ q: 'לָמָּה מִיָּה מְבַקֶּשֶׁת עַגְבָנִיּוֹת?', full: 'לָמָּה מִיָּה מְבַקֶּשֶׁת עַגְבָנִיּוֹת?<br><span class="fill">כִּי אֵין לָהּ מַסְפִּיק עַגְבָנִיּוֹת בַּבַּיִת.</span>',
+  ch: [{ id: '1', html: '<span class="ab">1</span><span style="font-size:.6em">כִּי אֵין לָהּ מַסְפִּיק עַגְבָנִיּוֹת בַּבַּיִת.</span>' }, { id: '2', html: '<span class="ab">2</span><span style="font-size:.6em">כִּי כָּל הַמִּשְׁפָּחָה בַּבַּיִת.</span>' }, { id: '3', html: '<span class="ab">3</span><span style="font-size:.6em">כִּי הִיא אוֹהֶבֶת הַרְבֵּה עַגְבָנִיּוֹת.</span>' }], ok: '1' }]);
+
+/* ---------- 4c. play timer (3 minutes) ---------- */
+let secs = 180, left = 180, timer = null;
+const draw = () => { $('talkT').textContent = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0'); $('talkT').classList.toggle('end', left === 0); };
+function stop(){ clearInterval(timer); timer = null; }
+$('talkGo').onclick = () => { if (timer) return; if (left === 0) left = secs; beep(700, .12); timer = setInterval(() => { left--; draw(); if (left <= 0){ stop(); chime(); } }, 1000); };
+$('talkStop').onclick = stop;
+document.querySelectorAll('[data-min]').forEach(b => b.onclick = () => { secs = +b.dataset.min * 60; stop(); left = secs; draw(); });
+
+/* ---------- 5. exit ticket on screen (clickable answers) ---------- */
+const MBF = [{ id: 'm', html: 'מְבַשֵּׁל' }, { id: 'f', html: 'מְבַשֶּׁלֶת' }];
+cardQuiz($('qEX'), [
+  { pre: '1. אַבָּא ', post: ' פַּסְטָה.', full: '1. אַבָּא <span class="fill">מְבַשֵּׁל</span> פַּסְטָה.', ch: MBF, ok: 'm' },
+  { pre: '2. אִמָּא ', post: ' מָרָק.', full: '2. אִמָּא <span class="fill">מְבַשֶּׁלֶת</span> מָרָק.', ch: MBF, ok: 'f' },
+  { pre: '3. הַבָּנוֹת ', post: '.', full: '3. הַבָּנוֹת <span class="fill">מְצַיְּרוֹת</span>.', ch: [{ id: 'f', html: 'מְצַיְּרוֹת' }, { id: 'm', html: 'מְצַיְּרִים' }], ok: 'f' },
+]);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כַּרְטִיסֵי תְּשׁוּבָה — שִׂיחָה בַּבַּיִת הֶחָדָשׁ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@700;800&display=swap" rel="stylesheet">
+<style>
+/* p1 מְבַשֵּׁל / מְבַשֶּׁלֶת · p2 א / ב · p3 1 / 2 / 3 · p4 בְּ / מִ · p5 role cards — cut along the dashed lines */
+@page{size:A4;margin:8mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.sheet{width:194mm;height:281mm;margin:0 auto;display:grid;page-break-after:always;grid-template-columns:1fr}
+.sheet:last-child{page-break-after:auto}
+.s2{grid-template-rows:1fr 1fr}.s3{grid-template-rows:1fr 1fr 1fr}
+.c{border:1.5px dashed #9aa3b2;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;gap:2mm}
+.c b{font-weight:800;line-height:1.1}
+.w b{font-size:96pt}.w small{font:800 22pt 'Noto Sans Hebrew',sans-serif;color:#7a4cc2}
+.l b{font:800 200pt/1 'Rubik','Noto Sans Hebrew',sans-serif}
+.n b{font:800 150pt/1 'Rubik',Arial,sans-serif}
+.r b{font-size:80pt}.r span{font-size:70pt;line-height:1}
+@media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div class="sheet s2"><div class="c w"><b>מְבַשֵּׁל</b><small>הוּא · אַתָּה</small></div><div class="c w"><b>מְבַשֶּׁלֶת</b><small>הִיא · אַתְּ</small></div></div>
+<div class="sheet s2"><div class="c l"><b style="color:#2a8bd0">א</b></div><div class="c l"><b style="color:#e2506a">ב</b></div></div>
+<div class="sheet s3"><div class="c n"><b style="color:#2a8bd0">1</b></div><div class="c n"><b style="color:#2f9d55">2</b></div><div class="c n"><b style="color:#e0a31f">3</b></div></div>
+<div class="sheet s2"><div class="c l"><b>בְּ</b></div><div class="c l"><b>מִ</b></div></div>
+<div class="sheet s3"><div class="c r"><span>👩</span><b>אִמָּא</b></div><div class="c r"><span>👦</span><b>יוֹנָתָן</b></div><div class="c r"><span>👧</span><b>מִיָּה</b></div></div>
+</body>
+</html>
