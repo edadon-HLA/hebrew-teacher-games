@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כַּרְטִיסֵי תְּשׁוּבָה — מִי מְבַשֵּׁל וּמִי מְסַדֵּר?</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* p1 6 color cards (each in its color) · p2 6 verb cards — 2 x 3 per A4, cut along the dashed lines */
+@page{size:A4;margin:8mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.sheet{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);page-break-after:always}
+.sheet:last-child{page-break-after:auto}
+.c{border:1.5px dashed #9aa3b2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4mm;overflow:hidden}
+.c i{display:block;width:38mm;height:38mm;border-radius:50%;border:2px solid #23233a}
+.c b{font-size:44pt;font-weight:800}
+.v b{font-size:46pt}.v small{font-size:16pt;font-weight:800;color:#7a4cc2}
+@media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="c"><i style="background:#e0352b"></i><b style="color:#c62828">אָדֹם</b></div>
+  <div class="c"><i style="background:#2a6fd0"></i><b style="color:#1f4fb0">כָּחֹל</b></div>
+  <div class="c"><i style="background:#f4cf1e"></i><b style="color:#b08b00">צָהֹב</b></div>
+  <div class="c"><i style="background:#2f9d55"></i><b style="color:#1d6a39">יָרֹק</b></div>
+  <div class="c"><i style="background:#f08a24"></i><b style="color:#c25e00">כָּתֹם</b></div>
+  <div class="c"><i style="background:#ffffff"></i><b>לָבָן</b></div>
+</div>
+<div class="sheet">
+  <div class="c v"><b>מְסַדֵּר</b><small>הוּא</small></div>
+  <div class="c v"><b>מְסַדֶּרֶת</b><small>הִיא</small></div>
+  <div class="c v"><b>מְבַשֵּׁל</b><small>הוּא</small></div>
+  <div class="c v"><b>מְבַשֶּׁלֶת</b><small>הִיא</small></div>
+  <div class="c v"><b>מְבַקֵּשׁ</b><small>הוּא</small></div>
+  <div class="c v"><b>מְבַקֶּשֶׁת</b><small>הִיא</small></div>
+</div>
+</body>
+</html>
