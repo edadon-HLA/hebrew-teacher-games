@@ -16,7 +16,7 @@ const CSS = `
 .sf-click{cursor:zoom-in}
 body.sf-on{overflow:hidden}
 body.sf-on .site-nav{display:none}
-.sf-cur{position:fixed!important;inset:0!important;z-index:9998!important;margin:0!important;max-width:none!important;width:auto!important;
+.sf-cur{position:fixed!important;inset:0!important;z-index:9970!important;margin:0!important;max-width:none!important;width:auto!important;
   background:var(--bg,#fffaf3)!important;overflow:auto!important;padding:70px 3vw 40px!important;border-radius:0!important;zoom:var(--sf-zoom,1.3)}
 .sf-cur > .sf-btn{display:none}
 .sf-cur .n-pgbank{top:0!important}
