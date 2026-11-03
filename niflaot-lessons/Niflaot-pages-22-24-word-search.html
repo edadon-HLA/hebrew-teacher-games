@@ -36,5 +36,21 @@ h1 small{font-size:11pt;color:#6b6880;font-weight:700}
 document.getElementById('w').innerHTML = P2224.WORDS.map(w => `<span>${w.he}</span>`).join('');
 document.getElementById('g').innerHTML = P2224.GRID.flat().map(c => `<div>${c}</div>`).join('');
 </script>
+<style id="four-per-page">
+/* 4 entry tickets per A4 page (2 x 2), cut along the dashed lines */
+@page{size:A4;margin:8mm}
+.sheet4{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;background:#fff}
+.sheet4 > .cell{border:1px dashed #9aa3b2;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:2mm}
+.sheet4 .pg{zoom:.47;width:190mm;margin:0;padding:0!important;box-shadow:none!important;background:none!important}
+.sheet4 .words span{font-size:22pt;padding:1.5mm 0}
+.sheet4 .nm,.sheet4 .ask{font-size:17pt}
+.sheet4 .tip{font-size:15pt}
+@media screen{body{background:#eee}.sheet4{box-shadow:0 2px 12px #0003}}
+</style>
+<script>
+(() => { const pg = document.querySelector('.pg'); const sh = document.createElement('div'); sh.className = 'sheet4';
+  for (let i = 0; i < 4; i++){ const c = document.createElement('div'); c.className = 'cell'; c.appendChild(i ? pg.cloneNode(true) : pg); sh.appendChild(c); }
+  document.body.appendChild(sh); })();
+</script>
 </body>
 </html>
