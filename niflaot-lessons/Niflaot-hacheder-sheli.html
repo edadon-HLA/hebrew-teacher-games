@@ -241,6 +241,11 @@ details.q-opt summary{cursor:pointer;font:800 20px var(--f-he)}
 .h-stone:hover{background:rgba(255,255,255,.25)}
 .h-stone.ok{border:5px solid #2f9d55;background:rgba(220,242,227,.35)}
 .h-stone.bad{border:5px solid #e2506a;animation:hshk .4s}
+.h-line{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.h-done{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) scale(.6);opacity:0;pointer-events:none;transition:.35s;background:rgba(255,255,255,.95);border:5px solid #2f9d55;border-radius:28px;padding:18px 34px;text-align:center;box-shadow:0 12px 40px #0004;z-index:3}
+.h-done.on{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto;cursor:pointer}
+.h-done b{display:block;font:800 clamp(40px,7vw,80px)/1.2 var(--f-he);color:#1d6a39}
+.h-done span{display:block;font:800 clamp(24px,4vw,44px) var(--f-display);color:#2f9d55;direction:ltr}
 .h-stone .st{position:absolute;top:-14px;left:-14px;width:32px;height:32px;border-radius:50%;background:#2f9d55;color:#fff;font:800 18px var(--f-display);display:none;place-items:center}
 .h-stone.ok .st{display:grid}
 @keyframes hshk{25%{transform:translate(calc(-50% - 6px),-50%)}75%{transform:translate(calc(-50% + 6px),-50%)}}
@@ -508,19 +513,28 @@ cardQuiz($('qRV'), [
 const STONES = [['מְסַדֶּרֶת', 205, 237, 0], ['מְחַפְּשׂוֹת', 412, 230, 1], ['מְבַשֶּׁלֶת', 533, 240, 0], ['מְצַיְּרוֹת', 352, 293, 1], ['מְבַקֵּשׁ', 482, 300, 0],
   ['מְנַצְּחוֹת', 222, 390, 1], ['מְצַלְּמוֹת', 393, 383, 1], ['מְסַדְּרִים', 551, 384, 0], ['מְבַשְּׁלוֹת', 488, 462, 1], ['מְסַפְּרִים', 183, 488, 0],
   ['מְסַפְּרוֹת', 320, 488, 1], ['מְנַצְּחִים', 267, 553, 0], ['מְסַדְּרוֹת', 450, 557, 1]];
-let step = 0;
+let step = 0, path = [];
+/* the climbing line: an SVG over the page image (same 957 x 1086 coordinates), one segment per correct stone */
+function drawPath(){
+  $('wLine').innerHTML = path.length > 1 ? `<polyline points="${path.map(([x, y]) => x + ',' + y).join(' ')}" fill="none" stroke="#2f9d55" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 16" opacity=".95"/>
+    <polyline points="${path.map(([x, y]) => x + ',' + y).join(' ')}" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>` : '';
+}
 function wallInit(){
-  step = 0; $('wMsg').textContent = '';
+  step = 0; path = []; $('wMsg').textContent = '';
+  if (!$('wLine')){ $('wall').insertAdjacentHTML('beforeend', '<svg id="wLine" class="h-line" viewBox="0 0 957 1086" preserveAspectRatio="none" aria-hidden="true"></svg><div id="wDone" class="h-done" title="לוֹחֲצִים כְּדֵי לִסְגֹּר"><b>כׇּל הַכָּבוֹד!</b><span>Nice work! 🧗‍♀️🎉</span></div>'); }
+  $('wDone').classList.remove('on'); $('wDone').onclick = () => $('wDone').classList.remove('on'); drawPath();
   $('stones').innerHTML = STONES.map(([w, x, y], i) => `<button type="button" class="h-stone" data-i="${i}" aria-label="${w}" style="left:${x / 9.57}%;top:${y / 1086 * 100}%;width:${116 / 9.57}%;height:${50 / 1086 * 100}%"><span class="st"></span></button>`).join('');
   $('stones').querySelectorAll('.h-stone').forEach(b => b.onclick = () => {
-    const [w, , , ok] = STONES[+b.dataset.i];
+    const [w, x, y, ok] = STONES[+b.dataset.i];
     if (b.classList.contains('ok')) return;
-    if (ok){ step++; b.classList.add('ok'); b.querySelector('.st').textContent = step; beep(600 + step * 50, .15);
-      if (step === 7){ $('wMsg').style.color = 'var(--green)'; $('wMsg').textContent = 'כָּל הַכָּבוֹד! הִגַּעְתֶּם לְמַעְלָה! 🧗‍♀️🎉'; beep(880, .3); } else { $('wMsg').style.color = 'var(--green)'; $('wMsg').textContent = `✔ ${w} — שִׁיר וְגִילִי (הֵן)`; } }
+    if (ok){ step++; b.classList.add('ok'); b.querySelector('.st').textContent = step; path.push([x, y]); drawPath(); beep(600 + step * 50, .15);
+      if (step === 7){ $('wMsg').style.color = 'var(--green)'; $('wMsg').textContent = 'כׇּל הַכָּבוֹד! הִגַּעְתֶּם לְמַעְלָה! Nice work! 🧗‍♀️🎉'; $('wDone').classList.add('on'); chime(); } else { $('wMsg').style.color = 'var(--green)'; $('wMsg').textContent = `✔ ${w} — שִׁיר וְגִילִי (הֵן)`; } }
     else { b.classList.remove('bad'); void b.offsetWidth; b.classList.add('bad'); beep(260, .2); $('wMsg').style.color = 'var(--coral)'; $('wMsg').textContent = `✘ ${w} — לֹא שֶׁל שִׁיר וְגִילִי`; setTimeout(() => b.classList.remove('bad'), 900); }
   });
 }
-$('wAll').onclick = () => { $('stones').querySelectorAll('.h-stone').forEach(b => { if (STONES[+b.dataset.i][3] && !b.classList.contains('ok')) b.click(); }); };
+/* show the whole way: the remaining correct stones from the bottom up, one after another */
+$('wAll').onclick = () => { const left = [...$('stones').querySelectorAll('.h-stone')].filter(b => STONES[+b.dataset.i][3] && !b.classList.contains('ok')).sort((a, b) => STONES[+b.dataset.i][2] - STONES[+a.dataset.i][2]);
+  left.forEach((b, k) => setTimeout(() => b.click(), k * 350)); };
 $('wClr').onclick = wallInit;
 wallInit();
 
