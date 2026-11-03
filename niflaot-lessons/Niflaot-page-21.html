@@ -252,5 +252,6 @@ $('full').innerHTML = LINES.map(([who, parts]) => `<div class="msgrow ${who}" st
   parts.map(p => typeof p === 'string' ? p : `<span class="slot ok"><span class="box">${word(p)}</span><span class="dig">${p.n}</span></span>`).join('')}</div></div>`).join('');
 })();
 </script>
+<script src="../shared/section-focus.js?v=3"></script>
 </body>
 </html>
