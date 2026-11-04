@@ -8,11 +8,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&display=swap">
 <style>
 /* 4 exit tickets on one A4 page (2 x 2), cut along the dashed lines */
-@page{size:A4;margin:8mm}
+@page{size:A4;margin:10mm}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
-.sheet{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
-.t{padding:5mm 5mm 4mm;border:1px dashed #9aa3b2;display:flex;flex-direction:column;gap:2.2mm;overflow:hidden}
+.sheet{width:190mm;height:270mm;margin:0 auto;display:grid;grid-template-columns:95mm 95mm;grid-template-rows:135mm 135mm;overflow:hidden;break-inside:avoid}
+.t{padding:5mm 5mm 4mm;border:1px dashed #9aa3b2;display:flex;flex-direction:column;gap:2.2mm;height:135mm;min-height:0;overflow:hidden}
 .hd{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e2506a;padding-bottom:1.5mm}
 .hd b{font-size:15pt;font-weight:800}
 .hd span{font-size:8.5pt;color:#6b6880}
@@ -23,9 +23,9 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 .task.g{color:#8e1f55;background:#ffeef6}
 .ans{font-size:12pt;font-weight:700}
 .lines{display:flex;flex-direction:column;gap:3mm}
-.line{position:relative;height:11mm;border-top:1px solid #7bbfe6;border-bottom:1px solid #7bbfe6;background:#fcfbf7}
+.line{position:relative;height:16mm;border-top:1px solid #7bbfe6;border-bottom:1px solid #7bbfe6;background:#fcfbf7}
 .line::after{content:'';position:absolute;left:0;right:0;top:50%;border-top:1px dashed #f08a8a}
-.self{margin-top:auto;display:flex;flex-direction:column;gap:1.3mm;font-size:9.5pt}
+.self{margin-top:2mm;display:flex;flex-direction:column;gap:1.3mm;font-size:9.5pt}
 .self div{display:flex;justify-content:space-between;align-items:center;gap:2mm}
 .self .f{display:flex;gap:1.5mm;font-size:12pt;white-space:nowrap}
 .self .f span{display:inline-grid;place-items:center;width:6.5mm;height:6.5mm;border:1px solid #9aa3b2;border-radius:50%}
@@ -33,6 +33,7 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 .t{direction:ltr}.en{direction:ltr;text-align:left}.t .task,.t .ans{direction:rtl;text-align:right}.t bdi{unicode-bidi:isolate}
 .name span{font-size:11pt;font-weight:700;margin-inline-start:3mm}.name i.d{flex:.7}
 .bonus{font-size:10.5pt;font-weight:700;color:#16527d}
+.t>*{flex-shrink:0}
 @media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
 </style>
 </head>
