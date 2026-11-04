@@ -24,13 +24,17 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 .self .r{display:flex;gap:2mm;flex-wrap:wrap;align-items:center}
 .self .r span.b{border:1px solid #9aa3b2;border-radius:3mm;padding:0 2mm}
 bdi{unicode-bidi:isolate}
-.row{display:flex;align-items:center;justify-content:space-between;gap:3mm;padding:0 1mm}
-.row .pic{font-size:15pt;letter-spacing:.3mm;white-space:nowrap}
-.row .w{direction:rtl;font-size:17pt;font-weight:800;color:#16527d}
-.row .ch{display:flex;gap:3mm}
-.row .ch span{display:inline-grid;place-items:center;width:10mm;height:10mm;border:1.2px solid #9aa3b2;border-radius:50%;font-size:13pt;font-weight:800}
-.row.wr{justify-content:flex-start;gap:4mm}.row .dg{font-size:20pt;font-weight:800;color:#7a4cc2}
-.row.wr i{flex:1;height:10mm;border-bottom:1.2px solid #23233a}
+/* every question line: [number box] [item] [choices], left to right, so all lines start at the same edge */
+.row{display:grid;grid-template-columns:7mm 1fr auto;align-items:center;gap:2.5mm;direction:ltr}
+.row .n{display:inline-grid;place-items:center;width:7mm;height:7mm;border-radius:50%;background:#7a4cc2;color:#fff;font-size:10pt;font-weight:800}
+.row .pic{font-size:14pt;letter-spacing:.2mm;white-space:nowrap}
+.row .w{font-size:17pt;font-weight:800;color:#16527d;text-align:left}
+.row .ch{display:flex;gap:2.5mm;direction:ltr}
+.row .ch span{display:inline-grid;place-items:center;min-width:10mm;height:10mm;padding:0 2mm;border:1.2px solid #9aa3b2;border-radius:5mm;font-size:13pt;font-weight:800}
+.row .ch.he span{font-size:14pt;direction:rtl;line-height:1;padding:0 3mm 1.2mm}
+.row.r1{grid-template-columns:7mm 1fr;row-gap:1.5mm}.row.r1 .ch{grid-column:2}
+.row.wr{grid-template-columns:7mm auto 1fr}.row .dg{font-size:20pt;font-weight:800;color:#7a4cc2}
+.row.wr i{height:10mm;border-bottom:1.2px solid #23233a}
 .t>*{flex-shrink:0}
 @media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
 </style>
@@ -41,13 +45,13 @@ bdi{unicode-bidi:isolate}
 const one = `<div class="t">
   <div class="hd"><b>🎟️ Exit Ticket</b><span>Niflaot · page 21 · <bdi dir="rtl">כַּמָּה?</bdi></span></div>
   <div class="name">Name: <i></i><span class="dt">Date:</span><i class="d"></i></div>
-  <div class="q">1. How many? Count and circle the number:</div>
-  <div class="row"><span class="pic">🍎🍎🍎🍎🍎</span><span class="ch"><span>4</span><span>5</span><span>6</span></span></div>
+  <div class="q">How many? Count and circle the word:</div>
+  <div class="row r1"><span class="n">1</span><span class="pic">🍎🍎🍎🍎🍎</span><span class="ch he"><span><bdi dir="rtl">אַרְבַּע</bdi></span><span><bdi dir="rtl">חָמֵשׁ</bdi></span><span><bdi dir="rtl">שֵׁשׁ</bdi></span></span></div>
   <div class="q">Read the word and circle the number:</div>
-  <div class="row"><span class="w">2. שֵׁשׁ</span><span class="ch"><span>3</span><span>6</span><span>7</span></span></div>
-  <div class="row"><span class="w">3. שְׁמוֹנֶה</span><span class="ch"><span>8</span><span>2</span><span>10</span></span></div>
-  <div class="q">4. Write the number in Hebrew:</div>
-  <div class="row wr"><span class="dg">4</span><i></i></div>
+  <div class="row"><span class="n">2</span><span class="w"><bdi dir="rtl">שֵׁשׁ</bdi></span><span class="ch"><span>3</span><span>6</span><span>7</span></span></div>
+  <div class="row"><span class="n">3</span><span class="w"><bdi dir="rtl">שְׁמוֹנֶה</bdi></span><span class="ch"><span>8</span><span>2</span><span>10</span></span></div>
+  <div class="q">Write the number in Hebrew:</div>
+  <div class="row wr"><span class="n">4</span><span class="dg">7</span><i></i></div>
   <div class="self"><div>Today I can count and read numbers in Hebrew:</div>
     <div class="r"><span class="b">yes</span><span class="b">almost</span><span class="b">not yet</span></div></div>
 </div>`;

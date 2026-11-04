@@ -68,7 +68,7 @@
 .n-pick{cursor:pointer;color:var(--ink);position:relative}.n-pick:hover:not(:disabled){border-color:var(--sky);transform:translateY(-2px)}.n-pick:disabled{cursor:default}
 .n-pick .mk{position:absolute;top:2px;left:8px;font:800 26px var(--f-display)}
 .n-pick.hit .mk{color:var(--green)}.n-pick.no{border-color:var(--coral);background:var(--coral-soft);opacity:.55}.n-pick.no .mk{color:var(--coral)}
-.q-num{font:800 18px var(--f-he);color:var(--muted);text-align:center}
+.q-num{font:800 18px var(--f-he);color:var(--muted);text-align:center;direction:ltr;unicode-bidi:isolate}
 .q-sent{font:800 clamp(28px,4.4vw,44px)/1.6 var(--f-he);text-align:center}
 .q-sent .gap{display:inline-block;min-width:2.4em;border-bottom:4px solid var(--coral);background:var(--coral-soft);border-radius:8px 8px 0 0;color:transparent}
 .q-sent .fill{background:var(--green-soft);border-radius:10px;padding:0 6px}
@@ -161,13 +161,13 @@
 <!-- ===== 5 exit ticket ===== -->
 <section class="step" id="s5">
   <div class="m-bar" style="margin-bottom:0"><span class="tag" style="background:#ece6fb;border-color:#7a5bd1;color:#3b2a82"><span class="tnum">5</span> 🎟️ Exit Ticket · 3–5 min</span><span style="flex:1"></span><a class="m-dl" href="Niflaot-page-21-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ Printable version (PDF · 4 per page)</a></div>
-  <p class="lead m-en" dir="ltr">Work alone. Count, or read the number word, and click the number:</p>
+  <p class="lead m-en" dir="ltr">Work alone. Count and click the word, or read the word and click the number:</p>
   <div id="qEX"></div>
   <p class="lead m-en" dir="ltr">Write the number in Hebrew:</p>
-  <div class="q-lines"><div class="q-line"><b style="font:800 34px var(--f-display);color:#7a4cc2">4</b> ______________</div></div>
+  <div class="q-lines"><div class="q-line" dir="ltr"><span style="display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#7a4cc2;color:#fff;font:800 18px var(--f-display)">4</span><b style="font:800 34px var(--f-display);color:#7a4cc2;min-width:0">7</b><span style="flex:1;border-bottom:2px solid var(--ink);height:1.2em"></span></div></div>
   <p class="sub m-en" dir="ltr"><b>Reflection:</b> Today I can count and read numbers in Hebrew: yes / almost / not yet.</p>
   <details class="note"><summary>📝 מהלך קצר</summary>
-    <p>כָּל תַּלְמִיד מְמַלֵּא לְבַד אֶת הַכַּרְטִיס הַמֻּדְפָּס. תְּשׁוּבוֹת: 1. 5 תַּפּוּחִים · 2. שֵׁשׁ = 6 · 3. שְׁמוֹנֶה = 8 · 4. אַרְבַּע (גַּם אַרְבָּעָה נָכוֹן — מְקַבְּלִים אֶת שְׁתֵּי הַצּוּרוֹת). הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.</p>
+    <p>כָּל תַּלְמִיד מְמַלֵּא לְבַד אֶת הַכַּרְטִיס הַמֻּדְפָּס. תְּשׁוּבוֹת: 1. חָמֵשׁ (5 תַּפּוּחִים) · 2. שֵׁשׁ = 6 · 3. שְׁמוֹנֶה = 8 · 4. 7 = שֶׁבַע (גַּם שִׁבְעָה נָכוֹן — מְקַבְּלִים אֶת שְׁתֵּי הַצּוּרוֹת). הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.</p>
   </details>
 </section>
 <p class="src">הַשִּׂיחָה מְבֻסֶּסֶת עַל תַּרְגִּיל 16, עַמּוּד 21 בְּ"נִפְלָאוֹת ג" (מט"ח). הָאִיּוּרִים הֵם שֶׁל הָאֲתָר. תַּרְגִּיל 15 וְהַתְּמוּנָה שֶׁלּוֹ: "נִפְלָאוֹת ג", עַמּוּד 19 (מט"ח). לְשִׁמּוּשׁ בַּכִּתָּה בִּלְבַד.</p>
@@ -358,9 +358,9 @@ function cardQuiz(root, items){
   show();
 }
 cardQuiz($('qEX'), [
-  { num: 'How many? Count', q: '<span style="letter-spacing:6px">🍎🍎🍎🍎🍎</span><br>כַּמָּה?', full: '🍎🍎🍎🍎🍎<br><span class="fill">5</span>', ch: [{ id: '4', html: '4' }, { id: '5', html: '5' }, { id: '6', html: '6' }], ok: '5' },
-  { num: 'Read the word', q: 'שֵׁשׁ', full: 'שֵׁשׁ = <span class="fill">6</span>', ch: [{ id: '3', html: '3' }, { id: '6', html: '6' }, { id: '7', html: '7' }], ok: '6' },
-  { num: 'Read the word', q: 'שְׁמוֹנֶה', full: 'שְׁמוֹנֶה = <span class="fill">8</span>', ch: [{ id: '8', html: '8' }, { id: '2', html: '2' }, { id: '10', html: '10' }], ok: '8' },
+  { num: '1 · How many? Count and click the word', q: '<span style="letter-spacing:6px">🍎🍎🍎🍎🍎</span><br>כַּמָּה?', full: '🍎🍎🍎🍎🍎<br><span class="fill">חָמֵשׁ</span>', ch: [{ id: '4', html: 'אַרְבַּע' }, { id: '5', html: 'חָמֵשׁ' }, { id: '6', html: 'שֵׁשׁ' }], ok: '5' },
+  { num: '2 · Read the word and click the number', q: 'שֵׁשׁ', full: 'שֵׁשׁ = <span class="fill">6</span>', ch: [{ id: '3', html: '3' }, { id: '6', html: '6' }, { id: '7', html: '7' }], ok: '6' },
+  { num: '3 · Read the word and click the number', q: 'שְׁמוֹנֶה', full: 'שְׁמוֹנֶה = <span class="fill">8</span>', ch: [{ id: '8', html: '8' }, { id: '2', html: '2' }, { id: '10', html: '10' }], ok: '8' },
 ]);
 })();
 </script>
