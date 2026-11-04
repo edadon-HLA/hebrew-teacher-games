@@ -35,9 +35,9 @@ document.getElementById('g').innerHTML = SHIN.grid.flat().map(c => `<div>${c.s}<
 </script>
 <style id="four-per-page">
 /* 4 entry tickets per A4 page (2 x 2), cut along the dashed lines */
-@page{size:A4;margin:8mm}
-.sheet4{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;background:#fff}
-.sheet4 > .cell{border:1px dashed #9aa3b2;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:2mm}
+@page{size:A4;margin:10mm}
+.sheet4{width:190mm;height:270mm;margin:0 auto;display:grid;grid-template-columns:95mm 95mm;grid-template-rows:135mm 135mm;overflow:hidden;break-inside:avoid;background:#fff}
+.sheet4 > .cell{border:1px dashed #9aa3b2;height:135mm;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:2mm}
 .sheet4 .pg{zoom:.47;width:190mm;margin:0;padding:0!important;box-shadow:none!important;background:none!important}
 .sheet4 .words span{font-size:22pt;padding:1.5mm 0}
 .sheet4 .nm,.sheet4 .ask{font-size:17pt}
