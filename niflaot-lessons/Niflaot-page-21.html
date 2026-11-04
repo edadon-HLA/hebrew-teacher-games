@@ -161,13 +161,13 @@
 <!-- ===== 5 exit ticket ===== -->
 <section class="step" id="s5">
   <div class="m-bar" style="margin-bottom:0"><span class="tag" style="background:#ece6fb;border-color:#7a5bd1;color:#3b2a82"><span class="tnum">5</span> 🎟️ Exit Ticket · 3–5 min</span><span style="flex:1"></span><a class="m-dl" href="Niflaot-page-21-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ Printable version (PDF · 4 per page)</a></div>
-  <p class="lead m-en" dir="ltr">Work alone. Circle the right number word:</p>
+  <p class="lead m-en" dir="ltr">Work alone. Count, or read the number word, and click the number:</p>
   <div id="qEX"></div>
-  <p class="lead m-en" dir="ltr">Write the number in words:</p>
-  <div class="q-lines"><div class="q-line">שִׁיר צְרִיכָה ______ בָּנָנוֹת. <small style="color:var(--muted)">(2)</small></div></div>
-  <p class="sub m-en" dir="ltr"><b>Reflection:</b> Today I can say a number with a masculine or a feminine word: yes / almost / not yet.</p>
+  <p class="lead m-en" dir="ltr">Write the number in Hebrew:</p>
+  <div class="q-lines"><div class="q-line"><b style="font:800 34px var(--f-display);color:#7a4cc2">4</b> ______________</div></div>
+  <p class="sub m-en" dir="ltr"><b>Reflection:</b> Today I can count and read numbers in Hebrew: yes / almost / not yet.</p>
   <details class="note"><summary>📝 מהלך קצר</summary>
-    <p>כָּל תַּלְמִיד מְמַלֵּא לְבַד אֶת הַכַּרְטִיס הַמֻּדְפָּס. תְּשׁוּבוֹת: שָׁלוֹשׁ חֻלְצוֹת · אַרְבָּעָה כּוֹבָעִים · חֲמִשָּׁה תַּפּוּחִים · שְׁתֵּי בָּנָנוֹת. הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.</p>
+    <p>כָּל תַּלְמִיד מְמַלֵּא לְבַד אֶת הַכַּרְטִיס הַמֻּדְפָּס. תְּשׁוּבוֹת: 1. 5 תַּפּוּחִים · 2. שֵׁשׁ = 6 · 3. שְׁמוֹנֶה = 8 · 4. אַרְבַּע (גַּם אַרְבָּעָה נָכוֹן — מְקַבְּלִים אֶת שְׁתֵּי הַצּוּרוֹת). הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.</p>
   </details>
 </section>
 <p class="src">הַשִּׂיחָה מְבֻסֶּסֶת עַל תַּרְגִּיל 16, עַמּוּד 21 בְּ"נִפְלָאוֹת ג" (מט"ח). הָאִיּוּרִים הֵם שֶׁל הָאֲתָר. תַּרְגִּיל 15 וְהַתְּמוּנָה שֶׁלּוֹ: "נִפְלָאוֹת ג", עַמּוּד 19 (מט"ח). לְשִׁמּוּשׁ בַּכִּתָּה בִּלְבַד.</p>
@@ -346,7 +346,7 @@ function cardQuiz(root, items){
   function show(){
     const it = items[i]; done = false; st.classList.remove('yes');
     q('.q-num').textContent = it.num || '';
-    q('.q-sent').innerHTML = `${it.pre}<span class="gap">_</span>${it.post || ''}`;
+    q('.q-sent').innerHTML = it.q;
     q('.q-choice').innerHTML = it.ch.map(c => `<button type="button" class="m-card n-pick" data-k="${c.id}">${c.html}<span class="mk"></span></button>`).join('');
     q('.q-choice').querySelectorAll('.n-pick').forEach(b => b.onclick = () => { if (done) return; if (b.dataset.k === it.ok) right(); else { b.classList.add('no'); b.querySelector('.mk').textContent = '✘'; b.disabled = true; beep(260, .2); } });
     q('.m-count').textContent = (i + 1) + ' / ' + items.length;
@@ -358,9 +358,9 @@ function cardQuiz(root, items){
   show();
 }
 cardQuiz($('qEX'), [
-  { num: '3 👕', pre: '', post: ' חֻלְצוֹת', full: '<span class="fill">שָׁלוֹשׁ</span> חֻלְצוֹת', ch: [{ id: 'f', html: 'שָׁלוֹשׁ' }, { id: 'm', html: 'שְׁלוֹשָׁה' }], ok: 'f' },
-  { num: '4 🧢', pre: '', post: ' כּוֹבָעִים', full: '<span class="fill">אַרְבָּעָה</span> כּוֹבָעִים', ch: [{ id: 'f', html: 'אַרְבַּע' }, { id: 'm', html: 'אַרְבָּעָה' }], ok: 'm' },
-  { num: '5 🍎', pre: 'שִׁיר צְרִיכָה ', post: ' תַּפּוּחִים.', full: 'שִׁיר צְרִיכָה <span class="fill">חֲמִשָּׁה</span> תַּפּוּחִים.', ch: [{ id: 'f', html: 'חָמֵשׁ' }, { id: 'm', html: 'חֲמִשָּׁה' }], ok: 'm' },
+  { num: 'How many? Count', q: '<span style="letter-spacing:6px">🍎🍎🍎🍎🍎</span><br>כַּמָּה?', full: '🍎🍎🍎🍎🍎<br><span class="fill">5</span>', ch: [{ id: '4', html: '4' }, { id: '5', html: '5' }, { id: '6', html: '6' }], ok: '5' },
+  { num: 'Read the word', q: 'שֵׁשׁ', full: 'שֵׁשׁ = <span class="fill">6</span>', ch: [{ id: '3', html: '3' }, { id: '6', html: '6' }, { id: '7', html: '7' }], ok: '6' },
+  { num: 'Read the word', q: 'שְׁמוֹנֶה', full: 'שְׁמוֹנֶה = <span class="fill">8</span>', ch: [{ id: '8', html: '8' }, { id: '2', html: '2' }, { id: '10', html: '10' }], ok: '8' },
 ]);
 })();
 </script>
