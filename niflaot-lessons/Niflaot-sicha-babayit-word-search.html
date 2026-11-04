@@ -5,7 +5,7 @@
 <title>תַּפְזֹרֶת — שִׂיחָה בַּבַּיִת הֶחָדָשׁ</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-@page{size:A4;margin:10mm}
+@page{size:A4;margin:21mm 10mm}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
 .pg{width:190mm;margin:0 auto}
@@ -38,10 +38,10 @@ document.getElementById('g').innerHTML = SICHA.GRID.flat().map(c => `<div>${c}</
 </script>
 <style id="four-per-page">
 /* 4 entry tickets per A4 page (2 x 2), cut along the dashed lines */
-@page{size:A4;margin:10mm}
-.sheet4{width:190mm;height:270mm;margin:0 auto;display:grid;grid-template-columns:95mm 95mm;grid-template-rows:135mm 135mm;overflow:hidden;break-inside:avoid;background:#fff}
-.sheet4 > .cell{border:1px dashed #9aa3b2;height:135mm;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:2mm}
-.sheet4 .pg{zoom:.47;width:190mm;margin:0;padding:0!important;box-shadow:none!important;background:none!important}
+@page{size:A4;margin:21mm 10mm}
+.sheet4{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:95mm 95mm;grid-template-rows:127.5mm 127.5mm;overflow:hidden;break-inside:avoid;background:#fff}
+.sheet4 > .cell{border:1px dashed #9aa3b2;height:127.5mm;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:2mm}
+.sheet4 .pg{zoom:.45;width:190mm;margin:0;padding:0!important;box-shadow:none!important;background:none!important}
 .sheet4 .words span{font-size:22pt;padding:1.5mm 0}
 .sheet4 .nm,.sheet4 .ask{font-size:17pt}
 .sheet4 .tip{font-size:15pt}

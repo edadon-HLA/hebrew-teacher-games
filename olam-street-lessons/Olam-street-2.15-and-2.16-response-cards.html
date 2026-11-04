@@ -8,10 +8,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
 <style>
 /* One set per student, single-sided. Page 1: אוֹהֵב/ת, לֹא אוֹהֵב/ת, רָעֵב, לֹא רָעֵב. Page 2: טָעִים, לֹא טָעִים + instructions. All cards the same size. */
-@page{size:A4;margin:8mm}
+@page{size:A4;margin:21mm 10mm}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
-.page{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;page-break-after:always;break-after:page;position:relative}
+.page{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr) minmax(0,1fr);page-break-after:always;break-after:page;position:relative;padding-top:5mm}
 .page:last-child{page-break-after:auto;break-after:auto}
 .c{border:1.5px dashed #6b6880;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4mm;gap:3mm;overflow:hidden}
 .c .big{width:62mm;height:62mm;border-radius:50%;border:2.4mm solid #23233a}
@@ -19,7 +19,7 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 .c .w{font-size:40pt;font-weight:800;line-height:1.1;color:var(--c)}
 .c.note{grid-column:1/-1;align-items:flex-start;justify-content:flex-start;text-align:right;font-size:13pt;line-height:1.8;color:#4a4a5e;border-style:dotted}
 .c.note b{font-size:15pt;color:#23233a}
-.lab{position:absolute;top:-1mm;left:0;right:0;text-align:center;font-size:8pt;color:#9aa3b2}
+.lab{position:absolute;top:0;line-height:5mm;left:0;right:0;text-align:center;font-size:8pt;color:#9aa3b2}
 @media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
 </style>
 </head>

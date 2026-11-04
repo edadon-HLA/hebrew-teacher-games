@@ -6,12 +6,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@700;800&display=swap" rel="stylesheet">
 <style>
 /* p1 מְבַשֵּׁל / מְבַשֶּׁלֶת · p2 א / ב · p3 1 / 2 / 3 · p4 בְּ / מִ · p5 role cards — cut along the dashed lines */
-@page{size:A4;margin:8mm}
+@page{size:A4;margin:21mm 10mm}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
-.sheet{width:194mm;height:281mm;margin:0 auto;display:grid;page-break-after:always;grid-template-columns:1fr}
+.sheet{width:190mm;height:255mm;margin:0 auto;display:grid;page-break-after:always;grid-template-columns:1fr}
 .sheet:last-child{page-break-after:auto}
-.s2{grid-template-rows:1fr 1fr}.s3{grid-template-rows:1fr 1fr 1fr}
+.s2{grid-template-rows:minmax(0,1fr) minmax(0,1fr)}.s3{grid-template-rows:repeat(3,minmax(0,1fr))}
 .c{border:1.5px dashed #9aa3b2;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;gap:2mm}
 .c b{font-weight:800;line-height:1.1}
 .w b{font-size:96pt}.w small{font:800 22pt 'Noto Sans Hebrew',sans-serif;color:#7a4cc2}

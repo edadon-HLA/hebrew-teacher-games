@@ -8,10 +8,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
 <style>
 /* One set of response cards per student: 4 big cards per A4 page (2 x 2). Cut along the dashed lines. */
-@page{size:A4;margin:8mm}
+@page{size:A4;margin:21mm 10mm}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
-.page{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;page-break-after:always;break-after:page}
+.page{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr) minmax(0,1fr);page-break-after:always;break-after:page}
 .page:last-child{page-break-after:auto;break-after:auto}
 .c{border:1.5px dashed #6b6880;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6mm;gap:3mm;overflow:hidden}
 .c .w{font-size:34pt;font-weight:800;line-height:1.15}

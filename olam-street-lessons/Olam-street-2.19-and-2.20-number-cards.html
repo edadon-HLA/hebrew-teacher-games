@@ -8,10 +8,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap">
 <style>
 /* Number cards 1–4 for "אֵיזוֹ הֲבָרָה אָמַרְתִּי?" — two sets per A4 page, same size as the 2.10–2.13 cards (2 x 4). Single-sided. */
-@page{size:A4;margin:8mm}
+@page{size:A4;margin:21mm 10mm}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
-.page{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,1fr);direction:ltr}
+.page{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,minmax(0,1fr));direction:ltr}
 .c{border:1.5px dashed #6b6880;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .b{width:52mm;height:52mm;border-radius:50%;display:grid;place-items:center;color:#fff;font:800 110pt/1 'Rubik',Arial,sans-serif;padding-bottom:3mm}
 @media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003}}

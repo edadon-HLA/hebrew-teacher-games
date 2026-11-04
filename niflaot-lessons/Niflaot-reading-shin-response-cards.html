@@ -6,12 +6,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@700;800&display=swap" rel="stylesheet">
 <style>
 /* 4 response cards on one A4 page (2 x 2), equal size — cut along the dashed lines */
-@page{size:A4;margin:8mm}
+@page{size:A4;margin:21mm 10mm}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
-.sheet{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.sheet{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr) minmax(0,1fr)}
 .c{border:1.5px dashed #9aa3b2;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
-.c b{font-size:150pt;font-weight:800;line-height:1.15}
+.c b{font-size:150pt;font-weight:800;line-height:1.45}
 .c small{font:800 20pt 'Rubik',Arial,sans-serif;color:#2a8bd0;margin-top:-3mm}
 @media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
 </style>

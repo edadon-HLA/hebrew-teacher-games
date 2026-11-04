@@ -6,10 +6,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 /* p1 6 color cards (each in its color) · p2 6 verb cards — 2 x 3 per A4, cut along the dashed lines */
-@page{size:A4;margin:8mm}
+@page{size:A4;margin:21mm 10mm}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
-.sheet{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);page-break-after:always}
+.sheet{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(0,1fr));page-break-after:always}
 .sheet:last-child{page-break-after:auto}
 .c{border:1.5px dashed #9aa3b2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4mm;overflow:hidden}
 .c i{display:block;width:38mm;height:38mm;border-radius:50%;border:2px solid #23233a}

@@ -6,12 +6,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
 <style>
 /* p1 number cards 1-10 (2 x 5) · p2 room picture cards (2 x 4) · p3 room word cards (2 x 4) · p4 verb cards (2 x 2) — cut along the dashed lines */
-@page{size:A4;margin:8mm}
+@page{size:A4;margin:21mm 10mm}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
-.sheet{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;page-break-after:always}
+.sheet{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;page-break-after:always}
 .sheet:last-child{page-break-after:auto}
-.r5{grid-template-rows:repeat(5,1fr)}.r4{grid-template-rows:repeat(4,1fr)}.r2{grid-template-rows:repeat(2,1fr)}
+.r5{grid-template-rows:repeat(5,minmax(0,1fr))}.r4{grid-template-rows:repeat(4,minmax(0,1fr))}.r2{grid-template-rows:repeat(2,minmax(0,1fr))}
 .c{border:1.5px dashed #9aa3b2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2mm;overflow:hidden;padding:2mm}
 .n b{font:800 64pt/1 'Rubik',Arial,sans-serif}.n small{font-size:16pt;font-weight:800;color:#7a4cc2}
 .p img{max-height:58mm;max-width:88mm;object-fit:contain;border-radius:3mm}

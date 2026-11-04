@@ -6,26 +6,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 /* the text of the Niflaot class item (screen 3) + task 1 and task 2 — 2 per A4 page, cut along the dashed line */
-@page{size:A4;margin:8mm}
+@page{size:A4;margin:21mm 10mm}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
-.sheet{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-rows:1fr 1fr}
-.t{border:1px dashed #9aa3b2;padding:3mm 6mm;display:flex;flex-direction:column;gap:1.2mm;overflow:hidden}
+.sheet{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-rows:minmax(0,1fr) minmax(0,1fr)}
+.t{border:1px dashed #9aa3b2;padding:3mm 6mm;display:flex;flex-direction:column;gap:1mm;overflow:hidden}
 .hd{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #7a4cc2;padding-bottom:1mm}
 .hd b{font-size:17pt;font-weight:800;color:#7a4cc2}
 .hd span{font-size:10pt;font-weight:700}
 .hd span i{display:inline-block;width:38mm;border-bottom:1.2px solid #23233a}
 .txt{display:grid;grid-template-columns:1fr 40mm;gap:4mm;align-items:center}
-.txt p{margin:0;font-size:12pt;font-weight:700;line-height:1.55}
+.txt p{margin:0;font-size:11.2pt;font-weight:700;line-height:1.45}
 .txt svg{width:100%;height:auto;display:block;border-radius:2mm}
 .q{font-size:11.5pt;font-weight:800;margin-top:.5mm}
 .boxes{display:grid;grid-template-columns:repeat(3,1fr);gap:3mm}
 .bx{border:1.2px solid #9aa3b2;border-radius:2.5mm;padding:1.5mm 2mm;text-align:center}
 .bx svg{width:10mm;height:7mm;display:inline-block;vertical-align:middle;margin-inline-end:2mm}
 .bx b{display:inline;font-size:12pt}
-.bx i{display:block;height:7mm;border-bottom:1.2px solid #23233a}
+.bx i{display:block;height:6mm;border-bottom:1.2px solid #23233a}
 .bank{text-align:center;font-size:12.5pt;font-weight:800;background:#eef6fd;border-radius:2mm;padding:1mm}
-.tf{font-size:12pt;font-weight:700;line-height:1.7}
+.tf{font-size:11.5pt;font-weight:700;line-height:1.5}
 .tf span{display:inline-block;width:8mm;height:6.5mm;border:1.2px solid #23233a;border-radius:1.5mm;vertical-align:middle;margin-inline-start:2mm}
 @media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
 </style>

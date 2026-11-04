@@ -8,10 +8,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
 <style>
 /* Page 1: the three character cards (one set per student). Page 2: ✔ / ✘ cards. Page 3 is the instruction sheet. Single-sided. */
-@page{size:A4;margin:8mm}
+@page{size:A4;margin:21mm 10mm}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
-.page{width:194mm;height:281mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,1fr);page-break-after:always;break-after:page;position:relative}
+.page{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,minmax(0,1fr));page-break-after:always;break-after:page;position:relative;padding-top:5mm}
 .page:last-child{page-break-after:auto;break-after:auto}
 .c{border:1.5px dashed #6b6880;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4mm;gap:3mm;overflow:hidden}
 .c .f svg{width:62mm;height:62mm;display:block;border-radius:50%;border:2mm solid var(--c)}
@@ -20,7 +20,7 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 .c.yn .w{font-size:30pt}
 .c.note{align-items:flex-start;justify-content:flex-start;text-align:right;font-size:12pt;line-height:1.7;color:#4a4a5e;border-style:dotted}
 .c.note b{font-size:14pt;color:#23233a}
-.lab{position:absolute;top:-1mm;left:0;right:0;text-align:center;font-size:8pt;color:#9aa3b2}
+.lab{position:absolute;top:0;line-height:5mm;left:0;right:0;text-align:center;font-size:8pt;color:#9aa3b2}
 @media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
 </style>
 </head>
