@@ -10,8 +10,11 @@
 (() => {
 'use strict';
 const CSS = `
-.sf-btn{position:absolute;top:8px;left:8px;z-index:5;font:800 15px "Noto Sans Hebrew",Arial,sans-serif;border:2px solid #7a5bd1;background:#fff;color:#3b2a82;border-radius:12px;padding:6px 12px;cursor:pointer;box-shadow:0 2px 6px #0002}
+.sf-row{display:flex;justify-content:flex-end;direction:rtl;margin:0 0 6px;line-height:1}
+.sf-btn{position:static;font:800 14px "Noto Sans Hebrew",Arial,sans-serif;border:2px solid #7a5bd1;background:#fff;color:#3b2a82;border-radius:10px;padding:4px 10px;cursor:pointer;box-shadow:0 1px 4px #0002}
 .sf-btn:hover{background:#efe9ff}
+.sf-cur > .sf-row{display:none}
+@media print{.sf-row{display:none}}
 .sf-unit{position:relative}
 .sf-click{cursor:zoom-in}
 body.sf-on{overflow:hidden}
@@ -36,7 +39,8 @@ function build(){
   units.forEach((u, i) => {
     u.classList.add('sf-unit');
     const b = document.createElement('button'); b.type = 'button'; b.className = 'sf-btn'; b.textContent = '⛶ מָסָךְ מָלֵא'; b.title = 'Full screen'; b.onclick = e => { e.stopPropagation(); open(i); };
-    u.insertBefore(b, u.firstChild);
+    const row = document.createElement('div'); row.className = 'sf-row'; row.appendChild(b);   /* own row in the normal flow: never covers content */
+    u.insertBefore(row, u.firstChild);
   });
   document.querySelectorAll('section.step').forEach(s => {
     const h = s.querySelector(':scope > .tag, :scope > .step-head, :scope > .m-bar'); if (!h) return;
