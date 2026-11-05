@@ -265,6 +265,14 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 .gridl button.hit{background:var(--green-soft);border-color:var(--green);color:var(--green)}
 .gridl button.miss{background:var(--red-soft);border-color:var(--coral);animation:shk .4s}
 @keyframes shk{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+/* letter picker above "find the letter": jump to any letter; current = dark, done = green ✔ */
+.lpick{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;direction:rtl;margin:0 0 12px}
+.lpick button{position:relative;font:700 30px var(--f-he);min-width:58px;height:58px;border:3px solid var(--line);border-radius:14px;background:#fffaf0;cursor:pointer;color:var(--ink)}
+.lpick button:hover{border-color:var(--ink)}
+.lpick button.cur{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.lpick button.done{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+.lpick button.done.cur{background:var(--green);color:#fff}
+.lpick button.done::after{content:'✔';position:absolute;top:-9px;left:-7px;font:800 15px var(--f-display);background:var(--green);color:#fff;border-radius:50%;width:22px;height:22px;display:grid;place-items:center}
 .wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
 .wbox{background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:10px;text-align:center}
 .wbox h3{margin:0 0 4px;font-size:30px}
@@ -376,11 +384,13 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 
   <!-- ===== 5: 2.8 writing ===== -->
   <section class="step" id="s5">
+    <div class="sf-part">
     <div class="step-head"><span class="tag coral"><span class="num">2.8</span>תַּרְגִּיל כְּתִיבָה – כִּתְבוּ אֶת הָאוֹתִיּוֹת הַבָּאוֹת בִּכְתַב יָד</span></div>
     <p class="lead">הָאוֹתִיּוֹת מ, ה, ש, ל, ו, מ, ךְ — יוֹצְרוֹת אֶת הַמִּלִּים: מָה, שְׁלוֹמְךָ.</p>
     <div class="wtabs" id="wtabs"><button class="on" type="button" data-p="p1">1 · מִצְאוּ אֶת הָאוֹת</button><button type="button" data-p="p2">2 · כְּתִיבָה</button><button type="button" data-p="p3">3 · בּוֹנִים אֶת הַשְּׁאֵלָה</button><button type="button" data-p="p4">4 · מַשְׁלִימִים</button></div>
 
     <div class="wpanel" id="p1">
+      <div class="lpick" id="lpick" aria-label="בחירת אות"></div>
       <div class="find"><div class="target"><div class="t" id="tL">מ</div><small id="tName"></small><button class="ear" id="tEar" type="button" aria-label="השמעה">🔊</button></div>
         <div><p class="sub" style="margin:0 0 8px">לוֹחֲצִים עַל כָּל הָאוֹתִיּוֹת הַזֹּאת (<span id="left">0</span> נִשְׁאֲרוּ)</p><div class="gridl" id="gridl"></div></div></div>
       <div class="bar2"><button class="btn" id="fNext" type="button" hidden>הָאוֹת הַבָּאָה ◀</button><span class="msg27" id="fMsg" style="margin:0"></span></div>
@@ -406,9 +416,12 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
       <div class="msg27" id="fillMsg"></div>
       <div class="bar2"><button class="btn" id="fillAgain" type="button">↺ מֵהַהַתְחָלָה</button></div>
     </div>
+    </div>
+    <div class="sf-part">
 <div class="bar2"><a class="rc" href="Olam-street-2.7-2.9-find-letters.pdf" target="_blank" rel="noopener">🖨️ דַּף הַקָּפָה לְהַדְפָּסָה (PDF) — כָּל תַּלְמִיד מַקִּיף אֶת הָאוֹת שֶׁהַמּוֹרֶה מְבַקֵּשׁ</a></div>
     <div class="cw" role="note"><span class="ic">📝</span><div><b>עֲבוֹדַת כִּתָּה בַּחוֹבֶרֶת — עַמּוּד 8</b><br>כּוֹתְבִים אֶת הָאוֹתִיּוֹת מ, ה, ש, ל, ו, ךְ בִּכְתַב יָד (תַּרְגִּיל 2.8). אֶפְשָׁר לָתֵת עָלֶיהָ צִיּוּן (לֹא חוֹבָה).</div><a class="wb" href="https://online.fliphtml5.com/rechovhaolam/Rechov-HaOlam---Unit-2_03/#p=8" target="_blank" rel="noopener">📖 לַחוֹבֶרֶת (עַמּוּד 8)</a></div>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>עוֹבְרִים עַל אַרְבַּעַת הַשְּׁלָבִים עַל הַלּוּחַ (הַכִּתָּה אוֹמֶרֶת אֶת שֵׁם הָאוֹת). לְבַסּוֹף כָּל תַּלְמִיד כּוֹתֵב אֶת הָאוֹתִיּוֹת בַּחוֹבֶרֶת, עַמּוּד 8. אִם חֲסַר זְמַן — מְדַלְּגִים עַל שְׁלָבִים 3–4.</p></details>
+    </div>
   </section>
 
   <!-- ===== 6: exit ticket ===== -->
@@ -492,7 +505,13 @@ document.querySelectorAll('#wtabs [data-p]').forEach(b => b.onclick = () => { do
 const TARGETS = [['מ', 'מֵם'], ['ה', 'הֵא'], ['ש', 'שִׁין'], ['ל', 'לָמֶד'], ['ו', 'וָו'], ['ך', 'כָּף סוֹפִית']];
 const CONF = ['מ', 'ם', 'ש', 'ל', 'ו', 'ך', 'כ', 'ה', 'ח', 'ת', 'נ', 'ר', 'ד', 'ג', 'ב', 'ס'];
 let ti = 0, found = 0, total = 0, over = false;
+const doneL = new Set();   /* letters already completed (✔ in the picker) */
+/* letter picker: every letter of the exercise, in order; click = jump straight to that letter's round */
+$('lpick').innerHTML = TARGETS.map(([L, name], i) => `<button type="button" data-i="${i}" aria-label="${name}">${L}</button>`).join('');
+$('lpick').querySelectorAll('button').forEach(b => b.onclick = () => { ti = +b.dataset.i; startFind(); });
+function paintPick(){ $('lpick').querySelectorAll('button').forEach((b, i) => { b.classList.toggle('cur', i === ti); b.classList.toggle('done', doneL.has(i)); }); }
 function startFind(){
+  paintPick();
   const [L, name] = TARGETS[ti]; $('tL').textContent = L; $('tName').textContent = name; $('fNext').hidden = true; $('fMsg').textContent = ''; $('fMsg').className = 'msg27';
   const cells = []; total = 6 + Math.floor(Math.random() * 2); found = 0; for (let i = 0; i < total; i++) cells.push(L);
   const pool = CONF.filter(c => c !== L); while (cells.length < 30) cells.push(pool[Math.floor(Math.random() * pool.length)]);
@@ -501,7 +520,7 @@ function startFind(){
   $('gridl').querySelectorAll('button').forEach(b => b.onclick = () => {
     if (b.classList.contains('hit')) return;
     if (b.dataset.c === L){ b.classList.add('hit'); found++; tone(true, 660 + found * 30); $('left').textContent = total - found;
-      if (found === total){ $('fMsg').className = 'msg27 ok'; $('fMsg').textContent = `כָּל הַכָּבוֹד! מָצָאתֶם אֶת כָּל ה־${L}`; say(name); $('fNext').hidden = false; $('fNext').textContent = ti === TARGETS.length - 1 ? '↺ מֵהַהַתְחָלָה' : 'הָאוֹת הַבָּאָה ◀'; } }
+      if (found === total){ doneL.add(ti); paintPick(); $('fMsg').className = 'msg27 ok'; $('fMsg').textContent = `כָּל הַכָּבוֹד! מָצָאתֶם אֶת כָּל ה־${L}`; say(name); $('fNext').hidden = false; $('fNext').textContent = ti === TARGETS.length - 1 ? '↺ מֵהַהַתְחָלָה' : 'הָאוֹת הַבָּאָה ◀'; } }
     else { tone(false); b.classList.remove('miss'); void b.offsetWidth; b.classList.add('miss'); }
   });
 }
@@ -596,5 +615,6 @@ $('tClr').onclick = () => { ta.value = ''; $('tShow').hidden = true; };
 })();
 </script>
 <script>function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}setNavH();window.addEventListener('resize',setNavH);</script>
+<script src="../shared/section-focus.js?v=4"></script>
 </body>
 </html>
