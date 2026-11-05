@@ -159,6 +159,8 @@
       addSlot(item);
     });
     paint();
+    /* renderCustom puts every card back in <main> in page order; pages that group cards (Olam books) regroup on this event */
+    d.dispatchEvent(new CustomEvent('sched-rendered'));
   }
   function openEditor(c, afterItem) {
     var isNew = !c, ed = d.createElement('div'); ed.id = 'cu-ed';
