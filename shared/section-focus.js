@@ -50,7 +50,7 @@ function build(){
   bar = document.createElement('div'); bar.className = 'sf-bar'; bar.hidden = true;
   bar.innerHTML = '<button type="button" class="sf-x" aria-label="סגירה">✕</button><button type="button" data-d="-1">▶ הַקּוֹדֵם</button><span class="sf-t"></span><button type="button" data-d="1">הַבָּא ◀</button><button type="button" data-z="-0.1" aria-label="smaller">A−</button><button type="button" data-z="0.1" aria-label="bigger">A+</button>';
   document.body.appendChild(bar);
-  bar.querySelector('.sf-x').onclick = close;
+  bar.querySelector('.sf-x').onclick = () => close();   /* not 'onclick = close': the click event would arrive as fromFs and skip exitFullscreen */
   bar.querySelectorAll('[data-d]').forEach(b => b.onclick = () => go(+b.dataset.d));
   bar.querySelectorAll('[data-z]').forEach(b => b.onclick = () => { zoom = Math.min(2.2, Math.max(.8, +(zoom + +b.dataset.z).toFixed(2))); try { localStorage.setItem('sf-zoom', zoom); } catch (e) {} apply(); });
   document.addEventListener('keydown', e => { if (cur < 0) return; if (e.key === 'Escape') close(); });
@@ -71,7 +71,7 @@ function go(d){ if (cur < 0) return; show((cur + d + units.length) % units.lengt
 function close(fromFs){
   if (cur < 0) return; const u = units[cur]; u.classList.remove('sf-cur'); u.style.removeProperty('--sf-zoom'); cur = -1;
   document.body.classList.remove('sf-on'); bar.hidden = true;
-  if (!fromFs && document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
+  if (fromFs !== true && document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
   u.scrollIntoView({ block: 'start' });
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', build); else build();
