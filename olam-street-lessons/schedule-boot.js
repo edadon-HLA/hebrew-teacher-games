@@ -24,9 +24,11 @@
         p.querySelector('button').onclick = function () { DB.signIn().catch(function (e) { p.textContent = 'הַכְּנִיסָה לֹא הִצְלִיחָה (' + (e && e.code || e) + ')'; }); };
         return;
       }
-      var q = pill('<span>' + String(u.email).replace(/[<>&"]/g, '') + '</span> · <button type="button">יְצִיאָה</button>');
+      /* teacher's choice: "Only me" — only the owner gets the date boxes and ➕ (Firestore rules: olamSchedule/olamCustom owner only) */
+      var owner = String(u.email || '').toLowerCase() === String(window.OWNER_EMAIL || '').toLowerCase();
+      var q = pill('<span>' + String(u.email).replace(/[<>&"]/g, '') + '</span>' + (owner ? '' : ' · <span style="color:#7b8498">מוֹעֲדֵי הַשִּׁעוּרִים — רַק לְבַעַל הָאֲתָר</span>') + ' · <button type="button">יְצִיאָה</button>');
       q.querySelector('button').onclick = function () { DB.signOut().then(function () { location.reload(); }); };
-      if (!window.NK_USER) { window.NK_USER = u; d.dispatchEvent(new CustomEvent('nk-unlocked', { detail: u })); }
+      if (owner && !window.NK_USER) { window.NK_USER = u; d.dispatchEvent(new CustomEvent('nk-unlocked', { detail: u })); }
     };
     if (d.body) go(); else d.addEventListener('DOMContentLoaded', go);
   }

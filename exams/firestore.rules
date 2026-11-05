@@ -26,6 +26,9 @@ service cloud.firestore {
     match /niflaotCustom/{id} {
       allow read, write: if isOwner() || (signedIn() && exists(/databases/$(database)/documents/niflaotAccess/$(request.auth.token.email.lower())));
     }
+    // Olam Street Lessons page: lesson dates and manual lessons. Teacher's choice: "Only me" (owner only).
+    match /olamSchedule/{id} { allow read, write: if isOwner(); }
+    match /olamCustom/{id} { allow read, write: if isOwner(); }
     // Exam definitions and teacher audio: students need to read them.
     match /examConfigs/{id} { allow read: if true; allow write: if isTeacher(); }
     match /audio/{id}       { allow read: if true; allow write: if isTeacher(); }
