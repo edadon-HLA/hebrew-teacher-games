@@ -8,8 +8,13 @@
  *     it sits behind ("top" = before the first one) and "n" orders the manual lessons that share the same "after". */
 (function () {
   'use strict';
-  var d = document, SCOL = 'niflaotSchedule', CCOL = 'niflaotCustom', started = false, user = null, sched = {}, custom = {};
-  var DAYS = { 1: 'יוֹם שֵׁנִי', 2: 'יוֹם שְׁלִישִׁי', 3: 'יוֹם רְבִיעִי', 4: 'יוֹם חֲמִישִׁי' };
+  /* window.SCHEDULE_CFG (optional, set by the page before this script) lets another index reuse this file with its own
+   * collections and teaching days, e.g. the Olam Street index: { sched:'olamSchedule', custom:'olamCustom', days:{1:…,5:…},
+   * daysMsg:'…' }. Without it everything is the Niflaot default below. */
+  var CFG = window.SCHEDULE_CFG || {};
+  var d = document, SCOL = CFG.sched || 'niflaotSchedule', CCOL = CFG.custom || 'niflaotCustom', started = false, user = null, sched = {}, custom = {};
+  var DAYS = CFG.days || { 1: 'יוֹם שֵׁנִי', 2: 'יוֹם שְׁלִישִׁי', 3: 'יוֹם רְבִיעִי', 4: 'יוֹם חֲמִישִׁי' };
+  var DAYS_MSG = CFG.daysMsg || 'בַּחֲרוּ יוֹם שֵׁנִי עַד חֲמִישִׁי';
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var fmt = function (iso) { var p = iso.split('-'); return p[2] + '.' + p[1] + '.' + p[0]; };
   var weekday = function (iso) { var p = iso.split('-').map(Number); return new Date(p[0], p[1] - 1, p[2]).getDay(); }; /* 0 = Sunday */
@@ -28,7 +33,7 @@
 
   var st = d.createElement('style');
   st.textContent =
-    '.lw{display:flex;gap:14px;align-items:stretch}.lw > .lesson{flex:1;min-width:0;margin-top:0!important}' +
+    '.lw{display:flex;gap:14px;align-items:stretch}.lw > .lesson,.lw > .lcol{flex:1;min-width:0;margin-top:0!important}' +
     '.when{margin:-4px 0 10px;font-size:19px;font-weight:800;color:#2a8bd0}.when.none{color:#9aa3b2;font-weight:600}.when.past{color:#7b8498}.when.today{color:#fff;background:#2f9d55;display:inline-block;border-radius:999px;padding:2px 14px}' +
     '.sched{flex:0 0 210px;background:#fff;border:3px dashed #b7c3d9;border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:8px;justify-content:center;font-family:Arial,sans-serif;direction:rtl}' +
     '.sched label{font-weight:800;color:#18213a}.sched input{font:600 17px Arial,sans-serif;padding:8px;border:2px solid #cfd8e8;border-radius:10px;width:100%}' +
@@ -58,7 +63,7 @@
     var v = w.querySelector('.sched input').value, dn = w.querySelector('.dn');
     if (!v) { dn.textContent = ''; dn.className = 'dn'; return true; }
     if (DAYS[weekday(v)]) { dn.textContent = DAYS[weekday(v)]; dn.className = 'dn'; return true; }
-    dn.textContent = 'בַּחֲרוּ יוֹם שֵׁנִי עַד חֲמִישִׁי'; dn.className = 'dn bad'; return false;
+    dn.textContent = DAYS_MSG; dn.className = 'dn bad'; return false;
   }
   function paint() {
     d.querySelectorAll('.lw').forEach(function (w) {
@@ -89,7 +94,7 @@
     inp.oninput = function () { preview(w); };
     s.querySelector('.sv').onclick = function () {
       var v = inp.value; if (!v) { say(w, 'בַּחֲרוּ תַּאֲרִיךְ', false); return; }
-      if (!preview(w)) { say(w, 'מְלַמְּדִים רַק בֵּין יוֹם שֵׁנִי לַחֲמִישִׁי', false); return; }
+      if (!preview(w)) { say(w, DAYS_MSG, false); return; }
       var rec = { date: v, day: weekday(v), updatedBy: user && user.email || '', updatedAt: new Date().toISOString() };
       DB.set(SCOL, id, rec).then(function () { sched[id] = rec; paint(); say(w, '✓ נִשְׁמַר', true); }).catch(function (e) { say(w, errText(e), false); });
     };
@@ -198,8 +203,10 @@
   function build() {
     main = d.querySelector('main'); if (!main) return;
     d.querySelectorAll('a.lesson').forEach(function (a) {
-      var id = lessonId(a); if (!id || a.parentNode.classList.contains('lw')) return;
-      var w = d.createElement('div'); w.className = 'lw'; w.dataset.id = id; a.parentNode.insertBefore(w, a); w.appendChild(a);
+      /* a card with a printables list sits in <div class="lcol"> (shared/printables-list.js): move the whole column */
+      var el = a.parentNode.classList.contains('lcol') ? a.parentNode : a;
+      var id = lessonId(a); if (!id || el.parentNode.classList.contains('lw')) return;
+      var w = d.createElement('div'); w.className = 'lw'; w.dataset.id = id; el.parentNode.insertBefore(w, el); w.appendChild(el);
       attachSched(w, id);
     });
     renderCustom();

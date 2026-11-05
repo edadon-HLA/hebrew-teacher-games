@@ -192,5 +192,24 @@ main{max-width:1000px;margin:40px auto;padding:0 20px}
 </a>
 <a class="back" href="../index.html">← חזרה לדף הראשי</a>
 </main>
+<script>
+/* PDFs to print for each lesson (shared/printables-list.js). NEW LESSON = add its PDFs here. */
+window.PRINTABLES = {
+  'Olam-street-2.1-2.4': [['Exit ticket (4 per page)', 'Olam-street-2.1-2.4-exit-ticket.pdf']],
+  'Olam-street-2.5-and-2.6': [['Exit ticket (4 per page)', 'Olam-street-2.5-and-2.6-exit-ticket.pdf'], ['Venn diagram (1 per pair)', 'Olam-street-2.5-and-2.6-venn.pdf']],
+  'Olam-street-2.7-2.9': [['Exit ticket (4 per page)', 'Olam-street-2.7-2.9-exit-ticket.pdf'], ['Find the letters', 'Olam-street-2.7-2.9-find-letters.pdf'], ['Response cards (emoji feelings, yes / no)', 'Olam-street-2.7-2.9-response-cards.pdf']],
+  'Olam-street-2.10-2.13': [['Exit ticket (4 per page)', 'Olam-street-2.10-2.13-exit-ticket.pdf'], ['Find the letters', 'Olam-street-2.10-2.13-find-letters.pdf'], ['Food cards (picture + word)', 'Olam-street-2.10-2.13-response-cards.pdf'], ['Emoji feelings cards (from 2.7–2.9)', 'Olam-street-2.7-2.9-response-cards.pdf']],
+  'Olam-street-2.14': [['Exit ticket (4 per page)', 'Olam-street-2.14-exit-ticket.pdf'], ["Readers' theater script", 'Olam-street-2.14-script.pdf'], ['Response cards (Keren · Dan · Roni, ✓ / ✗)', 'Olam-street-2.14-response-cards.pdf'], ['Food cards (from 2.10–2.13)', 'Olam-street-2.10-2.13-response-cards.pdf']],
+  'Olam-street-2.15-and-2.16': [['Exit ticket (4 per page)', 'Olam-street-2.15-and-2.16-exit-ticket.pdf'], ['Find the letters', 'Olam-street-2.15-and-2.16-find-letters.pdf'], ['Response cards (like / hungry / tasty)', 'Olam-street-2.15-and-2.16-response-cards.pdf']],
+  'Olam-street-2.17-and-2.18': [['Exit ticket (4 per page)', 'Olam-street-2.17-and-2.18-exit-ticket.pdf'], ['Response cards (from 2.15–2.16)', 'Olam-street-2.15-and-2.16-response-cards.pdf']],
+  'Olam-street-2.19-and-2.20': [['Exit ticket (4 per page)', 'Olam-street-2.19-and-2.20-exit-ticket.pdf'], ['Number cards 1–4', 'Olam-street-2.19-and-2.20-number-cards.pdf'], ['Salad cards (picture + word)', 'Olam-street-2.19-and-2.20-salad-cards.pdf'], ['Response cards ✓ / ✗ (from 2.14)', 'Olam-street-2.14-response-cards.pdf'], ['Response cards (from 2.15–2.16)', 'Olam-street-2.15-and-2.16-response-cards.pdf']],
+  'Olam-street-2.21-and-2.22': [['Exit ticket (4 per page)', 'Olam-street-2.21-and-2.22-exit-ticket.pdf'], ['Find the letters', 'Olam-street-2.21-and-2.22-find-letters.pdf'], ['Food cards (picture + word)', 'Olam-street-2.21-and-2.22-food-cards.pdf'], ['Salad cards (from 2.19–2.20)', 'Olam-street-2.19-and-2.20-salad-cards.pdf']]
+};
+/* date boxes + manual lessons: the Niflaot schedule.js with Olam's own Firestore collections (dates never mix) */
+window.SCHEDULE_CFG = { sched: 'olamSchedule', custom: 'olamCustom', days: { 1: 'יוֹם שֵׁנִי', 2: 'יוֹם שְׁלִישִׁי', 3: 'יוֹם רְבִיעִי', 4: 'יוֹם חֲמִישִׁי', 5: 'יוֹם שִׁשִּׁי' }, daysMsg: 'בַּחֲרוּ יוֹם שֵׁנִי עַד שִׁשִּׁי' };
+</script>
+<script src="../shared/printables-list.js?v=1"></script>
+<script src="../niflaot-lessons/schedule.js?v=3"></script>
+<script src="schedule-boot.js?v=1"></script>
 </body>
 </html>
