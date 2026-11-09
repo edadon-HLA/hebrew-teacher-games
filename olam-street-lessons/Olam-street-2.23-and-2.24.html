@@ -271,7 +271,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 .pad{position:relative;width:100%;aspect-ratio:1;border-radius:14px;background:#fffdf8;overflow:hidden;touch-action:none}
 .pad svg.guide{position:absolute;inset:0;width:100%;height:100%}
 .pad canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair}
-.pad .model path{fill:none;stroke:#aab3c2;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:6 6}
+.pad .model path{fill:none;stroke:#9aa4b5;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:5 6}
 .pad .anim path{fill:none;stroke:var(--coral);stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
 .wbox .row{display:flex;justify-content:center;gap:6px;margin-top:8px}
 .build{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;direction:rtl;margin:10px 0}
@@ -519,7 +519,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 .pad{position:relative;width:100%;aspect-ratio:1;border-radius:14px;background:#fffdf8;overflow:hidden;touch-action:none}
 .pad svg.guide{position:absolute;inset:0;width:100%;height:100%}
 .pad canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair}
-.pad .model path{fill:none;stroke:#aab3c2;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:6 6}
+.pad .model path{fill:none;stroke:#9aa4b5;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:5 6}
 .pad .anim path{fill:none;stroke:var(--coral);stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
 .wbox .row{display:flex;justify-content:center;gap:6px;margin-top:8px}
 .build{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;direction:rtl;margin:10px 0}
@@ -607,7 +607,7 @@ button.t2-it:hover{border-color:var(--sky)}
 .pbox{position:relative;background:var(--surface);border:4px solid var(--line);border-radius:22px;padding:8px;text-align:center;cursor:pointer;font:inherit;color:inherit}
 .pbox .n{position:absolute;top:6px;inset-inline-start:8px;z-index:2;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;color:#fff;font:800 22px var(--f-display)}
 .pbox .ph{height:clamp(110px,18vh,170px);display:grid;place-items:center;border-radius:14px;overflow:hidden}
-.pbox .ph img{width:100%;height:100%;object-fit:cover;display:block}.pbox .ph svg{height:100%;width:auto}
+.pbox .ph img{width:100%;height:100%;object-fit:cover;display:block}.pbox .ph svg{height:100%;width:100%}
 .pbox .mk{position:absolute;inset:0;display:grid;place-items:center;font:800 110px var(--f-display);color:var(--green);pointer-events:none}
 .pbox.ok{border-color:var(--green);background:var(--green-soft)}.pbox.dim{opacity:.35}
 /* same sound? */
@@ -838,7 +838,7 @@ button.t2-it:hover{border-color:var(--sky)}
   <p class="sub" style="font-size:14px">הַתַּרְגִּילִים: "רְחוֹב הָעוֹלָם" יְחִידָה 2, עַמּוּדִים 17–18 (2.23–2.24). לְשִׁמּוּשׁ בַּכִּתָּה.</p>
 </div>
 <script src="../games/food-art.js"></script>
-<script src="../games/hungry-art.js"></script>
+<script src="../games/hungry-art.js?v=3"></script>
 <script src="olam-2.23-data.js?v=1"></script>
 <script>
 (() => {
@@ -917,7 +917,7 @@ const RW = [
   { syl: ['גְּ', 'בִי', 'נָה'], he: 'גְּבִינָה', id: 'cheese' },
   { syl: ['בָּ', 'נָ', 'נָה'], he: 'בָּנָנָה', id: 'banana' },
 ];
-const RPIC = { tuna: () => img(PH.tuna), hungry: () => HungryArt.kid('growl', true), cheese: () => img(PH.cheese), banana: () => img(PH.banana) };
+const RPIC = { tuna: () => img(PH.tuna), hungry: () => HungryArt.hungry(), cheese: () => img(PH.cheese), banana: () => img(PH.banana) };
 let ri = 0, rStep = 0, rOrder = [], rDone = false;
 function showR(){ const w = RW[ri]; rStep = 0; rDone = false; rounds('roundsR', RW.length, ri);
   $('rSyl').innerHTML = w.syl.map(s => `<span>${s}</span>`).join(''); $('rWord').textContent = '';
@@ -937,7 +937,7 @@ showR();
 
 /* ---------- 6. new word card: צָמֵא (photo) next to the known רָעֵב ---------- */
 $('nwRow').innerHTML = `<div class="nwc new"><small>מִלָּה חֲדָשָׁה</small><div class="ph">${img(PH.drink, '')}</div><b>צָמֵא</b><button class="ear" type="button" data-say="צָמֵא" aria-label="השמעה">🔊</button></div>`
-  + `<div class="nwc"><small>מַכִּירִים</small><div class="ph">${HungryArt.kid('growl', true)}</div><b>רָעֵב</b><button class="ear" type="button" data-say="רָעֵב" aria-label="השמעה">🔊</button></div>`;
+  + `<div class="nwc"><small>מַכִּירִים</small><div class="ph">${HungryArt.hungry()}</div><b>רָעֵב</b><button class="ear" type="button" data-say="רָעֵב" aria-label="השמעה">🔊</button></div>`;
 $('nwRow').querySelectorAll('[data-say]').forEach(b => b.onclick = () => say(b.dataset.say));
 
 /* ---------- 2. the reading path, workbook p.17 (exact order, 27 syllables; 24–27 repeat 5–8 as in the book; ב has no dagesh = v) ---------- */
@@ -1065,20 +1065,24 @@ function startFind(){
 $('fNext').onclick = () => { ti = (ti + 1) % TARGETS.length; startFind(); };
 $('tEar').onclick = () => say(TARGETS[ti][1]);
 startFind();
-/* cursive models (approximate strokes), book order ג ב י נ ה · צ מ א. ב י א מ ה are the shapes used on 2.1–2.21; ג נ צ are new. */
+/* cursive models traced from the workbook's model letters (p.18, ex. 2.24), on the workbook lines:
+   top line y=14, dashed middle line y=50, baseline y=86 (stroke centres sit on y≈84.5). Small letters start a little above the
+   middle line; צ is tall and starts above the top line. Each path is one stroke, in writing order and direction. */
 const CUR = {
-  'ג': ['M36 26 C56 18 68 34 60 54 C56 66 58 76 70 82'],
-  'ב': ['M30 26 Q62 14 74 34 Q80 56 70 82 L28 82'],
-  'י': ['M50 20 L52 46'],
-  'נ': ['M42 24 C60 24 64 40 62 58 C60 76 50 82 36 82'],
-  'ה': ['M28 28 Q60 22 70 36 Q74 48 72 82', 'M36 56 V82'],
-  'צ': ['M30 22 C40 34 48 34 54 26', 'M66 18 C70 46 62 64 46 70 C56 72 64 76 70 82'],
-  'מ': ['M28 18 L28 82', 'M28 18 L72 82', 'M72 82 L72 18'],
-  'א': ['M28 18 L28 82', 'M80 32 A25 25 0 1 0 80 68'],
+  'ג': ['M56.5 42 V57 C44 56 35.5 62 35.5 71 C35.5 80 42 84.5 51 84.5 C57 84.5 62 83 64.5 79.5'],
+  'ב': ['M29.6 48.4 C36 42.5 42 41 47.4 41 C61 41 70.4 51 70.4 64.4 C70.4 73 66.5 79.5 60.6 84.5 C58 76 54 69.6 47.4 69.6 C40.5 69.6 35 76 32.8 84.5'],
+  'י': ['M50 40 V63'],
+  'נ': ['M58.7 39 V77.5 Q58.7 84.5 52 84.5 H40'],
+  'ה': ['M29.9 45.7 C36 42.3 42 41.2 47 41.2 C61 41.2 70.3 50 70.3 62.3 C70.3 72 66.5 79 61.6 84.5', 'M30.7 61.8 C34 59.2 37 58.4 40 58.4 C46 58.4 49.8 63 49.7 69 C49.6 75 47.2 80 44.4 84.5'],
+  'צ': ['M28.8 15.3 C33 10 40 7.4 46.8 7.4 C58 7.4 66.7 14 66.7 24.6 C66.7 37 56 45.8 42.8 45.8 C58 45.8 70.7 54 70.7 67 C70.7 78 63 84.5 56 84.5 H31.5'],
+  'מ': ['M35.6 40 V84.5', 'M35.6 40 L64.4 84.5', 'M64.4 84.5 V40'],
+  'א': ['M30.9 39 V84.5', 'M69.4 50 C66 43.5 61 40.3 54.8 40.3 C45 40.3 38.8 50 38.8 62.4 C38.8 75 46 84.5 54.8 84.5 C61 84.5 66 82 69.4 78'],
 };
 const LET = ['ג', 'ב', 'י', 'נ', 'ה', 'צ', 'מ', 'א'].map(n => ({ n, p: CUR[n] }));
-const GUIDE = '<line x1="0" y1="18" x2="100" y2="18" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="82" x2="100" y2="82" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="50" x2="100" y2="50" stroke="#f08a8a" stroke-width="1" stroke-dasharray="4 4"/>';
-const padHtml = (l, i) => `<div class="wbox"><h3>${l.n}</h3><div class="pad" id="pad${i}"><svg class="guide" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${GUIDE}<g class="model">${l.p.map(d => `<path d="${d}"/>`).join('')}</g><g class="anim"></g></svg><canvas></canvas></div>
+const GUIDE = '<line x1="0" y1="14" x2="100" y2="14" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="86" x2="100" y2="86" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="50" x2="100" y2="50" stroke="#f08a8a" stroke-width="1" stroke-dasharray="4 4"/>';
+/* green numbered dot where each stroke starts */
+const startDots = p => { const seen = []; return p.map((d, k) => { let [x, y] = d.slice(1).trim().split(/[ ,]+/).map(Number); if (seen.some(([a, b]) => Math.hypot(a - x, b - y) < 5)) x += 8; seen.push([x, y]); return `<circle cx="${x}" cy="${y}" r="3.6" fill="#2f9d55"/>` + (p.length > 1 ? `<text x="${x}" y="${y + 1.5}" font-size="4.4" font-weight="800" fill="#fff" text-anchor="middle">${k + 1}</text>` : ''); }).join(''); };
+const padHtml = (l, i) => `<div class="wbox"><h3>${l.n}</h3><div class="pad" id="pad${i}"><svg class="guide" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${GUIDE}<g class="model">${l.p.map(d => `<path d="${d}"/>`).join('')}</g><g class="dots">${startDots(l.p)}</g><g class="anim"></g></svg><canvas></canvas></div>
   <div class="row"><button class="btn" type="button" data-demo="${i}">▶ הַדְגָּמָה</button><button class="btn" type="button" data-clear="${i}">↺</button></div></div>`;
 $('wgrid').innerHTML = LET.slice(0, 5).map((l, i) => padHtml(l, i)).join('');   /* גְּבִינָה: ג ב י נ ה */
 $('wgrid2').innerHTML = LET.slice(5).map((l, i) => padHtml(l, i + 5)).join('');   /* צָמֵא: צ מ א */

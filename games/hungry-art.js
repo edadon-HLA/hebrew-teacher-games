@@ -2,6 +2,7 @@
  * HungryArt.kid(mood, crop)   -> <svg> of the boy: mood = growl | full | smell | yum | yuck | happy
  *                                crop = true gives a tight head-and-belly picture for cards
  * HungryArt.scene(id)         -> <svg> (260 x 200) with props; ids are in HungryArt.ids (hungry / not hungry / tasty / yuck)
+ * HungryArt.hungry()          -> <svg> (240 x 180) one clear "hungry" picture: kid holding the tummy, empty plate, food thought bubble
  * HungryArt.ids               -> { hungry: [...], full: [...], yum: [...], yuck: [...] }                         */
 (function () {
   var skin = '#f6c9a0', ink = '#3b2a1a', shirt = '#2a8bd0', hair = '#3a2a20';
@@ -46,5 +47,36 @@
     yuck1: { mood: 'yuck', extra: T(214, 130, 58, '🥦') }, yuck2: { mood: 'yuck', extra: T(214, 130, 58, '🍋') }, yuck3: { mood: 'yuck', extra: T(214, 130, 58, '🧅') }
   };
   function scene(id) { var s = SC[id]; return wrap('0 0 260 200', '<g transform="translate(-6 0)">' + kidParts(s.mood) + '</g>' + s.extra, id); }
-  window.HungryArt = { kid: kid, scene: scene, ids: { hungry: ['smell', 'fridge', 'morning'], full: ['plates', 'sleep', 'empty'], yum: ['yum1', 'yum2', 'yum3'], yuck: ['yuck1', 'yuck2', 'yuck3'] } };
+  /* HungryArt.hungry() -> one clear "רָעֵב" picture (240 x 180, filled background like a photo, Olam 2.23):
+     a kid holding the tummy, a growling belly, an empty plate on the table and a thought bubble with food. */
+  function hungry() {
+    var s = '<rect width="240" height="180" rx="14" fill="#fff4e2"/>';
+    /* thought bubble with a pizza slice and an apple */
+    s += '<circle cx="128" cy="58" r="4" fill="#fff"' + st.replace('stroke-width="3"', 'stroke-width="2.4"') + '/><circle cx="138" cy="44" r="6.5" fill="#fff"' + st.replace('stroke-width="3"', 'stroke-width="2.4"') + '/>';
+    s += '<path d="M150 40 q-6 -20 14 -24 q8 -14 26 -6 q16 -10 30 4 q18 2 12 22 q8 16 -10 22 q-6 14 -26 8 q-14 10 -28 0 q-20 2 -18 -14 q-10 -6 0 -12z" fill="#fff"' + st + '/>';
+    s += '<path d="M162 26 L196 36 L170 62 Z" fill="#ffd25a"' + st.replace('stroke-width="3"', 'stroke-width="2.4"') + '/><path d="M160 24 Q178 22 198 34 L196 38 Q178 28 162 30 Z" fill="#d8893a"' + st.replace('stroke-width="3"', 'stroke-width="2.2"') + '/>';
+    s += '<circle cx="174" cy="38" r="3.6" fill="#e2506a"/><circle cx="182" cy="45" r="3" fill="#e2506a"/><circle cx="172" cy="50" r="2.8" fill="#e2506a"/>';
+    s += '<circle cx="211" cy="44" r="11" fill="#e2506a"' + st.replace('stroke-width="3"', 'stroke-width="2.4"') + '/><path d="M211 33 q1 -6 5 -8" fill="none" stroke="' + ink + '" stroke-width="2.4" stroke-linecap="round"/><path d="M213 31 q8 -6 12 0 q-6 4 -12 0z" fill="#58b368"/>';
+    /* the kid: body, arms bent to the tummy, hands on the tummy */
+    s += '<path d="M52 180 L58 132 Q90 116 122 132 L128 180 Z" fill="' + shirt + '"' + st + '/>';
+    s += '<path d="M62 136 Q48 152 64 160 L80 152" fill="none" stroke="' + shirt + '" stroke-width="13" stroke-linecap="round"/><path d="M118 136 Q132 152 116 160 L100 152" fill="none" stroke="' + shirt + '" stroke-width="13" stroke-linecap="round"/>';
+    s += '<path d="M62 136 Q48 152 64 160 L80 152 M118 136 Q132 152 116 160 L100 152" fill="none" stroke="' + ink + '" stroke-width="2" stroke-linecap="round" opacity=".35"/>';
+    s += '<ellipse cx="82" cy="150" rx="9" ry="7.5" fill="' + skin + '"' + st.replace('stroke-width="3"', 'stroke-width="2.4"') + '/><ellipse cx="98" cy="150" rx="9" ry="7.5" fill="' + skin + '"' + st.replace('stroke-width="3"', 'stroke-width="2.4"') + '/>';
+    /* growling tummy */
+    s += '<path d="M44 140 q-8 6 0 12 M36 134 q-14 12 0 24 M134 140 q8 6 0 12 M141 134 q14 12 0 24" fill="none" stroke="#e2506a" stroke-width="3.6" stroke-linecap="round"/>';
+    /* head, hair, worried face */
+    s += '<rect x="80" y="100" width="20" height="18" fill="' + skin + '"' + st + '/>';
+    s += '<circle cx="90" cy="72" r="33" fill="' + skin + '"' + st + '/>';
+    s += '<path d="M57 70 Q56 36 90 38 Q124 36 123 70 Q110 52 90 56 Q70 52 57 70Z" fill="' + hair + '"' + st + '/>';
+    s += '<path d="M70 64 L82 60 M110 64 L98 60" stroke="' + ink + '" stroke-width="3" stroke-linecap="round"/>';
+    s += '<circle cx="78" cy="74" r="4.5" fill="' + ink + '"/><circle cx="102" cy="74" r="4.5" fill="' + ink + '"/><circle cx="79.5" cy="72.5" r="1.4" fill="#fff"/><circle cx="103.5" cy="72.5" r="1.4" fill="#fff"/>';
+    s += '<path d="M80 94 Q90 86 100 94" fill="none" stroke="' + ink + '" stroke-width="3.2" stroke-linecap="round"/>';
+    /* table with an empty plate and a fork */
+    s += '<rect x="160" y="140" width="80" height="40" fill="#d9a566"' + st + '/><path d="M160 148 H240" stroke="' + ink + '" stroke-width="2" opacity=".35"/>';
+    s += '<ellipse cx="196" cy="138" rx="28" ry="8" fill="#fff"' + st.replace('stroke-width="3"', 'stroke-width="2.6"') + '/><ellipse cx="196" cy="137" rx="17" ry="4.5" fill="none" stroke="#c9c2b4" stroke-width="2"/>';
+    s += '<path d="M231 112 V138 M226 112 v9 q5 5 10 0 v-9 M231 112 v8" fill="none" stroke="#8a8f9c" stroke-width="2.8" stroke-linecap="round"/>';
+    /* mirrored so the kid is on the right and the thought bubble on the left (number badges sit top-right in RTL cards) */
+    return wrap('0 0 240 180', '<rect width="240" height="180" rx="14" fill="#fff4e2"/><g transform="translate(240 0) scale(-1 1)">' + s + '</g>', 'hungry');
+  }
+  window.HungryArt = { kid: kid, scene: scene, hungry: hungry, ids: { hungry: ['smell', 'fridge', 'morning'], full: ['plates', 'sleep', 'empty'], yum: ['yum1', 'yum2', 'yum3'], yuck: ['yuck1', 'yuck2', 'yuck3'] } };
 })();

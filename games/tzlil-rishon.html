@@ -30,7 +30,7 @@ h1{font:800 clamp(28px,4vw,40px)/1.2 var(--f-display);margin:6px 0 4px}
 .pbox:hover{border-color:var(--ink)}
 .pbox .n{position:absolute;top:10px;inset-inline-start:12px;z-index:2;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;color:#fff;font:800 30px var(--f-display);box-shadow:0 2px 6px #0003}
 .pbox .ph{height:clamp(150px,26vh,240px);display:grid;place-items:center;border-radius:18px;overflow:hidden;background:#fff}
-.pbox .ph img{width:100%;height:100%;object-fit:cover;display:block}.pbox .ph svg{height:100%;width:auto;display:block}
+.pbox .ph img{width:100%;height:100%;object-fit:cover;display:block}.pbox .ph svg{height:100%;width:100%;display:block}
 .pbox .w{font:800 clamp(28px,3.6vw,42px)/1.4 var(--f-he);margin-top:6px;min-height:1.4em}
 .hidew .pbox .w{visibility:hidden}
 .pbox .mk{position:absolute;inset:0;display:grid;place-items:center;font:800 150px var(--f-display);color:var(--green);pointer-events:none;text-shadow:0 4px 14px #fff}
@@ -67,10 +67,10 @@ h1{font:800 clamp(28px,4vw,40px)/1.2 var(--f-display);margin:6px 0 4px}
   </div>
   <details class="foot"><summary>📝 לַמּוֹרֶה · קְרֶדִיטִים</summary>
     <p>כָּל סִבּוּב: צְלִיל אֶחָד וְשָׁלוֹשׁ תְּמוּנוֹת. רַק מִלָּה אַחַת מַתְחִילָה בַּצְּלִיל. לוֹחֲצִים עַל תְּמוּנָה אוֹ עַל "הַצִּיגוּ" כְּדֵי לְגַלּוֹת. "שׁוּב" מְעַרְבֵּב אֶת הַסִּבּוּבִים וְאֶת הַתְּמוּנוֹת. מַפְתֵּחַ הַמִּקְלֶדֶת: ← הַבָּא, → הַקּוֹדֵם. סֵט: <span id="setName"></span> (פָּרָמֶטֶר ‎?set=‎ בַּכְּתֹבֶת).</p>
-    <p dir="ltr" style="text-align:left">Photos (Wikimedia Commons): Tuna can – Wikimedia Commons user, CC BY-SA 3.0 · Pizza Margherita – Valerio Capello, CC BY-SA 3.0 · Glass of water – Derek Jensen (Tysto), public domain · Milk and straw – FreeFOODPhotos, CC BY-SA 3.0 · Bananas (white background) – Justus Blümer, CC BY 2.0 · Green &amp; Black's dark chocolate bar – Mx. Granger, CC0 · Spaghetti – public domain · Swiss cheese cubes – Christian Bauer, CC BY 2.0 · Mango on white – Rhododendrites, CC BY-SA 4.0 · Lemon with white background – Bordercolliez, CC0 · Sushi plate – Mojmir Churavy, CC0. Salad, hummus and falafel: the site's Olam Street 2.5–2.6 photos. Hungry boy: the site's drawing (Olam Street 2.15–2.16).</p>
+    <p dir="ltr" style="text-align:left">Photos (Wikimedia Commons): Tuna can – Wikimedia Commons user, CC BY-SA 3.0 · Pizza Margherita – Valerio Capello, CC BY-SA 3.0 · Glass of water – Derek Jensen (Tysto), public domain · Milk and straw – FreeFOODPhotos, CC BY-SA 3.0 · Bananas (white background) – Justus Blümer, CC BY 2.0 · Green &amp; Black's dark chocolate bar – Mx. Granger, CC0 · Spaghetti – public domain · Swiss cheese cubes – Christian Bauer, CC BY 2.0 · Mango on white – Rhododendrites, CC BY-SA 4.0 · Lemon with white background – Bordercolliez, CC0 · Sushi plate – Mojmir Churavy, CC0. Salad, hummus and falafel: the site's Olam Street 2.5–2.6 photos. Hungry kid: the site's own drawing.</p>
   </details>
 </div>
-<script src="hungry-art.js"></script>
+<script src="hungry-art.js?v=3"></script>
 <script>
 (() => {
 'use strict';
@@ -84,7 +84,7 @@ const P = {
   tuna:      { he: 'טוּנָה', img: wm('1/19/Tuna_can.jpg') },
   pizza:     { he: 'פִּיצָה', img: wm('a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg') },
   water:     { he: 'מַיִם', img: wm('1/11/Glass-of-water.jpg') },
-  hungry:    { he: 'רָעֵב', svg: () => HungryArt.kid('growl', true) },
+  hungry:    { he: 'רָעֵב', svg: () => HungryArt.hungry() },
   milk:      { he: 'חָלָב', img: wm('7/77/Milk_and_straw.jpg') },
   banana:    { he: 'בָּנָנָה', img: wm('a/aa/Bananas_%28white_background%29.jpg') },
   chocolate: { he: 'שׁוֹקוֹלָד', img: wm('c/cd/Green_and_Black%27s_dark_chocolate_bar_2.jpg') },
