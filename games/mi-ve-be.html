@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מֵאֵיפֹה? אֵיפֹה? — מִ / בְּ | משחקי עברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@500;700;800&display=swap">
+<style>
+/* "From where? Where?" (Niflaot pp.22-24) — whole class. A boy or a girl walks from place A to place B, then ONE question:
+   מֵאֵיפֹה? -> everyone raises the מ card ("הַיֶּלֶד מִ...") · אֵיפֹה? (now) -> everyone raises the ב card ("הַיֶּלֶד בְּ...").
+   Places, rounds and the word forms are in PL / ROUNDS below. Drawings of the children: niflaot-lessons/pages-22-24/data.js. */
+:root{--bg:#fdf7ef;--surface:#fff;--ink:#23233a;--muted:#6b6880;--line:#eadfce;--sky:#2a8bd0;--green:#2f9d55;--green-soft:#dcf2e3;--coral:#e2506a;--gold:#e0a31f;--gold-soft:#fbf0d2;--violet:#7a5bd1;
+  --f-he:'Noto Sans Hebrew',Arial,sans-serif;--f-display:'Rubik','Noto Sans Hebrew',Arial,sans-serif;--shadow:0 2px 0 rgba(35,35,58,.08),0 8px 24px rgba(35,35,58,.08)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-he)}
+.site-nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;font-family:Arial,"Noto Sans Hebrew",sans-serif}
+.site-nav .nav-title{font-weight:900;margin-left:auto}.site-nav a{border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.wrap{max-width:1100px;margin:0 auto;padding:14px 16px 50px}
+section.step{background:transparent}
+h1{font:800 clamp(28px,4vw,40px)/1.2 var(--f-display);margin:6px 0 4px}
+.sub{color:var(--muted);margin:0 0 10px;font-size:18px}
+.rounds{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0 10px}
+.rounds i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:800 15px var(--f-display);font-style:normal;background:#fff;border:2px solid var(--line);color:var(--muted)}
+.rounds i.on{background:var(--ink);border-color:var(--ink);color:#fff}.rounds i.done{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+/* the stage: place A (right, start) -> place B (left, end); the child walks along the road under them */
+.stage{position:relative;direction:rtl;display:grid;grid-template-columns:1fr 1fr;gap:16vw;align-items:start;padding-bottom:215px}
+.place{background:var(--surface);border:5px solid var(--line);border-radius:26px;padding:10px;text-align:center;box-shadow:var(--shadow);transition:.25s}
+.place .ph{position:relative;height:clamp(150px,26vh,230px);border-radius:18px;overflow:hidden;display:grid;place-items:center;background:#fff}
+.place .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.place .ph .bigflag{width:92%;height:auto;max-height:100%}
+.place .ph .bigflag svg{width:100%;height:auto;display:block;border-radius:6px;box-shadow:0 2px 8px #0002}
+.place .ph .mini{position:absolute;top:8px;inset-inline-end:8px;width:56px;border-radius:4px;overflow:hidden;box-shadow:0 1px 6px #0004}.place .ph .mini svg{display:block;width:100%;height:auto}
+.place .nm{font:800 clamp(30px,4.2vw,48px)/1.35 var(--f-he)}
+.place .lb{display:inline-block;font:800 15px var(--f-he);color:var(--muted);border:2px dashed var(--line);border-radius:999px;padding:0 12px;margin-bottom:4px}
+.place.hl{border-color:var(--green);background:var(--green-soft);transform:scale(1.03)}
+.place.dim{opacity:.4}
+.road{position:absolute;left:4%;right:4%;bottom:26px;height:14px;border-radius:999px;background:repeating-linear-gradient(90deg,#c9b99d 0 26px,transparent 26px 40px)}
+.walker{position:absolute;bottom:22px;right:6%;width:150px;height:188px;transition:right 3.2s linear}
+.walker.at-b{right:calc(94% - 150px)}
+.walker svg{width:100%;height:100%;overflow:visible}
+.walker.go .bob{animation:bob .4s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-4px)}}
+.walker .l1,.walker .l2{fill:none;stroke:#34405e;stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+.walker .l1{transform-origin:-11px 106px}.walker .l2{transform-origin:11px 106px}
+.walker.go .l1{animation:leg .4s ease-in-out infinite alternate}.walker.go .l2{animation:leg .4s ease-in-out infinite alternate-reverse}
+@keyframes leg{from{transform:rotate(-18deg)}to{transform:rotate(18deg)}}
+.arrow{position:absolute;top:34%;left:50%;transform:translateX(-50%);font:800 clamp(40px,7vw,80px)/1 var(--f-display);color:var(--muted)}
+/* the question and the answer */
+.qa{text-align:center;margin-top:6px;min-height:200px}
+.q{display:inline-block;font:800 clamp(40px,6vw,68px)/1.35 var(--f-he);background:#fff;border:4px solid var(--ink);border-radius:24px;padding:4px 30px;visibility:hidden}
+.q.show{visibility:visible;animation:pop .35s}
+@keyframes pop{from{transform:scale(.6);opacity:.2}}
+.ans{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:12px;min-height:110px}
+.ans .card{display:grid;place-items:center;width:96px;height:110px;border-radius:18px;background:var(--gold-soft);border:4px solid var(--gold);font:800 76px/1 var(--f-he)}
+.ans .s{font:800 clamp(40px,6vw,66px)/1.35 var(--f-he)}
+.ans .s b{color:var(--coral);background:#fde8ec;border-radius:10px;padding:0 4px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-top:12px}
+.btn{font:800 20px var(--f-he);border:3px solid var(--line);background:#fff;color:var(--ink);border-radius:16px;padding:10px 18px;cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--ink)}.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.cdbtn{font:800 22px var(--f-he);border:0;background:var(--coral);color:#fff;border-radius:16px;padding:12px 22px;cursor:pointer}
+.cdov{position:fixed;inset:0;z-index:10050;background:rgba(35,35,58,.88);display:grid;place-items:center;color:#fff;text-align:center}
+.cdov b{font:800 min(40vw,300px)/1 var(--f-display)}.cdov span{font:800 min(12vw,110px)/1.2 var(--f-he)}
+.foot{margin-top:24px;color:var(--muted);font-size:14px}
+.foot summary{cursor:pointer;font-weight:800}
+@media(max-width:700px){.stage{gap:10px;padding-bottom:120px}.walker{width:84px;height:96px}.walker.at-b{right:calc(94% - 84px)}.place{padding:6px;border-width:3px}.ans .card{width:70px;height:84px;font-size:54px}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a></nav>
+<div class="wrap">
+<section class="step" id="game">
+  <h1>מֵאֵיפֹה? אֵיפֹה? — מ / ב</h1>
+  <p class="sub">הַיֶּלֶד הוֹלֵךְ מִמָּקוֹם לְמָקוֹם. מֵאֵיפֹה? — מַרִימִים <b>מ</b>. אֵיפֹה (עַכְשָׁו)? — מַרִימִים <b>ב</b>.</p>
+  <div class="rounds" id="rounds"></div>
+  <div class="stage" id="stage">
+    <div class="place" id="pA"></div>
+    <div class="place" id="pB"></div>
+    <div class="arrow" aria-hidden="true">⬅</div>
+    <div class="road" aria-hidden="true"></div>
+    <div class="walker" id="walker"></div>
+  </div>
+  <div class="qa">
+    <div class="q" id="q"></div>
+    <div class="ans" id="ans"></div>
+  </div>
+  <div class="bar">
+    <button class="cdbtn" id="cd" type="button">🕒 3… 2… 1… הָרִימוּ!</button>
+    <button class="btn primary" id="rev" type="button">👁 הַצִּיגוּ</button>
+    <button class="btn" id="walk" type="button">🚶 שׁוּב הֲלִיכָה</button>
+  </div>
+  <div class="bar">
+    <button class="btn" id="prev" type="button">▶ הַקּוֹדֵם</button>
+    <button class="btn primary" id="next" type="button">הַבָּא ◀</button>
+    <button class="btn" id="again" type="button">↺ עִרְבּוּב</button>
+    <a class="btn" href="../niflaot-lessons/Niflaot-pages-22-24-response-cards.pdf" target="_blank" rel="noopener">🖨️ כַּרְטִיסֵי בְּ / מִ (PDF)</a>
+  </div>
+  <details class="foot"><summary>📝 לַמּוֹרֶה · קְרֶדִיטִים</summary>
+    <p>כָּל סִבּוּב: יֶלֶד אוֹ יַלְדָּה הוֹלְכִים מִמָּקוֹם לְמָקוֹם, וְאָז מוֹפִיעָה שְׁאֵלָה אַחַת. "מֵאֵיפֹה הַיֶּלֶד?" — כֻּלָּם מַרִימִים מ, וְתַלְמִיד אֶחָד אוֹמֵר: "הַיֶּלֶד מִ...". "אֵיפֹה הַיֶּלֶד עַכְשָׁו?" — כֻּלָּם מַרִימִים ב, וְתַלְמִיד אֶחָד אוֹמֵר: "הַיֶּלֶד בְּ...". "הַצִּיגוּ" מֵאִיר אֶת הַמָּקוֹם הַנָּכוֹן וּמַרְאֶה אֶת הַמִּשְׁפָּט. "עִרְבּוּב" מְעַרְבֵּב אֶת הַסִּבּוּבִים וְאֶת הַשְּׁאֵלוֹת. הַכַּרְטִיסִים: אוֹתוֹ PDF שֶׁל שִׁעוּר נִפְלָאוֹת 22–24.</p>
+    <p dir="ltr" style="text-align:left">Photos (Wikimedia Commons, as in the Niflaot pp.22-24 lesson): Azrieli towers, Tel Aviv · Eiffel Tower (Tour Eiffel Wikimedia Commons) · Big Ben / Elizabeth Tower, London 2023. Flags and children: the site's own drawings.</p>
+  </details>
+</section>
+</div>
+<script src="../niflaot-lessons/pages-22-24/data.js"></script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const P = window.P2224;
+const WM = 'https://thumb.wikimedia.org/wikipedia/commons/thumb/';
+const USA = '<svg viewBox="0 0 44 32" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="32" fill="#fff" stroke="#ccd"/>'
+  + [0, 2, 4, 6, 8, 10, 12].map(i => `<rect y="${i * 32 / 13}" width="44" height="${32 / 13}" fill="#c8102e"/>`).join('')
+  + '<rect width="19" height="17.2" fill="#1f3a8a"/>' + [0, 1, 2, 3].map(r => [0, 1, 2, 3, 4].map(c => `<circle cx="${2.4 + c * 3.6 + (r % 2) * 1.8}" cy="${2.6 + r * 4}" r=".9" fill="#fff"/>`).join('')).join('') + '</svg>';
+/* places: picture, name, and the forms used in the lesson (מ / ב part highlighted) */
+const PL = {
+  israel:  { he: 'יִשְׂרָאֵל', flag: P.FLAGS.israel, mi: ['מִ', 'יִּשְׂרָאֵל'], be: ['בְּ', 'יִשְׂרָאֵל'] },
+  america: { he: 'אָמֶרִיקָה', flag: USA, mi: ['מֵ', 'אָמֶרִיקָה'], be: ['בְּ', 'אָמֶרִיקָה'] },
+  london:  { he: 'לוֹנְדוֹן', img: WM + 'f/f7/Big_Ben_Elizabeth_Tower_London_2023_01.jpg/500px-Big_Ben_Elizabeth_Tower_London_2023_01.jpg', mini: P.FLAGS.london, mi: ['מִ', 'לּוֹנְדוֹן'], be: ['בְּ', 'לוֹנְדוֹן'] },
+  paris:   { he: 'פָּרִיז', img: WM + 'a/a8/Tour_Eiffel_Wikimedia_Commons.jpg/500px-Tour_Eiffel_Wikimedia_Commons.jpg', mini: P.FLAGS.paris, mi: ['מִ', 'פָּרִיז'], be: ['בְּ', 'פָרִיז'] },
+  telaviv: { he: 'תֵּל אָבִיב', img: WM + '8/8c/Israel_Tel_Aviv_-_Azrieli_towers.jpg/500px-Israel_Tel_Aviv_-_Azrieli_towers.jpg', mini: P.FLAGS.israel, mi: ['מִ', 'תֵּל אָבִיב'], be: ['בְּ', 'תֵל אָבִיב'] },
+};
+/* rounds: k = the child (boy / girl), a = start, b = end */
+const BASE = [
+  { k: 'david', a: 'london', b: 'israel' },
+  { k: 'sara', a: 'israel', b: 'america' },
+  { k: 'david', a: 'paris', b: 'telaviv' },
+  { k: 'sara', a: 'america', b: 'israel' },
+  { k: 'david', a: 'telaviv', b: 'london' },
+  { k: 'sara', a: 'london', b: 'paris' },
+  { k: 'david', a: 'america', b: 'paris' },
+  { k: 'sara', a: 'paris', b: 'america' },
+];
+const KID = { david: { who: 'הַיֶּלֶד' }, sara: { who: 'הַיַּלְדָּה' } };
+let ac = null;
+function tone(ok, f0){ try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const t = ac.currentTime;
+  (f0 ? [f0] : ok ? [523, 659, 784] : [260, 200]).forEach((f, i) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; o.type = 'triangle';
+    g.gain.setValueAtTime(.0001, t + i * .1); g.gain.exponentialRampToValueAtTime(.16, t + i * .1 + .02); g.gain.exponentialRampToValueAtTime(.0001, t + i * .1 + .3);
+    o.connect(g).connect(ac.destination); o.start(t + i * .1); o.stop(t + i * .1 + .32); }); } catch (e) {} }
+function countdown(){ const o = document.createElement('div'); o.className = 'cdov'; (document.querySelector('.sf-cur') || document.body).appendChild(o); let n = 3;
+  const step = () => { if (n > 0){ o.innerHTML = `<div><b>${n}</b></div>`; tone(true, 440 + (3 - n) * 80); n--; setTimeout(step, 900); }
+    else { o.innerHTML = '<div><span>הָרִימוּ כַּרְטִיס! ✋</span></div>'; tone(true, 880); setTimeout(() => o.remove(), 1100); } };
+  step(); }
+const placeHtml = (id, label) => { const p = PL[id];
+  const pic = p.img ? `<img src="${p.img}" alt="">${p.mini ? `<span class="mini">${p.mini}</span>` : ''}` : `<span class="bigflag">${p.flag}</span>`;
+  return `<span class="lb">${label}</span><div class="ph">${pic}</div><div class="nm">${p.he}</div>`; };
+let R = [], ri = 0, done = false, walkT = null, startT = null;
+/* half the rounds ask מֵאֵיפֹה, half ask אֵיפֹה — mixed at random */
+function make(mix){ const rs = mix ? shuffle(BASE) : BASE.slice(); const qs = shuffle(rs.map((_, i) => i % 2 ? 'where' : 'from'));
+  R = rs.map((r, i) => Object.assign({ q: qs[i] }, r)); ri = 0; show(); }
+function walk(){ const w = $('walker'), r = R[ri]; clearTimeout(walkT); $('q').classList.remove('show'); $('ans').innerHTML = ''; done = false;
+  $('pA').className = 'place'; $('pB').className = 'place';
+  w.style.transition = 'none'; w.classList.remove('at-b', 'go'); void w.offsetWidth; w.style.transition = '';
+  clearTimeout(startT); startT = setTimeout(() => w.classList.add('at-b', 'go'), 80);   /* after the first paint, so the walk is always animated */
+  walkT = setTimeout(() => { w.classList.remove('go'); $('q').classList.add('show'); tone(true, 700); }, 3400); }
+function show(){ const r = R[ri], who = KID[r.k].who;
+  $('rounds').innerHTML = R.map((_, i) => `<i class="${i < ri ? 'done' : i === ri ? 'on' : ''}">${i + 1}</i>`).join('');
+  $('pA').innerHTML = placeHtml(r.a, 'מִכָּאן'); $('pB').innerHTML = placeHtml(r.b, 'לְכָאן');
+  $('walker').innerHTML = `<svg viewBox="-50 0 120 150" aria-hidden="true">${P.suitcase(30, 96)}<g class="bob"><path class="l1" d="M-11 106 V140 h-6" /><path class="l2" d="M11 106 V140 h6" />${P.screenKid(r.k, 0, 2, 1)}</g></svg>`;
+  $('q').textContent = r.q === 'from' ? `מֵאֵיפֹה ${who}?` : `אֵיפֹה ${who} עַכְשָׁו?`;
+  $('next').textContent = ri === R.length - 1 ? '↺ מֵהַהַתְחָלָה' : 'הַבָּא ◀'; $('prev').disabled = ri === 0;
+  walk(); }
+function reveal(){ if (done) return; done = true; clearTimeout(walkT); clearTimeout(startT); const r = R[ri], w = $('walker'), who = KID[r.k].who;
+  w.style.transition = 'none'; w.classList.add('at-b'); w.classList.remove('go'); $('q').classList.add('show');
+  const from = r.q === 'from', f = from ? PL[r.a].mi : PL[r.b].be;
+  $(from ? 'pA' : 'pB').classList.add('hl'); $(from ? 'pB' : 'pA').classList.add('dim');
+  $('ans').innerHTML = `<span class="card">${from ? 'מ' : 'ב'}</span><span class="s">${who} <b>${f[0]}</b>${f[1]}.</span>`; tone(true); }
+$('cd').onclick = countdown; $('rev').onclick = reveal; $('walk').onclick = walk;
+$('next').onclick = () => { if (ri < R.length - 1){ ri++; show(); } else make(true); };
+$('prev').onclick = () => { if (ri > 0){ ri--; show(); } };
+$('again').onclick = () => make(true);
+document.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') $('next').click(); else if (e.key === 'ArrowRight') $('prev').click(); });
+make(false);
+})();
+</script>
+<script src="../shared/section-focus.js?v=5"></script>
+</body>
+</html>
