@@ -94,11 +94,11 @@ h1{font:800 clamp(28px,4vw,40px)/1.2 var(--f-display);margin:6px 0 4px}
   <div class="bar">
     <button class="btn" id="prev" type="button">▶ הַקּוֹדֵם</button>
     <button class="btn primary" id="next" type="button">הַבָּא ◀</button>
-    <button class="btn" id="again" type="button">↺ עִרְבּוּב</button>
+    <button class="btn" id="again" type="button">↺ עִרְבּוּב (סִבּוּבִים חֲדָשִׁים)</button>
     <a class="btn" href="../niflaot-lessons/Niflaot-pages-22-24-response-cards.pdf" target="_blank" rel="noopener">🖨️ כַּרְטִיסֵי בְּ / מִ (PDF)</a>
   </div>
   <details class="foot"><summary>📝 לַמּוֹרֶה · קְרֶדִיטִים</summary>
-    <p>כָּל סִבּוּב: יֶלֶד אוֹ יַלְדָּה הוֹלְכִים מִמָּקוֹם לְמָקוֹם, וְאָז מוֹפִיעָה שְׁאֵלָה אַחַת. "מֵאֵיפֹה הַיֶּלֶד?" — כֻּלָּם מַרִימִים מ, וְתַלְמִיד אֶחָד אוֹמֵר: "הַיֶּלֶד מִ...". "אֵיפֹה הַיֶּלֶד עַכְשָׁו?" — כֻּלָּם מַרִימִים ב, וְתַלְמִיד אֶחָד אוֹמֵר: "הַיֶּלֶד בְּ...". "הַצִּיגוּ" מֵאִיר אֶת הַמָּקוֹם הַנָּכוֹן וּמַרְאֶה אֶת הַמִּשְׁפָּט. "עִרְבּוּב" מְעַרְבֵּב אֶת הַסִּבּוּבִים וְאֶת הַשְּׁאֵלוֹת. הַכַּרְטִיסִים: אוֹתוֹ PDF שֶׁל שִׁעוּר נִפְלָאוֹת 22–24.</p>
+    <p>כָּל סִבּוּב: יֶלֶד אוֹ יַלְדָּה הוֹלְכִים מִמָּקוֹם לְמָקוֹם, וְאָז מוֹפִיעָה שְׁאֵלָה אַחַת. "מֵאֵיפֹה הַיֶּלֶד?" — כֻּלָּם מַרִימִים מ, וְתַלְמִיד אֶחָד אוֹמֵר: "הַיֶּלֶד מִ...". "אֵיפֹה הַיֶּלֶד עַכְשָׁו?" — כֻּלָּם מַרִימִים ב, וְתַלְמִיד אֶחָד אוֹמֵר: "הַיֶּלֶד בְּ...". "הַצִּיגוּ" מֵאִיר אֶת הַמָּקוֹם הַנָּכוֹן וּמַרְאֶה אֶת הַמִּשְׁפָּט. בְּכָל פְּתִיחָה שֶׁל הַדַּף וּבְכָל "עִרְבּוּב" — 10 סִבּוּבִים חֲדָשִׁים מִתּוֹךְ 72 (חֲצִי מ, חֲצִי ב). הַכַּרְטִיסִים: אוֹתוֹ PDF שֶׁל שִׁעוּר נִפְלָאוֹת 22–24.</p>
     <p dir="ltr" style="text-align:left">Photos (Wikimedia Commons, as in the Niflaot pp.22-24 lesson): Azrieli towers, Tel Aviv · Eiffel Tower (Tour Eiffel Wikimedia Commons) · Big Ben / Elizabeth Tower, London 2023. Flags and children: the site's own drawings.</p>
   </details>
 </section>
@@ -122,17 +122,17 @@ const PL = {
   paris:   { he: 'פָּרִיז', img: WM + 'a/a8/Tour_Eiffel_Wikimedia_Commons.jpg/500px-Tour_Eiffel_Wikimedia_Commons.jpg', mini: P.FLAGS.paris, mi: ['מִ', 'פָּרִיז'], be: ['בְּ', 'פָרִיז'] },
   telaviv: { he: 'תֵּל אָבִיב', img: WM + '8/8c/Israel_Tel_Aviv_-_Azrieli_towers.jpg/500px-Israel_Tel_Aviv_-_Azrieli_towers.jpg', mini: P.FLAGS.israel, mi: ['מִ', 'תֵּל אָבִיב'], be: ['בְּ', 'תֵל אָבִיב'] },
 };
-/* rounds: k = the child (boy / girl), a = start, b = end */
-const BASE = [
-  { k: 'david', a: 'london', b: 'israel' },
-  { k: 'sara', a: 'israel', b: 'america' },
-  { k: 'david', a: 'paris', b: 'telaviv' },
-  { k: 'sara', a: 'america', b: 'israel' },
-  { k: 'david', a: 'telaviv', b: 'london' },
-  { k: 'sara', a: 'london', b: 'paris' },
-  { k: 'david', a: 'america', b: 'paris' },
-  { k: 'sara', a: 'paris', b: 'america' },
-];
+/* pool of rounds: every from -> to pair of the 5 places (not Israel <-> Tel Aviv: Tel Aviv is in Israel) x boy / girl x both
+   questions = 72 rounds. Each page load and each "עִרְבּוּב" draws a NEW set of N rounds: half מֵאֵיפֹה (מ), half אֵיפֹה (ב),
+   no place pair twice in a set, boy and girl mixed. */
+const N = 10;
+const IDS = Object.keys(PL);
+const POOL = [];
+IDS.forEach(a => IDS.forEach(b => { if (a === b || (a === 'israel' && b === 'telaviv') || (a === 'telaviv' && b === 'israel')) return;
+  ['david', 'sara'].forEach(k => ['from', 'where'].forEach(q => POOL.push({ k, a, b, q }))); }));
+function drawSet(){ const want = { from: N / 2, where: N - N / 2 }, used = new Set(), out = [];
+  for (const r of shuffle(POOL)){ const key = r.a + '>' + r.b; if (used.has(key) || !want[r.q]) continue; used.add(key); want[r.q]--; out.push(r); if (out.length === N) break; }
+  return shuffle(out); }
 const KID = { david: { who: 'הַיֶּלֶד' }, sara: { who: 'הַיַּלְדָּה' } };
 let ac = null;
 function tone(ok, f0){ try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const t = ac.currentTime;
@@ -147,9 +147,7 @@ const placeHtml = (id, label) => { const p = PL[id];
   const pic = p.img ? `<img src="${p.img}" alt="">${p.mini ? `<span class="mini">${p.mini}</span>` : ''}` : `<span class="bigflag">${p.flag}</span>`;
   return `<span class="lb">${label}</span><div class="ph">${pic}</div><div class="nm">${p.he}</div>`; };
 let R = [], ri = 0, done = false, walkT = null, startT = null;
-/* half the rounds ask מֵאֵיפֹה, half ask אֵיפֹה — mixed at random */
-function make(mix){ const rs = mix ? shuffle(BASE) : BASE.slice(); const qs = shuffle(rs.map((_, i) => i % 2 ? 'where' : 'from'));
-  R = rs.map((r, i) => Object.assign({ q: qs[i] }, r)); ri = 0; show(); }
+function make(){ R = drawSet(); ri = 0; show(); }
 function walk(){ const w = $('walker'), r = R[ri]; clearTimeout(walkT); $('q').classList.remove('show'); $('ans').innerHTML = ''; done = false;
   $('pA').className = 'place'; $('pB').className = 'place';
   w.style.transition = 'none'; w.classList.remove('at-b', 'go'); void w.offsetWidth; w.style.transition = '';
@@ -160,7 +158,7 @@ function show(){ const r = R[ri], who = KID[r.k].who;
   $('pA').innerHTML = placeHtml(r.a, 'מִכָּאן'); $('pB').innerHTML = placeHtml(r.b, 'לְכָאן');
   $('walker').innerHTML = `<svg viewBox="-50 0 120 150" aria-hidden="true">${P.suitcase(30, 96)}<g class="bob"><path class="l1" d="M-11 106 V140 h-6" /><path class="l2" d="M11 106 V140 h6" />${P.screenKid(r.k, 0, 2, 1)}</g></svg>`;
   $('q').textContent = r.q === 'from' ? `מֵאֵיפֹה ${who}?` : `אֵיפֹה ${who} עַכְשָׁו?`;
-  $('next').textContent = ri === R.length - 1 ? '↺ מֵהַהַתְחָלָה' : 'הַבָּא ◀'; $('prev').disabled = ri === 0;
+  $('next').textContent = ri === R.length - 1 ? '↺ סִבּוּבִים חֲדָשִׁים' : 'הַבָּא ◀'; $('prev').disabled = ri === 0;
   walk(); }
 function reveal(){ if (done) return; done = true; clearTimeout(walkT); clearTimeout(startT); const r = R[ri], w = $('walker'), who = KID[r.k].who;
   w.style.transition = 'none'; w.classList.add('at-b'); w.classList.remove('go'); $('q').classList.add('show');
@@ -168,11 +166,11 @@ function reveal(){ if (done) return; done = true; clearTimeout(walkT); clearTime
   $(from ? 'pA' : 'pB').classList.add('hl'); $(from ? 'pB' : 'pA').classList.add('dim');
   $('ans').innerHTML = `<span class="card">${from ? 'מ' : 'ב'}</span><span class="s">${who} <b>${f[0]}</b>${f[1]}.</span>`; tone(true); }
 $('cd').onclick = countdown; $('rev').onclick = reveal; $('walk').onclick = walk;
-$('next').onclick = () => { if (ri < R.length - 1){ ri++; show(); } else make(true); };
+$('next').onclick = () => { if (ri < R.length - 1){ ri++; show(); } else make(); };
 $('prev').onclick = () => { if (ri > 0){ ri--; show(); } };
-$('again').onclick = () => make(true);
+$('again').onclick = () => make();
 document.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') $('next').click(); else if (e.key === 'ArrowRight') $('prev').click(); });
-make(false);
+make();
 })();
 </script>
 <script src="../shared/section-focus.js?v=5"></script>
