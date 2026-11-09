@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>קָרוֹב, רָחוֹק, גָּבוֹהַּ, נָמוּךְ – נָכוֹן אוֹ לֹא? | משחקי עברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@500;700;800&display=swap">
+<style>
+/* Whole class (Niflaot, Wed 11/25): a picture with the item outlined + a statement -> everyone raises ✔ / ✘ -> 3-2-1 -> reveal.
+   Layout from games/new-or-old.html. The pool (14) is in niflaot-lessons/karov-rachok/data.js (KAROV.GAME); each set = 10 rounds,
+   drawn at random, about half true. */
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Noto Sans Hebrew',Arial,sans-serif;background:linear-gradient(135deg,#eef6ff,#fff8ed);color:#1f2937;min-height:100vh}
+  .site-nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;font-family:Arial,"Noto Sans Hebrew",sans-serif}
+  .site-nav .nav-title{font-weight:900;margin-left:auto}.site-nav a{border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px}
+  .site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+  .game{width:min(960px,94vw);margin:0 auto;padding:18px 0 40px}
+  .top{text-align:center;margin-bottom:10px}
+  h1{font:800 clamp(26px,4.6vw,44px)/1.25 'Rubik','Noto Sans Hebrew',sans-serif;margin:0 0 4px}
+  .subtitle{font-size:clamp(16px,2.4vw,21px);color:#64748b}
+  .dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+  .dots i{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:800 14px 'Rubik',sans-serif;font-style:normal;background:#fff;border:2px solid #e5e7eb;color:#64748b}
+  .dots i.on{background:#1f2937;border-color:#1f2937;color:#fff}.dots i.done{background:#dcfce7;border-color:#16a34a;color:#15803d}
+  .card{background:white;border-radius:28px;padding:18px;box-shadow:0 12px 35px #00000014;text-align:center}
+  .object{position:relative;display:inline-block;border-radius:22px;background:#f8fafc;margin:0 auto 14px;overflow:hidden;line-height:0;max-width:100%}
+  .object img{width:auto;max-width:100%;height:auto;max-height:52vh;display:block}
+  .object .box{position:absolute;border:5px solid #f59e0b;border-radius:14px;box-shadow:0 0 0 4px #fff8,0 0 18px #f59e0b;animation:pulse 1s ease-in-out infinite alternate;pointer-events:none}
+  @keyframes pulse{from{border-color:#f59e0b}to{border-color:#ef4444}}
+  .stmt{display:inline-flex;align-items:center;gap:12px;font:800 clamp(34px,6vw,58px)/1.35 'Noto Sans Hebrew',sans-serif;background:#fff;border:4px solid #1f2937;border-radius:22px;padding:4px 22px;cursor:pointer}
+  .stmt .ear{font-size:.6em}
+  .verdict{min-height:1.4em;margin-top:10px;font:800 clamp(30px,5vw,48px)/1.35 'Noto Sans Hebrew',sans-serif}
+  .verdict.yes{color:#15803d}.verdict.no{color:#b91c1c}
+  .verdict small{display:block;font-size:.7em;color:#1f2937}
+  .card.yes{box-shadow:0 0 0 6px #16a34a,0 12px 35px #00000014}.card.no{box-shadow:0 0 0 6px #dc2626,0 12px 35px #00000014}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}
+  .btn{border:0;border-radius:16px;padding:12px 20px;font:800 20px 'Noto Sans Hebrew',sans-serif;cursor:pointer;background:#e2e8f0;color:#172033;text-decoration:none}
+  .btn:hover{transform:translateY(-2px)}
+  .btn.cd{background:#e2506a;color:#fff}.btn.rv{background:#16a34a;color:#fff}.btn.nx{background:#1d4ed8;color:#fff}
+  .cdov{position:fixed;inset:0;z-index:10050;background:rgba(35,35,58,.9);display:none;place-items:center;color:#fff;text-align:center}
+  .cdov.on{display:grid}.cdov b{font:800 min(40vw,300px)/1 'Rubik',sans-serif}.cdov span{font:800 min(11vw,100px)/1.2 'Noto Sans Hebrew',sans-serif}
+  .foot{margin-top:18px;color:#64748b;font-size:14px}.foot summary{cursor:pointer;font-weight:800}
+  @media(max-width:600px){.card{padding:10px}.btn{font-size:17px;padding:10px 14px}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a></nav>
+<div class="game">
+<section class="step" id="g">
+  <div class="top">
+    <h1>קָרוֹב, רָחוֹק, גָּבוֹהַּ, נָמוּךְ — נָכוֹן אוֹ לֹא?</h1>
+    <div class="subtitle">מִסְתַּכְּלִים עַל הַתְּמוּנָה וְקוֹרְאִים אֶת הַמִּשְׁפָּט. מַרִימִים ✔ נָכוֹן אוֹ ✘ לֹא נָכוֹן.</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="card" id="card">
+    <div class="object" id="obj"></div>
+    <div class="stmt" id="stmt" role="button" tabindex="0"><span id="stmtT"></span><span class="ear">🔊</span></div>
+    <div class="verdict" id="verdict"></div>
+  </div>
+  <div class="bar">
+    <button class="btn cd" id="cd" type="button">🕒 3… 2… 1… הָרִימוּ!</button>
+    <button class="btn rv" id="rv" type="button">👁 הַצִּיגוּ</button>
+    <button class="btn" id="prev" type="button">▶ הַקּוֹדֵם</button>
+    <button class="btn nx" id="next" type="button">הַבָּא ◀</button>
+    <button class="btn" id="again" type="button">↺ סִבּוּב חָדָשׁ</button>
+    <a class="btn" href="../niflaot-lessons/Niflaot-karov-rachok-response-cards.pdf" target="_blank" rel="noopener">🖨️ כַּרְטִיסֵי ✔ / ✘</a>
+  </div>
+  <details class="foot"><summary>📝 לַמּוֹרֶה · קְרֶדִיטִים</summary>
+    <p>כָּל סִבּוּב: תְּמוּנָה (הַדָּבָר מְסֻמָּן בְּמִסְגֶּרֶת) וּמִשְׁפָּט. לוֹחֲצִים עַל הַמִּשְׁפָּט כְּדֵי לִשְׁמֹעַ אוֹתוֹ. 3-2-1 — כֻּלָּם מַרִימִים ✔ אוֹ ✘ — וְ"הַצִּיגוּ". כְּשֶׁהַמִּשְׁפָּט לֹא נָכוֹן, מוֹפִיעַ הַמִּשְׁפָּט הַנָּכוֹן וְאוֹמְרִים אוֹתוֹ יַחַד. "סִבּוּב חָדָשׁ" בּוֹחֵר 10 מִתּוֹךְ 14 בְּסֵדֶר אַחֵר.</p>
+    <p dir="ltr" style="text-align:left">Street, buildings and children: Niflaot Gimel class item "בָּרְחוֹב | סִרְטוֹן" screens 1–2 (CET), for class use. Photos (Wikimedia Commons): Azrieli towers – Eurovaran, CC BY-SA 4.0 · cat close-up – Cayambe, CC BY-SA 3.0 · plane and contrail – Nestek, CC BY-SA 4.0 · small bush – Ben Sale, CC BY 2.0.</p>
+  </details>
+</section>
+</div>
+<div class="cdov" id="cdov"><div id="cdT"></div></div>
+<script src="../niflaot-lessons/karov-rachok/data.js?v=1"></script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const K = window.KAROV, POOL = K.GAME, N = 10;
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const say = t => { if (!window.speechSynthesis) return; const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang)); if (!v) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = v; u.lang = v.lang; u.rate = .75; speechSynthesis.speak(u); };
+if (window.speechSynthesis) speechSynthesis.getVoices();
+let ac; const beep = (f, d = .15) => { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; g.gain.value = .14; o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + d); } catch (e) {} };
+let R = [], ri = 0, done = false;
+/* a new set: 10 of the 14, about half true (5 true + 5 false when possible) */
+function make(){ const t = shuffle(POOL.filter(p => p.ok)), f = shuffle(POOL.filter(p => !p.ok)); const nt = Math.min(5, t.length);
+  R = shuffle(t.slice(0, nt).concat(f.slice(0, N - nt))); ri = 0; show(); }
+function show(){ const r = R[ri]; done = false;
+  $('dots').innerHTML = R.map((_, i) => `<i class="${i < ri ? 'done' : i === ri ? 'on' : ''}">${i + 1}</i>`).join('');
+  const src = r.pic ? '../niflaot-lessons/karov-rachok/' + r.pic : K.PH[r.ph];
+  $('obj').innerHTML = `<img src="${src}" alt="">` + (r.b ? `<span class="box" style="left:${r.b.x - r.b.w / 2 - 1}%;top:${r.b.y - r.b.h / 2 - 1}%;width:${r.b.w + 2}%;height:${r.b.h + 2}%"></span>` : '');
+  $('stmtT').textContent = r.t; $('verdict').className = 'verdict'; $('verdict').innerHTML = ''; $('card').className = 'card';
+  $('next').textContent = ri === R.length - 1 ? '↺ סִבּוּב חָדָשׁ' : 'הַבָּא ◀'; $('prev').disabled = ri === 0; }
+function reveal(){ if (done) return; done = true; const r = R[ri];
+  $('card').className = 'card ' + (r.ok ? 'yes' : 'no'); $('verdict').className = 'verdict ' + (r.ok ? 'yes' : 'no');
+  $('verdict').innerHTML = r.ok ? '✔ נָכוֹן!' : `✘ לֹא נָכוֹן<small>${r.fix}</small>`; beep(r.ok ? 880 : 300, .25); say(r.ok ? r.t : r.fix); }
+function countdown(){ const ov = $('cdov'), t = $('cdT'); let n = 3; ov.classList.add('on'); t.innerHTML = `<b>${n}</b>`; beep(520);
+  const tick = setInterval(() => { n--; if (n > 0){ t.innerHTML = `<b>${n}</b>`; beep(520); return; } clearInterval(tick); t.innerHTML = '<span>הָרִימוּ ✔ אוֹ ✘!</span>'; beep(880, .3); setTimeout(() => ov.classList.remove('on'), 1300); }, 1000); }
+$('stmt').onclick = () => say(R[ri].t); $('stmt').onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') say(R[ri].t); };
+$('cd').onclick = countdown; $('rv').onclick = reveal;
+$('next').onclick = () => { if (ri < R.length - 1){ ri++; show(); } else make(); };
+$('prev').onclick = () => { if (ri > 0){ ri--; show(); } };
+$('again').onclick = make;
+document.addEventListener('keydown', e => { if (e.target.closest && e.target.closest('#stmt')) return; if (e.key === 'ArrowLeft') $('next').click(); else if (e.key === 'ArrowRight') $('prev').click(); });
+make();
+})();
+</script>
+<script src="../shared/section-focus.js?v=5"></script>
+</body>
+</html>

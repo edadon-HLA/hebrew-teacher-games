@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Exit Ticket — Niflaot: near or far?</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* 4 exit tickets on one A4 page (2 x 2), cut along the dashed lines. Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.sheet{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:95mm 95mm;grid-template-rows:127.5mm 127.5mm;overflow:hidden;break-inside:avoid}
+.t{padding:4mm 5mm 3mm;border:1px dashed #9aa3b2;display:flex;flex-direction:column;gap:1.6mm;height:127.5mm;min-height:0;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #7a4cc2;padding-bottom:1.5mm}
+.hd b{font-size:15pt;font-weight:800}
+.hd span{font-size:8.5pt;color:#6b6880}
+.name{font-size:11pt;font-weight:700;display:flex;gap:2mm;align-items:flex-end}
+.name i{flex:1;border-bottom:1.2px solid #23233a;height:6mm}.name i.d{flex:.7}.name span.dt{margin-inline-start:3mm}
+.q{font-size:9.5pt;font-weight:800;line-height:1.35}
+.map svg{width:100%;height:auto;display:block}
+.map{height:40mm;display:flex;justify-content:center}.map svg{height:40mm;width:auto}
+.he{direction:rtl;text-align:right;font-size:13pt;font-weight:700;line-height:1.9}
+.he i{display:inline-block;width:30mm;border-bottom:1.2px solid #23233a;height:1em}
+.self{font-size:9.5pt;display:flex;flex-direction:column;gap:1mm}
+.self .r{display:flex;gap:2mm;flex-wrap:wrap;align-items:center}
+.self .r span.b{border:1px solid #9aa3b2;border-radius:3mm;padding:0 2mm}
+bdi{unicode-bidi:isolate}
+.t>*{flex-shrink:0}
+@media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
+</style>
+<script src="karov-rachok/data.js?v=1"></script>
+</head>
+<body>
+<div class="sheet" id="sheet"></div>
+<script>
+const one = `<div class="t">
+  <div class="hd"><b>🎟️ Exit Ticket</b><span>Niflaot · <bdi dir="rtl">קָרוֹב אוֹ רָחוֹק?</bdi></span></div>
+  <div class="name">Name: <i></i><span class="dt">Date:</span><i class="d"></i></div>
+  <div class="q">Work alone. A house and 4 places around it. Is each place near the house or far from it? Write <bdi dir="rtl">קָרוֹב</bdi> or <bdi dir="rtl">רָחוֹק</bdi>.</div>
+  <div class="map">${KAROV.exitMap()}</div>
+  <div class="he">הַפַּארְק <i></i>.<br>בֵּית הַסֵּפֶר <i></i>.<br>הַחֲנוּת <i></i>.<br>הַתַּחֲנָה <i></i>.</div>
+  <div class="self"><div>Today I can say what is near and what is far:</div>
+    <div class="r"><span class="b">yes</span><span class="b">almost</span><span class="b">not yet</span></div></div>
+</div>`;
+document.getElementById('sheet').innerHTML = one.repeat(4);
+</script>
+</body>
+</html>
