@@ -337,6 +337,9 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 .o8:disabled{cursor:default;opacity:.7}
 .o8 svg{height:64px;width:auto}.o8 .emo{font-size:52px;line-height:1}.o8 b{font-size:clamp(20px,2.6vw,28px)}
 .o8.ok{background:var(--green-soft);border-color:var(--green);opacity:1}.o8.bad{background:var(--red-soft);border-color:var(--coral);animation:shk .4s}
+.opts8.o3{grid-template-columns:repeat(3,minmax(0,1fr))}.opts8.o3 .o8{min-height:96px;font:800 clamp(22px,3vw,32px)/1.3 var(--f-he)}.opts8.o3 .o8 .e{display:block;font-size:44px;line-height:1.1}
+.stageF img.face{height:clamp(190px,30vh,270px);width:auto;max-width:100%;border-radius:22px;display:block;margin:0 auto 8px;box-shadow:0 6px 18px #0002}
+.opt-tag{display:inline-block;font:800 15px var(--f-he);background:var(--gold-soft);border:2px dashed #d9a92a;color:#7a5a00;border-radius:999px;padding:2px 12px;margin-inline-end:8px;vertical-align:middle}
 .fbF{min-height:40px;text-align:center;font:800 24px var(--f-display);margin-top:8px}.fbF.ok{color:var(--green)}.fbF.no{color:var(--coral)}
 /* survey */
 .tgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
@@ -580,7 +583,7 @@ button.t2-it:hover{border-color:var(--sky)}
 
   <nav class="steps" aria-label="שלבי השיעור">
     <ol>
-      <li><a href="#s0" data-c="sky"><b>0</b>מָה בַּסָּלָט?</a></li>
+      <li><a href="#s0" data-c="sky"><b>0</b>מָה שְׁלוֹמְךָ?</a></li>
       <li><a href="#s1" data-c="gold"><b>1</b>מִלִּים חֲדָשׁוֹת</a></li>
       <li><a href="#s2" data-c="green"><b>2</b>2.22 הַאֲזָנָה</a></li>
       <li><a href="#s3" data-c="sky"><b>3</b>מָה שְׁמַעְתֶּם?</a></li>
@@ -593,25 +596,39 @@ button.t2-it:hover{border-color:var(--sky)}
 
   <!-- ===== 0 warm-up: salad words, level 1, 5 rounds ===== -->
   <section class="step" id="s0">
-    <div class="step-head"><span class="tag sky">מְחַמְּמִים · מָה בַּסָּלָט?</span></div>
-    <p class="lead">הַמִּלָּה עַל הַלּוּחַ — מַרִימִים אֶת כַּרְטִיס הַ<b>תְּמוּנָה</b>. 5 סִבּוּבִים.</p>
-    <div class="pbar" aria-hidden="true"><i id="wBar"></i></div>
-    <div class="stageF" id="wStage"></div>
-    <div class="opts8" id="wOpts"></div>
-    <div class="fbF" id="wFb" aria-live="polite"></div>
-    <div class="bar2"><button class="cdbtn" id="wCd" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn ghost" id="wReveal" type="button">👁 הַצִּיגוּ אֶת הַתְּשׁוּבָה</button><button class="btn" id="wNext" type="button" hidden>הַבָּא ◀</button><button class="btn ghost" id="wAgain" type="button">↺ שׁוּב</button><a class="rc" href="Olam-street-2.19-and-2.20-salad-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי סָלָט (2.19–2.20)</a></div>
-    <details class="tnote"><summary>📝 מהלך קצר</summary><p>חֲזָרָה עַל מִלּוֹת הַסָּלָט מֵהַשִּׁעוּר הַקּוֹדֵם. הַמִּלָּה עַל הַלּוּחַ, סוֹפְרִים 3-2-1 וְכֻלָּם מַרִימִים אֶת כַּרְטִיס הַתְּמוּנָה. "הַצִּיגוּ" מְגַלֶּה. 5 סִבּוּבִים בְּסֵדֶר אַקְרָאִי.</p></details>
+    <div class="step-head"><span class="tag sky">מְחַמְּמִים · מָה שְׁלוֹמְךָ?</span></div>
+    <p class="lead">מִסְתַּכְּלִים עַל הַפָּנִים — "מָה שְׁלוֹמְךָ? / מָה שְׁלוֹמֵךְ?" — וּמַרִימִים כַּרְטִיס: טוֹב / כָּכָה כָּכָה / לֹא טוֹב. 6 סִבּוּבִים.</p>
+    <div class="pbar" aria-hidden="true"><i id="hBar"></i></div>
+    <div class="stageF" id="hStage"></div>
+    <div class="opts8 o3" id="hOpts"></div>
+    <div class="fbF" id="hFb" aria-live="polite"></div>
+    <div class="bar2"><button class="cdbtn" id="hCd" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn ghost" id="hReveal" type="button">👁 הַצִּיגוּ אֶת הַתְּשׁוּבָה</button><button class="btn" id="hNext" type="button" hidden>הַבָּא ◀</button><button class="btn ghost" id="hAgain" type="button">↺ שׁוּב</button><a class="rc" href="Olam-street-2.7-2.9-response-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי תְּשׁוּבָה (2.7–2.9)</a></div>
+    <details class="tnote"><summary>📝 מהלך קצר</summary><p>חִמּוּם קַל — מִשְּׁעוּר 2.7–2.9 (מָה שְׁלוֹמְךָ? / מָה שְׁלוֹמֵךְ?). הַמּוֹרֶה שׁוֹאֵל אֶת הַשְּׁאֵלָה עַל הַיֶּלֶד אוֹ הַיַּלְדָּה בַּתְּמוּנָה, סוֹפְרִים 3-2-1 וְכֻלָּם מַרִימִים כַּרְטִיס: טוֹב / כָּכָה כָּכָה / לֹא טוֹב (כַּרְטִיסֵי הַתְּשׁוּבָה שֶׁל 2.7–2.9). "הַצִּיגוּ" מְגַלֶּה. אֶפְשָׁר לְבַקֵּשׁ מִשְׁפָּט שָׁלֵם: "הוּא… / הִיא…".</p>
+      <p dir="ltr" style="text-align:left;font-size:13px">Photos (Wikimedia Commons): Smiling little boy of Laos – Basile Morin, CC BY-SA 4.0 · Young girl smiling with teeth in sunshine – Basile Morin, CC BY-SA 4.0 · Kid boy – Muhammad Mahdi Karim, CC BY-SA 2.5 · Bored girl – greg westfall, CC BY 2.0 · Crying girl – Crimfants, CC BY-SA 2.0 · Sad Boy – Jon C (Jonvia), CC BY-SA 2.0</p></details>
   </section>
 
   <!-- ===== 1 new words ===== -->
   <section class="step" id="s1">
     <div class="step-head"><span class="tag gold">מִלִּים חֲדָשׁוֹת</span></div>
+    <div class="sf-part">
+    <p class="lead"><span class="opt-tag">🔁 לְפִי שִׁקּוּל הַמּוֹרֶה</span> חֲזָרָה קְצָרָה: מָה בַּסָּלָט?</p>
+    <p class="sub" style="margin-top:0">הַמִּלָּה עַל הַלּוּחַ — מַרִימִים אֶת כַּרְטִיס הַ<b>תְּמוּנָה</b>. 5 סִבּוּבִים.</p>
+    <div class="pbar" aria-hidden="true"><i id="wBar"></i></div>
+    <div class="stageF" id="wStage"></div>
+    <div class="opts8" id="wOpts"></div>
+    <div class="fbF" id="wFb" aria-live="polite"></div>
+    <div class="bar2"><button class="cdbtn" id="wCd" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn ghost" id="wReveal" type="button">👁 הַצִּיגוּ אֶת הַתְּשׁוּבָה</button><button class="btn" id="wNext" type="button" hidden>הַבָּא ◀</button><button class="btn ghost" id="wAgain" type="button">↺ שׁוּב</button><a class="rc" href="Olam-street-2.19-and-2.20-salad-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי סָלָט (2.19–2.20)</a></div>
+    <details class="tnote"><summary>📝 מהלך קצר</summary><p>לֹא חוֹבָה — לְפִי שִׁקּוּל הַמּוֹרֶה. חֲזָרָה עַל מִלּוֹת הַסָּלָט מֵהַשִּׁעוּר הַקּוֹדֵם. הַמִּלָּה עַל הַלּוּחַ, סוֹפְרִים 3-2-1 וְכֻלָּם מַרִימִים אֶת כַּרְטִיס הַתְּמוּנָה. "הַצִּיגוּ" מְגַלֶּה. 5 סִבּוּבִים בְּסֵדֶר אַקְרָאִי.</p></details>
+    </div>
+
+    <div class="sf-part">
     <p class="lead">5 מִלִּים חֲדָשׁוֹת — לוֹחֲצִים, שׁוֹמְעִים וְחוֹזְרִים בְּקוֹל. אַחַר כָּךְ: מַכִּירִים!</p>
     <div class="fgrid" id="ngrid"></div>
     <p class="sub" style="margin:14px 0 6px;font-weight:800">מַכִּירִים! ✔</p>
     <div class="fgrid mini" id="kgrid"></div>
     <div class="bar2" style="justify-content:center"><button class="btn primary big" id="spStart" type="button">▶ מַתְחִילִים: 5 מִלִּים חֲדָשׁוֹת</button><button class="btn" id="spKnown" type="button">▶ מַכִּירִים! (5 מַאֲכָלִים)</button></div>
     <details class="tnote" open><summary>📝 מהלך קצר</summary><p>מַיִם, חָלָב, גְּבִינָה, בָּנָנָה, דְּגָנִים — תְּמוּנָה, מִלָּה, הַקְרָאָה; כֻּלָּם חוֹזְרִים פַּעֲמַיִם. אַחַר כָּךְ סִבּוּב מָהִיר שֶׁל "מַכִּירִים!": פִּיצָה, פַּסְטָה, סָלָט, שׁוֹקוֹלָד, טוּנָה. שְׁאֵלָה לַכִּתָּה: "מָה אוֹכְלִים בַּבֹּקֶר?"</p></details>
+    </div>
   </section>
 
   <!-- ===== 2 listening 2.22 ===== -->
@@ -765,6 +782,36 @@ $('wCd').onclick = () => countdown();
 $('wReveal').onclick = () => { if (!W.done) pickW($('wOpts').querySelector(`[data-id="${W.list[W.i].id}"]`)); };
 $('wNext').onclick = () => { if (W.i === W.list.length - 1) startW(); else { W.i++; showW(); } };
 $('wAgain').onclick = startW; startW();
+
+/* ---------- 0. warm-up: מָה שְׁלוֹמְךָ? — 6 face photos (Wikimedia Commons, credits in the teacher note); cards: טוֹב / כָּכָה כָּכָה / לֹא טוֹב ---------- */
+const WMF = 'https://upload.wikimedia.org/wikipedia/commons/thumb/';
+const FACES = [
+  { src: WMF + 'd/d8/Smiling_little_boy_of_Laos.jpg/500px-Smiling_little_boy_of_Laos.jpg', g: 'm', ok: 'good' },
+  { src: WMF + '6/6c/Kid_boy.jpg/500px-Kid_boy.jpg', g: 'm', ok: 'soso' },
+  { src: WMF + 'c/c0/Crying-girl.jpg/500px-Crying-girl.jpg', g: 'f', ok: 'bad' },
+  { src: WMF + 'e/e6/Young_girl_smiling_with_teeth_in_sunshine.jpg/500px-Young_girl_smiling_with_teeth_in_sunshine.jpg', g: 'f', ok: 'good' },
+  { src: WMF + 'd/d3/Sad_Boy.jpg/500px-Sad_Boy.jpg', g: 'm', ok: 'bad' },
+  { src: WMF + '6/6e/Bored_girl.jpg/500px-Bored_girl.jpg', g: 'f', ok: 'soso' },
+];
+const MOOD = { good: { e: '🙂', he: 'טוֹב' }, soso: { e: '😐', he: 'כָּכָה כָּכָה' }, bad: { e: '🙁', he: 'לֹא טוֹב' } };
+const askH = f => f.g === 'm' ? 'מָה שְׁלוֹמְךָ?' : 'מָה שְׁלוֹמֵךְ?';
+let H = null;
+function startH(){ H = { i: 0, done: false }; showH(); }
+function showH(){ const f = FACES[H.i]; H.done = false;
+  $('hBar').style.width = (H.i / FACES.length * 100) + '%'; $('hFb').textContent = ''; $('hFb').className = 'fbF'; $('hNext').hidden = true;
+  $('hStage').innerHTML = `<div><img class="face" src="${f.src}" alt=""><div class="bigw" style="font-size:clamp(34px,6vw,60px)">${askH(f)}</div><button class="ear" id="hSay" type="button" aria-label="השמעה">🔊</button></div>`;
+  $('hSay').onclick = () => say(askH(f));
+  $('hOpts').innerHTML = Object.keys(MOOD).map(k => `<button class="o8" type="button" data-id="${k}"><span><span class="e">${MOOD[k].e}</span>${MOOD[k].he}</span></button>`).join('');
+  $('hOpts').querySelectorAll('.o8').forEach(b => b.onclick = () => pickH(b)); }
+function pickH(b){ if (H.done) return; const f = FACES[H.i];
+  if (b.dataset.id === f.ok){ H.done = true; b.classList.add('ok'); tone(true); $('hOpts').querySelectorAll('.o8').forEach(x => x.disabled = true);
+    $('hFb').className = 'fbF ok'; $('hFb').textContent = `${f.g === 'm' ? 'הוּא' : 'הִיא'}: ${MOOD[f.ok].he} ${MOOD[f.ok].e}`; $('hBar').style.width = ((H.i + 1) / FACES.length * 100) + '%';
+    $('hNext').hidden = false; $('hNext').textContent = H.i === FACES.length - 1 ? '↺ מֵהַהַתְחָלָה' : 'הַבָּא ◀'; }
+  else { b.classList.add('bad'); b.disabled = true; tone(false); $('hFb').className = 'fbF no'; $('hFb').textContent = 'לֹא בְּדִיּוּק — מִסְתַּכְּלִים שׁוּב 🙂'; } }
+$('hCd').onclick = () => countdown();
+$('hReveal').onclick = () => { if (!H.done) pickH($('hOpts').querySelector(`[data-id="${FACES[H.i].ok}"]`)); };
+$('hNext').onclick = () => { if (H.i === FACES.length - 1) startH(); else { H.i++; showH(); } };
+$('hAgain').onclick = startH; startH();
 
 /* ---------- 1. new words spotlight (pattern of 2.5–2.6) ---------- */
 const SYL = { water: ['מַ', 'יִם'], milk: ['חָ', 'לָב'], cheese: ['גְּ', 'בִי', 'נָה'], banana: ['בָּ', 'נָ', 'נָה'], cereal: ['דְּ', 'גָ', 'נִים'], pizza: ['פִּי', 'צָה'], pasta: ['פַּסְ', 'טָה'], salad: ['סָ', 'לָט'], chocolate: ['שׁוֹ', 'קוֹ', 'לָד'], tuna: ['טוּ', 'נָה'] };
