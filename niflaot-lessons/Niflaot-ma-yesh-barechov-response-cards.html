@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כַּרְטִיסֵי תְּשׁוּבָה — מַה יֵּשׁ בָּרְחוֹב?</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* p1 6 color cards · p2 ✔ / ✘ + the 3 places (with pictures) · p3 the 14 screen-5 picture cards (easy) · p4 the 14 word cards (hard).
+   Letter-safe box 190 x 255 mm; cut along the dashed lines. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.sheet{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(0,1fr));page-break-after:always;overflow:hidden}
+.sheet:last-child{page-break-after:auto}
+.sheet.g4{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr))}
+.c{border:1.5px dashed #9aa3b2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4mm;overflow:hidden;min-height:0}
+.c i{display:block;width:38mm;height:38mm;border-radius:50%;border:2px solid #23233a}
+.c b{font-size:44pt;font-weight:800}
+.tf b{font-size:40pt}.tf .big{font-size:70pt;line-height:1}
+.pl img{width:72mm;height:46mm;object-fit:cover;border-radius:3mm;display:block}
+.pl b{font-size:34pt}
+.g4 .c{gap:1.5mm;padding:2mm}
+.g4 .c img{width:100%;height:36mm;object-fit:contain;border-radius:2mm;display:block}
+.g4 .c b{font-size:17pt}
+.g4.w .c b{font-size:24pt}
+@media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+<script src="ma-yesh-barechov/data.js?v=4"></script>
+</head>
+<body>
+<div class="sheet">
+  <div class="c"><i style="background:#e0352b"></i><b style="color:#c62828">אָדֹם</b></div>
+  <div class="c"><i style="background:#f4cf1e"></i><b style="color:#b08b00">צָהֹב</b></div>
+  <div class="c"><i style="background:#2f9d55"></i><b style="color:#1d6a39">יָרֹק</b></div>
+  <div class="c"><i style="background:#2a6fd0"></i><b style="color:#1f4fb0">כָּחֹל</b></div>
+  <div class="c"><i style="background:#ffffff"></i><b>לָבָן</b></div>
+  <div class="c"><i style="background:#23233a"></i><b>שָׁחֹר</b></div>
+</div>
+<div class="sheet" id="p2">
+  <div class="c tf"><span class="big" style="color:#2f9d55">✔</span><b>נָכוֹן</b></div>
+  <div class="c tf"><span class="big" style="color:#e2506a">✘</span><b>לֹא נָכוֹן</b></div>
+</div>
+<div class="sheet g4" id="p3"></div>
+<div class="sheet g4 w" id="p4"></div>
+<script>
+const B = window.BARECHOV;
+document.getElementById('p2').insertAdjacentHTML('beforeend', B.PLACES.map(p => `<div class="c pl"><img src="${B.PH[p.ph]}" alt=""><b>${p.he}</b></div>`).join('') + '<div class="c"></div>');
+document.getElementById('p3').innerHTML = B.CARDS.map(c => `<div class="c"><img src="${B.PH[c.k]}" alt=""><b>${c.he}</b></div>`).join('') + '<div class="c"></div><div class="c"></div>';
+document.getElementById('p4').innerHTML = B.CARDS.map(c => `<div class="c"><b>${c.he}</b></div>`).join('') + '<div class="c"></div><div class="c"></div>';
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Exit Ticket — Niflaot: what is on the street?</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* 4 exit tickets on one A4 page (2 x 2), cut along the dashed lines. Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.sheet{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:95mm 95mm;grid-template-rows:127.5mm 127.5mm;overflow:hidden;break-inside:avoid}
+.t{padding:4mm 5mm 3mm;border:1px dashed #9aa3b2;display:flex;flex-direction:column;gap:1.6mm;height:127.5mm;min-height:0;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #7a4cc2;padding-bottom:1.5mm}
+.hd b{font-size:15pt;font-weight:800}
+.hd span{font-size:8.5pt;color:#6b6880}
+.name{font-size:11pt;font-weight:700;display:flex;gap:2mm;align-items:flex-end}
+.name i{flex:1;border-bottom:1.2px solid #23233a;height:6mm}.name i.d{flex:.7}.name span.dt{margin-inline-start:3mm}
+.q{font-size:10pt;font-weight:800}
+.ph{height:34mm;border-radius:2.5mm;overflow:hidden;border:1px solid #c9ced8}
+.ph img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
+.bank{direction:rtl;display:flex;flex-wrap:wrap;gap:1.2mm;justify-content:center}
+.bank span{border:1px solid #2a8bd0;border-radius:2mm;padding:0 1.8mm;font-size:10.5pt;font-weight:800}
+.he{direction:rtl;text-align:right;font-size:13pt;font-weight:700;line-height:1.95}
+.he i{display:inline-block;width:42mm;border-bottom:1.2px solid #23233a;height:1em}
+.self{font-size:9.5pt;display:flex;flex-direction:column;gap:1mm}
+.self .r{display:flex;gap:2mm;flex-wrap:wrap;align-items:center}
+.self .r span.b{border:1px solid #9aa3b2;border-radius:3mm;padding:0 2mm}
+bdi{unicode-bidi:isolate}
+.t>*{flex-shrink:0}
+@media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
+</style>
+<script src="ma-yesh-barechov/data.js?v=4"></script>
+</head>
+<body>
+<div class="sheet" id="sheet"></div>
+<script>
+const one = `<div class="t">
+  <div class="hd"><b>🎟️ Exit Ticket</b><span>Niflaot · <bdi dir="rtl">מַה יֵּשׁ בָּרְחוֹב?</bdi></span></div>
+  <div class="name">Name: <i></i><span class="dt">Date:</span><i class="d"></i></div>
+  <div class="q">Work alone. Look at the picture of a new street. Write 3 things you see.</div>
+  <div class="ph"><img src="${BARECHOV.PH.exit}" alt=""></div>
+  <div class="bank"><span>אוֹטוֹבּוּס</span><span>מְכוֹנִית</span><span>סְפָרִים</span><span>כְּבִישׁ</span><span>רַמְזוֹר</span><span>צַלַּחַת</span><span>עֵצִים</span><span>בִּנְיָנִים</span></div>
+  <div class="he">1. בָּרְחוֹב יֵשׁ <i></i>.<br>2. בָּרְחוֹב יֵשׁ <i></i>.<br>3. בָּרְחוֹב יֵשׁ <i></i>.</div>
+  <div class="self"><div>Today I can name things on the street:</div>
+    <div class="r"><span class="b">yes</span><span class="b">almost</span><span class="b">not yet</span></div></div>
+</div>`;
+document.getElementById('sheet').innerHTML = one.repeat(4);
+</script>
+</body>
+</html>
