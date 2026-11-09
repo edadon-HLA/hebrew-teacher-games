@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>תַּפְזֹרֶת — רחוב העולם 2.23–2.24 (כרטיס כניסה)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.pg{width:190mm;margin:0 auto}
+h1{margin:0;font-size:24pt;font-weight:800;display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid #e2506a;padding-bottom:2mm}
+h1 small{font-size:11pt;color:#6b6880;font-weight:700}
+.nm{display:flex;gap:6mm;margin:5mm 0 3mm;font-size:13pt;font-weight:700;align-items:flex-end}
+.nm i{flex:1;border-bottom:1.3px solid #23233a;height:7mm}
+.ask{font-size:15pt;font-weight:800;margin:2mm 0 4mm}
+.g{display:grid;grid-template-columns:repeat(8,1fr);gap:2mm}
+.g div{height:19mm;border:1.4px solid #9aa3b2;border-radius:2.5mm;display:grid;place-items:center;font-size:30pt;font-weight:800}
+.words{display:grid;grid-template-columns:repeat(4,1fr);gap:2.5mm;margin-top:5mm}
+.words span{border:1.4px solid #e2506a;background:#fde8ec;border-radius:3mm;text-align:center;font-size:16pt;font-weight:800;padding:1mm 0}
+.tip{margin-top:4mm;font-size:12pt;color:#6b6880}
+@media screen{body{background:#eee;padding:10px}.pg{background:#fff;padding:10mm;box-shadow:0 2px 12px #0003}}
+</style>
+<script src="olam-2.23-data.js?v=1"></script>
+</head>
+<body>
+<div class="pg">
+  <h1><span>תַּפְזֹרֶת</span><small>רְחוֹב הָעוֹלָם <bdi dir="ltr">2.23–2.24</bdi> · כַּרְטִיס כְּנִיסָה</small></h1>
+  <div class="nm"><span>שֵׁם:</span><i></i><span>תַּאֲרִיךְ:</span><i style="flex:.5"></i></div>
+  <div class="ask">מִצְאוּ וְהַקִּיפוּ אֶת הַמִּלִּים:</div>
+  <div class="g" id="g"></div>
+  <div class="words" id="w"></div>
+  <p class="tip">הַמִּלִּים כְּתוּבוֹת מִיָּמִין לִשְׂמֹאל ⬅ אוֹ מִלְמַעְלָה לְמַטָּה ⬇.</p>
+</div>
+<script>
+document.getElementById('w').innerHTML = OLAM223.WORDS.map(w => `<span>${w.he}</span>`).join('');
+document.getElementById('g').innerHTML = OLAM223.GRID.flat().map(c => `<div>${c}</div>`).join('');
+</script>
+<style id="four-per-page">
+/* 4 entry tickets per A4 page (2 x 2), cut along the dashed lines; Letter-safe box 190 x 255 mm */
+@page{size:A4;margin:21mm 10mm}
+.sheet4{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:95mm 95mm;grid-template-rows:127.5mm 127.5mm;overflow:hidden;break-inside:avoid;background:#fff}
+.sheet4 > .cell{border:1px dashed #9aa3b2;height:127.5mm;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:2mm}
+.sheet4 .pg{zoom:.45;width:190mm;margin:0;padding:0!important;box-shadow:none!important;background:none!important}
+.sheet4 .words span{font-size:22pt;padding:1.5mm 0}
+.sheet4 .nm,.sheet4 .ask{font-size:17pt}
+.sheet4 .tip{font-size:15pt}
+@media screen{body{background:#eee}.sheet4{box-shadow:0 2px 12px #0003}}
+</style>
+<script>
+(() => { const pg = document.querySelector('.pg'); const sh = document.createElement('div'); sh.className = 'sheet4';
+  for (let i = 0; i < 4; i++){ const c = document.createElement('div'); c.className = 'cell'; c.appendChild(i ? pg.cloneNode(true) : pg); sh.appendChild(c); }
+  document.body.appendChild(sh); })();
+</script>
+</body>
+</html>

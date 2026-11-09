@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>אֵיזוֹ תְּמוּנָה מַתְחִילָה בַּצְּלִיל? | משחקי עברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@500;700;800&display=swap">
+<style>
+/* "Which picture starts with the sound?" — whole class: the teacher says the sound, 3 numbered pictures, everyone raises
+   number card 1 / 2 / 3 after 3-2-1, then the teacher reveals. Sets live in SETS below; open with ?set=2.23 (default). */
+:root{--bg:#fdf7ef;--surface:#fff;--ink:#23233a;--muted:#6b6880;--line:#eadfce;--sky:#2a8bd0;--green:#2f9d55;--green-soft:#dcf2e3;--coral:#e2506a;--gold:#e0a31f;--gold-soft:#fbf0d2;
+  --f-he:'Noto Sans Hebrew',Arial,sans-serif;--f-display:'Rubik','Noto Sans Hebrew',Arial,sans-serif;--shadow:0 2px 0 rgba(35,35,58,.08),0 8px 24px rgba(35,35,58,.08)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-he)}
+.site-nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;font-family:Arial,"Noto Sans Hebrew",sans-serif}
+.site-nav .nav-title{font-weight:900;margin-left:auto}.site-nav a{border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.wrap{max-width:1100px;margin:0 auto;padding:14px 16px 50px}
+h1{font:800 clamp(28px,4vw,40px)/1.2 var(--f-display);margin:6px 0 4px}
+.sub{color:var(--muted);margin:0 0 12px;font-size:18px}
+.rounds{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0 10px}
+.rounds i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:800 15px var(--f-display);font-style:normal;background:#fff;border:2px solid var(--line);color:var(--muted)}
+.rounds i.on{background:var(--ink);border-color:var(--ink);color:#fff}.rounds i.done{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+.target{display:flex;align-items:center;justify-content:center;gap:16px;margin:4px auto 16px}
+.target .snd{min-width:200px;text-align:center;background:var(--gold-soft);border:4px solid var(--gold);border-radius:28px;padding:2px 34px;font:700 clamp(84px,13vw,140px)/1.25 var(--f-he)}
+.ear{font-size:32px;border:3px solid var(--line);background:#fff;border-radius:50%;width:64px;height:64px;cursor:pointer}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;direction:rtl}
+.pbox{position:relative;background:var(--surface);border:5px solid var(--line);border-radius:26px;padding:12px;text-align:center;cursor:pointer;box-shadow:var(--shadow);transition:.15s;font:inherit;color:inherit}
+.pbox:hover{border-color:var(--ink)}
+.pbox .n{position:absolute;top:10px;inset-inline-start:12px;z-index:2;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;color:#fff;font:800 30px var(--f-display);box-shadow:0 2px 6px #0003}
+.pbox .ph{height:clamp(150px,26vh,240px);display:grid;place-items:center;border-radius:18px;overflow:hidden;background:#fff}
+.pbox .ph img{width:100%;height:100%;object-fit:cover;display:block}.pbox .ph svg{height:100%;width:auto;display:block}
+.pbox .w{font:800 clamp(28px,3.6vw,42px)/1.4 var(--f-he);margin-top:6px;min-height:1.4em}
+.hidew .pbox .w{visibility:hidden}
+.pbox .mk{position:absolute;inset:0;display:grid;place-items:center;font:800 150px var(--f-display);color:var(--green);pointer-events:none;text-shadow:0 4px 14px #fff}
+.pbox.ok{border-color:var(--green);background:var(--green-soft);transform:scale(1.03)}.pbox.ok .w{visibility:visible;color:var(--green)}
+.pbox.dim{opacity:.35}
+.bar{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-top:16px}
+.btn{font:800 20px var(--f-he);border:3px solid var(--line);background:#fff;color:var(--ink);border-radius:16px;padding:10px 18px;cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--ink)}.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cdbtn{font:800 22px var(--f-he);border:0;background:var(--coral);color:#fff;border-radius:16px;padding:12px 22px;cursor:pointer}
+.chk{display:inline-flex;gap:6px;align-items:center;font-weight:800;font-size:18px}
+.cdov{position:fixed;inset:0;z-index:9990;background:rgba(35,35,58,.88);display:grid;place-items:center;color:#fff;text-align:center}
+.cdov b{font:800 min(40vw,300px)/1 var(--f-display)}.cdov span{font:800 min(12vw,110px)/1.2 var(--f-he)}
+.foot{margin-top:24px;color:var(--muted);font-size:13px}
+.foot summary{cursor:pointer;font-weight:800}
+@media(max-width:700px){.three{gap:8px}.pbox{padding:6px;border-width:3px}.pbox .n{width:38px;height:38px;font-size:22px}.pbox .mk{font-size:90px}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a></nav>
+<div class="wrap" id="app">
+  <h1>אֵיזוֹ תְּמוּנָה מַתְחִילָה בַּצְּלִיל?</h1>
+  <p class="sub">הַמּוֹרֶה אוֹמֵר אֶת הַצְּלִיל. 3… 2… 1… — כֻּלָּם מַרִימִים כַּרְטִיס 1, 2 אוֹ 3. אַחַר כָּךְ "הַצִּיגוּ".</p>
+  <div class="rounds" id="rounds"></div>
+  <div class="target"><div class="snd" id="snd"></div><button class="ear" id="ear" type="button" aria-label="השמעה">🔊</button></div>
+  <div class="three" id="three"></div>
+  <div class="bar">
+    <button class="cdbtn" id="cd" type="button">🕒 3… 2… 1… הָרִימוּ!</button>
+    <button class="btn primary" id="rev" type="button">👁 הַצִּיגוּ</button>
+    <button class="btn" id="prev" type="button">▶ הַקּוֹדֵם</button>
+    <button class="btn primary" id="next" type="button">הַבָּא ◀</button>
+    <button class="btn" id="again" type="button">↺ שׁוּב</button>
+    <label class="chk"><input type="checkbox" id="hide"> הַסְתֵּר מִלִּים</label>
+    <a class="btn" href="../olam-street-lessons/Olam-street-2.19-and-2.20-number-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי מִסְפָּרִים 1–4</a>
+  </div>
+  <details class="foot"><summary>📝 לַמּוֹרֶה · קְרֶדִיטִים</summary>
+    <p>כָּל סִבּוּב: צְלִיל אֶחָד וְשָׁלוֹשׁ תְּמוּנוֹת. רַק מִלָּה אַחַת מַתְחִילָה בַּצְּלִיל. לוֹחֲצִים עַל תְּמוּנָה אוֹ עַל "הַצִּיגוּ" כְּדֵי לְגַלּוֹת. "שׁוּב" מְעַרְבֵּב אֶת הַסִּבּוּבִים וְאֶת הַתְּמוּנוֹת. מַפְתֵּחַ הַמִּקְלֶדֶת: ← הַבָּא, → הַקּוֹדֵם. סֵט: <span id="setName"></span> (פָּרָמֶטֶר ‎?set=‎ בַּכְּתֹבֶת).</p>
+    <p dir="ltr" style="text-align:left">Photos (Wikimedia Commons): Tuna can – Wikimedia Commons user, CC BY-SA 3.0 · Pizza Margherita – Valerio Capello, CC BY-SA 3.0 · Glass of water – Derek Jensen (Tysto), public domain · Milk and straw – FreeFOODPhotos, CC BY-SA 3.0 · Bananas (white background) – Justus Blümer, CC BY 2.0 · Green &amp; Black's dark chocolate bar – Mx. Granger, CC0 · Spaghetti – public domain · Swiss cheese cubes – Christian Bauer, CC BY 2.0 · Mango on white – Rhododendrites, CC BY-SA 4.0 · Lemon with white background – Bordercolliez, CC0 · Sushi plate – Mojmir Churavy, CC0. Salad, hummus and falafel: the site's Olam Street 2.5–2.6 photos. Hungry boy: the site's drawing (Olam Street 2.15–2.16).</p>
+  </details>
+</div>
+<script src="hungry-art.js"></script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const WM = 'https://upload.wikimedia.org/wikipedia/commons/thumb/';
+const wm = p => WM + p + '/500px-' + p.split('/').pop();
+const LOCAL = '../olam-street-lessons/';
+/* picture bank: id -> word (with nikud) + picture (real photo, or the site's drawing for רָעֵב) */
+const P = {
+  tuna:      { he: 'טוּנָה', img: wm('1/19/Tuna_can.jpg') },
+  pizza:     { he: 'פִּיצָה', img: wm('a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg') },
+  water:     { he: 'מַיִם', img: wm('1/11/Glass-of-water.jpg') },
+  hungry:    { he: 'רָעֵב', svg: () => HungryArt.kid('growl', true) },
+  milk:      { he: 'חָלָב', img: wm('7/77/Milk_and_straw.jpg') },
+  banana:    { he: 'בָּנָנָה', img: wm('a/aa/Bananas_%28white_background%29.jpg') },
+  chocolate: { he: 'שׁוֹקוֹלָד', img: wm('c/cd/Green_and_Black%27s_dark_chocolate_bar_2.jpg') },
+  pasta:     { he: 'פַּסְטָה', img: wm('9/98/Spaghetti-prepared.jpg') },
+  cheese:    { he: 'גְּבִינָה', img: wm('8/89/Swiss_cheese_cubes.jpg') },
+  salad:     { he: 'סָלָט', img: LOCAL + 'olam-2.2-salad.jpg' },
+  mango:     { he: 'מַנְגּוֹ', img: wm('3/34/Mango_on_white.jpg') },
+  hummus:    { he: 'חוּמוּס', img: LOCAL + 'olam-2.2-hummus.jpg' },
+  falafel:   { he: 'פָלָאפֶל', img: LOCAL + 'olam-2.2-falafel.jpg' },
+  lemon:     { he: 'לִימוֹן', img: wm('6/6f/Lemon_with_white_background.jpg') },
+  sushi:     { he: 'סוּשִׁי', img: wm('4/48/Sushi_Plate_in_Organic_Sushi_Prague_4.jpg') },
+};
+/* sets: s = the sound card, o = 3 pictures in the default order (1 on the right), a = index of the right picture.
+   Only known words; in every round only ONE picture starts with the sound. */
+const SETS = {
+  '2.23': [
+    { s: 'טוּ', o: ['pizza', 'tuna', 'water'], a: 1 },
+    { s: 'רָ', o: ['hungry', 'milk', 'banana'], a: 0 },
+    { s: 'גְּ', o: ['chocolate', 'pasta', 'cheese'], a: 2 },
+    { s: 'סָ', o: ['salad', 'mango', 'hummus'], a: 0 },
+    { s: 'חָ', o: ['falafel', 'milk', 'tuna'], a: 1 },
+    { s: 'לִי', o: ['banana', 'chocolate', 'lemon'], a: 2 },
+    { s: 'חוּ', o: ['hummus', 'salad', 'pizza'], a: 0 },
+    { s: 'סוּ', o: ['cheese', 'sushi', 'water'], a: 1 },
+  ],
+};
+const setId = new URLSearchParams(location.search).get('set') || '2.23';
+const BASE = SETS[setId] || SETS['2.23']; $('setName').textContent = SETS[setId] ? setId : '2.23';
+const COL = ['#2a8bd0', '#2f9d55', '#e0a31f'];
+let voices = [];
+function pickVoices(){ voices = ('speechSynthesis' in window ? speechSynthesis.getVoices() : []).filter(v => /^(he|iw)/i.test(v.lang)); }
+if ('speechSynthesis' in window){ pickVoices(); speechSynthesis.onvoiceschanged = pickVoices; }
+function say(t){ if (!voices.length || !t) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = voices[0]; u.lang = voices[0].lang; u.rate = .8; speechSynthesis.speak(u); }
+let ac = null;
+function tone(ok, f0){ try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const t = ac.currentTime;
+  (f0 ? [f0] : ok ? [523, 659, 784] : [260, 200]).forEach((f, i) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; o.type = 'triangle';
+    g.gain.setValueAtTime(.0001, t + i * .1); g.gain.exponentialRampToValueAtTime(.16, t + i * .1 + .02); g.gain.exponentialRampToValueAtTime(.0001, t + i * .1 + .3);
+    o.connect(g).connect(ac.destination); o.start(t + i * .1); o.stop(t + i * .1 + .32); }); } catch (e) {} }
+function countdown(){ const o = document.createElement('div'); o.className = 'cdov'; document.body.appendChild(o); let n = 3;
+  const step = () => { if (n > 0){ o.innerHTML = `<div><b>${n}</b></div>`; tone(true, 440 + (3 - n) * 80); n--; setTimeout(step, 900); }
+    else { o.innerHTML = '<div><span>הָרִימוּ מִסְפָּר! ✋</span></div>'; tone(true, 880); setTimeout(() => o.remove(), 1100); } };
+  step(); }
+let R = [], ri = 0, done = false;
+function make(mix){ R = (mix ? shuffle(BASE) : BASE).map(r => { if (!mix) return { s: r.s, o: r.o.slice(), a: r.a }; const right = r.o[r.a], o = shuffle(r.o); return { s: r.s, o, a: o.indexOf(right) }; }); ri = 0; show(); }
+function show(){ const r = R[ri]; done = false;
+  $('rounds').innerHTML = R.map((_, i) => `<i class="${i < ri ? 'done' : i === ri ? 'on' : ''}">${i + 1}</i>`).join('');
+  $('snd').textContent = r.s;
+  $('three').innerHTML = r.o.map((id, i) => { const p = P[id]; const pic = p.img ? `<img src="${p.img}" alt="">` : p.svg();
+    return `<button class="pbox" type="button" data-i="${i}"><span class="n" style="background:${COL[i]}">${i + 1}</span><div class="ph">${pic}</div><div class="w">${p.he}</div><span class="mk"></span></button>`; }).join('');
+  $('three').querySelectorAll('.pbox').forEach(b => b.onclick = () => reveal());
+  $('next').textContent = ri === R.length - 1 ? '↺ מֵהַהַתְחָלָה' : 'הַבָּא ◀'; $('prev').disabled = ri === 0; }
+function reveal(){ if (done) return; done = true; const r = R[ri], boxes = $('three').querySelectorAll('.pbox');
+  boxes.forEach((b, i) => { b.classList.toggle('ok', i === r.a); b.classList.toggle('dim', i !== r.a); });
+  boxes[r.a].querySelector('.mk').textContent = '✔'; tone(true); say(P[r.o[r.a]].he); }
+$('cd').onclick = countdown; $('rev').onclick = reveal; $('ear').onclick = () => say(R[ri].s);
+$('next').onclick = () => { if (ri < R.length - 1){ ri++; show(); } else make(true); };
+$('prev').onclick = () => { if (ri > 0){ ri--; show(); } };
+$('again').onclick = () => make(true);
+$('hide').onchange = () => $('app').classList.toggle('hidew', $('hide').checked);
+document.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') $('next').click(); else if (e.key === 'ArrowRight') $('prev').click(); });
+make(false);
+})();
+</script>
+</body>
+</html>
