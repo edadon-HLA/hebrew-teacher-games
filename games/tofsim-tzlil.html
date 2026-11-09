@@ -20,8 +20,9 @@ h1{margin:4px 0 0;font:800 clamp(28px,5vw,42px) 'Rubik',Arial,sans-serif}
 .btn.sm{font-size:15px;padding:6px 12px}
 .chk{display:inline-flex;gap:6px;align-items:center;font-weight:700;font-size:16px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 12px;cursor:pointer;user-select:none}
 .chk input{width:18px;height:18px}
-.pick{display:inline-flex;gap:8px;align-items:center;font-weight:700;font-size:16px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:4px 12px}
-.pick .lt{font:800 28px 'Noto Sans Hebrew',Arial,sans-serif;min-width:48px;height:44px;border:2px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;margin-inline-start:4px}
+.pick{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;justify-content:center;font-weight:700;font-size:16px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 10px;max-width:100%}
+#setBtns{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;direction:rtl}
+.pick .lt{font:800 26px 'Noto Sans Hebrew',Arial,sans-serif;min-width:44px;height:44px;padding:0 4px;border:2px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}
 .pick .lt.on{border-color:var(--coral);background:var(--coral-soft);color:#7e2335}
 .stage{width:min(760px,100%);background:#fff;border:3px solid var(--ink);border-radius:26px;box-shadow:0 8px 24px rgba(35,35,58,.12);padding:18px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:background .2s,border-color .2s}
 .stage.yes{background:var(--green-soft);border-color:var(--green)}.stage.no{background:var(--coral-soft);border-color:var(--coral)}
@@ -72,17 +73,17 @@ h1{margin:4px 0 0;font:800 clamp(28px,5vw,42px) 'Rubik',Arial,sans-serif}
 
 <div id="cdOv" aria-live="assertive"><div id="cdTxt">3</div></div>
 
-<script src="tzlil-sets.js"></script>
+<script src="tzlil-sets.js?v=2"></script>
 <script>
 (() => {
 const $ = id => document.getElementById(id);
 const sets = window.TZLIL_SETS, keys = Object.keys(sets);
 const q = new URLSearchParams(location.search);
-let key = sets[q.get('letter')] ? q.get('letter') : keys[0];
+let key = sets[q.get('letter')] ? q.get('letter') : (sets.shin ? 'shin' : keys[0]);   /* no ?letter= -> שׁ, as before */
 let S = sets[key], order = [], i = 0, revealed = false;
 const nikud = /[֑-ׇ]/;
 
-/* letter picker: one button per set in tzlil-sets.js; ?letter=key opens with that letter selected (default: the first set) */
+/* letter picker: one button per set in tzlil-sets.js; ?letter=key opens with that letter selected (default: shin) */
 $('setBtns').innerHTML = keys.map(k => `<button type="button" class="lt" data-k="${k}" aria-label="${sets[k].title}">${sets[k].title}</button>`).join('');
 const markPick = () => document.querySelectorAll('#setBtns .lt').forEach(b => b.classList.toggle('on', b.dataset.k === key));
 $('setBtns').onclick = e => { const b = e.target.closest('.lt'); if (!b) return; key = b.dataset.k; try { history.replaceState(null, '', '?letter=' + key); } catch (x) {} load(); };
