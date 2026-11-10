@@ -273,10 +273,10 @@
 
   <div class="sf-part">
   <p class="lead" style="margin-top:26px">רוֹאִים אוֹת — אוֹמְרִים אֶת הַצְּלִיל</p>
-  <p class="sub">אוֹת עִם תְּנוּעָה עַל הַמָּסָךְ — כָּל הַכִּתָּה אוֹמֶרֶת אֶת הַצְּלִיל בְּקוֹל — לְחִיצָה (אוֹ "👁 הַצְּלִיל") מַצִּיגָה אוֹתוֹ. רַק הָאוֹתִיּוֹת וְהַתְּנוּעוֹת שֶׁכְּבָר לָמַדְנוּ: שׁ, בּ · קָמָץ, פַּתָּח, שְׁוָא.</p>
+  <p class="sub">אוֹת עִם תְּנוּעָה עַל הַמָּסָךְ — כָּל הַכִּתָּה אוֹמֶרֶת אֶת הַצְּלִיל בְּקוֹל — לְחִיצָה (אוֹ "👁 הַצְּלִיל") מַצִּיגָה אוֹתוֹ. הָאוֹתִיּוֹת שֶׁכְּבָר לָמַדְנוּ (שׁ, בּ) עִם כָּל הַתְּנוּעוֹת.</p>
   <div id="sDrill"></div>
   <details class="note"><summary>📝 מהלך קצר</summary>
-    <p>כְּמוֹ בְּכִתָּה ו׳. הַמּוֹרֶה בּוֹחֵר: "אוֹת אַחַת" (שׁ אוֹ בּ עִם כָּל הַתְּנוּעוֹת), "תְּנוּעָה אַחַת" (קָמָץ, פַּתָּח אוֹ שְׁוָא עִם כָּל הָאוֹתִיּוֹת) אוֹ "עִרְבּוּב". הַכִּתָּה אוֹמֶרֶת בְּקוֹל, וְאָז לוֹחֲצִים עַל הָאוֹת כְּדֵי לְהַצִּיג אֶת הַצְּלִיל. "הַצֵּג צְלִיל" מַרְאֶה אֶת הַצְּלִיל מִיָּד. חִצִּים בַּמִּקְלֶדֶת = הַבָּא / הַקּוֹדֵם. קָמָץ וּפַתָּח = a, שְׁוָא = e. בְּכָל שִׁעוּר נוֹסֶפֶת הָאוֹת הַחֲדָשָׁה.</p>
+    <p>כְּמוֹ בְּכִתָּה ו׳. הַמּוֹרֶה בּוֹחֵר: "אוֹת אַחַת" (שׁ אוֹ בּ עִם כָּל הַתְּנוּעוֹת), "תְּנוּעָה אַחַת" (תְּנוּעָה אַחַת עִם כָּל הָאוֹתִיּוֹת) אוֹ "עִרְבּוּב". כָּל הַתְּנוּעוֹת, לֹא רַק אֵלֶּה שֶׁל הַשִּׁעוּר — תִּרְגּוּל טוֹב. הַכִּתָּה אוֹמֶרֶת בְּקוֹל, וְאָז לוֹחֲצִים עַל הָאוֹת כְּדֵי לְהַצִּיג אֶת הַצְּלִיל. "הַצֵּג צְלִיל" מַרְאֶה אֶת הַצְּלִיל מִיָּד. חִצִּים בַּמִּקְלֶדֶת = הַבָּא / הַקּוֹדֵם. קָמָץ, פַּתָּח = a · צֵירֵי, סֶגּוֹל, שְׁוָא = e · חִירִיק = i · חוֹלָם = o · קֻבּוּץ, שׁוּרוּק = u. בְּכָל שִׁעוּר נוֹסֶפֶת הָאוֹת הַחֲדָשָׁה.</p>
   </details>
   </div>
 </section>
@@ -396,7 +396,7 @@
 <div id="rCd" aria-live="assertive"><div id="rCdT">3</div></div>
 <script src="../niflaot-lessons/lesson-kit.js?v=1792421680"></script>
 <script src="bet/data.js?v=2"></script>
-<script src="sound-drill.js?v=1"></script>
+<script src="sound-drill.js?v=2"></script>
 <script>
 (() => {
 'use strict';
@@ -512,8 +512,8 @@ $('bNext').onclick = () => bGo(1); $('bPrev').onclick = () => bGo(-1);
 $('bAll').onclick = () => { board.classList.toggle('all'); };
 bShow();
 
-/* ---------- 3c. see a letter, say the sound: only the letters and vowels learned so far (shared engine sound-drill.js) ---------- */
-SoundDrill.mount($('sDrill'), { letters: ['שׁ', 'בּ'], vowels: ['ka', 'pa', 'sv'] });
+/* ---------- 3c. see a letter, say the sound: the letters learned so far x all vowels (shared engine sound-drill.js) ---------- */
+SoundDrill.mount($('sDrill'), { letters: ['שׁ', 'בּ'] });   /* vowels: all (default) */
 
 /* ---------- 4a. workbook p.8: draw a line from the circle to the pictures that start with בַּ ----------
  * boxes in pixels of the 1750 x 2265 page render (picture cut + 15 px margin); the stage shows y 300-2200 */

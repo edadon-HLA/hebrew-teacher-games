@@ -1,11 +1,12 @@
 /* לוֹמְדִים לִקְרֹא — shared "see a letter with a vowel, say the sound" drill (the 6th-grade reading-card method of
  * Olam 2.19-2.20 / 2.23: one big card, modes 🔤 one letter / ◌ one vowel / 🔀 mix, "הַצֵּג צְלִיל", 🔊, arrows, auto).
  *
- * Each letter page only lists what the class has learned so far:
+ * Each letter page only lists the LETTERS the class has learned so far; the vowels are ALL Hebrew vowels by default
+ * (teacher, 11/10: "add all the hebrew vowls, not only those in the lesson. it is a good practice."):
  *   <div id="drill"></div>
  *   <script src="sound-drill.js"></script>
- *   SoundDrill.mount(document.getElementById('drill'), { letters: ['שׁ', 'בּ'], vowels: ['ka', 'pa', 'sv'] });
- * Next lessons just add letters (and vowels) to these two lists.
+ *   SoundDrill.mount(document.getElementById('drill'), { letters: ['שׁ', 'בּ'] });
+ * Next lessons just add their letter to `letters`. A smaller vowel list can still be passed: { letters, vowels: ['ka', 'pa', 'sv'] }.
  *
  * Teacher's sound rules: kamatz = patach = a; shva = segol = tsere = e; א and ע are silent (only the vowel is heard).
  */
@@ -25,17 +26,21 @@ window.SoundDrill = (() => {
     se: { m: 'ֶ', s: 'e', n: 'סֶגּוֹל' },
     ts: { m: 'ֵ', s: 'e', n: 'צֵירֵי' },
     hi: { m: 'ִ', s: 'i', n: 'חִירִיק' },
+    hiy: { m: 'ִי', s: 'i', n: 'חִירִיק מָלֵא' },
     ho: { m: 'ֹ', s: 'o', n: 'חוֹלָם' },
     hov: { m: 'וֹ', s: 'o', n: 'חוֹלָם מָלֵא' },
     ku: { m: 'ֻ', s: 'u', n: 'קֻבּוּץ' },
     shu: { m: 'וּ', s: 'u', n: 'שׁוּרוּק' }
   };
-  const syl = (l, v) => l + VOWEL[v].m;
+  /* the default pool for every page = all vowels, in this order (a, e, i, o, u) */
+  const ALL = ['ka', 'pa', 'ts', 'se', 'sv', 'hi', 'hiy', 'ho', 'hov', 'ku', 'shu'];
+  /* NFC puts the marks in the standard order (e.g. ש + holam + shin dot = שֹׁ) */
+  const syl = (l, v) => (l + VOWEL[v].m).normalize('NFC');
   const sound = (l, v) => (LETTER[l] || '') + VOWEL[v].s;
   const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
   function mount(root, opt) {
-    const letters = opt.letters.filter(l => l in LETTER), vowels = opt.vowels.filter(v => v in VOWEL);
+    const letters = opt.letters.filter(l => l in LETTER), vowels = (opt.vowels || ALL).filter(v => v in VOWEL);
     const POOL = [];
     letters.forEach(l => vowels.forEach(v => POOL.push({ l, v, t: syl(l, v), s: sound(l, v) })));
     root.classList.add('sd');
@@ -122,5 +127,5 @@ window.SoundDrill = (() => {
     build(); show(false);
     return { pool: POOL };
   }
-  return { mount, LETTER, VOWEL, syl, sound };
+  return { mount, LETTER, VOWEL, ALL, syl, sound };
 })();
