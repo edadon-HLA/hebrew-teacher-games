@@ -16,6 +16,11 @@
  *   wb: [{ type: 'circle'|'drop'|'join', page, ins, ... }], wbNote,
  *   exit: { rows: [{ head?, s, ok, items: [[img, he], ...] }], q, reflect, note }
  * }
+ * Workbook 2 additions: book: 2 (crumb + source line) · finals: ['ן', 'ם'] (drill cards with no vowel) · game: null (no game
+ * part, no ✔/✘ printable) · line.c = [cx, cy, r] centre circle of that page · wb page: type 'text' (only w.sentences, no check bar),
+ * cd: 1 (3-2-1 button above the tool), sent: 1 + bankLabel (drop of whole sentences), tip (join tip text) · join rows without
+ * parts = ready sentences (sentence -> picture) · sentences: lines may be { t, pics }, head = story title, qs = [[q, a], ...] ·
+ * exit item [null, word] = a word instead of a picture.
  */
 (() => {
 'use strict';
@@ -36,7 +41,9 @@ const kbar = id => `<div class="k-msg" id="${id}Msg"></div><div class="k-bar"><b
 const result = (id, right, total) => { $(id + 'Msg').textContent = right + ' / ' + total; if (right === total) chime(); else beep(right ? 600 : 300, .2); };
 
 /* ---------- header, step bar ---------- */
-$('crumb').textContent = `LOMDIM LIKRO · שִׁעוּר קְרִיאָה ${L.n} · חוֹבֶרֶת קְרִיאָה וּכְתִיבָה, עַמּוּדִים ${L.pages}`;
+const BK = L.book ? " " + L.book : "";   /* workbook 2 on: book: 2 */
+$('crumb').textContent = `LOMDIM LIKRO · שִׁעוּר קְרִיאָה ${L.n} · חוֹבֶרֶת קְרִיאָה וּכְתִיבָה${BK}, עַמּוּדִים ${L.pages}`;
+if (L.book) document.querySelectorAll('.src').forEach(p => { p.innerHTML = p.innerHTML.replace('וּכְתִיבָה 1', 'וּכְתִיבָה ' + L.book); });
 $('h1').textContent = L.title; $('heTitle').textContent = L.sub;
 $('stepWarm').textContent = L.warm.step;
 $('srcPages').textContent = L.pages;
@@ -160,15 +167,19 @@ $('bCd').onclick = () => countdown();
 bShow();
 
 /* ---------- 3c. see a letter, say the sound (shared drill; vowels = all) ---------- */
-$('dSub').textContent = `אוֹת עִם תְּנוּעָה עַל הַמָּסָךְ — כָּל הַכִּתָּה אוֹמֶרֶת אֶת הַצְּלִיל בְּקוֹל — לְחִיצָה (אוֹ "👁 הַצְּלִיל") מַצִּיגָה אוֹתוֹ. הָאוֹתִיּוֹת שֶׁכְּבָר לָמַדְנוּ (${L.drill.join(', ')}) עִם כָּל הַתְּנוּעוֹת.`;
-SoundDrill.mount($('sDrill'), { letters: L.drill });
+$('dSub').textContent = `אוֹת עִם תְּנוּעָה עַל הַמָּסָךְ — כָּל הַכִּתָּה אוֹמֶרֶת אֶת הַצְּלִיל בְּקוֹל — לְחִיצָה (אוֹ "👁 הַצְּלִיל") מַצִּיגָה אוֹתוֹ. הָאוֹתִיּוֹת שֶׁכְּבָר לָמַדְנוּ (${L.drill.join(', ')}) עִם כָּל הַתְּנוּעוֹת${L.finals ? ` + הָאוֹתִיּוֹת הַסּוֹפִיּוֹת ${L.finals.join(', ')} (בְּלִי תְּנוּעָה)` : ''}.`;
+SoundDrill.mount($('sDrill'), { letters: L.drill, finals: L.finals });   /* finals: ['ן', 'ם'] = one card each, no vowel */
 
 /* ---------- 4a. game first ---------- */
-const G = L.game;
-$('gShort').innerHTML = `<a class="sc" href="../games/tofsim-tzlil.html?letter=${G.key}" target="_blank" rel="noopener"><span class="ic">🔊</span><div><h3>תּוֹפְסִים צְלִיל · ${G.name}</h3><p>תְּמוּנָה, ✔ / ✘, סְפִירָה וְחִשּׂוּף</p></div><span class="go">◀</span></a>
+const G = L.game || { key: '', name: '' };
+if (!L.game) {   /* no תּוֹפְסִים צְלִיל set for this letter (e.g. ב = v: no word starts with it): no game part, no ✔/✘ printable */
+  $('gShort').closest('.sf-part').remove();
+  document.querySelectorAll('#s6 a[href*="cards-yes-no"]').forEach(a => a.remove());
+}
+if (L.game) $('gShort').innerHTML = `<a class="sc" href="../games/tofsim-tzlil.html?letter=${G.key}" target="_blank" rel="noopener"><span class="ic">🔊</span><div><h3>תּוֹפְסִים צְלִיל · ${G.name}</h3><p>תְּמוּנָה, ✔ / ✘, סְפִירָה וְחִשּׂוּף</p></div><span class="go">◀</span></a>
   <a class="sc" href="../games/tofsim-tzlil.html?letter=${G.key}&word=1" target="_blank" rel="noopener"><span class="ic">📖</span><div><h3>עִם הַמִּלָּה כְּתוּבָה</h3><p>רוֹאִים תְּמוּנָה וְגַם אֶת הַמִּלָּה</p></div><span class="go">◀</span></a>
   <a class="sc" href="../games/tzlil/cards-yes-no.pdf" target="_blank" rel="noopener"><span class="ic">✔✘</span><div><h3>כַּרְטִיסֵי ✔ / ✘</h3><p>לַמִּשְׂחָק (PDF)</p></div><span class="go">◀</span></a>`;
-$('gSub').textContent = `תְּמוּנָה — וְהַכִּתָּה מַחְלִיטָה: מַתְחִיל בְּ־${G.name}? כַּרְטִיסֵי ✔ / ✘ וְסְפִירָה 3-2-1. הַתְּמוּנוֹת שֶׁל הַחוֹבֶרֶת בָּאוֹת רִאשׁוֹנוֹת.`;
+if (L.game) $('gSub').textContent = `תְּמוּנָה — וְהַכִּתָּה מַחְלִיטָה: מַתְחִיל בְּ־${G.name}? כַּרְטִיסֵי ✔ / ✘ וְסְפִירָה 3-2-1. הַתְּמוּנוֹת שֶׁל הַחוֹבֶרֶת בָּאוֹת רִאשׁוֹנוֹת.`;
 
 /* ---------- 4b. the workbook parts, in the book's order (L.do) ----------
  * types: 'line' (the ב p.8 engine; mark = a final letter -> the word label shows it coloured), 'strokes' (cmp = a letter shown
@@ -189,7 +200,7 @@ const pct = (v, t) => (v / t * 100) + '%';
 function partLine(P, id, root) {
   root.innerHTML = cw('עַמּוּד ' + P.page, 'כָּל תַּלְמִיד מוֹתֵחַ קַו בַּחוֹבֶרֶת. אַחַר כָּךְ בּוֹדְקִים יַחַד עַל הַמָּסָךְ: לוֹחֲצִים עַל תְּמוּנָה.', ' style="margin-top:22px"') +
     `<div class="k-page"><p class="k-ins">${P.ins}</p><div class="p8" id="${id}"></div>${kbar(id)}<span class="pn">${P.page}</span></div>` + note(P.note);
-  const box = $(id), [cx, cy, cr] = P8.c;
+  const box = $(id), [cx, cy, cr] = P.c || P8.c;   /* P.c = the centre circle of this page, in render px */
   box.innerHTML = `<svg class="lines" viewBox="0 0 ${P8.W} ${P8.H}" preserveAspectRatio="none"></svg>
     <div class="ctr" style="left:${pct(cx - cr, P8.W)};top:${pct(cy - cr - P8.Y0, P8.H)};width:${pct(2 * cr, P8.W)};height:${pct(2 * cr, P8.H)}">${P.ctr}</div>` +
     P.pics.map(([img, he, , x1, x2, y1, y2], i) => `<button type="button" class="pc" data-k="${i}" aria-label="${he}" style="left:${pct(x1, P8.W)};top:${pct(y1 - P8.Y0, P8.H)};width:${pct(x2 - x1, P8.W)};height:${pct(y2 - y1, P8.H)}"><img src="${img}" alt=""><span class="x">✘</span>${P.mark ? `<span class="lb">${markWord(he, P.mark)}</span>` : ''}</button>`).join('');
@@ -240,8 +251,14 @@ function partStrokes(ST, id, root) {
 }
 
 function sentences(S, root, id) {
-  root.insertAdjacentHTML('beforeend', `<div class="r-sent"><p class="k-ins">${S.title || 'קִרְאוּ:'}</p><div class="r-sbody">${S.pic ? `<img src="${S.pic}" alt="">` : ''}<div class="r-lines">${S.lines.map((l, i) => `<button type="button" class="r-line" data-i="${i}">${l.split(' ').map(w => `<span>${w}</span>`).join(' ')}</button>`).join('')}</div></div>
-    <div class="k-bar"><button class="r-cd" type="button" id="${id}SCd">🕒 3… 2… 1… קוֹרְאִים!</button></div></div>`);
+  /* a line is a string, or { t, pics: [img, ...] } (small pictures after the line, as in a story text); S.head = a story title;
+   * S.qs = [[question, answer], ...] (click = reveal the answer) */
+  const line = (l, i) => { const t = typeof l === 'string' ? l : l.t, ps = typeof l === 'string' ? [] : (l.pics || []);
+    return `<div class="r-lrow"><button type="button" class="r-line" data-i="${i}">${t.split(' ').map(w => `<span>${w}</span>`).join(' ')}</button>${ps.map(p => `<img class="r-lpic" src="${p}" alt="">`).join('')}</div>`; };
+  root.insertAdjacentHTML('beforeend', `<div class="r-sent${S.head ? ' story' : ''}"><p class="k-ins">${S.title || 'קִרְאוּ:'}</p><div class="r-sbody">${S.pic ? `<img src="${S.pic}" alt="">` : ''}<div class="r-lines">${S.head ? `<div class="r-lhead">${S.head}</div>` : ''}${S.lines.map(line).join('')}</div></div>
+    <div class="k-bar"><button class="r-cd" type="button" id="${id}SCd">🕒 3… 2… 1… קוֹרְאִים!</button></div>
+    ${S.qs ? `<div class="r-qs"><p class="k-ins">שְׁאֵלוֹת — לוֹחֲצִים עַל שְׁאֵלָה כְּדֵי לִרְאוֹת אֶת הַתְּשׁוּבָה:</p>${S.qs.map(([q, a]) => `<button type="button" class="r-q"><b>${q}</b><span class="a">${a}</span></button>`).join('')}</div>` : ''}</div>`);
+  root.querySelectorAll('.r-q').forEach(b => b.onclick = () => { b.classList.toggle('on'); if (b.classList.contains('on')) { beep(880, .2); say(b.querySelector('.a').textContent); } });
   root.querySelectorAll('.r-line').forEach(b => b.onclick = () => {
     const ws = [...b.querySelectorAll('span')]; root.querySelectorAll('.r-line span').forEach(s => s.classList.remove('on'));
     ws.forEach((s, i) => setTimeout(() => { ws.forEach(x => x.classList.remove('on')); s.classList.add('on'); beep(600 + i * 60, .08); say(s.textContent.replace(/[.,!?]/g, '')); }, i * 900));
@@ -252,6 +269,7 @@ function sentences(S, root, id) {
 
 function wbPage(w, id, box) {
   if (w.type === 'circle') {
+    if (w.words) box.classList.add('words');   /* two whole words per box: smaller text */
     box.innerHTML = w.boxes.map(([img, he, two], j) => `<div class="bx" data-i="${j}"><img src="${img}" alt="${he}"><div class="two">${two.map(s => `<button type="button" data-s="${s}">${s}<span class="k-ring"></span></button>`).join('')}</div></div>`).join('');
     box.querySelectorAll('.bx').forEach(bx => bx.querySelectorAll('button').forEach(b => b.onclick = () => { bx.querySelectorAll('button').forEach(x => x.classList.remove('on', 'ok', 'no')); b.classList.add('on'); beep(640, .1); $(id + 'Msg').textContent = ''; }));
     const check = show => { let right = 0;
@@ -266,12 +284,13 @@ function wbPage(w, id, box) {
     if (w.pics.length === 4) box.style.gridTemplateColumns = 'repeat(2,minmax(0,1fr))';   /* 2 x 2, as in the book */
     if (w.cols) box.style.gridTemplateColumns = `repeat(${w.cols},minmax(0,1fr))`;
     if (w.words) box.classList.add('words');
+    if (w.sent) box.classList.add('sent');   /* whole sentences: picture and a long line side by side, one per row */
     box.innerHTML = w.pics.map(([img, he], j) => `<div class="bx"><img src="${img}" alt="${he}"><button type="button" class="k-drop" data-i="${j}">&nbsp;</button></div>`).join('');
     const put = (drop, v) => { drop.textContent = v; drop.dataset.v = v; drop.classList.remove('ok', 'no'); beep(700, .08); $(id + 'Msg').textContent = ''; };
     let selW = null;
     box.querySelectorAll('.k-drop').forEach(d => d.onclick = () => { if (selW) { put(d, selW.textContent); selW.classList.remove('sel'); selW = null; } else if (d.dataset.v) { d.innerHTML = '&nbsp;'; delete d.dataset.v; d.classList.remove('ok', 'no'); } });
     bank.querySelectorAll('button').forEach(b => {
-      b.addEventListener('click', () => { if (b.dataset.dragged) return; if (selW) selW.classList.remove('sel'); selW = selW === b ? null : b; if (selW) b.classList.add('sel'); });
+      b.addEventListener('click', () => { if (b.dataset.dragged) return; if (w.words) say(b.textContent); if (selW) selW.classList.remove('sel'); selW = selW === b ? null : b; if (selW) b.classList.add('sel'); });
       b.addEventListener('pointerdown', e => {
         if ((e.button || 0) > 0) return; const sx = e.clientX, sy = e.clientY; let gh = null, hot = null;
         const at = ev => document.elementsFromPoint(ev.clientX, ev.clientY).find(x => x.classList && x.classList.contains('k-drop')) || null;
@@ -288,13 +307,15 @@ function wbPage(w, id, box) {
     $(id + 'Chk').onclick = () => check(false); $(id + 'Ans').onclick = () => check(true);
     $(id + 'Rst').onclick = () => { box.querySelectorAll('.k-drop').forEach(d => { d.innerHTML = '&nbsp;'; delete d.dataset.v; d.classList.remove('ok', 'no'); }); $(id + 'Msg').textContent = ''; };
   } else if (w.type === 'join' || w.type === 'phrase') {
-    const j = w.type === 'join' ? JoinSounds.mount(box, { rows: w.rows, pics: w.pics, say, beep }) : JoinSounds.phrase(box, { rows: w.rows, say, beep, chime });
+    const j = w.type === 'join' ? JoinSounds.mount(box, { rows: w.rows, pics: w.pics, tip: w.tip, say, beep }) : JoinSounds.phrase(box, { rows: w.rows, say, beep, chime });
     JOINS.push(j);
     $(id + 'Chk').onclick = () => { const r = j.check(); result(id, r.right, r.total); };
     $(id + 'Ans').onclick = () => { j.show(); $(id + 'Msg').textContent = ''; chime(); };
     $(id + 'Rst').onclick = () => { j.reset(); $(id + 'Msg').textContent = ''; };
   }
+  if (w.cd) { box.insertAdjacentHTML('beforebegin', `<div class="k-bar" style="justify-content:center;margin-bottom:10px"><button class="r-cd" type="button" id="${id}Cd">🕒 3… 2… 1… קוֹרְאִים!</button></div>`); $(id + 'Cd').onclick = () => countdown(null, 'קוֹרְאִים!'); }   /* w.cd = a 3-2-1 button above the tool */
   if (w.sentences) sentences(w.sentences, box.closest('.k-page'), id);
+  if (w.type === 'text') box.remove();   /* a page that is only a text (w.sentences): no tool, no check bar */
 }
 
 function partWb(D, id, root) {
@@ -302,7 +323,7 @@ function partWb(D, id, root) {
   const pagesTxt = WB.length > 1 ? `עַמּוּדִים ${WB.slice(0, -1).map(w => w.page).join(', ')} וְ־${WB[WB.length - 1].page}` : `עַמּוּד ${WB[0].page}`;
   root.innerHTML = cw(pagesTxt, 'כָּל תַּלְמִיד עוֹשֶׂה אֶת הָעַמּוּד בַּחוֹבֶרֶת. אַחַר כָּךְ בּוֹדְקִים יַחַד עַל הַמָּסָךְ.', ' style="margin-top:22px"') +
     (WB.length > 1 ? `<div class="k-tabs">${WB.map((w, i) => `<button type="button" data-p="${i}" class="${i ? '' : 'on'}">עַמּוּד ${w.page}</button>`).join('')}</div>` : '') +
-    `<div class="k-tabbed">${WB.map((w, i) => `<div class="k-page${i ? '' : ' on'}" data-page="${i}"><p class="k-ins">${w.ins}</p>${w.type === 'drop' ? `<div class="k-bank" id="${id}p${i}Bank"><b>${w.words ? 'מַחְסַן מִלִּים: לוֹחֲצִים עַל מִלָּה וְאָז עַל הַקַּו (אוֹ גּוֹרְרִים)' : 'לוֹחֲצִים עַל צְלִיל וְאָז עַל הַקַּו (אוֹ גּוֹרְרִים)'}</b></div>` : ''}<div class="${w.type === 'circle' ? 'p10' : w.type === 'drop' ? 'p11' : 'pj'}" id="${id}p${i}"></div>${kbar(id + 'p' + i)}<span class="pn">${w.page}</span></div>`).join('')}</div>` + note(D.note);
+    `<div class="k-tabbed">${WB.map((w, i) => `<div class="k-page${i ? '' : ' on'}" data-page="${i}"><p class="k-ins">${w.ins}</p>${w.type === 'drop' ? `<div class="k-bank" id="${id}p${i}Bank"><b>${w.bankLabel || (w.words ? 'מַחְסַן מִלִּים: לוֹחֲצִים עַל מִלָּה וְאָז עַל הַקַּו (אוֹ גּוֹרְרִים)' : 'לוֹחֲצִים עַל צְלִיל וְאָז עַל הַקַּו (אוֹ גּוֹרְרִים)')}</b></div>` : ''}<div class="${w.type === 'circle' ? 'p10' : w.type === 'drop' ? 'p11' : 'pj'}" id="${id}p${i}"></div>${w.type === 'text' ? '' : kbar(id + 'p' + i)}<span class="pn">${w.page}</span></div>`).join('')}</div>` + note(D.note);
   root.querySelectorAll('.k-tabs button').forEach(b => b.onclick = () => { root.querySelectorAll('.k-tabs button').forEach(x => x.classList.toggle('on', x === b)); root.querySelectorAll('.k-page').forEach(p => p.classList.toggle('on', p.dataset.page === b.dataset.p)); setTimeout(() => JOINS.forEach(j => j.redraw()), 30); });
   WB.forEach((w, i) => wbPage(w, id + 'p' + i, $(id + 'p' + i)));
 }
@@ -348,7 +369,7 @@ $('xRef').innerHTML = `<b>Reflection:</b> circle how you feel — “${X.reflect
 $('xNote').innerHTML = note(X.note);
 const xl = r => (r.s.match(/[א-ת]/g) || []).length, wide = X.rows.some(r => xl(r) > 1), wider = X.rows.some(r => xl(r) > 5 || / /.test(r.s.trim()));   /* words in the exit ticket: a wider first column on every row */
 $('rEx').innerHTML = X.rows.map((r, i) => (r.head ? `<p class="x-head r-en" dir="ltr">${r.head}</p>` : '') +
-  `<div class="x-row${wide ? ' wd' : ''}${wider ? ' wdr' : ''}" data-i="${i}"><div class="sy">${r.s}</div>${r.items.map(([img, he], j) => `<button type="button" data-j="${j}" aria-label="${he}"><img src="${img}" alt=""><span class="wd">${he}</span><span class="k-ring"></span></button>`).join('')}</div>`).join('');
+  `<div class="x-row${wide ? ' wd' : ''}${wider ? ' wdr' : ''}" data-i="${i}"><div class="sy">${r.s}</div>${r.items.map(([img, he], j) => `<button type="button" data-j="${j}" aria-label="${he}">${img ? `<img src="${img}" alt=""><span class="wd">${he}</span>` : `<b class="xw">${he}</b>`}<span class="k-ring"></span></button>`).join('')}</div>`).join('');
 $('rEx').querySelectorAll('.x-row').forEach(row => row.querySelectorAll('button').forEach(b => b.onclick = () => { row.querySelectorAll('button').forEach(x => x.classList.remove('on', 'ok', 'no')); b.classList.add('on'); beep(640, .1); }));
 $('exShow').onclick = () => { $('rEx').classList.add('rv'); $('rEx').querySelectorAll('.x-row').forEach(row => { const ok = X.rows[+row.dataset.i].ok; row.querySelectorAll('button').forEach(x => { const r = +x.dataset.j === ok; x.classList.toggle('on', r); x.classList.toggle('ok', r); x.classList.remove('no'); }); }); beep(880, .2); };
 $('exClr').onclick = () => { $('rEx').classList.remove('rv'); $('rEx').querySelectorAll('button').forEach(x => x.classList.remove('on', 'ok', 'no')); };

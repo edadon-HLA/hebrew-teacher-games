@@ -150,3 +150,14 @@ pre('mem', [['מָרָק', true, 'soup'], ['טַבַּעַת', false, 'ring'], [
   ['מָטוֹס', true, 'plane'], ['רָץ', false, 'runner'], ['מַיִם', true, 'water'], ['מֶלֶךְ', true, 'king']], ['מַיִם', 'דָּג']);
 pre('tet', [['טַבַּעַת', true, 'ring'], ['מַיִם', false, 'water'], ['יָד', false, 'hand'], ['נָחָשׁ', false, 'snake'], ['מַתָּנָה', false, 'gift']], ['טַבַּעַת', 'נָחָשׁ']);
 })();
+/* lamed, dalet, yod: the reading-workbook 2 pictures first (lessons "לוֹמְדִים לִקְרֹא", workbook 2). ב (v) has no set: no word starts with it. */
+(() => {
+const S = window.TZLIL_SETS, P = n => 'tzlil/pic-' + n + '.png';
+const pre = (key, wb, drop) => { S[key].items = wb.map(([he, yes, n]) => ({ he, yes, pic: P(n) })).concat(S[key].items.filter(it => !drop.includes(it.he))); };
+pre('lamed', [['לַיְלָה', true, 'night'], ['אַגָּס', false, 'pear'], ['לָבָן', true, 'crayon'], ['דָּג', false, 'fish'], ['לָשׁוֹן', true, 'tongue'],
+  ['עָנָן', false, 'cloud'], ['יַלְדָּה', false, 'girl']], ['דָּג']);
+pre('dalet', [['דַּפִּים', true, 'papers'], ['יַלְדָּה', false, 'girl'], ['יָד', false, 'hand'], ['דָּג', true, 'fish'], ['אַרְבַּע', false, 'four'],
+  ['יָרֵחַ', false, 'moon'], ['סַבְתָּא', false, 'grandma']], ['דָּג']);
+pre('yod', [['יָרֵחַ', true, 'moon'], ['כַּדּוּר', false, 'ball'], ['יָד', true, 'hand'], ['גַּב', false, 'back'], ['חָלָב', false, 'milk'],
+  ['יַלְדָּה', true, 'girl']], ['יַלְדָּה', 'יָרֵחַ']);
+})();

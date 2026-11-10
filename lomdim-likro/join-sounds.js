@@ -38,6 +38,7 @@ window.JoinSounds = (() => {
 .js-pgrid{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center}
 .js-mid{cursor:default;width:clamp(110px,16vw,170px)}
 .js-phrase{text-align:center;font:800 clamp(40px,6vw,64px)/1.3 var(--f-he);color:#16527d;min-height:1.3em}
+.js-row.js-text .js-line{font-size:clamp(28px,3.6vw,40px);text-align:right;width:100%}
 .js-tip{text-align:center;font:700 17px var(--f-he);color:var(--muted);margin:0 0 10px}
 @media(max-width:700px){.js-grid{gap:12px 16px}.js-snd{min-width:48px;height:48px;font-size:26px}.js-line{min-width:96px;font-size:30px}}`;
 
@@ -45,14 +46,15 @@ window.JoinSounds = (() => {
     if (!cssDone) { const s = document.createElement('style'); s.textContent = CSS; document.head.appendChild(s); cssDone = true; }
     const say = opt.say || (() => {}), beep = opt.beep || (() => {});
     const rows = opt.rows, pics = opt.pics;
-    root.innerHTML = `<p class="js-tip">לוֹחֲצִים עַל הַקַּו — הַצְּלִילִים מִתְחַבְּרִים לְמִלָּה. אַחַר כָּךְ: לוֹחֲצִים עַל הַמִּלָּה וְעַל הַתְּמוּנָה.</p>
+    root.innerHTML = `<p class="js-tip">${opt.tip || 'לוֹחֲצִים עַל הַקַּו — הַצְּלִילִים מִתְחַבְּרִים לְמִלָּה. אַחַר כָּךְ: לוֹחֲצִים עַל הַמִּלָּה וְעַל הַתְּמוּנָה.'}</p>
       <div class="js-wrap"><svg class="js-svg"></svg><div class="js-grid">${rows.map((r, i) => `
-        <div class="js-row" data-i="${i}">${r.parts.map((p, j) => (j ? '<span class="js-plus">+</span>' : '') + `<span class="js-snd">${p}</span>`).join('')}
-          <span class="js-arr">⬅</span><button type="button" class="js-line" data-i="${i}">&nbsp;</button></div>
+        <div class="js-row${r.parts ? '' : ' js-text'}" data-i="${i}">${r.parts ? r.parts.map((p, j) => (j ? '<span class="js-plus">+</span>' : '') + `<span class="js-snd">${p}</span>`).join('') + `
+          <span class="js-arr">⬅</span>` : ''}<button type="button" class="js-line" data-i="${i}">${r.parts ? '&nbsp;' : r.word}</button></div>
         <button type="button" class="js-pic" data-p="${i}"><img src="${pics[i].img}" alt=""></button>`).join('')}</div></div>`;
     const wrap = root.querySelector('.js-wrap'), svg = root.querySelector('.js-svg');
     const lineEl = i => root.querySelector(`.js-line[data-i="${i}"]`), picEl = p => root.querySelector(`.js-pic[data-p="${p}"]`);
-    const joined = new Set(), match = new Map();   /* row -> picture */
+    /* a row without parts = a ready sentence (workbook 2 p.13: sentence -> picture): it starts joined, a click reads it */
+    const joined = new Set(rows.map((r, i) => r.parts ? -1 : i).filter(i => i >= 0)), match = new Map();   /* row -> picture */
     let sel = null;
     function draw() {
       const W = wrap.getBoundingClientRect();
@@ -71,6 +73,7 @@ window.JoinSounds = (() => {
     root.querySelectorAll('.js-line').forEach(l => l.onclick = () => {
       const i = +l.dataset.i;
       if (!joined.has(i)) { join(i); return; }
+      if (!rows[i].parts && sel !== i) say(rows[i].word);
       root.querySelectorAll('.js-line').forEach(x => x.classList.toggle('sel', x === l && sel !== i));
       sel = sel === i ? null : i;
     });
@@ -96,9 +99,9 @@ window.JoinSounds = (() => {
         return { right, total: rows.length };
       },
       show() { rows.forEach((r, i) => { join(i); match.set(i, r.pic); lineEl(i).classList.add('ok'); lineEl(i).classList.remove('no'); picEl(r.pic).classList.add('ok'); }); draw(); },
-      reset() { joined.clear(); match.clear(); sel = null; svg.innerHTML = '';
+      reset() { rows.forEach((r, i) => { if (r.parts) joined.delete(i); }); match.clear(); sel = null; svg.innerHTML = '';
         root.querySelectorAll('.js-row').forEach(r => r.classList.remove('done'));
-        root.querySelectorAll('.js-line').forEach(l => { l.innerHTML = '&nbsp;'; l.classList.remove('ok', 'no', 'sel'); });
+        root.querySelectorAll('.js-line').forEach(l => { if (rows[+l.dataset.i].parts) l.innerHTML = '&nbsp;'; l.classList.remove('ok', 'no', 'sel'); });
         root.querySelectorAll('.js-pic').forEach(p => p.classList.remove('ok', 'bad')); },
       redraw: draw
     };

@@ -42,10 +42,16 @@ window.SoundDrill = (() => {
   const sound = (l, v) => (LETTER[l] || '') + (v === 'sv' && GUTTURAL[l] ? 'a' : VOWEL[v].s);
   const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
+  /* final letters (workbook 2 on): one card each, NO vowel, in 🔤 letter mode and 🔀 mix only (never in ◌ vowel mode).
+   * Pass them in `finals: ['ן', 'ם']` (or inside `letters`; they are moved out automatically). */
+  const FINAL = { 'ן': 'n · end', 'ם': 'm · end', 'ך': 'ch · end', 'ף': 'f · end', 'ץ': 'ts · end' };
+
   function mount(root, opt) {
     const letters = opt.letters.filter(l => l in LETTER), vowels = (opt.vowels || ALL).filter(v => v in VOWEL);
+    const finals = [...new Set(opt.letters.concat(opt.finals || []).filter(l => l in FINAL))];
     const POOL = [];
     letters.forEach(l => vowels.forEach(v => POOL.push({ l, v, t: syl(l, v), s: sound(l, v) })));
+    finals.forEach(l => POOL.push({ l, v: null, t: l, s: FINAL[l] }));
     root.classList.add('sd');
     root.innerHTML = `
       <div class="sd-modes">
@@ -101,7 +107,7 @@ window.SoundDrill = (() => {
     function reveal() { const it = list[idx]; rev = true; snd.textContent = it.s; snd.classList.remove('hid'); if (voice.checked) say(it.t); }
     function subPicker() {
       if (mode === 'letter' || mode === 'vowel') {
-        const opts = mode === 'letter' ? letters.map(l => [l, l, LETTER[l] || '—']) : vowels.map(v => [v, '◌' + VOWEL[v].m + ' ' + VOWEL[v].n, VOWEL[v].s]);
+        const opts = mode === 'letter' ? letters.map(l => [l, l, LETTER[l] || '—']).concat(finals.map(l => [l, l, FINAL[l]])) : vowels.map(v => [v, '◌' + VOWEL[v].m + ' ' + VOWEL[v].n, VOWEL[v].s]);
         if (!opts.some(o => o[0] === sub)) sub = opts[0][0];
         subBox.innerHTML = opts.map(([k, t, s]) => `<button class="sd-chip${k === sub ? ' on' : ''}" type="button" data-k="${k}">${t}<small>${s}</small></button>`).join('');
         subBox.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { sub = b.dataset.k; subPicker(); build(); });
@@ -130,5 +136,5 @@ window.SoundDrill = (() => {
     build(); show(false);
     return { pool: POOL };
   }
-  return { mount, LETTER, VOWEL, ALL, GUTTURAL, syl, sound };
+  return { mount, LETTER, VOWEL, FINAL, ALL, GUTTURAL, syl, sound };
 })();
