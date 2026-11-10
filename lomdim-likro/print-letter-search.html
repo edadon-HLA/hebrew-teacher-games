@@ -35,7 +35,7 @@ h1 small{font-size:11pt;color:#6b6880;font-weight:700}
 <script>
 const S = LL.search;
 document.title = 'תִּפְזֹרֶת אוֹתִיּוֹת — ' + S.letter;
-document.getElementById('tag').textContent = `קְרִיאָה ${LL.n} · חֲזָרָה עַל ${S.letter}`;
+document.getElementById('tag').textContent = S.tag || `קְרִיאָה ${LL.n} · חֲזָרָה עַל ${S.letter}`;
 document.getElementById('ask').innerHTML = `הַקִּיפוּ כָּל ${S.letter}: &nbsp;<bdi dir="rtl">${S.ask}</bdi>`;
 document.getElementById('cq').textContent = S.count;
 document.getElementById('g').innerHTML = S.rows.flat().map(c => `<div>${c.replace(/^\*/, '')}</div>`).join('');

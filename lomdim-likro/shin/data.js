@@ -1,40 +1,91 @@
-/* Niflaot reading lesson 1 — the letter שׁ. Shared by the lesson page and the printable sheets. */
-window.SHIN = (() => {
-  const SH = 'שׁ';                                 /* ש + shin dot */
-  const K = 'ָ', P = 'ַ', V = 'ְ';        /* kamatz, patach, shva */
-  const sh = { ka: SH + K, pa: SH + P, sv: SH + V, plain: SH };
-
-  /* letter search: 7 rows x 8 columns, fixed so that the screen and the PDF match.
-   * 'ka' 'pa' 'sv' = שָׁ שַׁ שְׁ (targets); anything else is a distractor written as letter + nikud. */
-  const T = 'T';
-  const rows = [
-    ['סָ', T + 'ka', 'תַּ', 'בָּ', T + 'pa', 'מְ', 'צַ', T + 'sv'],
-    [T + 'sv', 'חָ', T + 'ka', 'רַ', 'סְ', T + 'pa', 'לָ', 'תָּ'],
-    ['טַ', T + 'pa', 'קְ', T + 'ka', 'דָּ', 'עַ', T + 'sv', 'פְּ'],
-    [T + 'ka', 'מַ', 'סַ', T + 'sv', T + 'pa', 'כָּ', 'צְ', 'חַ'],
-    ['תְּ', T + 'sv', 'בַּ', 'רָ', T + 'ka', 'לְ', T + 'pa', 'סָ'],
-    [T + 'pa', 'קָ', T + 'sv', 'מָ', 'חְ', T + 'ka', 'דַּ', 'עָ'],
-    ['פַּ', T + 'ka', 'כְּ', T + 'pa', 'טָ', 'רְ', T + 'sv', 'בְּ']
-  ];
-  const grid = rows.map(r => r.map(c => c[0] === T && c.length === 3 ? { t: true, k: c.slice(1), s: sh[c.slice(1)] } : { t: false, s: c }));
-
-  /* workbook p.3 "קִרְאוּ" board, right to left, first row then second row; sz = size on the board */
-  const board = [
-    { k: 'ka', sz: 'l' }, { k: 'plain', sz: 's' }, { k: 'plain', sz: 'm' }, { k: 'pa', sz: 'm' },
-    { k: 'pa', sz: 's' }, { k: 'sv', sz: 'l' }, { k: 'plain', sz: 'm' }, { k: 'ka', sz: 'l' }
-  ].map(b => ({ ...b, s: sh[b.k] }));
-
-  /* what each card says (English sound labels only) */
-  const sound = { ka: 'sha', pa: 'sha', sv: 'sh', plain: 'sh' };
-
-  /* workbook p.6 — first sound of each picture */
-  const exit = [
-    { pic: 'tzlil/pic-sky.png',   he: 'שָׁמַיִם',  k: 'ka' },
-    { pic: 'tzlil/pic-three.png', he: 'שָׁלוֹשׁ', k: 'ka' },
-    { pic: 'tzlil/pic-blot.png',  he: 'שָׁחוֹר',   k: 'ka' },
-    { pic: 'tzlil/pic-carpet.png', he: 'שָׁטִיחַ', k: 'ka' },
-    { pic: 'tzlil/pic-clock.png', he: 'שָׁעוֹן',   k: 'ka' },
-    { pic: 'tzlil/pic-two.png',   he: 'שְׁתַּיִם', k: 'sv' }
-  ];
-  return { sh, grid, board, sound, exit, targets: grid.flat().filter(c => c.t).length };
+/* לוֹמְדִים לִקְרֹא — the letter שׁ (reading workbook pp. 3-6), lesson 1. Read by letter-lesson.js and the printables (print-*.html).
+ * First letter: no earlier letter to review, so the entry ticket searches שׁ itself and the warm-up uses known Niflaot words
+ * (no ש words). The old v1 page data is in shin/data-v1.js (used only by the old Lomdim-likro-shin-*.html printables). */
+window.LL = (() => {
+  const TZ = '../games/tzlil/';
+  return {
+    key: 'shin', letter: 'שׁ', n: 1, pages: '3–6', title: 'הָאוֹת שׁ', sub: 'שָׁ · שַׁ · שְׁ',
+    /* entry ticket: the first letter, so students find the new shape שׁ ('*' = target). Same grid as the v1 page. */
+    search: {
+      letter: 'שׁ', ask: 'שָׁ · שַׁ · שְׁ', count: 'כַּמָּה שׁ מָצָאתִי?', tag: 'קְרִיאָה 1 · הָאוֹת שׁ',
+      note: 'הַשִּׁעוּר הָרִאשׁוֹן: מְחַפְּשִׂים אֶת הַצּוּרָה שֶׁל הָאוֹת הַחֲדָשָׁה שׁ. מְחַלְּקִים כַּרְטִיס לְכָל תַּלְמִיד. הַתַּלְמִידִים מַקִּיפִים בְּשֶׁקֶט. בַּסּוֹף הַמּוֹרֶה לוֹחֵץ "הַצִּיגוּ" וְסוֹפְרִים יַחַד.',
+      rows: [
+        ['סָ', '*שָׁ', 'תַּ', 'בָּ', '*שַׁ', 'מְ', 'צַ', '*שְׁ'],
+        ['*שְׁ', 'חָ', '*שָׁ', 'רַ', 'סְ', '*שַׁ', 'לָ', 'תָּ'],
+        ['טַ', '*שַׁ', 'קְ', '*שָׁ', 'דָּ', 'עַ', '*שְׁ', 'פְּ'],
+        ['*שָׁ', 'מַ', 'סַ', '*שְׁ', '*שַׁ', 'כָּ', 'צְ', 'חַ'],
+        ['תְּ', '*שְׁ', 'בַּ', 'רָ', '*שָׁ', 'לְ', '*שַׁ', 'סָ'],
+        ['*שַׁ', 'קָ', '*שְׁ', 'מָ', 'חְ', '*שָׁ', 'דַּ', 'עָ'],
+        ['פַּ', '*שָׁ', 'כְּ', '*שַׁ', 'טָ', 'רְ', '*שְׁ', 'בְּ']
+      ]
+    },
+    /* warm-up: words the class ALREADY says in Hebrew (Niflaot). No ש words. */
+    warm: {
+      step: 'חִמּוּם: מִלִּים שֶׁאֲנַחְנוּ יוֹדְעִים', title: 'מָה בַּתְּמוּנָה? אוֹמְרִים אֶת הַמִּלָּה בְּעִבְרִית',
+      btn: '👁 הַצִּיגוּ אֶת הַמִּלָּה',
+      sub: 'עַל הַמָּסָךְ תְּמוּנָה שֶׁל מִלָּה שֶׁכְּבָר יוֹדְעִים — כֻּלָּם אוֹמְרִים אֶת הַמִּלָּה בְּעִבְרִית בְּקוֹל יַחַד — הַמּוֹרֶה לוֹחֵץ וּמַרְאֶה אֶת הַמִּלָּה.',
+      items: [
+        { he: 'אַבָּא', en: 'dad', pic: 'alef/father.png' }, { he: 'סַבְתָּא', en: 'grandma', pic: 'samekh/grandma.png' },
+        { he: 'סַבָּא', en: 'grandpa', pic: 'samekh/grandpa.png' }, { he: 'חַלּוֹן', en: 'window', pic: 'alef/window.png' },
+        { he: 'סַפָּה', en: 'sofa', pic: 'he/sofa.png' }, { he: 'אָרוֹן', en: 'closet', pic: 'alef/wardrobe.png' },
+        { he: 'סְפָרִים', en: 'books', pic: 'samekh/books.png' }, { he: 'מַיִם', en: 'water', pic: 'mem/water.png' },
+        { he: 'גְּלִידָה', en: 'ice cream', pic: 'gimel/icecream.png' }, { he: 'יָד', en: 'hand', pic: 'tet/hand.png' },
+        { he: 'חָתוּל', en: 'cat', pic: 'het/kitten.png' }, { he: 'פְּרָחִים', en: 'flowers', pic: 'pe/flowers.png' }
+      ],
+      note: 'חִמּוּם עַל מָה שֶׁכְּבָר יוֹדְעִים: תְּמוּנָה מֻכֶּרֶת, כָּל הַכִּתָּה אוֹמֶרֶת אֶת הַמִּלָּה בְּעִבְרִית בְּקוֹל, וְאָז הַמּוֹרֶה לוֹחֵץ — הַמִּלָּה מוֹפִיעָה. אֵין כַּרְטִיסִים. אֵין כָּאן מִלִּים עִם שׁ — אֶת שׁ לוֹמְדִים מִיָּד אַחַר כָּךְ.'
+    },
+    card: {
+      page: 3, pic: TZ + 'pic-three.png', cap: 'שָׁלוֹשׁ',
+      forms: [['שָׁ', 'sha'], ['שַׁ', 'sha'], ['שׁ', 'sh · no vowel', 1], ['שְׁ', 'she']],
+      read: 'קוֹרְאִים יַחַד: <b>שָׁ… שַׁ… שְׁ… שׁ…</b> וְאַחַר כָּךְ: שָׁלוֹשׁ!',
+      en: 'Kamatz and patach both say “a”: <bdi dir="rtl">שָׁ</bdi> = <bdi dir="rtl">שַׁ</bdi> = sha. Shva says “e”: <bdi dir="rtl">שְׁ</bdi> = she.',
+      note: 'זֶה הַשִּׁעוּר הָרִאשׁוֹן: מַצִּיגִים אֶת הָאוֹת וְאֶת שָׁלוֹשׁ הַתְּנוּעוֹת. בַּחוֹבֶרֶת הָאוֹת בְּלִי נְקֻדָּה; כָּאן הִיא עִם נְקֻדָּה (שׁ).'
+    },
+    /* p.3 "קִרְאוּ" board, right to left as in the book */
+    board: {
+      page: 3,
+      rows: [[['שָׁ', 'sha', 'l'], ['שׁ', 'sh', 's'], ['שׁ', 'sh', 'm'], ['שַׁ', 'sha', 'm']],
+             [['שַׁ', 'sha', 's'], ['שְׁ', 'she', 'l'], ['שׁ', 'sh', 'm'], ['שָׁ', 'sha', 'l']]],
+      note: 'גְּדוֹל אוֹ קָטָן — אוֹתוֹ צְלִיל.'
+    },
+    drill: ['שׁ'],
+    game: { key: 'shin', name: 'שׁ' },
+    do: [
+      { type: 'line', page: 4, ins: 'מִתְחוּ קַו מֵהַ"שָׁ" לַתְּמוּנוֹת הַמַּתְחִילוֹת בַּצְּלִיל שָׁ:', ctr: 'שָׁ',
+        pics: [
+          [TZ + 'pic-three.png', 'שָׁלוֹשׁ', true, 470, 680, 400, 700], [TZ + 'pic-carpet.png', 'שָׁטִיחַ', true, 1000, 1480, 440, 750],
+          [TZ + 'pic-blot.png', 'שָׁחוֹר', true, 60, 485, 870, 1240], [TZ + 'pic-house.png', 'בַּיִת', false, 1280, 1640, 870, 1240],
+          [TZ + 'pic-apple.png', 'תַּפּוּחַ', false, 115, 420, 1560, 1880], [TZ + 'pic-balloon.png', 'בָּלוֹן', false, 760, 990, 1700, 2150],
+          [TZ + 'pic-clock.png', 'שָׁעוֹן', true, 1275, 1640, 1535, 1905]
+        ],
+        note: 'שָׁלוֹשׁ, שָׁטִיחַ, שָׁחוֹר (כֶּתֶם דְּיוֹ), שָׁעוֹן — מַתְחִילִים בְּ־שָׁ. בַּיִת, תַּפּוּחַ, בָּלוֹן — לֹא. לְחִיצָה עַל תְּמוּנָה נְכוֹנָה מוֹתַחַת קַו; עַל תְּמוּנָה לֹא נְכוֹנָה — ✘.' },
+      { type: 'strokes', page: 5, ins: 'כִּתְבוּ "שָׁ" אוֹ "שְׁ" בַּשּׁוּרוֹת הַבָּאוֹת, עִבְרוּ עַל הַקַּוִּים לְפִי הַדֻּגְמָה:',
+        paths: ['M240 52V176', 'M240 176H62', 'M62 176V52', 'M150 52V176'],
+        nums: [[240, 24], [266, 196], [40, 196], [150, 24]],
+        steps: ['מִלְמַעְלָה לְמַטָּה — הַצַּד הַיְמָנִי', 'שְׂמֹאלָה — הַבָּסִיס', 'לְמַעְלָה — הַצַּד הַשְּׂמָאלִי', 'מִלְמַעְלָה לְמַטָּה — הַקַּו הָאֶמְצָעִי'],
+        vows: ['ka', 'pa', 'sv'], vowLabel: '+ נִקּוּד (שָׁ / שַׁ / שְׁ)',
+        note: 'שׁוּרָה 1 שָׁ, שׁוּרָה 2 שַׁ, שׁוּרָה 3 שְׁ, שׁוּרוֹת 4–6 שׁ. הַמּוֹרֶה מַרְאֶה בַּלּוּחַ אֶת סֵדֶר הַקַּוִּים, וְהַתַּלְמִידִים עוֹבְרִים עַל הַקַּוִּים בַּחוֹבֶרֶת.' },
+      { type: 'wb', pages: [{
+          type: 'drop', page: 6, cols: 2, ins: 'כִּתְבוּ אֶת הַצְּלִיל בּוֹ מַתְחִילָה הַמִּלָּה:',
+          bank: ['שָׁ', 'שַׁ', 'שְׁ', 'שׁ'],
+          pics: [
+            [TZ + 'pic-three.png', 'שָׁלוֹשׁ', ['שָׁ', 'שַׁ']], [TZ + 'pic-sky.png', 'שָׁמַיִם', ['שָׁ', 'שַׁ']],
+            [TZ + 'pic-carpet.png', 'שָׁטִיחַ', ['שָׁ', 'שַׁ']], [TZ + 'pic-blot.png', 'שָׁחוֹר', ['שָׁ', 'שַׁ']],
+            [TZ + 'pic-two.png', 'שְׁתַּיִם', ['שְׁ']], [TZ + 'pic-clock.png', 'שָׁעוֹן', ['שָׁ', 'שַׁ']]
+          ]
+        }],
+        note: 'הַסֵּדֶר כְּמוֹ בַּחוֹבֶרֶת (מִימִין לִשְׂמֹאל): 3, שָׁמַיִם, שָׁטִיחַ, כֶּתֶם, 2, שָׁעוֹן. שְׁתַּיִם ⬅ שְׁ; כָּל הַשְּׁאָר ⬅ שָׁ (גַּם שַׁ נָכוֹן: קָמָץ = פַּתָּח). בַּמַּחְסָן גַּם שׁ בְּלִי תְּנוּעָה — לֹא נָכוֹן.' }
+    ],
+    exit: {
+      q: 'Work alone. Read the sound in each row. Circle the picture that starts with this sound.',
+      rows: [
+        { s: 'שָׁ', ok: 1, items: [['bet/house.png', 'בַּיִת'], [TZ + 'pic-clock.png', 'שָׁעוֹן'], ['tav/apple.png', 'תַּפּוּחַ']] },
+        { s: 'שְׁ', ok: 2, items: [[TZ + 'pic-sky.png', 'שָׁמַיִם'], ['bet/balloon.png', 'בָּלוֹן'], [TZ + 'pic-two.png', 'שְׁתַּיִם']] },
+        { s: 'שַׁ', ok: 0, items: [[TZ + 'pic-carpet.png', 'שָׁטִיחַ'], ['tav/apple.png', 'תַּפּוּחַ'], ['bet/balloon.png', 'בָּלוֹן']] },
+        { s: 'שָׁ', ok: 1, items: [[TZ + 'pic-two.png', 'שְׁתַּיִם'], [TZ + 'pic-blot.png', 'שָׁחוֹר'], ['bet/house.png', 'בַּיִת']] }
+      ],
+      reflect: 'I can read and write <bdi dir="rtl">שָׁ שַׁ שְׁ</bdi>',
+      note: 'מְשִׂימָה חֲדָשָׁה, לֹא מֵהַחוֹבֶרֶת. רַק מִלִּים מֵהַשִּׁעוּר הַזֶּה. הַתְּשׁוּבוֹת: שָׁעוֹן · שְׁתַּיִם · שָׁטִיחַ (שַׁ = שָׁ) · שָׁחוֹר. הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.'
+    }
+  };
 })();

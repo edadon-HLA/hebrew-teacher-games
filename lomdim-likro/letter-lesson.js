@@ -6,7 +6,7 @@
  * window.LL = {
  *   key, letter, n, pages, title, sub,                       // header + card texts
  *   search: { letter, ask, rows: ['*בָּ', 'מַ', ...] x 7, count },     // '*' = a target
- *   warm: { step, title, items: [{ sy, snd } | { he, sy, snd, pic }], note },
+ *   warm: { step, title, items: [{ sy, snd } | { he, sy, snd, pic } | { he, en, pic } (a known word: reveal = word + English)], note, btn? },
  *   card: { page, pic, cap, forms: [[syllable, label, plain?], ...], read, en, note },
  *   board: { page, rows: [[[s, snd, size], ...], ...], note },  // size l / m / s / w (word)
  *   drill: ['שׁ', 'בּ', ...],
@@ -59,7 +59,7 @@ $('sLead').textContent = `תִּפְזֹרֶת אוֹתִיּוֹת — מוֹצ
 $('sSub').textContent = `מַקִּיפִים בְּעִפָּרוֹן כָּל ${SR.letter}: ${SR.ask}. עַל הַמָּסָךְ — הַמּוֹרֶה לוֹחֵץ עַל מִשְׁבֶּצֶת כְּדֵי לְהַקִּיף אוֹתָהּ, וּבַסּוֹף מַצִּיג אֶת כֻּלָּן.`;
 $('rShowAll').textContent = `👁 הַצִּיגוּ אֶת כָּל הַ־${SR.letter}`;
 $('sPdf').href = `Lomdim-likro-${L.key}-letter-search.pdf`;
-$('sNote').innerHTML = note('חֲזָרָה עַל הָאוֹת מֵהַשִּׁעוּר הַקּוֹדֵם. מְחַלְּקִים כַּרְטִיס לְכָל תַּלְמִיד. הַתַּלְמִידִים מַקִּיפִים בְּשֶׁקֶט. בַּסּוֹף הַמּוֹרֶה לוֹחֵץ "הַצִּיגוּ" וְסוֹפְרִים יַחַד.');
+$('sNote').innerHTML = note(SR.note || 'חֲזָרָה עַל הָאוֹת מֵהַשִּׁעוּר הַקּוֹדֵם. מְחַלְּקִים כַּרְטִיס לְכָל תַּלְמִיד. הַתַּלְמִידִים מַקִּיפִים בְּשֶׁקֶט. בַּסּוֹף הַמּוֹרֶה לוֹחֵץ "הַצִּיגוּ" וְסוֹפְרִים יַחַד.');
 const grid = $('rSearch'); let targets = 0;
 SR.rows.forEach(row => row.forEach(c => {
   const t = c[0] === '*', s = t ? c.slice(1) : c; if (t) targets++;
@@ -79,6 +79,8 @@ count();
 const WU = L.warm.items;
 $('wLead').textContent = L.warm.title;
 $('wNote').innerHTML = note(L.warm.note);
+if (L.warm.btn) $('wuRv').textContent = L.warm.btn;
+if (L.warm.sub && $('wSub')) $('wSub').textContent = L.warm.sub;
 let wi = 0, wRev = false;
 const first = (w, sy) => { const m = sy && w.startsWith(sy) ? [null, sy, w.slice(sy.length)] : w.match(/^([א-ת][֑-ׇ]*)([\s\S]*)$/); return m ? `<b>${m[1]}</b>${m[2]}` : w; };
 function wuShow() {
@@ -90,6 +92,7 @@ function wuShow() {
 }
 function wuReveal() {
   const it = WU[wi]; wRev = true;
+  if (it.en) { $('wuWord').className = 'w'; $('wuWord').textContent = it.he; $('wuSnd').className = 'v'; $('wuSnd').textContent = it.en; beep(880, .2); say(it.he); return; }
   if (it.pic) { $('wuWord').className = 'w'; $('wuWord').innerHTML = it.end ? markWord(it.he, it.sy) : first(it.he, it.sy); }
   $('wuSnd').className = 'v'; $('wuSnd').innerHTML = it.pic ? `<bdi dir="rtl">${it.sy}</bdi> = ${it.snd}` : it.snd;
   beep(880, .2); say(it.he || it.sy);
@@ -261,6 +264,7 @@ function wbPage(w, id, box) {
     const bank = $(id + 'Bank');
     bank.insertAdjacentHTML('beforeend', w.bank.map(s => `<button type="button">${s}</button>`).join(''));
     if (w.pics.length === 4) box.style.gridTemplateColumns = 'repeat(2,minmax(0,1fr))';   /* 2 x 2, as in the book */
+    if (w.cols) box.style.gridTemplateColumns = `repeat(${w.cols},minmax(0,1fr))`;
     if (w.words) box.classList.add('words');
     box.innerHTML = w.pics.map(([img, he], j) => `<div class="bx"><img src="${img}" alt="${he}"><button type="button" class="k-drop" data-i="${j}">&nbsp;</button></div>`).join('');
     const put = (drop, v) => { drop.textContent = v; drop.dataset.v = v; drop.classList.remove('ok', 'no'); beep(700, .08); $(id + 'Msg').textContent = ''; };
