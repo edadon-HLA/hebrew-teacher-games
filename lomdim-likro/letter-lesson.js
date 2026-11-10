@@ -177,10 +177,12 @@ if (!L.game) {   /* no תּוֹפְסִים צְלִיל set for this letter (e.
   $('gShort').closest('.sf-part').remove();
   document.querySelectorAll('#s6 a[href*="cards-yes-no"]').forEach(a => a.remove());
 }
-if (L.game) $('gShort').innerHTML = `<a class="sc" href="../games/tofsim-tzlil.html?letter=${G.key}" target="_blank" rel="noopener"><span class="ic">🔊</span><div><h3>תּוֹפְסִים צְלִיל · ${G.name}</h3><p>תְּמוּנָה, ✔ / ✘, סְפִירָה וְחִשּׂוּף</p></div><span class="go">◀</span></a>
+if (L.game) $('gShort').innerHTML = `<a class="sc" href="../games/tofsim-tzlil.html?letter=${G.key}" target="_blank" rel="noopener"><span class="ic">🔊</span><div><h3>תּוֹפְסִים צְלִיל · ${G.name}${G.mode === 'contains' ? ' — בְּתוֹךְ הַמִּלָּה' : G.mode === 'end' ? ' — בַּסּוֹף' : ''}</h3><p>תְּמוּנָה, ✔ / ✘, סְפִירָה וְחִשּׂוּף</p></div><span class="go">◀</span></a>
   <a class="sc" href="../games/tofsim-tzlil.html?letter=${G.key}&word=1" target="_blank" rel="noopener"><span class="ic">📖</span><div><h3>עִם הַמִּלָּה כְּתוּבָה</h3><p>רוֹאִים תְּמוּנָה וְגַם אֶת הַמִּלָּה</p></div><span class="go">◀</span></a>
   <a class="sc" href="../games/tzlil/cards-yes-no.pdf" target="_blank" rel="noopener"><span class="ic">✔✘</span><div><h3>כַּרְטִיסֵי ✔ / ✘</h3><p>לַמִּשְׂחָק (PDF)</p></div><span class="go">◀</span></a>`;
-if (L.game) $('gSub').textContent = `תְּמוּנָה — וְהַכִּתָּה מַחְלִיטָה: מַתְחִיל בְּ־${G.name}? כַּרְטִיסֵי ✔ / ✘ וְסְפִירָה 3-2-1. הַתְּמוּנוֹת שֶׁל הַחוֹבֶרֶת בָּאוֹת רִאשׁוֹנוֹת.`;
+/* G.mode: 'contains' (יֵשׁ בַּמִּלָּה) / 'end' (נִגְמָר בְּ) — the same mode as the set in tzlil-sets.js */
+const GQ = G.mode === 'contains' ? `יֵשׁ בַּמִּלָּה ${G.name}?` : G.mode === 'end' ? `נִגְמָר בְּ־${G.name}?` : `מַתְחִיל בְּ־${G.name}?`;
+if (L.game) $('gSub').textContent = `תְּמוּנָה — וְהַכִּתָּה מַחְלִיטָה: ${GQ} כַּרְטִיסֵי ✔ / ✘ וְסְפִירָה 3-2-1. הַתְּמוּנוֹת שֶׁל הַחוֹבֶרֶת בָּאוֹת רִאשׁוֹנוֹת.`;
 
 /* ---------- 4b. the workbook parts, in the book's order (L.do) ----------
  * types: 'line' (the ב p.8 engine; mark = a final letter -> the word label shows it coloured), 'strokes' (cmp = a letter shown

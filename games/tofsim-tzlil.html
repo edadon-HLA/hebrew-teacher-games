@@ -23,6 +23,7 @@ h1{margin:4px 0 0;font:800 clamp(28px,5vw,42px) 'Rubik',Arial,sans-serif}
 .pick{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;justify-content:center;font-weight:700;font-size:16px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 10px;max-width:100%}
 #setBtns{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;direction:rtl}
 .pick .lt{font:800 26px 'Noto Sans Hebrew',Arial,sans-serif;min-width:44px;height:44px;padding:0 4px;border:2px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}
+.pick .lt.wide{font-size:17px;padding:0 8px}
 .pick .lt.on{border-color:var(--coral);background:var(--coral-soft);color:#7e2335}
 .stage{width:min(760px,100%);background:#fff;border:3px solid var(--ink);border-radius:26px;box-shadow:0 8px 24px rgba(35,35,58,.12);padding:18px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:background .2s,border-color .2s}
 .stage.yes{background:var(--green-soft);border-color:var(--green)}.stage.no{background:var(--coral-soft);border-color:var(--coral)}
@@ -42,7 +43,7 @@ h1{margin:4px 0 0;font:800 clamp(28px,5vw,42px) 'Rubik',Arial,sans-serif}
 </head>
 <body>
 <h1>🔊 תּוֹפְסִים צְלִיל</h1>
-<p class="ask">מַתְחִיל בְּ<b id="letter">שׁ</b>?</p>
+<p class="ask"><span id="askQ">מַתְחִיל בְּ</span><b id="letter">שׁ</b>?</p>
 
 <div class="top">
   <div class="pick" id="setPick" role="group" aria-label="בחירת אות"><span>בְּחֲרוּ אוֹת:</span><span id="setBtns"></span></div>
@@ -73,7 +74,7 @@ h1{margin:4px 0 0;font:800 clamp(28px,5vw,42px) 'Rubik',Arial,sans-serif}
 
 <div id="cdOv" aria-live="assertive"><div id="cdTxt">3</div></div>
 
-<script src="tzlil-sets.js?v=5"></script>
+<script src="tzlil-sets.js?v=6"></script>
 <script>
 (() => {
 const $ = id => document.getElementById(id);
@@ -84,15 +85,27 @@ let S = sets[key], order = [], i = 0, revealed = false;
 const nikud = /[֑-ׇ]/;
 
 /* letter picker: one button per set in tzlil-sets.js; ?letter=key opens with that letter selected (default: shin) */
-$('setBtns').innerHTML = keys.map(k => `<button type="button" class="lt" data-k="${k}" aria-label="${sets[k].title}">${sets[k].title}</button>`).join('');
+$('setBtns').innerHTML = keys.map(k => `<button type="button" class="lt${sets[k].pick ? ' wide' : ''}" data-k="${k}" aria-label="${sets[k].pick || sets[k].title}">${sets[k].pick || sets[k].title}</button>`).join('');
 const markPick = () => document.querySelectorAll('#setBtns .lt').forEach(b => b.classList.toggle('on', b.dataset.k === key));
 $('setBtns').onclick = e => { const b = e.target.closest('.lt'); if (!b) return; key = b.dataset.k; try { history.replaceState(null, '', '?letter=' + key); } catch (x) {} load(); };
 $('optWord').checked = q.get('word') === '1';
 
 function firstLetterHTML(w) {
+  if (S && S.mode && S.mode !== 'start') return hitHTML(w);
   const m = w.match(/^([א-ת][֑-ׇ]*)([\s\S]*)$/);
   return m ? `<b>${m[1]}</b>${m[2]}` : w;
 }
+/* per-set mode (tzlil-sets.js): 'start' (default) · 'contains' · 'end'. For 'contains' / 'end' the reveal marks every matching
+ * letter (S.hl = base letters; S.noDot = only without a dagesh, e.g. ב = v, not בּ = b); 'end' marks only the last letter. */
+function hitHTML(w) {
+  const parts = w.match(/[א-ת][֑-ׇ]*|[^א-ת]+/g) || [w];
+  const last = parts.map((p, k) => /^[א-ת]/.test(p) ? k : -1).filter(k => k >= 0).pop();
+  const ok = p => /^[א-ת]/.test(p) && (S.hl || []).includes(p[0]) && !(S.noDot && p.includes('ּ'));
+  return parts.map((p, k) => ok(p) && (S.mode !== 'end' || k === last) ? `<b>${p}</b>` : p).join('');
+}
+const ASK = { start: ['מַתְחִיל בְּ', '✔ כֵּן! מַתְחִיל בְּ', '✘ לֹא — לֹא מַתְחִיל בְּ'],
+  contains: ['יֵשׁ בַּמִּלָּה ', '✔ כֵּן! יֵשׁ בַּמִּלָּה ', '✘ לֹא — אֵין בַּמִּלָּה '],
+  end: ['נִגְמָר בְּ־', '✔ כֵּן! נִגְמָר בְּ־', '✘ לֹא — לֹא נִגְמָר בְּ־'] };
 function say(t) {
   if (!$('optVoice').checked || !window.speechSynthesis) return;
   const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang));
@@ -102,7 +115,7 @@ function say(t) {
 let ac; const beep = (f, d = .15, v = .15) => { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; g.gain.value = v; o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + d); } catch (e) {} };
 
 function load() {
-  S = sets[key]; markPick(); $('letter').textContent = S.first; document.title = 'תּוֹפְסִים צְלִיל — ' + S.title;
+  S = sets[key]; markPick(); $('letter').textContent = S.first; $('askQ').textContent = ASK[S.mode || 'start'][0]; document.title = 'תּוֹפְסִים צְלִיל — ' + S.title;
   order = S.items.map((_, k) => k); i = 0; show();
 }
 function show() {
@@ -118,7 +131,7 @@ function reveal() {
   $('word').className = 'word'; $('word').innerHTML = firstLetterHTML(it.he);
   $('stage').className = 'stage ' + (it.yes ? 'yes' : 'no');
   const v = $('verdict'); v.className = 'verdict ' + (it.yes ? 'yes' : 'no');
-  v.textContent = it.yes ? '✔ כֵּן! מַתְחִיל בְּ' + S.first : '✘ לֹא — לֹא מַתְחִיל בְּ' + S.first;
+  { const A = ASK[S.mode || 'start']; v.textContent = (it.yes ? A[1] : A[2]) + S.first; }
   beep(it.yes ? 880 : 300, .25); say(it.he);
 }
 const go = d => { i = (i + d + order.length) % order.length; show(); };

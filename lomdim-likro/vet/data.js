@@ -1,5 +1,5 @@
 /* לוֹמְדִים לִקְרֹא — the letter ב without a dot = v (reading workbook 2, pp. 18-21). בּ (b) was learned in workbook 1.
- * No תּוֹפְסִים צְלִיל: no Hebrew word starts with ב (v), so game: null (the teacher will decide later). */
+ * תּוֹפְסִים צְלִיל: set vet, mode 'contains' (teacher: "Yes, add them"). */
 window.LL = (() => {
   return {
     key: 'vet', letter: 'ב', n: 20, book: 2, pages: '18–21', title: 'הָאוֹת ב', sub: 'בָ · בַ · בְ (v) · בּ אוֹ ב?',
@@ -41,7 +41,7 @@ window.LL = (() => {
              [['לְ', 'le'], ['ן', 'n · end'], ['קַ', 'ka'], ['רְ', 're'], ['גַ', 'ga'], ['יְ', 'ye'], ['בָ', 'va']]]
     },
     drill: ['שׁ', 'בּ', 'ת', 'ק', 'ר', 'א', 'ס', 'ח', 'נ', 'ג', 'ה', 'פּ', 'מ', 'ט', 'ל', 'ד', 'י', 'ב'], finals: ['ן', 'ם'],
-    game: null,
+    game: { key: 'vet', name: 'ב (v)', mode: 'contains' },
     do: [
       { type: 'strokes', page: 19, ins: 'כִּתְבוּ "בַ" אוֹ "בְ" בַּשּׁוּרוֹת הַבָּאוֹת, עִבְרוּ עַל הַקַּוִּים לְפִי הַדֻּגְמָה:',
         paths: ['M70 62H200', 'M200 62Q218 62 218 82V190', 'M64 190H252'],

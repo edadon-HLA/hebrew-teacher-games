@@ -177,7 +177,7 @@ pre('kaf', [['כַּדּוּר', true, 'ball'], ['גַּרְבַּיִם', false
 (() => {
 const S = window.TZLIL_SETS, P = n => 'tzlil/pic-' + n + '.png';
 const pre = (key, wb, drop) => { S[key].items = wb.map(([he, yes, n]) => ({ he, yes, pic: P(n) })).concat(S[key].items.filter(it => !drop.includes(it.he))); };
-pre('zayin', [['חִיּוּךְ', false, 'smiley'], ['זַחַל', true, 'caterpillar'], ['רָץ', false, 'runner'], ['שַׂקִּית', false, 'bag'], ['כְּפָפָה', false, 'glove'],
+pre('zayin', [['חִיּוּךְ', false, 'smiley'], ['זַחַל', true, 'caterpillar'], ['רָץ', false, 'runner2'], ['שַׂקִּית', false, 'bag'], ['כְּפָפָה', false, 'glove'],
   ['זָהָב', true, 'gold'], ['מַדָּף', false, 'shelf']], ['זָהָב']);
 const sin = { letter: 'שׂ', first: 'שׂ', sound: 's (sin)', title: 'שׂ', items: [
   ['שַׂקִּית', true, 'bag'], ['מַגָּפַיִם', false, 'boots'], ['חָלָב', false, 'milk'], ['צָב', false, 'turtle'], ['דָּג', false, 'clownfish'], ['שָׂמֵחַ', true, 'smiley']
@@ -195,4 +195,42 @@ const S = window.TZLIL_SETS, P = n => 'tzlil/pic-' + n + '.png';
 const pre = (key, wb, drop) => { S[key].items = wb.map(([he, yes, n]) => ({ he, yes, pic: P(n) })).concat(S[key].items.filter(it => !drop.includes(it.he))); };
 pre('tsadi', [['טַבַּעַת', false, 'ring'], ['עַכְבָּר', false, 'mouse'], ['צָב', true, 'turtle'], ['לַיְלָה', false, 'night'], ['צָהֹב', true, 'yellow'],
   ['צָעִיף', true, 'scarf']], ['צָב', 'צָהֹב']);
+})();
+/* "contains" / "end" sets (teacher: "Yes, add them"): mode 'contains' | 'end' (default 'start'), hl = the letters marked on the
+ * reveal, noDot = only without a dagesh. Workbook pictures first, then emoji. The ✘ words never have the same sound.
+ * Each new set is placed right after its base letter in the picker; `pick` = the picker label. */
+(() => {
+const S = window.TZLIL_SETS, P = n => 'tzlil/pic-' + n + '.png';
+const it = ([he, yes, x]) => /\.|^[a-z0-9]+$/.test(x) && !/[\u{1F000}-\u{1FFFF}☀-➿]/u.test(x) ? { he, yes, pic: P(x) } : { he, yes, emo: x };
+const mk = (letter, first, sound, mode, hl, pick, items) => ({ letter, first, sound, title: first, mode, hl, noDot: true, pick, items: items.map(it) });
+const NEW = {
+  vet: mk('ב', 'ב', 'v (ב without a dot)', 'contains', ['ב'], 'ב — בְּתוֹךְ הַמִּלָּה', [
+    ['כּוֹבַע', true, 'hat'], ['בָּנָנָה', false, 'banana'], ['חָלָב', true, 'milk'], ['לָבָן', true, 'crayon'], ['סַבָּא', false, 'oldman'],
+    ['גַּב', true, 'back'], ['יָד', false, 'hand'], ['סַבְתָּא', true, 'grandma'], ['מַחַק', false, 'eraser'], ['כּוֹכָב', true, '⭐'],
+    ['בָּלוֹן', false, 'balloon'], ['כֶּלֶב', true, '🐶'], ['דָּג', false, '🐟'], ['זְאֵב', true, '🐺'], ['לֵב', true, '❤️'], ['שֶׁמֶשׁ', false, '☀️'],
+    ['עֲנָבִים', true, '🍇']]),
+  fe: mk('פ', 'פ', 'f (פ without a dot)', 'contains', ['פ', 'ף'], 'פ — בְּתוֹךְ הַמִּלָּה', [
+    ['כְּפָפָה', true, 'glove'], ['פַּח', false, 'trash'], ['מַגָּפַיִם', true, 'boots'], ['אַף', true, 'nose'], ['פַּרְפַּר', false, 'butterfly'],
+    ['כְּפָפוֹת', true, 'mittens'], ['פַּסְטָה', false, 'pasta'], ['מַגָּף', true, 'boot'], ['זַחַל', false, 'caterpillar'], ['מַדָּף', true, 'shelf'],
+    ['חַם', false, 'hot'], ['כַּף', true, 'spoon']]),
+  'fe-sofit': mk('ף', 'ף', 'f (end)', 'end', ['ף'], 'ף — בַּסּוֹף', [
+    ['מַגָּף', true, 'boot'], ['קוֹפֵץ', false, 'jumper'], ['אַף', true, 'nose'], ['מֶלֶךְ', false, 'king2'], ['מַדָּף', true, 'shelf'],
+    ['רָץ', false, 'runner2'], ['כַּף', true, 'spoon'], ['שַׂקִּית', false, 'bag'], ['תּוֹף', true, '🥁'], ['זַחַל', false, 'caterpillar'],
+    ['כֶּסֶף', true, '💰'], ['עוֹף', true, '🐔']]),
+  khaf: mk('כ', 'כ', 'ch (כ without a dot)', 'contains', ['כ', 'ך'], 'כ — בְּתוֹךְ הַמִּלָּה', [
+    ['שְׂמִיכָה', true, 'bed'], ['כַּף', false, 'spoon'], ['עַכְבָּר', true, 'mouse'], ['כַּדּוּר', false, 'ball'], ['מֶלֶךְ', true, 'king2'],
+    ['כָּרִית', false, 'pillow'], ['הוֹלֵךְ', true, 'walker'], ['גָּמָל', false, 'camel'], ['דֶּרֶךְ', true, '🛣️'], ['גַּן שַׁעֲשׁוּעִים', false, 'playground'],
+    ['כָּרִיךְ', true, '🥪'], ['מַלְאָךְ', true, '👼']]),
+  'khaf-sofit': mk('ך', 'ך', 'ch (end)', 'end', ['ך'], 'ך — בַּסּוֹף', [
+    ['מֶלֶךְ', true, 'king2'], ['קָם', false, 'boybed'], ['הוֹלֵךְ', true, 'walker'], ['בֶּרֶז', false, 'tap'], ['דֶּרֶךְ', true, '🛣️'],
+    ['רָץ', false, 'runner2'], ['בֶּרֶךְ', true, '🦵'], ['אַף', false, 'nose'], ['כָּרִיךְ', true, '🥪'], ['מַגָּף', false, 'boot'],
+    ['מַלְאָךְ', true, '👼']]),
+  'tsadi-sofit': mk('ץ', 'ץ', 'ts (end)', 'end', ['ץ'], 'ץ — בַּסּוֹף', [
+    ['קוֹפֵץ', true, 'jumper'], ['הוֹלֵךְ', false, 'walker'], ['רָץ', true, 'runner2'], ['טַבַּעַת', false, 'ring'], ['עֵץ', true, 'tree'],
+    ['מַדָּף', false, 'shelf'], ['מִיץ', true, '🧃'], ['עָצִיץ', true, '🪴']])
+};
+const AFTER = { bet: ['vet'], pe: ['fe', 'fe-sofit'], kaf: ['khaf', 'khaf-sofit'], tsadi: ['tsadi-sofit'] };
+const o = {}; Object.keys(S).forEach(k => { o[k] = S[k]; (AFTER[k] || []).forEach(n => { o[n] = NEW[n]; }); });
+Object.keys(NEW).forEach(n => { if (!o[n]) o[n] = NEW[n]; });
+window.TZLIL_SETS = o;
 })();
