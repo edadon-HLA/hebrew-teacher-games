@@ -227,9 +227,17 @@ const NEW = {
     ['מַלְאָךְ', true, '👼']]),
   'tsadi-sofit': mk('ץ', 'ץ', 'ts (end)', 'end', ['ץ'], 'ץ — בַּסּוֹף', [
     ['קוֹפֵץ', true, 'jumper'], ['הוֹלֵךְ', false, 'walker'], ['רָץ', true, 'runner2'], ['טַבַּעַת', false, 'ring'], ['עֵץ', true, 'tree'],
-    ['מַדָּף', false, 'shelf'], ['מִיץ', true, '🧃'], ['עָצִיץ', true, '🪴']])
+    ['מַדָּף', false, 'shelf'], ['מִיץ', true, '🧃'], ['עָצִיץ', true, '🪴']]),
+  'nun-sofit': mk('ן', 'ן', 'n (end)', 'end', ['ן'], 'ן — בַּסּוֹף', [
+    ['חַלּוֹן', true, 'window'], ['מַיִם', false, 'water'], ['בָּלוֹן', true, 'balloon'], ['עָנָן', true, 'cloud'], ['נָחָשׁ', false, 'snake'],
+    ['עִפָּרוֹן', true, 'pencil'], ['נַדְנֵדָה', false, 'swing'], ['שָׁעוֹן', true, 'clock'], ['מַתָּנָה', false, 'gift'], ['אָרוֹן', true, 'wardrobe'],
+    ['חַם', false, 'hot'], ['לִימוֹן', true, '🍋']]),
+  'mem-sofit': mk('ם', 'ם', 'm (end)', 'end', ['ם'], 'ם — בַּסּוֹף', [
+    ['מַיִם', true, 'water'], ['קוֹפֶצֶת', false, 'trampoline'], ['חַם', true, 'hot'], ['רָץ', false, 'runner'], ['קָם', true, 'getup'],
+    ['מֶלֶךְ', false, 'king'], ['גַּרְבַּיִם', true, 'socks'], ['מַתָּנָה', false, 'gift'], ['גֶּשֶׁם', true, '🌧️'], ['מָרָק', false, 'soup'],
+    ['יָם', true, '🌊'], ['סֻלָּם', true, '🪜']])
 };
-const AFTER = { bet: ['vet'], pe: ['fe', 'fe-sofit'], kaf: ['khaf', 'khaf-sofit'], tsadi: ['tsadi-sofit'] };
+const AFTER = { nun: ['nun-sofit'], mem: ['mem-sofit'], bet: ['vet'], pe: ['fe', 'fe-sofit'], kaf: ['khaf', 'khaf-sofit'], tsadi: ['tsadi-sofit'] };
 const o = {}; Object.keys(S).forEach(k => { o[k] = S[k]; (AFTER[k] || []).forEach(n => { o[n] = NEW[n]; }); });
 Object.keys(NEW).forEach(n => { if (!o[n]) o[n] = NEW[n]; });
 window.TZLIL_SETS = o;
