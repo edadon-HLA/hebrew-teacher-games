@@ -122,7 +122,8 @@ C.forms.forEach(([s, lab, plain]) => {
   forms.appendChild(d); fEl.push(d);
 });
 let fi = -1;
-$('rFormsNext').onclick = () => { fi = (fi + 1) % (fEl.length + 1); fEl.forEach(e => e.classList.remove('on')); if (fi < fEl.length) fEl[fi].click(); };
+const ORD = C.order || fEl.map((_, i) => i);   /* click order when it differs from the book's layout */
+$('rFormsNext').onclick = () => { fi = (fi + 1) % (fEl.length + 1); fEl.forEach(e => e.classList.remove('on')); if (fi < fEl.length) fEl[ORD[fi]].click(); };
 $('rFormsAll').onclick = () => { fEl.forEach(e => e.classList.add('on')); fi = fEl.length - 1; };
 
 /* ---------- 3b. the "קִרְאוּ" board ---------- */
@@ -341,9 +342,9 @@ $('xQ').textContent = X.q;
 $('xPdf').href = `Lomdim-likro-${L.key}-exit-ticket.pdf`;
 $('xRef').innerHTML = `<b>Reflection:</b> circle how you feel — “${X.reflect}”: 😀 🙂 😕`;
 $('xNote').innerHTML = note(X.note);
-const wide = X.rows.some(r => (r.s.match(/[א-ת]/g) || []).length > 1);   /* words in the exit ticket: a wider first column on every row */
+const xl = r => (r.s.match(/[א-ת]/g) || []).length, wide = X.rows.some(r => xl(r) > 1), wider = X.rows.some(r => xl(r) > 5 || / /.test(r.s.trim()));   /* words in the exit ticket: a wider first column on every row */
 $('rEx').innerHTML = X.rows.map((r, i) => (r.head ? `<p class="x-head r-en" dir="ltr">${r.head}</p>` : '') +
-  `<div class="x-row${wide ? ' wd' : ''}" data-i="${i}"><div class="sy">${r.s}</div>${r.items.map(([img, he], j) => `<button type="button" data-j="${j}" aria-label="${he}"><img src="${img}" alt=""><span class="wd">${he}</span><span class="k-ring"></span></button>`).join('')}</div>`).join('');
+  `<div class="x-row${wide ? ' wd' : ''}${wider ? ' wdr' : ''}" data-i="${i}"><div class="sy">${r.s}</div>${r.items.map(([img, he], j) => `<button type="button" data-j="${j}" aria-label="${he}"><img src="${img}" alt=""><span class="wd">${he}</span><span class="k-ring"></span></button>`).join('')}</div>`).join('');
 $('rEx').querySelectorAll('.x-row').forEach(row => row.querySelectorAll('button').forEach(b => b.onclick = () => { row.querySelectorAll('button').forEach(x => x.classList.remove('on', 'ok', 'no')); b.classList.add('on'); beep(640, .1); }));
 $('exShow').onclick = () => { $('rEx').classList.add('rv'); $('rEx').querySelectorAll('.x-row').forEach(row => { const ok = X.rows[+row.dataset.i].ok; row.querySelectorAll('button').forEach(x => { const r = +x.dataset.j === ok; x.classList.toggle('on', r); x.classList.toggle('ok', r); x.classList.remove('no'); }); }); beep(880, .2); };
 $('exClr').onclick = () => { $('rEx').classList.remove('rv'); $('rEx').querySelectorAll('button').forEach(x => x.classList.remove('on', 'ok', 'no')); };

@@ -25,6 +25,7 @@ html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',
 .wide .row .sy{font-size:17pt}
 .row .p{height:16mm;border:1.2px solid #9aa3b2;border-radius:2.5mm;display:grid;place-items:center;overflow:hidden}
 .wide .row .p{height:14.5mm}
+.wider .row{grid-template-columns:7mm 30mm repeat(3,minmax(0,1fr))}.wider .row .sy{font-size:15pt;line-height:1.15}
 .row .p img{max-height:13mm;max-width:90%;width:auto}
 .self{margin-top:1mm;display:flex;justify-content:space-between;align-items:center;gap:2mm;font-size:9.5pt}
 .self .f{display:flex;gap:1.5mm;font-size:12pt;white-space:nowrap}
@@ -38,9 +39,9 @@ bdi{unicode-bidi:isolate}
 <body>
 <div class="sheet" id="sheet"></div>
 <script>
-const X = LL.exit, wide = X.rows.some(r => (r.s.match(/[א-ת]/g) || []).length > 1);
+const X = LL.exit, len = r => (r.s.match(/[א-ת]/g) || []).length, wide = X.rows.some(r => len(r) > 1), wider = X.rows.some(r => len(r) > 5 || / /.test(r.s.trim()));
 document.title = `Exit Ticket — Reading ${LL.n} · ${LL.letter}`;
-const one = `<div class="t${wide ? ' wide' : ''}">
+const one = `<div class="t${wide ? ' wide' : ''}${wider ? ' wider' : ''}">
   <div class="hd"><b>🎟️ Exit Ticket</b><span>Reading ${LL.n} · Letter <bdi dir="rtl">${LL.letter}</bdi></span></div>
   <div class="name">Name: <i></i><span class="dt">Date:</span><i class="d"></i></div>
   <div class="q">${X.q}</div>
