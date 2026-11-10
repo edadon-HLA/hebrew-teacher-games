@@ -27,8 +27,8 @@ h1{margin:4px 0 0;font:800 clamp(28px,5vw,42px) 'Rubik',Arial,sans-serif}
 .pick .lt.on{border-color:var(--coral);background:var(--coral-soft);color:#7e2335}
 .stage{width:min(760px,100%);background:#fff;border:3px solid var(--ink);border-radius:26px;box-shadow:0 8px 24px rgba(35,35,58,.12);padding:18px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:background .2s,border-color .2s}
 .stage.yes{background:var(--green-soft);border-color:var(--green)}.stage.no{background:var(--coral-soft);border-color:var(--coral)}
-.pic{width:100%;height:clamp(200px,40vh,340px);display:grid;place-items:center}
-.pic img{max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply}.pic .emo{font-size:clamp(120px,24vh,220px);line-height:1}
+.pic{width:100%;height:clamp(150px,28vh,320px);flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden}   /* own box: the picture never covers the word below */
+.pic img{display:block;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply}.pic .emo{font-size:clamp(110px,22vh,200px);line-height:1;max-height:100%}
 .word{min-height:78px;font:800 clamp(40px,8vw,68px)/1.3 'Noto Sans Hebrew',Arial,sans-serif;text-align:center}
 .word b{color:var(--coral)}.word.q{color:#b9b2c9}
 .verdict{min-height:64px;font:800 clamp(28px,5vw,44px) 'Rubik',Arial,sans-serif;text-align:center}

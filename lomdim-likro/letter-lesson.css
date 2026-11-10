@@ -238,3 +238,12 @@
 .gp-t{cursor:pointer}
 .gp-row .k-drop{min-width:140px;font-size:clamp(24px,3vw,34px)}
 @media(max-width:700px){.gaps{flex-direction:column}}
+/* no picture ever covers its word (teacher, 11/10: "check that the words are not on the piccture"): the warm-up picture has its
+ * own box (long syllable text may grow it), board pictures keep a gap above the text, line-page labels sit fully below the box */
+.r-stage .pic{display:flex;align-items:center;justify-content:center;overflow:hidden}
+.r-stage .pic img{display:block;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain}
+.r-stage .pic:has(.sy){height:auto;min-height:clamp(130px,26vh,220px);overflow:visible}
+.r-syl img{margin-bottom:12px}
+/* line pages: the label sits INSIDE the picture box, under the picture (never on it, never on a neighbour picture) */
+.p8 .pc{display:flex;flex-direction:column;align-items:center}.p8 .pc img{flex:1 1 0;min-height:0;height:auto}
+.p8 .pc .lb{position:static;flex:none;line-height:1.2;white-space:nowrap}
