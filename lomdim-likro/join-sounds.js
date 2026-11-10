@@ -34,6 +34,10 @@ window.JoinSounds = (() => {
 .js-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .js-svg line{stroke:var(--green);stroke-width:6;stroke-linecap:round}
 .js-svg line.bad{stroke:var(--coral)}
+.js-prow{margin:0 0 18px;padding-bottom:12px;border-bottom:2px dashed #e6e1d6}
+.js-pgrid{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center}
+.js-mid{cursor:default;width:clamp(110px,16vw,170px)}
+.js-phrase{text-align:center;font:800 clamp(40px,6vw,64px)/1.3 var(--f-he);color:#16527d;min-height:1.3em}
 .js-tip{text-align:center;font:700 17px var(--f-he);color:var(--muted);margin:0 0 10px}
 @media(max-width:700px){.js-grid{gap:12px 16px}.js-snd{min-width:48px;height:48px;font-size:26px}.js-line{min-width:96px;font-size:30px}}`;
 
@@ -99,5 +103,31 @@ window.JoinSounds = (() => {
       redraw: draw
     };
   }
-  return { mount };
+  /* two-word phrases (workbook p.63): in each row the picture stands in the MIDDLE, a group of sounds -> a line on each side
+   * (the right group first). Click a line: its sounds join into the word; when both words of a row are joined the phrase
+   * shows big under the row (spoken if the voice is on). No matching step.
+   *   JoinSounds.phrase(el, { rows: [{ img, groups: [{ parts: ['מָ','רָ','ק'], word: 'מָרָק' }, { parts: ['חַ','ם'], word: 'חַם' }] }, ...] }) */
+  function phrase(root, opt) {
+    if (!cssDone) { const s = document.createElement('style'); s.textContent = CSS; document.head.appendChild(s); cssDone = true; }
+    const say = opt.say || (() => {}), beep = opt.beep || (() => {}), chime = opt.chime || (() => {}), rows = opt.rows;
+    const grp = (g, i, k) => `<div class="js-row js-g" data-i="${i}" data-k="${k}">${g.parts.map((p, j) => (j ? '<span class="js-plus">+</span>' : '') + `<span class="js-snd">${p}</span>`).join('')}<span class="js-arr">⬅</span><button type="button" class="js-line">&nbsp;</button></div>`;
+    root.innerHTML = `<p class="js-tip">לוֹחֲצִים עַל הַקַּו — הַצְּלִילִים מִתְחַבְּרִים לְמִלָּה. כְּשֶׁשְּׁתֵּי הַמִּלִּים מוּכָנוֹת — קוֹרְאִים אֶת שְׁתֵּיהֶן יַחַד.</p>` +
+      rows.map((r, i) => `<div class="js-prow" data-i="${i}"><div class="js-pgrid">${grp(r.groups[0], i, 0)}<div class="js-pic js-mid"><img src="${r.img}" alt=""></div>${grp(r.groups[1], i, 1)}</div><div class="js-phrase" data-i="${i}"></div></div>`).join('');
+    const done = new Set(), key = (i, k) => i + ':' + k;
+    const join = (i, k) => {
+      if (done.has(key(i, k))) return; done.add(key(i, k));
+      const g = root.querySelector(`.js-g[data-i="${i}"][data-k="${k}"]`); g.classList.add('done'); g.querySelector('.js-line').textContent = rows[i].groups[k].word;
+      g.querySelector('.js-line').classList.add('ok'); beep(760, .12); say(rows[i].groups[k].word);
+      if (done.has(key(i, 0)) && done.has(key(i, 1))) { const p = rows[i].groups.map(x => x.word).join(' '); root.querySelector(`.js-phrase[data-i="${i}"]`).textContent = p; setTimeout(() => { say(p); chime(); }, 700); }
+    };
+    root.querySelectorAll('.js-g').forEach(g => g.querySelector('.js-line').onclick = () => join(+g.dataset.i, +g.dataset.k));
+    return {
+      check() { return { right: done.size, total: rows.length * 2 }; },
+      show() { rows.forEach((r, i) => { join(i, 0); join(i, 1); }); },
+      reset() { done.clear(); root.querySelectorAll('.js-g').forEach(g => { g.classList.remove('done'); const l = g.querySelector('.js-line'); l.innerHTML = '&nbsp;'; l.classList.remove('ok'); }); root.querySelectorAll('.js-phrase').forEach(p => p.textContent = ''); },
+      redraw() {}
+    };
+  }
+  return { mount, phrase };
+
 })();

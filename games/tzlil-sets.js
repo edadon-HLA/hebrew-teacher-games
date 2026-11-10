@@ -131,3 +131,22 @@ pre('resh', [['רַכֶּבֶת', true, 'train'], ['אָרוֹן', false, 'wardr
 pre('alef', [['אַף', true, 'nose'], ['חַלּוֹן', false, 'window'], ['אַגָּס', true, 'pear'], ['אַבָּא', true, 'father'], ['סַבָּא', false, 'oldman'],
   ['אָרוֹן', true, 'wardrobe']], ['אַבָּא', 'אֲגַס']);
 })();
+/* samekh, het, nun, gimel, he, pe, mem, tet: the reading-workbook pictures first (lessons "לוֹמְדִים לִקְרֹא", batches 2-3) */
+(() => {
+const S = window.TZLIL_SETS, P = n => 'tzlil/pic-' + n + '.png';
+const pre = (key, wb, drop) => { S[key].items = wb.map(([he, yes, n]) => ({ he, yes, pic: P(n) })).concat(S[key].items.filter(it => !drop.includes(it.he))); };
+pre('samekh', [['סָלָט', true, 'salad'], ['חַלּוֹן', false, 'window'], ['סַבְתָּא', true, 'grandma'], ['סַבָּא', true, 'oldman'], ['אָרוֹן', false, 'wardrobe'],
+  ['סַנְדָּל', true, 'sandal'], ['סְפָרִים', true, 'books']], ['סַבָּא', 'סַבְתָּא', 'סָלָט']);
+pre('het', [['חַם', true, 'hot'], ['חַלּוֹן', true, 'window'], ['נַעֲלַיִם', false, 'sneakers'], ['חָתוּל', true, 'kitten'], ['חָלָב', true, 'milk'],
+  ['חָמֵשׁ', true, 'five']], ['חָתוּל', 'חָלָב', 'חַלּוֹן']);
+pre('nun', [['נָחָשׁ', true, 'snake'], ['אַגָּס', false, 'pear'], ['נַעֲלַיִם', true, 'sneakers'], ['גַּרְבַּיִם', false, 'socks'], ['נַדְנֵדָה', true, 'swing'],
+  ['גַּב', false, 'back']], ['נָחָשׁ', 'נַעַל']);
+pre('gimel', [['גַּן', true, 'gan'], ['פַּרְפַּר', false, 'butterfly'], ['גַּב', true, 'back'], ['גַּרְבַּיִם', true, 'socks'], ['הָרִים', false, 'mountains'],
+  ['גְּלִידָה', true, 'icecream']], ['גְּלִידָה', 'גַּרְבַּיִם']);
+pre('he', [['הַר', true, 'mountains'], ['פַּרְפַּר', false, 'butterfly'], ['גַּן', false, 'gan'], ['סַפָּה', false, 'sofa'], ['חַסָּה', false, 'lettuce']], ['הַר']);
+pre('pe', [['פַּרְפַּר', true, 'butterfly'], ['מָרָק', false, 'soup'], ['פַּרְצוּף', true, 'face'], ['מָטוֹס', false, 'plane'], ['פַּארְק', true, 'park'],
+  ['מַגָּפַיִם', false, 'boots'], ['פְּרָחִים', true, 'flowers']], ['פַּרְפַּר', 'פֶּרַח']);
+pre('mem', [['מָרָק', true, 'soup'], ['טַבַּעַת', false, 'ring'], ['מַתָּנָה', true, 'gift'], ['מַגָּפַיִם', true, 'boots'], ['דָּג', false, 'fish'],
+  ['מָטוֹס', true, 'plane'], ['רָץ', false, 'runner'], ['מַיִם', true, 'water'], ['מֶלֶךְ', true, 'king']], ['מַיִם', 'דָּג']);
+pre('tet', [['טַבַּעַת', true, 'ring'], ['מַיִם', false, 'water'], ['יָד', false, 'hand'], ['נָחָשׁ', false, 'snake'], ['מַתָּנָה', false, 'gift']], ['טַבַּעַת', 'נָחָשׁ']);
+})();
