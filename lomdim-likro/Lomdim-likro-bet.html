@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="../niflaot-lessons/gate.js?v=1793100000"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>לוֹמְדִים לִקְרֹא — הָאוֹת בּ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="../niflaot-lessons/lesson-kit.css?v=1792519767">
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style></head>
+<style>
+/* Lomdim likro (reading) 2 — the letter בּ (copied from the שׁ lesson) (class names start with r- so they never clash with lesson-kit.css) */
+.r-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+.r-bar .spacer{flex:1}
+.r-cd{font:800 18px var(--f-he);border:0;border-radius:12px;padding:10px 18px;background:var(--coral);color:#fff;cursor:pointer}
+.r-cd:hover{filter:brightness(.93)}
+.r-dl{display:inline-flex;gap:8px;align-items:center;text-decoration:none;font:700 16px var(--f-he);background:#fff;color:#16527d;border:2px solid var(--sky);border-radius:12px;padding:8px 14px}
+.r-dl:hover{background:#f0f7fd}
+.r-cw{background:var(--gold-soft);border:3px solid #e5c05a;border-radius:20px;padding:14px 18px;margin:10px 0}
+.r-cw h3{margin:0 0 4px;font:800 22px var(--f-display)}
+.r-cw p{margin:0 0 8px}
+.r-cw img{display:block;max-width:min(520px,100%);height:auto;margin:8px auto;border:2px solid var(--line);border-radius:12px;background:#fff}
+.r-ans{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:8px}
+.r-ans span{background:#fff;border:2px solid var(--line);border-radius:12px;padding:4px 10px;font:700 22px var(--f-he);text-align:center}
+.r-ans .y{border-color:var(--green);background:var(--green-soft)}.r-ans .n{border-color:var(--coral);background:var(--coral-soft)}
+
+/* 1. letter search */
+.r-search{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;max-width:760px;margin:0 auto}
+.r-cellb{font:800 clamp(28px,5.4vw,48px)/1 var(--f-he);height:clamp(54px,9vw,82px);background:#fff;border:3px solid var(--line);border-radius:14px;cursor:pointer;display:grid;place-items:center;padding:0}
+.r-cellb:hover{border-color:var(--sky)}
+.r-cellb.circ{border-color:var(--coral);background:var(--coral-soft);box-shadow:0 0 0 3px var(--coral) inset}
+.r-cellb.show{border-color:var(--green);background:var(--green-soft);box-shadow:0 0 0 3px var(--green) inset}
+.r-cellb.wrong{animation:rshake .35s}
+@keyframes rshake{25%{transform:translateX(5px)}75%{transform:translateX(-5px)}}
+.r-count{font:800 22px var(--f-display);color:var(--muted);direction:ltr;unicode-bidi:isolate}
+
+/* 2. warm-up */
+.r-stage{width:min(560px,100%);margin:0 auto;background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);padding:16px;text-align:center;transition:background .2s,border-color .2s}
+.r-stage.yes{background:var(--green-soft);border-color:var(--green)}.r-stage.no{background:var(--coral-soft);border-color:var(--coral)}
+.r-stage .pic{height:clamp(130px,26vh,220px);display:grid;place-items:center}
+.r-stage .pic img{mix-blend-mode:multiply}.r-stage .pic .emo{font-size:clamp(90px,17vh,150px);line-height:1}.r-stage .pic svg{height:100%;width:auto}
+.r-stage .w{font:800 clamp(38px,7vw,60px)/1.3 var(--f-he);min-height:76px}.r-stage .w b{color:var(--coral)}
+.r-stage .v{font:800 clamp(24px,4vw,34px) var(--f-display);min-height:46px}.r-stage .v.yes{color:var(--green)}.r-stage .v.no{color:var(--coral)}
+
+/* 3a. letter card */
+.r-lcard{display:grid;grid-template-columns:minmax(220px,1fr) minmax(260px,1.3fr);gap:16px;align-items:stretch}
+.r-big{background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.r-big .l{font:800 clamp(130px,22vw,210px)/1.05 var(--f-he)}
+.r-big img{height:clamp(90px,14vw,140px);width:auto}
+.r-big .cap{font:800 28px var(--f-he)}
+.r-forms{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.r-form{background:#fff;border:3px solid var(--line);border-radius:20px;padding:6px;text-align:center;cursor:pointer;font-family:var(--f-he);transition:.15s}
+.r-form:hover{border-color:var(--sky)}
+.r-form .s{display:block;font-size:clamp(70px,11vw,110px);font-weight:800;line-height:1.2}
+.r-form .snd{display:block;font:800 26px var(--f-display);color:var(--sky);min-height:36px;visibility:hidden}
+.r-form.on{border-color:var(--sky);background:#eef6fd}.r-form.on .snd{visibility:visible}
+.r-form.plain .snd{color:var(--muted)}
+.r-note{font-size:15px;color:var(--muted);margin:8px 0 0}
+
+/* 3b. "קִרְאוּ" board */
+.r-board{background:#2f4a3f;border:12px solid #8a6a43;border-radius:18px;padding:14px 10px;box-shadow:var(--shadow);direction:rtl}
+.r-brow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;align-items:center;justify-items:center;min-height:clamp(110px,18vw,170px)}
+.r-brow + .r-brow{margin-top:6px;border-top:2px dashed #ffffff30;padding-top:6px}
+.r-syl{font-family:var(--f-he);font-weight:800;color:#fff;line-height:1.1;border-radius:14px;padding:2px 8px;cursor:pointer;border:3px solid transparent;background:transparent}
+.r-syl.l{font-size:clamp(70px,11vw,120px)}.r-syl.m{font-size:clamp(56px,8.5vw,92px)}.r-syl.s{font-size:clamp(40px,6vw,64px)}
+.r-syl.cur{border-color:var(--gold);background:#ffffff1c}
+.r-syl.dim{opacity:.28}
+.r-pick{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:12px}
+.r-card{min-width:120px;background:#fff;border:3px solid var(--ink);border-radius:18px;padding:2px 14px;text-align:center;font:800 64px/1.25 var(--f-he)}
+.r-card small{display:block;font:800 22px var(--f-display);color:var(--sky);margin-top:-6px;padding-bottom:6px}
+.r-card.hide{opacity:.2}
+.r-card.hit{border-color:var(--green);background:var(--green-soft);transform:scale(1.06)}
+
+/* 4c. strokes */
+.r-strokes{display:grid;grid-template-columns:minmax(240px,420px) 1fr;gap:18px;align-items:center}
+.r-sbox{max-width:360px;margin:0 auto;background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:var(--shadow);padding:8px}
+.r-sbox svg{display:block;width:100%;height:auto}
+.r-sbox .g{fill:none;stroke:#e6e1d6;stroke-width:22;stroke-linecap:round;stroke-linejoin:round}
+.r-sbox .st{fill:none;stroke:var(--ink);stroke-width:22;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+.r-sbox .st.on{stroke-dashoffset:0;transition:stroke-dashoffset var(--dur,.9s) linear}
+.r-sbox .num{opacity:0;transition:opacity .2s}.r-sbox .num.on{opacity:1}
+.r-sbox .num circle{fill:var(--coral)}.r-sbox .num text{fill:#fff;font:800 22px var(--f-display);text-anchor:middle}
+.r-sbox .vow{opacity:0;transition:opacity .3s;fill:var(--ink)}.r-sbox .vow.on{opacity:1}
+.r-slist{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.r-slist li{display:flex;gap:10px;align-items:center;font:700 20px var(--f-he);background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 12px}
+.r-slist li b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--coral);color:#fff;font:800 16px var(--f-display);flex:none}
+.r-slist li.on{border-color:var(--coral);background:var(--coral-soft)}
+
+/* 5. exit ticket (screen) */
+.r-ex{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;max-width:760px;margin:0 auto}
+.r-exc{background:#fff;border:3px solid var(--line);border-radius:18px;padding:8px;text-align:center}
+.r-exc img{display:block;height:96px;width:auto;max-width:100%;margin:0 auto 6px;object-fit:contain}
+.r-exc .a{font:800 38px/1.2 var(--f-he);min-height:50px;visibility:hidden}.r-exc.on .a{visibility:visible}
+.r-exc .wd{font:700 18px var(--f-he);color:var(--muted);min-height:26px;visibility:hidden}.r-exc.on .wd{visibility:visible}
+.r-en{direction:ltr;text-align:left}
+
+/* countdown overlay */
+#rCd{position:fixed;inset:0;z-index:10001;background:rgba(35,35,58,.9);color:#fff;display:none;place-items:center;text-align:center;font:800 min(40vw,320px)/1 var(--f-display)}
+#rCd.on{display:grid}#rCd small{display:block;font-size:min(10vw,88px);margin-top:10px}
+
+@media(max-width:700px){.r-lcard,.r-strokes{grid-template-columns:1fr}.r-search{gap:5px}}
+.r-board.all .r-syl::after{content:attr(data-snd);display:block;font:800 18px var(--f-display);color:#ffd877;text-align:center}
+
+/* ---- בּ lesson additions ---- */
+/* warm-up word reveal */
+.r-stage .w.hid{color:#b9b2c9}
+/* interactive workbook pages (book-page model of Niflaot-karov-rachok 4a, prefix k-) */
+.k-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.k-tabs button{font:800 20px var(--f-he);border:3px solid var(--line);background:#fff;border-radius:999px;padding:6px 18px;cursor:pointer;color:var(--ink)}
+.k-tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.k-page{position:relative;max-width:900px;margin:0 auto;background:#fff;border:2px solid #d9dde6;border-radius:10px;box-shadow:0 6px 20px #0002;padding:22px 26px 40px}
+.k-tabbed .k-page{display:none}.k-tabbed .k-page.on{display:block}
+.k-page .pn{position:absolute;bottom:8px;left:0;right:0;text-align:center;font:800 18px var(--f-display);color:#7a7f8c}
+.k-ins{font:800 clamp(20px,2.4vw,26px)/1.6 var(--f-he);text-align:center;margin:0 0 14px}
+.k-bar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.k-msg{text-align:center;font:800 20px var(--f-he);min-height:30px;margin-top:6px}
+/* page 8: lines from the circle */
+.p8{position:relative;width:min(640px,100%);margin:0 auto;aspect-ratio:1750/1900}
+.p8 svg.lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.p8 svg.lines line{stroke:#2a6fd0;stroke-width:10;stroke-linecap:round}
+.p8 svg.lines line.ok{stroke:var(--green)}
+.p8 .ctr{position:absolute;border:4px solid #23233a;border-radius:50%;display:grid;place-items:center;background:#fff;font:800 clamp(60px,11vw,120px)/1 var(--f-he)}
+.p8 .pc{position:absolute;background:transparent;border:3px solid transparent;border-radius:14px;padding:0;cursor:pointer}
+.p8 .pc img{width:100%;height:100%;object-fit:contain;display:block}
+.p8 .pc:hover{border-color:#9ec5f0;border-style:dashed}
+.p8 .pc.on{border-color:#2a6fd0;border-style:solid;background:#2a6fd010}
+.p8 .pc.ok{border-color:var(--green);background:var(--green-soft)}
+.p8 .pc.miss{border-color:var(--gold);border-style:dashed;background:var(--gold-soft)}
+.p8 .pc.no{animation:rshake .35s}
+.p8 .pc .x{position:absolute;top:-6px;left:-6px;background:var(--coral);color:#fff;border-radius:50%;width:30px;height:30px;display:none;place-items:center;font:800 18px var(--f-display)}
+.p8 .pc.xx .x{display:grid}
+/* page 10: circle the first sound */
+.p10{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 18px}
+.p10 .bx{border:2px solid #23233a;padding:8px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.p10 .bx img{height:clamp(80px,12vw,130px);width:auto;max-width:100%;object-fit:contain}
+.p10 .two{display:flex;justify-content:space-around;width:100%}
+.p10 .two button{position:relative;font:800 clamp(30px,4vw,44px)/1.3 var(--f-he);background:none;border:0;cursor:pointer;padding:2px 14px;color:#23233a}
+.p10 .two button .k-ring{position:absolute;inset:-2px;border:4px solid #2a6fd0;border-radius:50%;display:none;pointer-events:none}
+.p10 .two button.on .k-ring{display:block}
+.p10 .two button.ok .k-ring{border-color:var(--green)}.p10 .two button.no .k-ring{border-color:var(--coral)}
+/* page 11: write the first sound (drop boxes + bank) */
+.p11{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.p11 .bx{display:flex;flex-direction:column;align-items:center;gap:8px}
+.p11 .bx img{height:clamp(90px,13vw,140px);width:auto;max-width:100%;object-fit:contain}
+.k-drop{min-width:110px;min-height:46px;border:0;border-bottom:3px solid #23233a;background:#fffbea;border-radius:8px 8px 0 0;font:800 clamp(28px,3.4vw,38px)/1.3 var(--f-he);color:#16527d;padding:0 8px;cursor:pointer;text-align:center}
+.k-drop.hot{background:var(--gold-soft);outline:3px dashed var(--gold)}
+.k-drop.ok{background:var(--green-soft);border-color:var(--green);color:#1d6a39}.k-drop.ok::after{content:' ✔';font-size:20px}
+.k-drop.no{background:var(--coral-soft);border-color:var(--coral);color:#9b2335}.k-drop.no::after{content:' ✘';font-size:20px}
+.k-bank{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;background:#fffaf0;border:2px dashed #e5c05a;border-radius:14px;padding:8px;margin:0 0 16px}
+.k-bank b{width:100%;text-align:center;font:800 16px var(--f-he);color:#7a5a00}
+.k-bank button{font:800 34px/1.2 var(--f-he);border:2px solid #9aa3b2;background:#fff;border-radius:10px;padding:2px 18px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;color:#23233a}
+.k-bank button:hover{border-color:var(--sky);background:#eef6fd}
+.k-bank button.sel{background:var(--gold-soft);border-color:var(--gold)}
+.k-ghost{position:fixed;z-index:10003;pointer-events:none;transform:translate(-50%,-60%) rotate(-3deg);box-shadow:0 8px 20px #0004}
+/* exit ticket on screen: syllable + 3 pictures */
+.x-rows{display:grid;gap:12px;max-width:760px;margin:0 auto}
+.x-row{display:grid;grid-template-columns:90px repeat(3,minmax(0,1fr));gap:10px;align-items:center;background:#fff;border:3px solid var(--line);border-radius:18px;padding:8px}
+.x-row .sy{font:800 54px/1.1 var(--f-he);text-align:center;color:#16527d}
+.x-row button{position:relative;height:96px;background:#fff;border:2px solid var(--line);border-radius:14px;cursor:pointer;display:grid;place-items:center;padding:4px}
+.x-row button .emo{font-size:60px;line-height:1}.x-row button img,.x-row button svg{max-height:84px;max-width:100%;width:auto}
+.x-row button .k-ring{position:absolute;inset:-3px;border:5px solid #2a6fd0;border-radius:50%;display:none;pointer-events:none}
+.x-row button.on .k-ring{display:block}.x-row button.ok .k-ring{border-color:var(--green)}.x-row button.no .k-ring{border-color:var(--coral)}
+.x-row button .wd{position:absolute;bottom:2px;font:700 15px var(--f-he);color:var(--muted);display:none}.x-rows.rv button .wd{display:block}
+@media(max-width:700px){.p10,.p11{grid-template-columns:repeat(2,minmax(0,1fr))}.x-row{grid-template-columns:60px repeat(3,minmax(0,1fr))}.x-row .sy{font-size:40px}}
+</style>
+</head>
+<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../lomdim-likro/index.html">🔤 לוֹמְדִים לִקְרֹא</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><a href="https://eldar1234334.github.io/SpellQuest-AlphaBet/" target="_blank" rel="noopener">🧙 SpellQuest AlphaBet</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../lomdim-likro/index.html'}">← חזרה</button></nav>
+
+<div class="wrap">
+<header class="top">
+  <div><p class="crumb">LOMDIM LIKRO · שִׁעוּר קְרִיאָה 2 · חוֹבֶרֶת קְרִיאָה וּכְתִיבָה, עַמּוּדִים 7–11</p><h1>הָאוֹת בּ</h1></div>
+  <p class="he-title">בָּ · בַּ · בְּ</p>
+</header>
+<nav class="steps"><ol>
+  <li><a href="#s1"><b>1</b> כַּרְטִיס כְּנִיסָה</a></li><li><a href="#s2"><b>2</b> מָה בַּתְּמוּנָה?</a></li><li><a href="#s3"><b>3</b> הָאוֹת וְהַהֲבָרוֹת</a></li><li><a href="#s4"><b>4</b> עוֹשִׂים</a></li><li><a href="#s5"><b>5</b> Exit Ticket</a></li><li><a href="#s6"><b>🖨️</b> הַדְפָּסָה</a></li>
+</ol></nav>
+
+<!-- ===== 1 entry ticket: שׁ review ===== -->
+<section class="step" id="s1">
+  <span class="tag"><span class="tnum">1</span> כַּרְטִיס כְּנִיסָה · 2–3 דַּקּוֹת</span>
+  <p class="lead">תִּפְזֹרֶת אוֹתִיּוֹת — מוֹצְאִים אֶת הַ־שׁ</p>
+  <p class="sub">מַקִּיפִים בְּעִפָּרוֹן כָּל שׁ: שָׁ · שַׁ · שְׁ · שׁ. עַל הַמָּסָךְ — הַמּוֹרֶה לוֹחֵץ עַל מִשְׁבֶּצֶת כְּדֵי לְהַקִּיף אוֹתָהּ, וּבַסּוֹף מַצִּיג אֶת כֻּלָּן.</p>
+  <div class="panel">
+    <div class="r-search" id="rSearch"></div>
+    <div class="r-bar" style="justify-content:center">
+      <span class="r-count" id="rFound">0 / 0</span>
+      <button class="btn good" id="rShowAll" type="button">👁 הַצִּיגוּ אֶת כָּל הַ־שׁ</button>
+      <button class="btn ghost" id="rClr" type="button">↺ מִהַהַתְחָלָה</button>
+      <a class="r-dl" href="Lomdim-likro-bet-letter-search.pdf" target="_blank" rel="noopener">🖨️ גִּלָּיוֹן תִּפְזֹרֶת (PDF · 4 בְּדַף)</a>
+    </div>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>חֲזָרָה עַל הָאוֹת מֵהַשִּׁעוּר הַקּוֹדֵם. מְחַלְּקִים כַּרְטִיס לְכָל תַּלְמִיד. הַתַּלְמִידִים מַקִּיפִים בְּשֶׁקֶט. בַּסּוֹף הַמּוֹרֶה לוֹחֵץ "הַצִּיגוּ" וְסוֹפְרִים יַחַד כַּמָּה שִׁינִים יֵשׁ.</p>
+  </details>
+</section>
+
+<!-- ===== 2 warm-up ===== -->
+<section class="step" id="s2">
+  <span class="tag green"><span class="tnum">2</span> חִמּוּם · 3–5 דַּקּוֹת</span>
+  <p class="lead">מָה בַּתְּמוּנָה?</p>
+  <p class="sub">תְּמוּנָה עַל הַמָּסָךְ — כֻּלָּם אוֹמְרִים אֶת הַמִּלָּה יַחַד — הַמּוֹרֶה לוֹחֵץ וּמַרְאֶה אֶת הַמִּלָּה.</p>
+  <div class="r-stage" id="rWu">
+    <div class="pic" id="wuPic"></div>
+    <div class="w" id="wuWord">?</div>
+  </div>
+  <div class="r-bar" style="justify-content:center">
+    <button class="btn ghost" id="wuPrev" type="button">▶ הקודם</button>
+    <span class="r-count" id="wuCnt"></span>
+    <button class="btn ghost" id="wuNext" type="button">הבא ◀</button>
+  </div>
+  <div class="r-bar" style="justify-content:center">
+    <button class="btn good" id="wuRv" type="button">👁 הַצִּיגוּ אֶת הַמִּלָּה</button>
+    <label class="r-dl" style="cursor:pointer"><input type="checkbox" class="rVoiceAny"> 🔊 קוֹל</label>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>מִלִּים מֻכָּרוֹת: בַּיִת, בָּנָנָה, בָּלוֹן, כֶּלֶב, שֻׁלְחָן, סֵפֶר, בַּקְבּוּק, תַּפּוּחַ. אֵין כַּרְטִיסִים — כֻּלָּם אוֹמְרִים בְּיַחַד.</p>
+    <p>שִׂימוּ לֵב לַצְּלִיל הָרִאשׁוֹן - הַיּוֹם נִלְמַד אֵיזֶה צְלִיל פּוֹתֵחַ אֶת בַּיִת, בָּנָנָה, בָּלוֹן.</p>
+  </details>
+</section>
+
+<!-- ===== 3 lecturing ===== -->
+<section class="step" id="s3">
+  <span class="tag sky"><span class="tnum">3</span> הַסְבֵּר · 10 דַּקּוֹת</span>
+  <div class="sf-part">
+  <p class="lead">כַּרְטִיס הָאוֹת: בּ</p>
+  <p class="sub">לוֹחֲצִים עַל כָּל צוּרָה — שׁוֹמְעִים אֶת הַצְּלִיל וְקוֹרְאִים בְּקוֹל יַחַד (חוֹבֶרֶת, עַמּוּד 7). <span class="r-en" dir="ltr" style="display:block">Kamatz and patach both say “a”: <bdi dir="rtl">בָּ</bdi> = <bdi dir="rtl">בַּ</bdi> = ba. Shva = no vowel: <bdi dir="rtl">בְּ</bdi> = b.</span></p>
+  <div class="r-lcard">
+    <div class="r-big"><div class="l">בּ</div><img src="bet/banana.png" alt="בננה"><div class="cap">בָּנָנָה</div></div>
+    <div>
+      <div class="r-forms" id="rForms"></div>
+      <div class="r-bar" style="justify-content:center">
+        <button class="btn" id="rFormsNext" type="button">▶ הַצּוּרָה הַבָּאָה</button>
+        <button class="btn ghost" id="rFormsAll" type="button">הַצִּיגוּ הַכֹּל</button>
+        <label class="r-dl" style="cursor:pointer"><input type="checkbox" class="rVoiceAny"> 🔊 קוֹל</label>
+      </div>
+      <p class="r-note">קוֹרְאִים יַחַד: <b>בָּ… בַּ… בְּ… בּ…</b> וְאַחַר כָּךְ: בָּנָנָה!</p>
+    </div>
+  </div>
+  </div>
+
+  <div class="sf-part">
+  <p class="lead" style="margin-top:26px">לוּחַ "קִרְאוּ" — מַרִימִים כַּרְטִיס</p>
+  <p class="sub">הַמּוֹרֶה מְצַבִּיעַ עַל הֲבָרָה, הַכִּתָּה סוֹפֶרֶת 3-2-1 וּמַרִימָה אֶת הַכַּרְטִיס הַמַּתְאִים. אַחַר כָּךְ קוֹרְאִים יַחַד. הַסֵּדֶר מִימִין לִשְׂמֹאל, כְּמוֹ בַּחוֹבֶרֶת (עַמּוּד 7).</p>
+  <div class="r-board" id="rBoard"></div>
+  <div class="r-pick" id="rPick"></div>
+  <div class="r-bar" style="justify-content:center">
+    <button class="btn ghost" id="bPrev" type="button">▶ הקודם</button>
+    <span class="r-count" id="bCnt"></span>
+    <button class="btn ghost" id="bNext" type="button">הבא ◀</button>
+  </div>
+  <div class="r-bar" style="justify-content:center">
+    <button class="r-cd" data-cd type="button">🕒 3… 2… 1… הָרִימוּ!</button>
+    <button class="btn good" id="bRv" type="button">👁 הַצִּיגוּ אֶת הַכַּרְטִיס</button>
+    <button class="btn ghost" id="bAll" type="button">הַצִּיגוּ הַכֹּל</button>
+    <a class="r-dl" href="Lomdim-likro-bet-response-cards.pdf" target="_blank" rel="noopener">🖨️ כַּרְטִיסֵי תְּשׁוּבָה (PDF)</a>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>בַּלּוּחַ שְׁמוֹנֶה הֲבָרוֹת, אַחַת אַחֲרֵי הַשְּׁנִיָּה. לְכָל תַּלְמִיד אַרְבָּעָה כַּרְטִיסִים: בָּ, בַּ, בְּ וְגַם בּ בְּלִי נִקּוּד (הוּא מוֹפִיעַ בַּלּוּחַ שָׁלוֹשׁ פְּעָמִים). אַחֲרֵי כָּל הַרָמָה — קוֹרְאִים יַחַד.</p>
+  </details>
+  </div>
+</section>
+
+<!-- ===== 4 do it ===== -->
+<section class="step" id="s4">
+  <span class="tag"><span class="tnum">4</span> עוֹשִׂים · 15–20 דַּקּוֹת</span>
+  <div class="sf-part">
+  <div class="r-cw" role="note">
+    <h3>📘 עֲבוֹדַת כִּתָּה בַּחוֹבֶרֶת — עַמּוּד 8</h3>
+    <p>כָּל תַּלְמִיד מוֹתֵחַ קַו בַּחוֹבֶרֶת. אַחַר כָּךְ בּוֹדְקִים יַחַד עַל הַמָּסָךְ: לוֹחֲצִים עַל תְּמוּנָה.</p>
+  </div>
+  <div class="k-page" id="pg8">
+    <p class="k-ins">מִתְחוּ קַו מֵהַ"בַּ" לַתְּמוּנוֹת הַמַּתְחִילוֹת בַּצְּלִיל בַּ:</p>
+    <div class="p8" id="p8"></div>
+    <div class="k-msg" id="p8Msg"></div>
+    <div class="k-bar"><button class="btn good" type="button" id="p8Chk">✓ בּוֹדְקִים</button><button class="btn ghost" type="button" id="p8Ans">👁 הַצִּיגוּ תְּשׁוּבוֹת</button><button class="btn ghost" type="button" id="p8Rst">↺</button></div>
+    <span class="pn">8</span>
+  </div>
+
+  <p class="lead" style="margin-top:22px">מִשְׂחָק: תּוֹפְסִים צְלִיל</p>
+  <p class="sub">תְּמוּנָה — וְהַכִּתָּה מַחְלִיטָה: מַתְחִיל בְּ־בּ? כַּרְטִיסֵי ✔ / ✘ וְסְפִירָה 3-2-1. הַתְּמוּנוֹת שֶׁל הַחוֹבֶרֶת בָּאוֹת רִאשׁוֹנוֹת.</p>
+  <div class="shortcuts">
+    <a class="sc" href="../games/tofsim-tzlil.html?letter=bet" target="_blank" rel="noopener"><span class="ic">🔊</span><div><h3>תּוֹפְסִים צְלִיל · בּ</h3><p>תְּמוּנָה, ✔ / ✘, סְפִירָה וְחִשּׂוּף</p></div><span class="go">◀</span></a>
+    <a class="sc" href="../games/tofsim-tzlil.html?letter=bet&word=1" target="_blank" rel="noopener"><span class="ic">📖</span><div><h3>עִם הַמִּלָּה כְּתוּבָה</h3><p>רוֹאִים תְּמוּנָה וְגַם אֶת הַמִּלָּה</p></div><span class="go">◀</span></a>
+    <a class="sc" href="../games/tzlil/cards-yes-no.pdf" target="_blank" rel="noopener"><span class="ic">✔✘</span><div><h3>כַּרְטִיסֵי ✔ / ✘</h3><p>לַמִּשְׂחָק (PDF)</p></div><span class="go">◀</span></a>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>בָּנָנָה, בַּרְוָז, בַּקְבּוּק, בַּיִת, בָּלוֹן — מַתְחִילִים בְּ־בַּ. תַּפּוּחַ וְתַפּוּז — לֹא. לְחִיצָה עַל תְּמוּנָה נְכוֹנָה מוֹתַחַת קַו; עַל תְּמוּנָה לֹא נְכוֹנָה — ✘. "בּוֹדְקִים" מְסַמֵּן אִם חָסֵר קַו.</p>
+  </details>
+  </div>
+
+  <div class="sf-part">
+  <div class="r-cw" role="note" style="margin-top:22px">
+    <h3>📘 עֲבוֹדַת כִּתָּה בַּחוֹבֶרֶת — עַמּוּד 9</h3>
+    <p>כִּתְבוּ "בַּ" אוֹ "בְּ" בַּשּׁוּרוֹת הַבָּאוֹת, עִבְרוּ עַל הַקַּוִּים לְפִי הַדֻּגְמָה:</p>
+    <div class="r-strokes">
+      <div class="r-sbox" id="rStroke"></div>
+      <div>
+        <ul class="r-slist" id="rSteps"></ul>
+        <div class="r-bar">
+          <button class="btn" id="stPlay" type="button">▶ הַנְפָּשָׁה</button>
+          <button class="btn ghost" id="stNext" type="button">קַו הַבָּא</button>
+          <button class="btn ghost" id="stVow" type="button">+ נִקּוּד (בַּ / בְּ)</button>
+          <button class="btn ghost" id="stClr" type="button">↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>הַמּוֹרֶה מַרְאֶה אֶת סֵדֶר הַקַּוִּים: 1 הַקַּו הָעֶלְיוֹן מִשְּׂמֹאל לְיָמִין, 2 לְמַטָּה בַּצַּד הַיְמָנִי, 3 הַקַּו הַתַּחְתּוֹן מִשְּׂמֹאל לְיָמִין (קְצָת אַחֲרֵי הַפִּנָּה), וּבַסּוֹף הַנְּקֻדָּה (דָּגֵשׁ). בַּחוֹבֶרֶת: שׁוּרָה 1 בָּ, שׁוּרָה 2 בַּ, שׁוּרָה 3 בְּ, שׁוּרוֹת 4–6 בּ.</p>
+  </details>
+  </div>
+
+  <div class="sf-part">
+  <div class="r-cw" role="note" style="margin-top:22px">
+    <h3>📘 עֲבוֹדַת כִּתָּה בַּחוֹבֶרֶת — עַמּוּדִים 10 וְ־11</h3>
+    <p>כָּל תַּלְמִיד עוֹשֶׂה אֶת הָעַמּוּד בַּחוֹבֶרֶת. אַחַר כָּךְ בּוֹדְקִים יַחַד עַל הַמָּסָךְ.</p>
+  </div>
+  <div class="k-tabs" id="kTabs"><button type="button" data-p="10" class="on">עַמּוּד 10</button><button type="button" data-p="11">עַמּוּד 11</button></div>
+  <div class="k-tabbed">
+    <div class="k-page on" data-page="10">
+      <p class="k-ins">הַקִּיפוּ בְּעִגּוּל אֶת הַצְּלִיל הַפּוֹתֵחַ הַמַּתְאִים לַתְּמוּנָה:</p>
+      <div class="p10" id="p10"></div>
+      <div class="k-msg" id="p10Msg"></div>
+      <div class="k-bar"><button class="btn good" type="button" id="p10Chk">✓ בּוֹדְקִים</button><button class="btn ghost" type="button" id="p10Ans">👁 הַצִּיגוּ תְּשׁוּבוֹת</button><button class="btn ghost" type="button" id="p10Rst">↺</button></div>
+      <span class="pn">10</span>
+    </div>
+    <div class="k-page" data-page="11">
+      <p class="k-ins">כִּתְבוּ מִתַּחַת לַתְּמוּנָה אֶת הַצְּלִיל הַפּוֹתֵחַ הַמַּתְאִים בַּ אוֹ בְּ אוֹ שָׁ אוֹ שְׁ:</p>
+      <div class="k-bank" id="p11Bank"><b>לוֹחֲצִים עַל צְלִיל וְאָז עַל הַקַּו (אוֹ גּוֹרְרִים)</b></div>
+      <div class="p11" id="p11"></div>
+      <div class="k-msg" id="p11Msg"></div>
+      <div class="k-bar"><button class="btn good" type="button" id="p11Chk">✓ בּוֹדְקִים</button><button class="btn ghost" type="button" id="p11Ans">👁 הַצִּיגוּ תְּשׁוּבוֹת</button><button class="btn ghost" type="button" id="p11Rst">↺</button></div>
+      <span class="pn">11</span>
+    </div>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>עַמּוּד 10: לוֹחֲצִים עַל הַהֲבָרָה כְּדֵי לְהַקִּיף אוֹתָהּ. זִכְרוּ: קָמָץ וּפַתָּח — אוֹתוֹ צְלִיל, לָכֵן בָּלוֹן ⬅ בַּ. עַמּוּד 11: לוֹחֲצִים עַל צְלִיל בַּמַּחְסָן וְאָז עַל הַקַּו (אוֹ גּוֹרְרִים). בָּנָנָה ⬅ בַּ (אוֹ בָּ).</p>
+    <p>אִם אֵין זְמַן - עַמּוּד 11 בַּבַּיִת אוֹ בַּשִּׁעוּר הַבָּא.</p>
+  </details>
+  </div>
+</section>
+
+<!-- ===== 5 exit ticket ===== -->
+<section class="step" id="s5">
+  <div class="r-bar" style="margin-bottom:0"><span class="tag purple" style="background:#ece6fb;border-color:#7a5bd1;color:#3b2a82">🎟️ Exit Ticket · 3–5 min</span><span class="spacer"></span><a class="r-dl" href="Lomdim-likro-bet-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ Printable version (PDF · 4 per page)</a></div>
+  <p class="lead r-en" dir="ltr">Work alone. Read the sound in each row. Circle the picture that starts with this sound.</p>
+  <div class="panel">
+    <div class="x-rows" id="rEx"></div>
+    <div class="r-bar" style="justify-content:center">
+      <button class="btn good" id="exShow" type="button">👁 Show answers</button>
+      <button class="btn ghost" id="exClr" type="button">↺ Hide</button>
+    </div>
+  </div>
+  <p class="sub r-en" dir="ltr" style="margin-top:14px"><b>Reflection:</b> circle how you feel — “I can read and write <bdi dir="rtl">בָּ בַּ בְּ</bdi>”: 😀 🙂 😕</p>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>מְשִׂימָה חֲדָשָׁה, לֹא מֵהַחוֹבֶרֶת. כָּל תַּלְמִיד לְבַד. הַתְּשׁוּבוֹת: בַּ ⬅ בָּצָל · בְּ ⬅ בְּרֵכָה · בַּ ⬅ בָּרָק · שָׁ ⬅ שָׁעוֹן (הָאוֹת מֵהַשִּׁעוּר הַקּוֹדֵם). הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.</p>
+  </details>
+</section>
+
+<!-- ===== printables ===== -->
+<section class="step" id="s6">
+  <span class="tag sky"><span class="tnum">🖨️</span> לְהַדְפָּסָה</span>
+  <div class="shortcuts" style="margin-top:12px">
+    <a class="sc" href="Lomdim-likro-bet-letter-search.pdf" target="_blank" rel="noopener"><span class="ic">🔎</span><div><h3>תִּפְזֹרֶת אוֹתִיּוֹת (שׁ)</h3><p>כַּרְטִיס כְּנִיסָה · 4 בְּדַף</p></div><span class="go">◀</span></a>
+    <a class="sc" href="Lomdim-likro-bet-response-cards.pdf" target="_blank" rel="noopener"><span class="ic">🃏</span><div><h3>כַּרְטִיסֵי תְּשׁוּבָה</h3><p>בָּ · בַּ · בְּ · בּ · ✔ / ✘</p></div><span class="go">◀</span></a>
+    <a class="sc" href="Lomdim-likro-bet-exit-ticket.pdf" target="_blank" rel="noopener"><span class="ic">🎟️</span><div><h3>Exit Ticket</h3><p>4 per A4 page</p></div><span class="go">◀</span></a>
+  </div>
+</section>
+<p class="src">הַתַּרְגִּילִים וְהַתְּמוּנוֹת: "חוֹבֶרֶת קְרִיאָה וּכְתִיבָה 1 — קָמָץ, פַּתָּח, שְׁוָא" (תשע"ט), עַמּוּדִים 7–11. לְשִׁמּוּשׁ בַּכִּתָּה בִּלְבַד.</p>
+</div>
+<div id="rCd" aria-live="assertive"><div id="rCdT">3</div></div>
+<script src="../niflaot-lessons/lesson-kit.js?v=1792421680"></script>
+<script src="bet/data.js?v=1"></script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const S = window.BET;
+
+/* ---------- sound helpers ---------- */
+let ac;
+const beep = (f, d = .15, v = .14) => { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; g.gain.value = v; o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + d); } catch (e) {} };
+const chime = () => { [660, 880, 1100].forEach((f, i) => setTimeout(() => beep(f, .18), i * 140)); };
+let voiceOn = false;
+const say = t => { if (!voiceOn || !window.speechSynthesis) return; const v = speechSynthesis.getVoices().find(v => /^(he|iw)/i.test(v.lang)); if (!v) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = v; u.lang = v.lang; u.rate = .75; speechSynthesis.speak(u); };
+document.querySelectorAll('.rVoiceAny').forEach(c => c.onchange = () => { voiceOn = c.checked; document.querySelectorAll('.rVoiceAny').forEach(x => x.checked = voiceOn); });
+
+/* ---------- 3-2-1 countdown ---------- */
+let cdBusy = false;
+function countdown(done) {
+  if (cdBusy) return; cdBusy = true;
+  const ov = $('rCd'), t = $('rCdT'); let n = 3; ov.classList.add('on'); t.textContent = n; beep(520);
+  const tick = setInterval(() => {
+    n--; if (n > 0) { t.textContent = n; beep(520); return; }
+    clearInterval(tick); t.innerHTML = 'הָרִימוּ!<small>בָּ · בַּ · בְּ · בּ</small>'; beep(880, .3);
+    setTimeout(() => { ov.classList.remove('on'); cdBusy = false; if (done) done(); }, 1300);
+  }, 1000);
+}
+document.querySelectorAll('[data-cd]').forEach(b => b.onclick = () => countdown());
+
+/* ---------- 1. letter search (שׁ review) ---------- */
+const grid = $('rSearch');
+S.grid.forEach(row => row.forEach(c => {
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'r-cellb'; b.textContent = c.s; b.dataset.t = c.t ? '1' : '';
+  b.setAttribute('aria-label', c.t ? 'שׁ' : 'לא שׁ');
+  b.onclick = () => {
+    if (!c.t) { b.classList.add('wrong'); setTimeout(() => b.classList.remove('wrong'), 400); beep(260, .15); return; }
+    b.classList.remove('show'); b.classList.toggle('circ'); beep(b.classList.contains('circ') ? 700 : 400, .1); count();
+  };
+  grid.appendChild(b);
+}));
+function count() { $('rFound').textContent = grid.querySelectorAll('.circ, .show').length + ' / ' + S.targets; }
+$('rShowAll').onclick = () => { grid.querySelectorAll('[data-t="1"]').forEach(b => { b.classList.remove('circ'); b.classList.add('show'); }); count(); beep(880, .25); };
+$('rClr').onclick = () => { grid.querySelectorAll('.circ, .show').forEach(b => b.classList.remove('circ', 'show')); count(); };
+count();
+
+/* ---------- 2. warm-up: what is in the picture? ---------- */
+const table = `<svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="30" width="160" height="22" rx="6" fill="#c98b4d" stroke="#6b4423" stroke-width="5"/><rect x="40" y="52" width="16" height="72" fill="#c98b4d" stroke="#6b4423" stroke-width="5"/><rect x="144" y="52" width="16" height="72" fill="#c98b4d" stroke="#6b4423" stroke-width="5"/></svg>`;
+const WU = [
+  { he: 'בַּיִת', pic: 'bet/house.png' }, { he: 'בָּנָנָה', pic: 'bet/banana.png' }, { he: 'בָּלוֹן', pic: 'bet/balloon.png' },
+  { he: 'כֶּלֶב', emo: '🐶' }, { he: 'שֻׁלְחָן', svg: table }, { he: 'סֵפֶר', emo: '📕' },
+  { he: 'בַּקְבּוּק', pic: 'bet/bottle.png' }, { he: 'תַּפּוּחַ', pic: 'bet/apple.png' }
+];
+let wi = 0, wRev = false;
+const first = w => { const m = w.match(/^([א-ת][֑-ׇ]*)([\s\S]*)$/); return m ? `<b>${m[1]}</b>${m[2]}` : w; };
+function wuShow() {
+  const it = WU[wi]; wRev = false;
+  $('wuPic').innerHTML = it.pic ? `<img src="${it.pic}" alt="" style="max-height:100%;max-width:100%">` : it.svg || `<div class="emo" aria-hidden="true">${it.emo}</div>`;
+  $('wuWord').textContent = '?'; $('wuWord').className = 'w hid';
+  $('wuCnt').textContent = (wi + 1) + ' / ' + WU.length;
+}
+function wuReveal() { const it = WU[wi]; wRev = true; $('wuWord').className = 'w'; $('wuWord').innerHTML = first(it.he); beep(880, .2); say(it.he); }
+const wuGo = d => { wi = (wi + d + WU.length) % WU.length; wuShow(); };
+$('wuRv').onclick = () => wRev ? wuGo(1) : wuReveal();
+$('wuPic').onclick = () => wRev ? null : wuReveal();
+$('wuNext').onclick = () => wuGo(1); $('wuPrev').onclick = () => wuGo(-1);
+wuShow();
+
+/* ---------- 3a. the letter and its forms (workbook p.7: בָּ בַּ / בּ בְּ) ---------- */
+const FORMS = [['ka', ''], ['pa', ''], ['plain', 'plain'], ['sv', '']];
+const FORM_ORDER = ['ka', 'pa', 'plain', 'sv'];
+const forms = $('rForms'); const fEl = {};
+FORMS.forEach(([k, cls]) => {
+  const d = document.createElement('div'); d.className = 'r-form ' + cls; d.tabIndex = 0; d.setAttribute('role', 'button');
+  d.innerHTML = `<span class="s">${S.sh[k]}</span><span class="snd">${S.sound[k]}${k === 'plain' ? ' · no vowel' : ''}</span>`;
+  d.onclick = () => { d.classList.add('on'); say(S.sh[k]); beep(660, .12); };
+  d.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); d.click(); } };
+  forms.appendChild(d); fEl[k] = d;
+});
+let fi = -1;
+$('rFormsNext').onclick = () => { fi = (fi + 1) % (FORM_ORDER.length + 1); Object.values(fEl).forEach(e => e.classList.remove('on')); if (fi < FORM_ORDER.length) fEl[FORM_ORDER[fi]].click(); };
+$('rFormsAll').onclick = () => { Object.values(fEl).forEach(e => e.classList.add('on')); fi = FORM_ORDER.length - 1; };
+
+/* ---------- 3b. the "קִרְאוּ" board (workbook p.7) ---------- */
+const board = $('rBoard'), syl = [];
+for (let r = 0; r < 2; r++) {
+  const row = document.createElement('div'); row.className = 'r-brow';
+  S.board.slice(r * 4, r * 4 + 4).forEach((b, j) => {
+    const idx = r * 4 + j; const s = document.createElement('button'); s.type = 'button'; s.className = 'r-syl ' + b.sz; s.textContent = b.s; s.dataset.snd = S.sound[b.k];
+    s.onclick = () => { bi = idx; bShow(); };
+    row.appendChild(s); syl.push(s);
+  });
+  board.appendChild(row);
+}
+const CARD_ORDER = ['ka', 'pa', 'sv', 'plain'];
+const pick = $('rPick'), pc = {};
+CARD_ORDER.forEach(k => { const c = document.createElement('div'); c.className = 'r-card'; c.innerHTML = `${S.sh[k]}<small>${S.sound[k]}${k === 'plain' ? ' · no vowel' : ''}</small>`; pick.appendChild(c); pc[k] = c; });
+let bi = 0, bRev = false;
+function bShow() {
+  bRev = false; syl.forEach((s, i) => s.classList.toggle('cur', i === bi));
+  Object.values(pc).forEach(c => c.classList.remove('hit', 'hide'));
+  $('bCnt').textContent = (bi + 1) + ' / ' + S.board.length;
+}
+function bReveal() {
+  bRev = true; const k = S.board[bi].k; Object.entries(pc).forEach(([kk, c]) => { c.classList.toggle('hit', kk === k); c.classList.toggle('hide', kk !== k); });
+  beep(880, .25); say(S.board[bi].s);
+}
+const bGo = d => { bi = (bi + d + S.board.length) % S.board.length; bShow(); };
+$('bRv').onclick = () => bRev ? bGo(1) : bReveal();
+$('bNext').onclick = () => bGo(1); $('bPrev').onclick = () => bGo(-1);
+$('bAll').onclick = () => { board.classList.toggle('all'); };
+bShow();
+
+/* ---------- 4a. workbook p.8: draw a line from the circle to the pictures that start with בַּ ----------
+ * boxes in pixels of the 1750 x 2265 page render (picture cut + 15 px margin); the stage shows y 300-2200 */
+const P8 = { W: 1750, Y0: 300, H: 1900, c: [874, 1227, 262] };
+const P8PICS = [
+  ['banana', 'בָּנָנָה', true, 328, 649, 349, 847], ['duck', 'בַּרְוָז', true, 1056, 1419, 453, 790],
+  ['bottle', 'בַּקְבּוּק', true, 162, 353, 937, 1419], ['house', 'בַּיִת', true, 1275, 1658, 874, 1258],
+  ['apple', 'תַּפּוּחַ', false, 105, 431, 1550, 1903], ['balloon', 'בָּלוֹן', true, 760, 993, 1711, 2141],
+  ['orange', 'תַּפּוּז', false, 1197, 1611, 1545, 1970]
+];
+const pct = (v, t) => (v / t * 100) + '%';
+const [cx, cy, cr] = P8.c;
+$('p8').innerHTML = `<svg class="lines" viewBox="0 0 ${P8.W} ${P8.H}" preserveAspectRatio="none" id="p8L"></svg>
+  <div class="ctr" style="left:${pct(cx - cr, P8.W)};top:${pct(cy - cr - P8.Y0, P8.H)};width:${pct(2 * cr, P8.W)};height:${pct(2 * cr, P8.H)}">${S.sh.ka}</div>` +
+  P8PICS.map(([k, he, , x1, x2, y1, y2]) => `<button type="button" class="pc" data-k="${k}" aria-label="${he}" style="left:${pct(x1, P8.W)};top:${pct(y1 - P8.Y0, P8.H)};width:${pct(x2 - x1, P8.W)};height:${pct(y2 - y1, P8.H)}"><img src="bet/${k}.png" alt=""><span class="x">✘</span></button>`).join('');
+const p8Drawn = new Set();
+function p8Line(k) {
+  const p = P8PICS.find(x => x[0] === k), [, , , x1, x2, y1, y2] = p;
+  const px = (x1 + x2) / 2, py = (y1 + y2) / 2 - P8.Y0, ccy = cy - P8.Y0, dx = px - cx, dy = py - ccy, len = Math.hypot(dx, dy);
+  const sx = cx + dx / len * cr, sy = ccy + dy / len * cr;
+  const hw = (x2 - x1) / 2, hh = (y2 - y1) / 2, t = Math.min(hw / Math.abs(dx || 1e-6), hh / Math.abs(dy || 1e-6));   /* stop at the picture box */
+  return `<line data-k="${k}" x1="${sx}" y1="${sy}" x2="${px - dx * t}" y2="${py - dy * t}"/>`;
+}
+const p8Draw = () => { $('p8L').innerHTML = [...p8Drawn].map(p8Line).join(''); };
+const p8Btn = k => $('p8').querySelector(`.pc[data-k="${k}"]`);
+$('p8').querySelectorAll('.pc').forEach(b => b.onclick = () => {
+  const p = P8PICS.find(x => x[0] === b.dataset.k); $('p8Msg').textContent = '';
+  if (p[2]) { if (p8Drawn.has(p[0])) { p8Drawn.delete(p[0]); b.classList.remove('on', 'ok', 'miss'); } else { p8Drawn.add(p[0]); b.classList.add('on'); b.classList.remove('miss'); beep(760, .12); say(p[1]); } p8Draw(); }
+  else { b.classList.remove('no'); void b.offsetWidth; b.classList.add('no', 'xx'); beep(260, .2); say(p[1]); }
+});
+function p8Check(show) {
+  if (show) P8PICS.forEach(p => { if (p[2]) { p8Drawn.add(p[0]); p8Btn(p[0]).classList.add('on'); } else p8Btn(p[0]).classList.add('xx'); });
+  p8Draw(); let miss = 0;
+  P8PICS.filter(p => p[2]).forEach(p => { const b = p8Btn(p[0]), has = p8Drawn.has(p[0]); b.classList.toggle('ok', has); b.classList.toggle('miss', !has); if (!has) miss++; });
+  $('p8L').querySelectorAll('line').forEach(l => l.classList.add('ok'));
+  $('p8Msg').textContent = miss ? `חָסֵר עוֹד ${miss} ✏️` : '✔ כָּל הַכָּבוֹד!'; if (miss) beep(400, .2); else chime();
+}
+$('p8Chk').onclick = () => p8Check(false); $('p8Ans').onclick = () => p8Check(true);
+$('p8Rst').onclick = () => { p8Drawn.clear(); p8Draw(); $('p8Msg').textContent = ''; $('p8').querySelectorAll('.pc').forEach(b => b.classList.remove('on', 'ok', 'miss', 'no', 'xx')); };
+
+/* ---------- 4c. stroke order of בּ (workbook p.9) ---------- */
+const PATHS = ['M70 62H226', 'M226 62V190', 'M60 190H256', 'M140 126h.1'];
+const NUMS = [[44, 62], [256, 90], [34, 190], [140, 86]];
+const STEPS = ['הַקַּו הָעֶלְיוֹן — מִשְּׂמֹאל לְיָמִין', 'לְמַטָּה — הַצַּד הַיְמָנִי', 'הַקַּו הַתַּחְתּוֹן — מִשְּׂמֹאל לְיָמִין, קְצָת אַחֲרֵי הַפִּנָּה', 'הַנְּקֻדָּה בָּאֶמְצַע (דָּגֵשׁ)'];
+$('rStroke').innerHTML = `<svg viewBox="0 0 300 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="סדר הקווים של בּ">
+  ${PATHS.map(p => `<path class="g" d="${p}"/>`).join('')}
+  ${PATHS.map((p, i) => `<path class="st" id="st${i}" d="${p}" pathLength="1" style="${i === 3 ? 'stroke-width:30' : ''}"/>`).join('')}
+  ${NUMS.map((n, i) => `<g class="num" id="nm${i}"><circle cx="${n[0]}" cy="${n[1]}" r="16"/><text x="${n[0]}" y="${n[1] + 8}">${i + 1}</text></g>`).join('')}
+  <g class="vow" id="vwP"><rect x="112" y="220" width="56" height="12" rx="2"/></g>
+  <g class="vow" id="vwS"><circle cx="140" cy="222" r="9"/><circle cx="140" cy="250" r="9"/></g>
+</svg>`;
+$('rSteps').innerHTML = STEPS.map((t, i) => `<li id="sl${i}"><b>${i + 1}</b>${t}</li>`).join('');
+let si = 0, vowMode = 0, timers = [];
+const stDraw = i => { $('st' + i).classList.add('on'); $('nm' + i).classList.add('on'); $('sl' + i).classList.add('on'); };
+function stClear() { timers.forEach(clearTimeout); timers = []; si = 0; vowMode = 0; document.querySelectorAll('#rStroke .st, #rStroke .num, #rStroke .vow, #rSteps li').forEach(e => e.classList.remove('on')); }
+$('stPlay').onclick = () => { stClear(); for (let i = 0; i < 4; i++) timers.push(setTimeout(() => { stDraw(i); beep(500 + i * 90, .1); }, i * 1100)); si = 4; };
+$('stNext').onclick = () => { if (si >= 4) { stClear(); } stDraw(si); beep(500 + si * 90, .1); si++; };
+$('stVow').onclick = () => { vowMode = (vowMode + 1) % 3; $('vwP').classList.toggle('on', vowMode === 1); $('vwS').classList.toggle('on', vowMode === 2); };
+$('stClr').onclick = stClear;
+
+/* ---------- 4d. tabs for workbook pp.10-11 ---------- */
+$('kTabs').querySelectorAll('button').forEach(b => b.onclick = () => { $('kTabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); document.querySelectorAll('.k-tabbed .k-page').forEach(p => p.classList.toggle('on', p.dataset.page === b.dataset.p)); });
+
+/* p.10: 9 boxes, book order (right to left); two syllables listed right, left; answer */
+const sh = S.sh, sn = S.shin;
+const P10 = [
+  ['bet/balloon.png', 'בָּלוֹן', [sh.pa, sh.sv], sh.pa], ['bet/eight.png', 'שְׁמוֹנֶה', [sn.ka, sn.sv], sn.sv], ['bet/duck.png', 'בַּרְוָז', [sh.sv, sh.pa], sh.pa],
+  ['bet/house.png', 'בַּיִת', [sh.sv, sh.pa], sh.pa], ['bet/broccoli.png', 'בְּרוֹקוֹלִי', [sh.ka, sh.sv], sh.sv], ['../games/tzlil/pic-clock.png', 'שָׁעוֹן', [sn.ka, sn.sv], sn.ka],
+  ['../games/tzlil/pic-three.png', 'שָׁלוֹשׁ', [sn.sv, sn.ka], sn.ka], ['bet/banana.png', 'בָּנָנָה', [sh.ka, sh.sv], sh.ka], ['bet/bottle.png', 'בַּקְבּוּק', [sh.sv, sh.pa], sh.pa]
+];
+$('p10').innerHTML = P10.map(([img, he, two], i) => `<div class="bx" data-i="${i}"><img src="${img}" alt="${he}"><div class="two">${two.map(s => `<button type="button" data-s="${s}">${s}<span class="k-ring"></span></button>`).join('')}</div></div>`).join('');
+$('p10').querySelectorAll('.bx').forEach(bx => bx.querySelectorAll('button').forEach(b => b.onclick = () => { bx.querySelectorAll('button').forEach(x => x.classList.remove('on', 'ok', 'no')); b.classList.add('on'); beep(640, .1); $('p10Msg').textContent = ''; }));
+function p10Check(show) {
+  let right = 0;
+  $('p10').querySelectorAll('.bx').forEach(bx => { const ans = P10[+bx.dataset.i][3];
+    bx.querySelectorAll('button').forEach(x => { if (show) x.classList.toggle('on', x.dataset.s === ans); const on = x.classList.contains('on'); x.classList.toggle('ok', on && x.dataset.s === ans); x.classList.toggle('no', on && x.dataset.s !== ans); if (on && x.dataset.s === ans) right++; }); });
+  $('p10Msg').textContent = right + ' / ' + P10.length; if (right === P10.length) chime(); else beep(right ? 600 : 300, .2);
+}
+$('p10Chk').onclick = () => p10Check(false); $('p10Ans').onclick = () => p10Check(true);
+$('p10Rst').onclick = () => { $('p10').querySelectorAll('button').forEach(x => x.classList.remove('on', 'ok', 'no')); $('p10Msg').textContent = ''; };
+
+/* p.11: write the first sound; bank = the book's 4 choices; answers (banana takes בַּ or בָּ) */
+const P11 = [
+  ['bet/house.png', 'בַּיִת', [sh.pa]], ['bet/banana.png', 'בָּנָנָה', [sh.pa, sh.ka]], ['../games/tzlil/pic-two.png', 'שְׁתַּיִם', [sn.sv]],
+  ['bet/broccoli.png', 'בְּרוֹקוֹלִי', [sh.sv]], ['bet/duck.png', 'בַּרְוָז', [sh.pa]], ['bet/clothes.png', 'בְּגָדִים', [sh.sv]]
+];
+$('p11Bank').insertAdjacentHTML('beforeend', [sh.pa, sh.sv, sn.ka, sn.sv].map(s => `<button type="button">${s}</button>`).join(''));
+$('p11').innerHTML = P11.map(([img, he], i) => `<div class="bx"><img src="${img}" alt="${he}"><button type="button" class="k-drop" data-i="${i}">&nbsp;</button></div>`).join('');
+function put(drop, w) { drop.textContent = w; drop.dataset.v = w; drop.classList.remove('ok', 'no'); beep(700, .08); $('p11Msg').textContent = ''; }
+let selW = null;
+$('p11').querySelectorAll('.k-drop').forEach(d => d.onclick = () => { if (selW) { put(d, selW.textContent); selW.classList.remove('sel'); selW = null; } else if (d.dataset.v) { d.innerHTML = '&nbsp;'; delete d.dataset.v; d.classList.remove('ok', 'no'); } });
+$('p11Bank').querySelectorAll('button').forEach(b => {
+  b.addEventListener('click', () => { if (b.dataset.dragged) return; if (selW) selW.classList.remove('sel'); selW = selW === b ? null : b; if (selW) b.classList.add('sel'); });
+  b.addEventListener('pointerdown', e => {   /* drag a sound onto a line */
+    if ((e.button || 0) > 0) return; const sx = e.clientX, sy = e.clientY; let gh = null, hot = null;
+    const at = ev => document.elementsFromPoint(ev.clientX, ev.clientY).find(x => x.classList && x.classList.contains('k-drop')) || null;
+    const mv = ev => { if (!gh) { if (Math.hypot(ev.clientX - sx, ev.clientY - sy) < 8) return; gh = b.cloneNode(true); gh.classList.add('k-ghost'); (document.querySelector('.sf-cur') || document.body).appendChild(gh); }
+      ev.preventDefault(); gh.style.left = ev.clientX + 'px'; gh.style.top = ev.clientY + 'px'; const h = at(ev); if (h !== hot) { if (hot) hot.classList.remove('hot'); hot = h; if (hot) hot.classList.add('hot'); } };
+    const up = ev => { document.removeEventListener('pointermove', mv); document.removeEventListener('pointerup', up); document.removeEventListener('pointercancel', up);
+      if (!gh) return; gh.remove(); if (hot) { hot.classList.remove('hot'); if (ev.type === 'pointerup') put(hot, b.textContent); } b.dataset.dragged = '1'; setTimeout(() => delete b.dataset.dragged, 60); };
+    document.addEventListener('pointermove', mv, { passive: false }); document.addEventListener('pointerup', up); document.addEventListener('pointercancel', up);
+  });
+});
+function p11Check(show) {
+  let right = 0;
+  $('p11').querySelectorAll('.k-drop').forEach(d => { const ans = P11[+d.dataset.i][2]; if (show) put(d, ans[0]); const ok = ans.includes(d.dataset.v); if (ok) right++; d.classList.toggle('ok', !!d.dataset.v && ok); d.classList.toggle('no', !!d.dataset.v && !ok); });
+  $('p11Msg').textContent = right + ' / ' + P11.length; if (right === P11.length) chime(); else beep(right ? 600 : 300, .2);
+}
+$('p11Chk').onclick = () => p11Check(false); $('p11Ans').onclick = () => p11Check(true);
+$('p11Rst').onclick = () => { $('p11').querySelectorAll('.k-drop').forEach(d => { d.innerHTML = '&nbsp;'; delete d.dataset.v; d.classList.remove('ok', 'no'); }); $('p11Msg').textContent = ''; };
+
+/* ---------- 5. exit ticket on screen ---------- */
+const xPic = it => it.pic ? `<img src="${it.pic}" alt="">` : it.svg ? S.SVG[it.svg] : `<span class="emo">${it.emo}</span>`;
+$('rEx').innerHTML = S.exit.map((r, i) => `<div class="x-row" data-i="${i}"><div class="sy">${r.s}</div>${r.items.map((it, j) => `<button type="button" data-j="${j}" aria-label="${it.he}">${xPic(it)}<span class="wd">${it.he}</span><span class="k-ring"></span></button>`).join('')}</div>`).join('');
+$('rEx').querySelectorAll('.x-row').forEach(row => row.querySelectorAll('button').forEach(b => b.onclick = () => { row.querySelectorAll('button').forEach(x => x.classList.remove('on', 'ok', 'no')); b.classList.add('on'); beep(640, .1); }));
+$('exShow').onclick = () => { $('rEx').classList.add('rv'); $('rEx').querySelectorAll('.x-row').forEach(row => { const ok = S.exit[+row.dataset.i].ok; row.querySelectorAll('button').forEach(x => { const r = +x.dataset.j === ok; x.classList.toggle('on', r); x.classList.toggle('ok', r); x.classList.remove('no'); }); }); beep(880, .2); };
+$('exClr').onclick = () => { $('rEx').classList.remove('rv'); $('rEx').querySelectorAll('button').forEach(x => x.classList.remove('on', 'ok', 'no')); };
+})();
+</script>
+<script src="../shared/section-focus.js?v=5"></script>
+</body>
+</html>

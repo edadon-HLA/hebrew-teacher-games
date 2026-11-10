@@ -2,7 +2,8 @@
  * One entry per letter (key = the ?letter= value), in alef-bet order — the game shows one picker button per entry.
  *   letter: the letter as shown      first: the sound at the start of the yes-words      sound: English label
  *   items:  { he: word with nikud, yes: starts with the sound, pic: image under games/tzlil/ | emo: emoji }
- * shin uses pictures from the reading workbook (Kamatz-Patach-Shvah, pp. 4 and 6, marked wb); the other letters use emoji.
+ * shin (pp. 4, 6) and bet (pp. 8, 10, 11, added at the end of this file) use pictures from the reading workbook
+ * (Kamatz-Patach-Shvah, marked wb) first; the other letters use emoji.
  * mk(yes, no) builds the items list from two lists of [word, emoji] and mixes them (no-words spread between the yes-words).
  * No-words never start with a near sound of the letter (כּ/ק, ט/ת/ד, ס/שׂ/צ/ז, ח/כ, א/ע/ה, בּ/פּ/ו). */
 (function () {
@@ -19,8 +20,8 @@ window.TZLIL_SETS = {
     [['אַרְיֵה', '🦁'], ['אַבָּא', '👨'], ['אִמָּא', '👩'], ['אֲוִירוֹן', '✈️'], ['אוֹטוֹבּוּס', '🚌'], ['אֲנָנָס', '🍍'], ['אֹרֶז', '🍚'], ['אַרְנָב', '🐰'], ['אֹזֶן', '👂'], ['אֲבַטִּיחַ', '🍉'], ['אֲגַס', '🍐']],
     [KELEV, DAG, SUS, BAYIT, MAYIM, SHEMESH, LEV]),
   bet: set('ב', 'בּ', 'b',
-    [['בַּיִת', '🏠'], ['בָּלוֹן', '🎈'], ['בָּנָנָה', '🍌'], ['בֵּיצָה', '🥚'], ['בַּקְבּוּק', '🍼'], ['בָּרָק', '⚡'], ['בְּרוֹקוֹלִי', '🥦'], ['בַּרְוָז', '🦆'], ['בָּצָל', '🧅'], ['בּוּבָּה', '🪆'], ['בְּגָדִים', '👕']],
-    [DAG, SUS, KELEV, SHEMESH, MAYIM, NAHASH, TAPUAH]),
+    [['בֵּיצָה', '🥚'], ['בָּרָק', '⚡'], ['בָּצָל', '🧅'], ['בּוּבָּה', '🪆']],
+    [DAG, SUS, KELEV, SHEMESH, MAYIM, NAHASH]),
   gimel: set('ג', 'ג', 'g',
     [['גְּלִידָה', '🍦'], ['גָּמָל', '🐫'], ['גֶּשֶׁם', '🌧️'], ['גִּיטָרָה', '🎸'], ['גֶּזֶר', '🥕'], ['גְּבִינָה', '🧀'], ['גּוֹרִילָה', '🦍'], ['גֶּשֶׁר', '🌉'], ['גַּרְבַּיִם', '🧦']],
     [DAG, SUS, BAYIT, SHEMESH, MAYIM, LEV]),
@@ -104,4 +105,16 @@ window.TZLIL_SETS = {
     [['תַּפּוּחַ', '🍎'], ['תּוּת', '🍓'], ['תַּרְנְגוֹל', '🐓'], ['תּוֹף', '🥁'], ['תַּפּוּז', '🍊'], ['תִּינוֹק', '👶'], ['תִּיק', '🎒'], ['תַּנִּין', '🐊'], ['תְּמוּנָה', '🖼️'], ['תֵּה', '🍵'], ['תִּירָס', '🌽']],
     [KELEV, SUS, BAYIT, SHEMESH, MAYIM, LEV, NAHASH])
 };
+/* bet: the reading-workbook pictures (pp. 8, 10, 11; lesson "לוֹמְדִים לִקְרֹא · בּ") come first, then the emoji items above */
+window.TZLIL_SETS.bet.items = [
+  { he: 'בָּנָנָה',     yes: true,  pic: 'tzlil/pic-banana.png' },   /* wb */
+  { he: 'בַּרְוָז',     yes: true,  pic: 'tzlil/pic-duck.png' },     /* wb */
+  { he: 'תַּפּוּחַ',    yes: false, pic: 'tzlil/pic-apple.png' },    /* wb */
+  { he: 'בַּקְבּוּק',   yes: true,  pic: 'tzlil/pic-bottle.png' },   /* wb */
+  { he: 'בַּיִת',       yes: true,  pic: 'tzlil/pic-house.png' },    /* wb */
+  { he: 'תַּפּוּז',     yes: false, pic: 'tzlil/pic-orange.png' },   /* wb */
+  { he: 'בָּלוֹן',      yes: true,  pic: 'tzlil/pic-balloon.png' },  /* wb */
+  { he: 'בְּרוֹקוֹלִי', yes: true,  pic: 'tzlil/pic-broccoli.png' }, /* wb */
+  { he: 'בְּגָדִים',    yes: true,  pic: 'tzlil/pic-clothes.png' }   /* wb */
+].concat(window.TZLIL_SETS.bet.items);
 })();
