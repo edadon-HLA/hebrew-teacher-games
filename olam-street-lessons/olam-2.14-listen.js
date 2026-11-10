@@ -43,17 +43,24 @@ const again = () => { if (lastRange) play(...lastRange); };
 const fmt = t => Math.floor(t / 60) + ':' + (t % 60).toFixed(1).padStart(4, '0');
 
 /* ---------- the listening player ---------- */
+/* each patch takes the colour of its bubble: the most common light colour inside the patch area of the picture */
+function tintPatches(im, fig){ try { const c = document.createElement('canvas'), w = c.width = im.naturalWidth, h = c.height = im.naturalHeight, x = c.getContext('2d'); x.drawImage(im, 0, 0);
+  fig.querySelectorAll('.L-patch').forEach(p => { const a = parseFloat(p.style.left), b = a + parseFloat(p.style.width), t = parseFloat(p.style.top), d = t + parseFloat(p.style.height), n = {};
+    for (let i = 0; i < 12; i++) for (let j = 0; j < 12; j++){ const px = x.getImageData(Math.min(w - 1, w * (a + (b - a) * i / 11) / 100) | 0, Math.min(h - 1, h * (t + (d - t) * j / 11) / 100) | 0, 1, 1).data;
+      if (px[0] > 205 && px[1] > 205 && px[2] > 205){ const k = (px[0] >> 2 << 2) + ',' + (px[1] >> 2 << 2) + ',' + (px[2] >> 2 << 2); n[k] = (n[k] || 0) + 1; } }
+    const best = Object.entries(n).sort((p1, p2) => p2[1] - p1[1])[0]; if (best) p.style.background = 'rgb(' + best[0] + ')'; }); } catch (e) {} }
 function player(root, bubs, title){
   const panels = [...new Set(bubs.map(i => L.B[i].p))];
   const s0 = L.BUB[bubs[0]][0], e0 = L.BUB[bubs[bubs.length - 1]][1];
   const range = bubs.length === 15 ? [L.ROWS[0][0], L.ROWS[2][1]] : (() => { const r = L.B[bubs[0]].row; return L.ROWS[r - 1]; })();
-  root.innerHTML = `<div class="L-player blur"><div class="L-panels">${panels.map(n => `<figure data-p="${n}"><img src="${panel(n)}" alt=""><figcaption>${n}</figcaption></figure>`).join('')}</div>
+  root.innerHTML = `<div class="L-player"><div class="L-panels">${panels.map(n => `<figure data-p="${n}"><img src="${panel(n)}" alt="">${(L.PATCH[n] || []).map(([a, b, c, d]) => `<i class="L-patch" style="left:${a}%;width:${b - a}%;top:${c}%;height:${d - c}%"></i>`).join('')}<figcaption>${n}</figcaption></figure>`).join('')}</div>
     <div class="L-pctl"><button class="btn primary big" data-a="all" type="button">▶ שׁוֹמְעִים${title ? ' · ' + title : ''}</button><button class="btn" data-a="stop" type="button">⏸</button><button class="btn" data-a="again" type="button">↺ שׁוּב</button>
       <button class="btn" data-a="next" type="button">הַבּוּעָה הַבָּאָה ◀</button><label class="btn ghost" style="cursor:pointer"><input type="checkbox" data-a="slow"> 🐢 0.85</label>
       <button class="btn ghost" data-a="txt" type="button">👁 הַצִּיגוּ טֶקְסְט</button><span class="tm" data-a="tm">0:00.0</span></div>
     <div class="L-bubs">${bubs.map(i => { const b = L.B[i], c = L.CHARS[b.who]; return `<div class="L-bub" data-i="${i}" style="border-inline-start-color:${c.color}"><span class="no">${i + 1}</span><span class="nm hid" style="background:${c.color}">${c.he}</span><span class="tx hid">${b.t}</span>
       <button class="btn L-small" data-play="${i}" type="button">▶</button><button class="btn ghost L-small" data-tts="${i}" type="button" title="קוֹל מַחְשֵׁב">🔊 קוֹל מַחְשֵׁב</button></div>`; }).join('')}</div></div>`;
   const q = s => root.querySelector(s), figs = [...root.querySelectorAll('figure')], rows = [...root.querySelectorAll('.L-bub')];
+  figs.forEach(f => { const im = f.querySelector('img'); const tint = () => tintPatches(im, f); if (im.complete && im.naturalWidth) tint(); else im.addEventListener('load', tint, { once: true }); });
   let shown = false, cur = -1;
   const mark = t => { q('[data-a="tm"]').textContent = fmt(t); const i = bubs.find(k => t >= L.BUB[k][0] - 0.15 && t <= L.BUB[k][1] + 0.3); if (i != null) light(i); };
   function light(i){ cur = i; rows.forEach(r => r.classList.toggle('now', +r.dataset.i === i)); figs.forEach(f => f.classList.toggle('now', +f.dataset.p === L.B[i].p)); }
@@ -63,7 +70,7 @@ function player(root, bubs, title){
   q('[data-a="again"]').onclick = again;
   q('[data-a="next"]').onclick = () => { const k = bubs.indexOf(cur), n = bubs[Math.min(bubs.length - 1, k + 1)]; light(n); clip(n, t => { q('[data-a="tm"]').textContent = fmt(t); }); };
   q('[data-a="slow"]').onchange = e => { rate = e.target.checked ? .85 : 1; audio.playbackRate = rate; };
-  q('[data-a="txt"]').onclick = e => { shown = !shown; root.querySelectorAll('.tx, .nm').forEach(x => x.classList.toggle('hid', !shown)); q('.L-player').classList.toggle('blur', !shown); e.currentTarget.textContent = shown ? '🙈 מַסְתִּירִים טֶקְסְט' : '👁 הַצִּיגוּ טֶקְסְט'; };
+  q('[data-a="txt"]').onclick = e => { shown = !shown; root.querySelectorAll('.tx, .nm').forEach(x => x.classList.toggle('hid', !shown)); q('.L-player').classList.toggle('shown', shown); e.currentTarget.textContent = shown ? '🙈 מַסְתִּירִים טֶקְסְט' : '👁 הַצִּיגוּ טֶקְסְט'; };
   root.querySelectorAll('[data-play]').forEach(b => b.onclick = () => { const i = +b.dataset.play; light(i); clip(i, t => { q('[data-a="tm"]').textContent = fmt(t); }); });
   root.querySelectorAll('[data-tts]').forEach(b => b.onclick = () => { const i = +b.dataset.tts; light(i); say(L.B[i].t, L.B[i].who); });
   return { light };

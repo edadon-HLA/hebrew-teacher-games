@@ -32,6 +32,9 @@ const B = [
   { who: 'dan',   t: 'כֵּן, קָדִימָה! אֲנִי רָעֵב!' },
 ];
 const PMAP = [1, 1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 10, 10, 11, 12];   /* bubble -> panel picture (olam-2.14-panels/panel-N.jpg) */
+/* where the speech-bubble TEXT is in each panel picture: [x1, x2, y1, y2] in % — covered by a plain bubble-coloured patch while the text is hidden */
+const PATCH = { 1: [[0, 27, 2, 46], [60, 84, 25, 43]], 2: [[5, 94, 3, 52]], 3: [[5, 68, 10, 52]], 4: [[3, 54, 31, 60]], 5: [[1, 97, 25, 55]], 6: [[8, 80, 15, 51]],
+  7: [[27, 96, 7, 43]], 8: [[0, 45, 8, 48], [51, 98, 17, 48]], 9: [[35, 100, 8, 49]], 10: [[2, 48, 7, 49], [51, 97, 1, 42]], 11: [[48, 100, 12, 90]], 12: [[10, 59, 50, 80]] };
 B.forEach((b, i) => { b.p = PMAP[i]; b.row = i < 4 ? 1 : i < 8 ? 2 : 3; });
 const CHARS = { keren: { he: 'קֶרֶן', color: '#e2506a' }, dan: { he: 'דָּן', color: '#23233a' }, roni: { he: 'רוֹנִי', color: '#d946a0' } };
 
@@ -103,5 +106,5 @@ const CIRCLE = {
 const POS = { 1: [2, 1, 3, 2, 1], 2: [3, 1, 2, 2, 3], 3: [1, 3, 2, 3, 1], 4: [2, 3, 1, 2, 3] };
 const circleRow = (part, i) => { const [t, a, b] = CIRCLE[part][i], p = POS[part][i] - 1, r = [a, b]; r.splice(p, 0, t); return r; };
 
-return { AUDIO, ROWS, BUB, B, CHARS, ART, WORDS, HE, GRIDS, cellsOf, CIRCLE, POS, circleRow, fill };
+return { AUDIO, ROWS, BUB, B, CHARS, PATCH, ART, WORDS, HE, GRIDS, cellsOf, CIRCLE, POS, circleRow, fill };
 })();
