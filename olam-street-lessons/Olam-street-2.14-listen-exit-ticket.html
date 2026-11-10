@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Exit Ticket — Olam Street 2.14 (listening)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ?part=1..4 — 4 exit tickets on one A4 page (2 x 2), cut along the dashed lines. Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.sheet{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:95mm 95mm;grid-template-rows:127.5mm 127.5mm;overflow:hidden;break-inside:avoid}
+.t{padding:4.5mm 5mm 4mm;border:1px dashed #9aa3b2;display:flex;flex-direction:column;gap:2mm;height:127.5mm;min-height:0;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #7a4cc2;padding-bottom:1.5mm}
+.hd b{font-size:15pt;font-weight:800}.hd span{font-size:8.5pt;color:#6b6880}
+.name{font-size:11pt;font-weight:700;display:flex;gap:2mm;align-items:flex-end}
+.name i{flex:1;border-bottom:1.2px solid #23233a;height:6mm}.name i.d{flex:.7}.name span.dt{margin-inline-start:3mm}
+.q{font-size:10.5pt;font-weight:800;line-height:1.35}
+.he{direction:rtl;text-align:right;font-size:14pt;font-weight:700;line-height:2.2}
+.he i{display:inline-block;width:34mm;border-bottom:1.2px solid #23233a;height:1em}
+.bank{direction:rtl;display:flex;gap:2mm;justify-content:center;flex-wrap:wrap}.bank span{border:1.2px solid #2a8bd0;border-radius:2mm;padding:0 2mm;font-size:12pt;font-weight:800}
+.pics{direction:rtl;display:flex;gap:2mm;justify-content:space-around}
+.pics div{flex:1;text-align:center}.pics svg{height:20mm;width:auto;max-width:28mm}.pics .emo{font-size:34pt;line-height:1}
+.pics .ln{border-bottom:1.2px solid #23233a;height:9mm;margin-top:2mm}
+.strip{direction:rtl;display:flex;gap:2mm;justify-content:center}.strip svg{height:12mm;width:auto}.strip .emo{font-size:24pt}
+.chars{direction:rtl;display:flex;gap:2mm;justify-content:space-around}.chars div{text-align:center;font-size:10pt;font-weight:800}.chars svg{height:13mm;width:auto}.chars .emo{font-size:15pt}
+.circle{direction:rtl;text-align:right;font-size:14pt;font-weight:700}.circle span{border:1.2px solid #23233a;border-radius:99px;padding:0 3mm;margin:0 1mm}
+.self{margin-top:auto;font-size:9.5pt;display:flex;flex-direction:column;gap:1mm}
+.self .r{display:flex;gap:2mm}.self .r span{border:1px solid #9aa3b2;border-radius:3mm;padding:0 2mm}
+bdi{unicode-bidi:isolate}
+.t>*{flex-shrink:0}
+@media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
+</style>
+</head>
+<body>
+<div class="sheet" id="sheet"></div>
+<script src="../games/food-art.js"></script>
+<script src="../games/hungry-art.js?v=3"></script>
+<script src="../games/comic-art.js"></script>
+<script src="olam-2.14-data.js?v=1"></script>
+<script>
+const P = +(new URLSearchParams(location.search).get('part') || 1), L = L214, A = L.ART;
+const TASK = {
+  1: { q: 'Write the right word under each picture.', body: `<div class="bank">${['festival', 'hungry', 'laatzor'].map(k => `<span>${L.HE[k]}</span>`).join('')}</div>
+      <div class="pics">${['laatzor', 'festival', 'hungry'].map(k => `<div>${A[k]}<div class="ln"></div></div>`).join('')}</div>` },
+  2: { q: 'Complete the sentence. Then circle what you prefer.', body: `<div class="strip">${['pizza', 'pasta', 'cheese', 'chocolate', 'tuna', 'salad'].map(k => A[k]).join('')}</div>
+      <div class="he">מִתְחַשֵּׁק לִי <i></i>.</div><div class="circle">אֲנִי מַעֲדִיף <span>פִּיצָה</span> / <span>פַּסְטָה</span>.</div>` },
+  3: { q: 'Write one sweet food and one bitter food.', body: `<div class="strip">${A.matok}${A.marir}</div><div class="he">מָתוֹק: <i></i><br>מָרִיר: <i></i></div>` },
+  4: { q: 'Write one sentence about one character.', body: `<div class="chars">${[['keren', 'pasta', 'mango'], ['dan', 'pizza', 'chocolate'], ['roni', 'pizza', 'chocolate']].map(([c, a, b]) => `<div>${window.ComicArt ? ComicArt.face(c) : ''}<br>${L.CHARS[c].he} ${A[a]}${A[b]}</div>`).join('')}</div>
+      <div class="he" style="font-size:10.5pt;line-height:1.8;white-space:nowrap">קֶרֶן אוֹהֶבֶת ___ / דָּן מַעֲדִיף ___ / רוֹנִי אוֹהֶבֶת ___</div><div class="he"><i style="width:80mm"></i></div>` },
+};
+const SELF = { 1: 'I can understand new words when I hear them', 2: 'I can say what I feel like eating', 3: 'I can say what is sweet and what is bitter', 4: 'I can say what each character likes' };
+const T = TASK[P];
+const one = `<div class="t"><div class="hd"><b>🎟️ Exit Ticket</b><span>Olam Street <bdi dir="ltr">2.14</bdi> · part ${P}</span></div>
+  <div class="name">Name: <i></i><span class="dt">Date:</span><i class="d"></i></div>
+  <div class="q">${T.q}</div>${T.body}
+  <div class="self"><div>Today ${SELF[P]}:</div><div class="r"><span>yes</span><span>almost</span><span>not yet</span></div></div></div>`;
+document.getElementById('sheet').innerHTML = one.repeat(4);
+</script>
+</body>
+</html>
