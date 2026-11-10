@@ -6,7 +6,7 @@
  * window.LL = {
  *   key, letter, n, pages, title, sub,                       // header + card texts
  *   search: { letter, ask, rows: ['*בָּ', 'מַ', ...] x 7, count },     // '*' = a target
- *   warm: { step, title, items: [{ sy, snd } | { he, sy, snd, pic } | { he, en, pic } (a known word: reveal = word + English)], note, btn? },
+ *   warm: { step, title, items: [{ sy, snd } | { he, sy, snd, pic } | { he, pic, known: 1 } (a known word: reveal = the Hebrew word only)], note, btn? },
  *   card: { page, pic, cap, forms: [[syllable, label, plain?], ...], read, en, note },
  *   board: { page, rows: [[[s, snd, size], ...], ...], note },  // size l / m / s / w (word)
  *   drill: ['שׁ', 'בּ', ...],
@@ -92,7 +92,7 @@ function wuShow() {
 }
 function wuReveal() {
   const it = WU[wi]; wRev = true;
-  if (it.en) { $('wuWord').className = 'w'; $('wuWord').textContent = it.he; $('wuSnd').className = 'v'; $('wuSnd').textContent = it.en; beep(880, .2); say(it.he); return; }
+  if (it.known) { $('wuWord').className = 'w'; $('wuWord').textContent = it.he; $('wuSnd').textContent = ''; beep(880, .2); say(it.he); return; }
   if (it.pic) { $('wuWord').className = 'w'; $('wuWord').innerHTML = it.end ? markWord(it.he, it.sy) : first(it.he, it.sy); }
   $('wuSnd').className = 'v'; $('wuSnd').innerHTML = it.pic ? `<bdi dir="rtl">${it.sy}</bdi> = ${it.snd}` : it.snd;
   beep(880, .2); say(it.he || it.sy);

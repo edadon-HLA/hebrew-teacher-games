@@ -25,12 +25,12 @@ window.LL = (() => {
       btn: '👁 הַצִּיגוּ אֶת הַמִּלָּה',
       sub: 'עַל הַמָּסָךְ תְּמוּנָה שֶׁל מִלָּה שֶׁכְּבָר יוֹדְעִים — כֻּלָּם אוֹמְרִים אֶת הַמִּלָּה בְּעִבְרִית בְּקוֹל יַחַד — הַמּוֹרֶה לוֹחֵץ וּמַרְאֶה אֶת הַמִּלָּה.',
       items: [
-        { he: 'אַבָּא', en: 'dad', pic: 'alef/father.png' }, { he: 'סַבְתָּא', en: 'grandma', pic: 'samekh/grandma.png' },
-        { he: 'סַבָּא', en: 'grandpa', pic: 'samekh/grandpa.png' }, { he: 'חַלּוֹן', en: 'window', pic: 'alef/window.png' },
-        { he: 'סַפָּה', en: 'sofa', pic: 'he/sofa.png' }, { he: 'אָרוֹן', en: 'closet', pic: 'alef/wardrobe.png' },
-        { he: 'סְפָרִים', en: 'books', pic: 'samekh/books.png' }, { he: 'מַיִם', en: 'water', pic: 'mem/water.png' },
-        { he: 'גְּלִידָה', en: 'ice cream', pic: 'gimel/icecream.png' }, { he: 'יָד', en: 'hand', pic: 'tet/hand.png' },
-        { he: 'חָתוּל', en: 'cat', pic: 'het/kitten.png' }, { he: 'פְּרָחִים', en: 'flowers', pic: 'pe/flowers.png' }
+        { he: 'אַבָּא', known: 1, pic: 'alef/father.png' }, { he: 'סַבְתָּא', known: 1, pic: 'samekh/grandma.png' },
+        { he: 'סַבָּא', known: 1, pic: 'samekh/grandpa.png' }, { he: 'חַלּוֹן', known: 1, pic: 'alef/window.png' },
+        { he: 'סַפָּה', known: 1, pic: 'he/sofa.png' }, { he: 'אָרוֹן', known: 1, pic: 'alef/wardrobe.png' },
+        { he: 'סְפָרִים', known: 1, pic: 'samekh/books.png' }, { he: 'מַיִם', known: 1, pic: 'mem/water.png' },
+        { he: 'גְּלִידָה', known: 1, pic: 'gimel/icecream.png' }, { he: 'יָד', known: 1, pic: 'tet/hand.png' },
+        { he: 'חָתוּל', known: 1, pic: 'het/kitten.png' }, { he: 'פְּרָחִים', known: 1, pic: 'pe/flowers.png' }
       ],
       note: 'חִמּוּם עַל מָה שֶׁכְּבָר יוֹדְעִים: תְּמוּנָה מֻכֶּרֶת, כָּל הַכִּתָּה אוֹמֶרֶת אֶת הַמִּלָּה בְּעִבְרִית בְּקוֹל, וְאָז הַמּוֹרֶה לוֹחֵץ — הַמִּלָּה מוֹפִיעָה. אֵין כַּרְטִיסִים. אֵין כָּאן מִלִּים עִם שׁ — אֶת שׁ לוֹמְדִים מִיָּד אַחַר כָּךְ.'
     },
