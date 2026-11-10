@@ -4,7 +4,7 @@
 window.LL = (() => {
   const TZ = '../games/tzlil/';
   return {
-    key: 'pe', letter: 'פּ', n: 12, pages: '53–56', title: 'הָאוֹת פּ', sub: 'פָּ · פַּ · פְּ',
+    key: 'pe', letter: 'פּ', n: 13, pages: '53–56', title: 'הָאוֹת פּ', sub: 'פָּ · פַּ · פְּ',
     /* entry ticket: ה (last lesson). '*' = target. Look-alikes ח, ת. No פּ. */
     search: {
       letter: 'ה', ask: 'הָ · הַ · הֲ · ה', count: 'כַּמָּה ה מָצָאתִי?',

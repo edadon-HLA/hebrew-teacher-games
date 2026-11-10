@@ -3,7 +3,7 @@
 window.LL = (() => {
   const TZ = '../games/tzlil/';
   return {
-    key: 'tet', letter: 'ט', n: 14, pages: '64–68', title: 'הָאוֹת ט', sub: 'טָ · טַ · טְ · מִלִּים שֶׁאֲנַחְנוּ יְכוֹלִים לִקְרוֹא',
+    key: 'tet', letter: 'ט', n: 16, pages: '64–68', title: 'הָאוֹת ט', sub: 'טָ · טַ · טְ · מִלִּים שֶׁאֲנַחְנוּ יְכוֹלִים לִקְרוֹא',
     /* entry ticket: מ and ם (last lesson). '*' = target. Look-alike ס. No ט (this lesson's letter). */
     search: {
       letter: 'מ / ם', ask: 'מָ · מַ · מְ · מ · ם', count: 'כַּמָּה מ / ם מָצָאתִי?',

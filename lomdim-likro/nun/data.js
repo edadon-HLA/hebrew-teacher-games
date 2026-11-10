@@ -1,9 +1,9 @@
-/* לוֹמְדִים לִקְרֹא — the letter נ and final ן (reading workbook pp. 38-43). Read by letter-lesson.js and the printables.
- * ן never takes a vowel and comes only at the end of a word, so it is not in the sound drill. 6 workbook pages (L.do). */
+/* לוֹמְדִים לִקְרֹא — the letter נ (reading workbook pp. 38-41). Read by letter-lesson.js and the printables.
+ * The final ן (p.38 card + pp.42-43) has its own page: nun-sofit/data.js (teacher: "Own pages"). */
 window.LL = (() => {
   const TZ = '../games/tzlil/';
   return {
-    key: 'nun', letter: 'נ', n: 9, pages: '38–43', title: 'הָאוֹת נ · ן', sub: 'נָ · נַ · נְ · ן סוֹפִית',
+    key: 'nun', letter: 'נ', n: 9, pages: '38–41', title: 'הָאוֹת נ', sub: 'נָ · נַ · נְ',
     /* entry ticket: ח (last lesson). '*' = target. Look-alikes ה, ת. No נ. */
     search: {
       letter: 'ח', ask: 'חָ · חַ · חֲ · חְ · ח', count: 'כַּמָּה ח מָצָאתִי?',
@@ -30,11 +30,10 @@ window.LL = (() => {
     },
     card: {
       page: 38, pic: 'het/sneakers.png', cap: 'נַעֲלַיִם',
-      forms: [['נָ', 'na'], ['נַ', 'na'], ['נ', 'n · no vowel', 1], ['נְ', 'ne'], ['ן', 'n · end of a word', 1]],
+      forms: [['נָ', 'na'], ['נַ', 'na'], ['נ', 'n · no vowel', 1], ['נְ', 'ne']],
       read: 'קוֹרְאִים יַחַד: <b>נָ… נַ… נְ… נ…</b> וְאַחַר כָּךְ: נַעֲלַיִם!',
-      en: 'Kamatz and patach both say “a”: <bdi dir="rtl">נָ</bdi> = <bdi dir="rtl">נַ</bdi> = na. Shva says “e”: <bdi dir="rtl">נְ</bdi> = ne. <bdi dir="rtl">ן</bdi> is the same sound n, but only at the end of a word.',
-      extra: { title: 'ן סוֹפִית — רַק בְּסוֹף מִלָּה', mark: 'ן', items: [['nun/window.png', 'חַלּוֹן'], ['nun/balloon.png', 'בָּלוֹן'], ['nun/cloud.png', 'עָנָן']], line: 'נ — בְּהַתְחָלָה וּבָאֶמְצַע · ן — בְּסוֹף' },
-      note: 'ן בָּאָה רַק בְּסוֹף מִלָּה. נ - בְּהַתְחָלָה וּבָאֶמְצַע.'
+      en: 'Kamatz and patach both say “a”: <bdi dir="rtl">נָ</bdi> = <bdi dir="rtl">נַ</bdi> = na. Shva says “e”: <bdi dir="rtl">נְ</bdi> = ne.',
+      note: 'נָ וְ־נַ — אוֹתוֹ צְלִיל: na. נְ — ne. (ן סוֹפִית — בַּשִּׁעוּר הַבָּא.)'
     },
     board: {
       page: 38,
@@ -43,7 +42,6 @@ window.LL = (() => {
     },
     drill: ['שׁ', 'בּ', 'ת', 'ק', 'ר', 'א', 'ס', 'ח', 'נ'],
     game: { key: 'nun', name: 'נ' },
-    doNote: '6 עַמּוּדִים - אִם אֵין זְמַן, עַמּוּדִים 41 וְ־43 בַּבַּיִת.',
     do: [
       { type: 'line', page: 39, ins: 'מִתְחוּ קַו מֵהַ"נַ" לַתְּמוּנוֹת הַמַּתְחִילוֹת בַּצְּלִיל נַ:', ctr: 'נַ',
         pics: [
@@ -65,30 +63,18 @@ window.LL = (() => {
             ['alef/wardrobe.png', 'אָרוֹן', ['אָ', 'בָּ'], 'אָ'], ['nun/swing.png', 'נַדְנֵדָה', ['נַ', 'תַ'], 'נַ'], ['tav/apple.png', 'תַּפּוּחַ', ['תַ', 'קַ'], 'תַ'],
             ['samekh/grandma.png', 'סַבְתָּא', ['אֲ', 'סַ'], 'סַ'], ['resh/legs.png', 'רַגְלַיִם', ['רַ', 'קְ'], 'רַ'], ['het/kitten.png', 'חָתוּל', ['בָּ', 'חָ'], 'חָ']
           ] }],
-        note: 'לוֹחֲצִים עַל הַהֲבָרָה כְּדֵי לְהַקִּיף אוֹתָהּ. אִם אֵין זְמַן - בַּבַּיִת.' },
-      { type: 'line', page: 42, ins: 'מִתְחוּ קַו מֵהַ"ן סוֹפִית" לַתְּמוּנוֹת שֶׁמִּסְתַּיְּמוֹת בַּצְּלִיל ן:', ctr: 'ן', mark: 'ן',
-        pics: [
-          ['nun/window.png', 'חַלּוֹן', true, 224, 523, 327, 679], ['nun/balloon.png', 'בָּלוֹן', true, 1224, 1498, 300, 788],
-          ['nun/cloud.png', 'עָנָן', true, 21, 549, 867, 1203], ['nun/runner.png', 'רָץ', false, 1214, 1633, 835, 1431],
-          ['nun/water.png', 'מַיִם', false, 146, 565, 1432, 2084], ['nun/pencil.png', 'עִפָּרוֹן', true, 1048, 1493, 1597, 2084]
-        ],
-        note: ['הַפַּעַם — הַצְּלִיל בְּסוֹף הַמִּלָּה! חַלּוֹן, בָּלוֹן, עָנָן, עִפָּרוֹן — נִגְמָרִים בְּ־ן. רָץ, מַיִם — לֹא.', 'אִם תַּלְמִיד אוֹמֵר "אָצָן" - גַּם נָכוֹן!'] },
-      { type: 'strokes', page: 43, ins: 'כִּתְבוּ "ן" בַּשּׁוּרוֹת הַבָּאוֹת, עִבְרוּ עַל הַקַּוִּים לְפִי הַדֻּגְמָה:', cmp: 'נ ן',
-        paths: ['M120 62H196', 'M196 62V252'],
-        nums: [[96, 62], [222, 100]],
-        steps: ['קַו קָצָר לְמַעְלָה — מִשְּׂמֹאל לְיָמִין', 'קַו אָרֹךְ לְמַטָּה — מִתַּחַת לַשּׁוּרָה'],
-        note: 'בְּכָל הַשּׁוּרוֹת ן. מַשְׁווִים: נ יוֹשֶׁבֶת עַל הַשּׁוּרָה, ן יוֹרֶדֶת מִתַּחַת לַשּׁוּרָה.' }
+        note: 'לוֹחֲצִים עַל הַהֲבָרָה כְּדֵי לְהַקִּיף אוֹתָהּ.' },
     ],
     exit: {
       q: 'Work alone. Read the sound. Circle the picture that starts with this sound.',
       rows: [
         { s: 'נַ', ok: 1, items: [['het/kitten.png', 'חָתוּל'], ['nun/snake.png', 'נָחָשׁ'], ['samekh/grandma.png', 'סַבְתָּא']] },
         { s: 'חַ', ok: 0, items: [['het/hot.png', 'חַם'], ['samekh/sandal.png', 'סַנְדָּל'], ['samekh/books.png', 'סְפָרִים']] },
-        { head: 'Circle the picture whose word ENDS with <bdi dir="rtl">ן</bdi>.', s: '…ן', ok: 1, items: [['resh/train.png', 'רַכֶּבֶת'], ['nun/balloon.png', 'בָּלוֹן'], ['alef/nose.png', 'אַף']] },
+        { s: 'נַ', ok: 2, items: [['nun/pear.png', 'אַגָּס'], ['het/milk.png', 'חָלָב'], ['nun/swing.png', 'נַדְנֵדָה']] },
         { head: 'Read the word. Circle the right picture.', s: 'אַחַת', ok: 1, items: [['het/five.png', 'חָמֵשׁ'], ['het/one.png', 'אַחַת'], ['tav/eight.png', 'שְׁמוֹנֶה']] }
       ],
-      reflect: 'I can read <bdi dir="rtl">נָ נַ נְ</bdi> and I know <bdi dir="rtl">ן</bdi>',
-      note: 'מְשִׂימָה חֲדָשָׁה, לֹא מֵהַחוֹבֶרֶת. רַק מִלִּים מֻכָּרוֹת. הַתְּשׁוּבוֹת: נָחָשׁ · חַם · בָּלוֹן · אַחַת (1). הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.'
+      reflect: 'I can read <bdi dir="rtl">נָ נַ נְ</bdi>',
+      note: 'מְשִׂימָה חֲדָשָׁה, לֹא מֵהַחוֹבֶרֶת. רַק מִלִּים מֻכָּרוֹת. הַתְּשׁוּבוֹת: נָחָשׁ · חַם · נַדְנֵדָה · אַחַת (1). הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.'
     }
   };
 })();

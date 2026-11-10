@@ -4,7 +4,7 @@
 window.LL = (() => {
   const TZ = '../games/tzlil/';
   return {
-    key: 'gimel', letter: 'ג', n: 10, pages: '44–48', title: 'הָאוֹת ג', sub: 'גָ · גַ · גְ',
+    key: 'gimel', letter: 'ג', n: 11, pages: '44–48', title: 'הָאוֹת ג', sub: 'גָ · גַ · גְ',
     /* entry ticket: נ and ן (last lesson). '*' = target. Look-alikes כּ, ו, ז. No ג. */
     search: {
       letter: 'נ / ן', ask: 'נָ · נַ · נְ · נ · ן', count: 'כַּמָּה נ / ן מָצָאתִי?',

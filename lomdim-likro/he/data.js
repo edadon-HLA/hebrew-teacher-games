@@ -3,7 +3,7 @@
 window.LL = (() => {
   const TZ = '../games/tzlil/';
   return {
-    key: 'he', letter: 'ה', n: 11, pages: '49–52', title: 'הָאוֹת ה', sub: 'הָ · הַ · הֲ',
+    key: 'he', letter: 'ה', n: 12, pages: '49–52', title: 'הָאוֹת ה', sub: 'הָ · הַ · הֲ',
     /* entry ticket: ג (last lesson). '*' = target. Look-alikes נ, ז. No ה. */
     search: {
       letter: 'ג', ask: 'גָ · גַ · גְ · ג', count: 'כַּמָּה ג מָצָאתִי?',

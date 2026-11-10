@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="../niflaot-lessons/gate.js?v=1793100000"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>לוֹמְדִים לִקְרֹא — ן סוֹפִית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="../niflaot-lessons/lesson-kit.css?v=1792519767">
+<link rel="stylesheet" href="sound-drill.css?v=1">
+<link rel="stylesheet" href="letter-lesson.css?v=3">
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+</head>
+<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../lomdim-likro/index.html">🔤 לוֹמְדִים לִקְרֹא</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><a href="https://eldar1234334.github.io/SpellQuest-AlphaBet/" target="_blank" rel="noopener">🧙 SpellQuest AlphaBet</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../lomdim-likro/index.html'}">← חזרה</button></nav>
+
+<div class="wrap">
+<header class="top">
+  <div><p class="crumb" id="crumb"></p><h1 id="h1"></h1></div>
+  <p class="he-title" id="heTitle"></p>
+</header>
+<nav class="steps"><ol>
+  <li><a href="#s1"><b>1</b> כַּרְטִיס כְּנִיסָה</a></li><li><a href="#s2"><b>2</b> <span id="stepWarm"></span></a></li><li><a href="#s3"><b>3</b> הָאוֹת וְהַהֲבָרוֹת</a></li><li><a href="#s4"><b>4</b> עוֹשִׂים</a></li><li><a href="#s5"><b>5</b> Exit Ticket</a></li><li><a href="#s6"><b>🖨️</b> הַדְפָּסָה</a></li>
+</ol></nav>
+
+<!-- ===== 1 entry ticket: last lesson's letter ===== -->
+<section class="step" id="s1">
+  <span class="tag"><span class="tnum">1</span> כַּרְטִיס כְּנִיסָה · 2–3 דַּקּוֹת</span>
+  <p class="lead" id="sLead"></p>
+  <p class="sub" id="sSub"></p>
+  <div class="panel">
+    <div class="r-search" id="rSearch"></div>
+    <div class="r-bar" style="justify-content:center">
+      <span class="r-count" id="rFound">0 / 0</span>
+      <button class="btn good" id="rShowAll" type="button"></button>
+      <button class="btn ghost" id="rClr" type="button">↺ מִהַהַתְחָלָה</button>
+      <a class="r-dl" id="sPdf" target="_blank" rel="noopener">🖨️ גִּלָּיוֹן תִּפְזֹרֶת (PDF · 4 בְּדַף)</a>
+    </div>
+  </div>
+  <div id="sNote"></div>
+</section>
+
+<!-- ===== 2 warm-up: letters already learned ===== -->
+<section class="step" id="s2">
+  <span class="tag green"><span class="tnum">2</span> חִמּוּם · 3–5 דַּקּוֹת</span>
+  <p class="lead" id="wLead"></p>
+  <p class="sub">עַל הַמָּסָךְ הֲבָרָה אוֹ תְּמוּנָה מֵהַשִּׁעוּרִים הַקּוֹדְמִים — כֻּלָּם אוֹמְרִים אֶת הַצְּלִיל בְּקוֹל יַחַד — הַמּוֹרֶה לוֹחֵץ וּמַרְאֶה אֶת הַצְּלִיל.</p>
+  <div class="r-stage" id="rWu">
+    <div class="pic" id="wuPic"></div>
+    <div class="w" id="wuWord">?</div>
+    <div class="v" id="wuSnd" dir="ltr"></div>
+  </div>
+  <div class="r-bar" style="justify-content:center">
+    <button class="btn ghost" id="wuPrev" type="button">▶ הקודם</button>
+    <span class="r-count" id="wuCnt"></span>
+    <button class="btn ghost" id="wuNext" type="button">הבא ◀</button>
+  </div>
+  <div class="r-bar" style="justify-content:center">
+    <button class="btn good" id="wuRv" type="button">👁 הַצִּיגוּ אֶת הַצְּלִיל</button>
+    <label class="r-dl" style="cursor:pointer"><input type="checkbox" class="rVoiceAny"> 🔊 קוֹל</label>
+  </div>
+  <div id="wNote"></div>
+</section>
+
+<!-- ===== 3 lecturing ===== -->
+<section class="step" id="s3">
+  <span class="tag sky"><span class="tnum">3</span> הַסְבֵּר · 10 דַּקּוֹת</span>
+  <div class="sf-part">
+  <p class="lead" id="cLead"></p>
+  <p class="sub" id="cSub"></p>
+  <div class="r-lcard">
+    <div class="r-big" id="cBig"></div>
+    <div>
+      <div class="r-forms" id="rForms"></div>
+      <div class="r-bar" style="justify-content:center">
+        <button class="btn" id="rFormsNext" type="button">▶ הַצּוּרָה הַבָּאָה</button>
+        <button class="btn ghost" id="rFormsAll" type="button">הַצִּיגוּ הַכֹּל</button>
+        <label class="r-dl" style="cursor:pointer"><input type="checkbox" class="rVoiceAny"> 🔊 קוֹל</label>
+      </div>
+      <p class="r-note" id="cRead"></p>
+    </div>
+  </div>
+  <div id="cExtra"></div>
+  <div id="cNote"></div>
+  </div>
+
+  <div class="sf-part">
+  <p class="lead" style="margin-top:26px">לוּחַ "קִרְאוּ" — אוֹמְרִים אֶת הַצְּלִיל</p>
+  <p class="sub" id="bSub"></p>
+  <div class="r-board" id="rBoard"></div>
+  <div class="r-pick" id="rPick"></div>
+  <div class="r-bar" style="justify-content:center">
+    <button class="btn ghost" id="bPrev" type="button">▶ הקודם</button>
+    <span class="r-count" id="bCnt"></span>
+    <button class="btn ghost" id="bNext" type="button">הבא ◀</button>
+  </div>
+  <div class="r-bar" style="justify-content:center">
+    <button class="r-cd" id="bCd" type="button">🕒 3… 2… 1… אוֹמְרִים!</button>
+    <button class="btn good" id="bRv" type="button">👁 הַצִּיגוּ אֶת הַצְּלִיל</button>
+    <button class="btn ghost" id="bAll" type="button">הַצִּיגוּ הַכֹּל</button>
+  </div>
+  <div id="bNote"></div>
+  </div>
+
+  <div class="sf-part">
+  <p class="lead" style="margin-top:26px">רוֹאִים אוֹת — אוֹמְרִים אֶת הַצְּלִיל</p>
+  <p class="sub" id="dSub"></p>
+  <div id="sDrill"></div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>כְּמוֹ בְּכִתָּה ו׳. הַמּוֹרֶה בּוֹחֵר: "אוֹת אַחַת" (אוֹת אַחַת עִם כָּל הַתְּנוּעוֹת), "תְּנוּעָה אַחַת" (תְּנוּעָה אַחַת עִם כָּל הָאוֹתִיּוֹת) אוֹ "עִרְבּוּב". כָּל הַתְּנוּעוֹת, לֹא רַק אֵלֶּה שֶׁל הַשִּׁעוּר — תִּרְגּוּל טוֹב. הַכִּתָּה אוֹמֶרֶת בְּקוֹל, וְאָז לוֹחֲצִים עַל הָאוֹת כְּדֵי לְהַצִּיג אֶת הַצְּלִיל. "הַצֵּג צְלִיל" מַרְאֶה אֶת הַצְּלִיל מִיָּד. חִצִּים בַּמִּקְלֶדֶת = הַבָּא / הַקּוֹדֵם.</p>
+    <p>קָמָץ, פַּתָּח = a · צֵירֵי, סֶגּוֹל, שְׁוָא = e · חִירִיק = i · חוֹלָם = o · קֻבּוּץ, שׁוּרוּק = u. א וְ־ע לֹא נִשְׁמָעוֹת. א, ע, ה, ח לֹא מְקַבְּלוֹת שְׁוָא — בִּמְקוֹמוֹ חֲטַף פַּתָּח (אֲ) = a. בְּכָל שִׁעוּר נוֹסֶפֶת הָאוֹת הַחֲדָשָׁה.</p>
+  </details>
+  </div>
+</section>
+
+<!-- ===== 4 do it ===== -->
+<section class="step" id="s4">
+  <span class="tag"><span class="tnum">4</span> עוֹשִׂים · 15–20 דַּקּוֹת</span>
+  <div id="gNoteTop"></div>
+  <div class="sf-part">
+  <p class="lead">מִשְׂחָק: תּוֹפְסִים צְלִיל</p>
+  <p class="sub" id="gSub"></p>
+  <div class="shortcuts" id="gShort"></div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>לִפְנֵי הָעֲבוֹדָה בַּחוֹבֶרֶת: מְשַׂחֲקִים יַחַד בְּ"תּוֹפְסִים צְלִיל". כָּל תַּלְמִיד מַחֲזִיק כַּרְטִיסֵי ✔ / ✘.</p>
+  </details>
+  </div>
+
+  <div id="doParts"></div>
+</section>
+
+<!-- ===== 5 exit ticket ===== -->
+<section class="step" id="s5">
+  <div class="r-bar" style="margin-bottom:0"><span class="tag purple" style="background:#ece6fb;border-color:#7a5bd1;color:#3b2a82">🎟️ Exit Ticket · 3–5 min</span><span class="spacer"></span><a class="r-dl" id="xPdf" target="_blank" rel="noopener">🖨️ Printable version (PDF · 4 per page)</a></div>
+  <p class="lead r-en" dir="ltr" id="xQ"></p>
+  <div class="panel">
+    <div class="x-rows" id="rEx"></div>
+    <div class="r-bar" style="justify-content:center">
+      <button class="btn good" id="exShow" type="button">👁 Show answers</button>
+      <button class="btn ghost" id="exClr" type="button">↺ Hide</button>
+    </div>
+  </div>
+  <p class="sub r-en" dir="ltr" style="margin-top:14px" id="xRef"></p>
+  <div id="xNote"></div>
+</section>
+
+<!-- ===== printables ===== -->
+<section class="step" id="s6">
+  <span class="tag sky"><span class="tnum">🖨️</span> לְהַדְפָּסָה</span>
+  <div class="shortcuts" style="margin-top:12px">
+    <a class="sc" id="pSearch" target="_blank" rel="noopener"><span class="ic">🔎</span><div><h3 id="pSearchT"></h3><p>כַּרְטִיס כְּנִיסָה · 4 בְּדַף</p></div><span class="go">◀</span></a>
+    <a class="sc" href="../games/tzlil/cards-yes-no.pdf" target="_blank" rel="noopener"><span class="ic">✔✘</span><div><h3>כַּרְטִיסֵי ✔ / ✘</h3><p>לַמִּשְׂחָק תּוֹפְסִים צְלִיל</p></div><span class="go">◀</span></a>
+    <a class="sc" id="pExit" target="_blank" rel="noopener"><span class="ic">🎟️</span><div><h3>Exit Ticket</h3><p>4 per A4 page</p></div><span class="go">◀</span></a>
+  </div>
+</section>
+<p class="src">הַתַּרְגִּילִים וְהַתְּמוּנוֹת: "חוֹבֶרֶת קְרִיאָה וּכְתִיבָה 1 — קָמָץ, פַּתָּח, שְׁוָא" (תשע"ט), עַמּוּדִים <span id="srcPages"></span>. לְשִׁמּוּשׁ בַּכִּתָּה בִּלְבַד.</p>
+</div>
+<div id="rCd" aria-live="assertive"><div id="rCdT">3</div></div>
+<script src="../niflaot-lessons/lesson-kit.js?v=1792421680"></script>
+<script src="nun-sofit/data.js?v=2"></script>
+<script src="sound-drill.js?v=4"></script>
+<script src="join-sounds.js?v=3"></script>
+<script src="letter-lesson.js?v=3"></script>
+<script src="../shared/section-focus.js?v=5"></script>
+</body>
+</html>
