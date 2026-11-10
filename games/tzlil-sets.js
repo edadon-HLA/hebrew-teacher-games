@@ -189,3 +189,10 @@ const sin = { letter: 'שׂ', first: 'שׂ', sound: 's (sin)', title: 'שׂ', it
 const o = {}; Object.keys(S).forEach(k => { if (k === 'shin') o.sin = sin; o[k] = S[k]; }); if (!o.sin) o.sin = sin;
 window.TZLIL_SETS = o;
 })();
+/* tsadi: the reading-workbook 2 pictures first (batch D). כ (ch), ך, ף and ץ have no "starts with" set (the teacher will decide). */
+(() => {
+const S = window.TZLIL_SETS, P = n => 'tzlil/pic-' + n + '.png';
+const pre = (key, wb, drop) => { S[key].items = wb.map(([he, yes, n]) => ({ he, yes, pic: P(n) })).concat(S[key].items.filter(it => !drop.includes(it.he))); };
+pre('tsadi', [['טַבַּעַת', false, 'ring'], ['עַכְבָּר', false, 'mouse'], ['צָב', true, 'turtle'], ['לַיְלָה', false, 'night'], ['צָהֹב', true, 'yellow'],
+  ['צָעִיף', true, 'scarf']], ['צָב', 'צָהֹב']);
+})();

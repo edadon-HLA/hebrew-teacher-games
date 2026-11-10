@@ -281,11 +281,16 @@ function wbPage(w, id, box) {
     $(id + 'Rst').onclick = () => { box.querySelectorAll('button').forEach(x => x.classList.remove('on', 'ok', 'no')); $(id + 'Msg').textContent = ''; };
   } else if (w.type === 'drop') {
     const bank = $(id + 'Bank');
+    if (w.gaps) w.pics = w.gaps.map(g => [null, g.t, g.ans]);   /* complete the sentences: { t: 'דָן ___ לַגַן.', ans: [...] }, w.pic = a picture beside */
     bank.insertAdjacentHTML('beforeend', w.bank.map(s => `<button type="button">${s}</button>`).join(''));
     if (w.pics.length === 4) box.style.gridTemplateColumns = 'repeat(2,minmax(0,1fr))';   /* 2 x 2, as in the book */
     if (w.cols) box.style.gridTemplateColumns = `repeat(${w.cols},minmax(0,1fr))`;
     if (w.words) box.classList.add('words');
     if (w.sent) box.classList.add('sent');   /* whole sentences: picture and a long line side by side, one per row */
+    if (w.gaps) { box.className = 'gaps';
+      box.innerHTML = (w.pic ? `<img class="gp-pic" src="${w.pic}" alt="">` : '') + `<div class="gp-rows">${w.gaps.map((g, j) => { const [a, b] = g.t.split('___'); return `<div class="gp-row" data-i="${j}"><span class="gp-n">${j + 1}</span><span class="gp-t">${a}</span><button type="button" class="k-drop" data-i="${j}">&nbsp;</button><span class="gp-t">${b || ''}</span></div>`; }).join('')}</div>`;
+      box.querySelectorAll('.gp-t').forEach(t => t.onclick = () => { const r = t.closest('.gp-row'), d = r.querySelector('.k-drop'); say(w.gaps[+r.dataset.i].t.replace('___', d.dataset.v || '')); });
+    } else
     box.innerHTML = w.pics.map(([img, he], j) => `<div class="bx"><img src="${img}" alt="${he}"><button type="button" class="k-drop" data-i="${j}">&nbsp;</button></div>`).join('');
     const put = (drop, v) => { drop.textContent = v; drop.dataset.v = v; drop.classList.remove('ok', 'no'); beep(700, .08); $(id + 'Msg').textContent = ''; };
     let selW = null;
@@ -390,4 +395,5 @@ $('exClr').onclick = () => { $('rEx').classList.remove('rv'); $('rEx').querySele
 /* ---------- printables ---------- */
 $('pSearch').href = `Lomdim-likro-${L.key}-letter-search.pdf`; $('pSearchT').textContent = `תִּפְזֹרֶת אוֹתִיּוֹת (${SR.letter})`;
 $('pExit').href = `Lomdim-likro-${L.key}-exit-ticket.pdf`;
+if (L.wordsPdf) $('pExit').insertAdjacentHTML('afterend', `<a class="sc" href="Lomdim-likro-${L.key}-words.pdf" target="_blank" rel="noopener"><span class="ic">📖</span><div><h3>מִלִּים שֶׁאֲנַחְנוּ יְכוֹלִים לִקְרֹא</h3><p>"I can read" · 1 בְּדַף</p></div><span class="go">◀</span></a>`);   /* the closing word list (print-words.html) */
 })();

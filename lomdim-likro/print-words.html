@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מִלִּים שֶׁאֲנַחְנוּ יְכוֹלִים לִקְרֹא</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
+<!-- shared "I can read" printable: print-words.html?l=<key> (reads <key>/data.js, the 'words' part of LL.do);
+     rendered to Lomdim-likro-<key>-words.pdf, 1 per page, Letter-safe 190 x 255 mm. A ✔ box next to each word. -->
+<style>
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.pg{width:190mm;height:255mm;margin:0 auto;overflow:hidden;display:flex;flex-direction:column}
+h1{margin:0;font-size:22pt;font-weight:800;display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid #e2506a;padding-bottom:2mm}
+h1 small{font-size:11pt;color:#6b6880;font-weight:700}
+.nm{display:flex;gap:6mm;margin:4mm 0 3mm;font-size:13pt;font-weight:700;align-items:flex-end}
+.nm i{flex:1;border-bottom:1.3px solid #23233a;height:7mm}
+.ask{font-size:12pt;font-weight:700;margin:0 0 4mm;color:#4a4860}
+.g{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm 4mm;flex:1;align-content:start}
+.w{display:flex;align-items:center;gap:3mm;border:1.2px solid #c9cfd8;border-radius:3mm;padding:2mm 3mm;height:17mm}
+.w b{flex:1;font-size:21pt;font-weight:800;text-align:center}
+.w i{width:8mm;height:8mm;border:1.6px solid #23233a;border-radius:1.5mm;flex-shrink:0}
+.end{margin-top:4mm;font-size:14pt;font-weight:800;text-align:center}
+@media screen{body{background:#eee;padding:10px}.pg{background:#fff;padding:8mm;box-shadow:0 2px 12px #0003}}
+</style>
+<script>document.write(`<script src="${new URLSearchParams(location.search).get('l') || 'tet'}/data.js"><\/script>`);</script>
+</head>
+<body>
+<div class="pg">
+  <h1><span id="ttl"></span><small id="tag"></small></h1>
+  <div class="nm"><span>שֵׁם:</span><i></i><span>תַּאֲרִיךְ:</span><i style="flex:.5"></i></div>
+  <div class="ask">קוֹרְאִים כָּל מִלָּה בְּקוֹל. מִלָּה שֶׁקָּרָאתִי — מְסַמְּנִים ✔ בַּמִּשְׁבֶּצֶת.</div>
+  <div class="g" id="g"></div>
+  <div class="end">🎉 כָּל הַכָּבוֹד! אֲנִי יוֹדֵעַ / יוֹדַעַת לִקְרֹא!</div>
+</div>
+<script>
+const W = (LL.do || []).find(d => d.type === 'words');
+document.getElementById('ttl').textContent = W.ins.replace(/:$/, '');
+document.title = W.ins.replace(/:$/, '');
+document.getElementById('tag').textContent = `קְרִיאָה ${LL.n} · עַמּוּד ${W.page}`;
+document.getElementById('g').innerHTML = W.rows.flat().map(([w]) => `<div class="w"><i></i><b>${w}</b></div>`).join('');
+</script>
+</body>
+</html>
