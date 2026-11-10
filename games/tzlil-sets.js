@@ -118,3 +118,16 @@ window.TZLIL_SETS.bet.items = [
   { he: 'בְּגָדִים',    yes: true,  pic: 'tzlil/pic-clothes.png' }   /* wb */
 ].concat(window.TZLIL_SETS.bet.items);
 })();
+/* tav, qof, resh, alef: the reading-workbook pictures (lessons "לוֹמְדִים לִקְרֹא") come first, then the emoji items above
+ * (emoji words that are now pictures are dropped) */
+(() => {
+const S = window.TZLIL_SETS, P = n => 'tzlil/pic-' + n + '.png';
+const pre = (key, wb, drop) => { S[key].items = wb.map(([he, yes, n]) => ({ he, yes, pic: P(n) })).concat(S[key].items.filter(it => !drop.includes(it.he))); };
+pre('tav', [['תַּפּוּחַ', true, 'apple'], ['קַר', false, 'cold'], ['תַּרְנְגוֹלֶת', true, 'hen'], ['תַּפּוּז', true, 'orange'], ['שְׁמוֹנֶה', false, 'eight'],
+  ['תְּמוּנָה', true, 'frame'], ['רַגְלַיִם', false, 'legs']], ['תַּפּוּחַ', 'תַּפּוּז', 'תְּמוּנָה']);
+pre('qof', [['קַר', true, 'cold'], ['רַכֶּבֶת', false, 'train'], ['אַגָּס', false, 'pear'], ['תַּרְנְגוֹלֶת', false, 'hen'], ['רַגְלַיִם', false, 'legs']], []);
+pre('resh', [['רַכֶּבֶת', true, 'train'], ['אָרוֹן', false, 'wardrobe'], ['אַבָּא', false, 'father'], ['רַגְלַיִם', true, 'legs'], ['סַבָּא', false, 'oldman'],
+  ['אַף', false, 'nose']], ['רַכֶּבֶת', 'רֶגֶל']);
+pre('alef', [['אַף', true, 'nose'], ['חַלּוֹן', false, 'window'], ['אַגָּס', true, 'pear'], ['אַבָּא', true, 'father'], ['סַבָּא', false, 'oldman'],
+  ['אָרוֹן', true, 'wardrobe']], ['אַבָּא', 'אֲגַס']);
+})();

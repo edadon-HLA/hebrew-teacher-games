@@ -35,8 +35,11 @@ window.SoundDrill = (() => {
   /* the default pool for every page = all vowels, in this order (a, e, i, o, u) */
   const ALL = ['ka', 'pa', 'ts', 'se', 'sv', 'hi', 'hiy', 'ho', 'hov', 'ku', 'shu'];
   /* NFC puts the marks in the standard order (e.g. ש + holam + shin dot = שֹׁ) */
-  const syl = (l, v) => (l + VOWEL[v].m).normalize('NFC');
-  const sound = (l, v) => (LETTER[l] || '') + VOWEL[v].s;
+  /* guttural letters never take a plain shva: they take chataf patach (אֲ), heard "a" (teacher's rule, workbook p.26) */
+  const GUTTURAL = { 'א': 1, 'ע': 1, 'ה': 1, 'ח': 1 };
+  const CHATAF = 'ֲ';
+  const syl = (l, v) => (l + (v === 'sv' && GUTTURAL[l] ? CHATAF : VOWEL[v].m)).normalize('NFC');
+  const sound = (l, v) => (LETTER[l] || '') + (v === 'sv' && GUTTURAL[l] ? 'a' : VOWEL[v].s);
   const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
   function mount(root, opt) {
@@ -127,5 +130,5 @@ window.SoundDrill = (() => {
     build(); show(false);
     return { pool: POOL };
   }
-  return { mount, LETTER, VOWEL, ALL, syl, sound };
+  return { mount, LETTER, VOWEL, ALL, GUTTURAL, syl, sound };
 })();
