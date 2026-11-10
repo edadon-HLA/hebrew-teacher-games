@@ -172,3 +172,20 @@ pre('vav', [['וָרֹד', true, 'pink'], ['זַחַל', false, 'caterpillar'], 
 pre('kaf', [['כַּדּוּר', true, 'ball'], ['גַּרְבַּיִם', false, 'socks'], ['כַּף', true, 'spoon'], ['גַּן שַׁעֲשׁוּעִים', false, 'playground'], ['כָּרִית', true, 'pillow'],
   ['זַחַל', false, 'caterpillar']], ['כַּדּוּר']);
 })();
+/* zayin: the reading-workbook 2 pictures first (batch C). sin (שׂ): a new set (lesson "לוֹמְדִים לִקְרֹא · שׂ"), placed before shin in
+ * the picker; no ס- or שׁ-words as ✘ items. פ (f), ף, ב (v) have no set: no word starts with them (the teacher will decide). */
+(() => {
+const S = window.TZLIL_SETS, P = n => 'tzlil/pic-' + n + '.png';
+const pre = (key, wb, drop) => { S[key].items = wb.map(([he, yes, n]) => ({ he, yes, pic: P(n) })).concat(S[key].items.filter(it => !drop.includes(it.he))); };
+pre('zayin', [['חִיּוּךְ', false, 'smiley'], ['זַחַל', true, 'caterpillar'], ['רָץ', false, 'runner'], ['שַׂקִּית', false, 'bag'], ['כְּפָפָה', false, 'glove'],
+  ['זָהָב', true, 'gold'], ['מַדָּף', false, 'shelf']], ['זָהָב']);
+const sin = { letter: 'שׂ', first: 'שׂ', sound: 's (sin)', title: 'שׂ', items: [
+  ['שַׂקִּית', true, 'bag'], ['מַגָּפַיִם', false, 'boots'], ['חָלָב', false, 'milk'], ['צָב', false, 'turtle'], ['דָּג', false, 'clownfish'], ['שָׂמֵחַ', true, 'smiley']
+].map(([he, yes, n]) => ({ he, yes, pic: P(n) })).concat([
+  { he: 'שֶׂה', yes: true, emo: '🐑' }, { he: 'כֶּלֶב', yes: false, emo: '🐶' }, { he: 'שִׂמְלָה', yes: true, emo: '👗' }, { he: 'בַּיִת', yes: false, emo: '🏠' },
+  { he: 'שָׂפָם', yes: true, emo: '👨' }, { he: 'מַיִם', yes: false, emo: '💧' }, { he: 'שָׂדֶה', yes: true, emo: '🌾' }, { he: 'לֵב', yes: false, emo: '❤️' },
+  { he: 'שַׂחְקָן', yes: true, emo: '🎭' }
+]) };
+const o = {}; Object.keys(S).forEach(k => { if (k === 'shin') o.sin = sin; o[k] = S[k]; }); if (!o.sin) o.sin = sin;
+window.TZLIL_SETS = o;
+})();
