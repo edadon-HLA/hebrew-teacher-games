@@ -161,3 +161,14 @@ pre('dalet', [['דַּפִּים', true, 'papers'], ['יַלְדָּה', false, 
 pre('yod', [['יָרֵחַ', true, 'moon'], ['כַּדּוּר', false, 'ball'], ['יָד', true, 'hand'], ['גַּב', false, 'back'], ['חָלָב', false, 'milk'],
   ['יַלְדָּה', true, 'girl']], ['יַלְדָּה', 'יָרֵחַ']);
 })();
+/* ayin, vav, kaf: the reading-workbook 2 pictures first (batch B). ayin: no א-words as ✘ (same sound); kaf: no ק-words as ✘. */
+(() => {
+const S = window.TZLIL_SETS, P = n => 'tzlil/pic-' + n + '.png';
+const pre = (key, wb, drop) => { S[key].items = wb.map(([he, yes, n]) => ({ he, yes, pic: P(n) })).concat(S[key].items.filter(it => !drop.includes(it.he))); };
+pre('ayin', [['עַיִן', true, 'eye'], ['יָרֵחַ', false, 'moon'], ['כְּפָפוֹת', false, 'mittens'], ['עָנָן', true, 'cloud'], ['עַכְבָּר', true, 'mouse'],
+  ['שָׁרָה', false, 'singer'], ['עֲנָנִים', true, 'clouds'], ['כַּדּוּר', false, 'ball']], ['עַכְבָּר']);
+pre('vav', [['וָרֹד', true, 'pink'], ['זַחַל', false, 'caterpillar'], ['מַגָּפַיִם', false, 'boots'], ['וָו', true, 'hook'], ['סַבְתָּא', false, 'grandma'],
+  ['זָהָב', false, 'gold']], []);
+pre('kaf', [['כַּדּוּר', true, 'ball'], ['גַּרְבַּיִם', false, 'socks'], ['כַּף', true, 'spoon'], ['גַּן שַׁעֲשׁוּעִים', false, 'playground'], ['כָּרִית', true, 'pillow'],
+  ['זַחַל', false, 'caterpillar']], ['כַּדּוּר']);
+})();

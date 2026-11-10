@@ -120,8 +120,9 @@ $('cRead').innerHTML = C.read;
 $('cNote').innerHTML = note(C.note);
 if (C.cols) $('rForms').style.gridTemplateColumns = `repeat(${C.cols},1fr)`;
 if (C.extra) {   /* small extra card: a final letter, or two letters with the same sound */
-  const E = C.extra;
-  $('cExtra').innerHTML = `<div class="r-extra"><h3>${E.title}</h3><div class="r-exrow">${E.items.map(([img, w, m]) => `<div class="r-exi"><img src="${img}" alt=""><b>${markWord(w, m || E.mark)}</b></div>`).join('')}</div>${E.line ? `<p>${E.line}</p>` : ''}</div>`;
+  /* extra may be one card or a list; an item [null, text, mark, sound] = a big letter/word without a picture (sound shown under it) */
+  $('cExtra').innerHTML = [].concat(C.extra).map(E => `<div class="r-extra"><h3>${E.title}</h3><div class="r-exrow">${E.items.map(([img, w, m, snd]) => `<div class="r-exi" role="button" tabindex="0" data-say="${w}">${img ? `<img src="${img}" alt="">` : ''}<b${img ? '' : / /.test(w) ? ' class="mid"' : ' class="big"'}>${markWord(w, m || E.mark)}</b>${snd ? `<small dir="ltr">${snd}</small>` : ''}</div>`).join('')}</div>${E.line ? `<p>${E.line}</p>` : ''}</div>`).join('');
+  $('cExtra').querySelectorAll('.r-exi').forEach(d => d.onclick = () => { d.classList.add('on'); beep(660, .12); say(d.dataset.say); });
 }
 const forms = $('rForms'), fEl = [];
 C.forms.forEach(([s, lab, plain]) => {
@@ -306,6 +307,18 @@ function wbPage(w, id, box) {
       result(id, right, w.pics.length); };
     $(id + 'Chk').onclick = () => check(false); $(id + 'Ans').onclick = () => check(true);
     $(id + 'Rst').onclick = () => { box.querySelectorAll('.k-drop').forEach(d => { d.innerHTML = '&nbsp;'; delete d.dataset.v; d.classList.remove('ok', 'no'); }); $(id + 'Msg').textContent = ''; };
+  } else if (w.type === 'pick') {   /* circle the syllables that make the word: rows [{ pic, he, cells: [...], ans: [cell indexes], word }] */
+    box.className = 'pk';
+    box.innerHTML = w.rows.map((r, i) => `<div class="pk-row" data-i="${i}"><img src="${r.pic}" alt="${r.he || ''}"><div class="pk-cells">${r.cells.map((c, j) => `<button type="button" data-j="${j}">${c}<span class="k-ring"></span></button>`).join('')}</div><div class="pk-word"></div></div>`).join('');
+    box.querySelectorAll('.pk-cells button').forEach(b => b.onclick = () => { b.classList.toggle('on'); b.classList.remove('ok', 'no'); beep(b.classList.contains('on') ? 700 : 400, .1); $(id + 'Msg').textContent = ''; });
+    const check = show => { let right = 0;
+      box.querySelectorAll('.pk-row').forEach(row => { const r = w.rows[+row.dataset.i]; let good = true;
+        row.querySelectorAll('button').forEach(b => { const a = r.ans.includes(+b.dataset.j); if (show) b.classList.toggle('on', a); const on = b.classList.contains('on');
+          b.classList.toggle('ok', on && a); b.classList.toggle('no', on && !a); if (on !== a) good = false; });
+        row.querySelector('.pk-word').textContent = good ? r.word : ''; row.classList.toggle('done', good); if (good) right++; });
+      result(id, right, w.rows.length); };
+    $(id + 'Chk').onclick = () => check(false); $(id + 'Ans').onclick = () => check(true);
+    $(id + 'Rst').onclick = () => { box.querySelectorAll('.pk-cells button').forEach(b => b.classList.remove('on', 'ok', 'no')); box.querySelectorAll('.pk-word').forEach(x => x.textContent = ''); box.querySelectorAll('.pk-row').forEach(x => x.classList.remove('done')); $(id + 'Msg').textContent = ''; };
   } else if (w.type === 'join' || w.type === 'phrase') {
     const j = w.type === 'join' ? JoinSounds.mount(box, { rows: w.rows, pics: w.pics, tip: w.tip, say, beep }) : JoinSounds.phrase(box, { rows: w.rows, say, beep, chime });
     JOINS.push(j);

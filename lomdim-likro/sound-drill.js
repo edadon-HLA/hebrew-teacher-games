@@ -44,13 +44,16 @@ window.SoundDrill = (() => {
 
   /* final letters (workbook 2 on): one card each, NO vowel, in 🔤 letter mode and 🔀 mix only (never in ◌ vowel mode).
    * Pass them in `finals: ['ן', 'ם']` (or inside `letters`; they are moved out automatically). */
+  /* letters that only take some vowels in the drill: ו with holam / shuruk would read as the vowel itself (וֹ = o, וּ = u) */
+  const LIMIT = { 'ו': ['ka', 'pa', 'sv'] };
   const FINAL = { 'ן': 'n · end', 'ם': 'm · end', 'ך': 'ch · end', 'ף': 'f · end', 'ץ': 'ts · end' };
 
   function mount(root, opt) {
     const letters = opt.letters.filter(l => l in LETTER), vowels = (opt.vowels || ALL).filter(v => v in VOWEL);
     const finals = [...new Set(opt.letters.concat(opt.finals || []).filter(l => l in FINAL))];
     const POOL = [];
-    letters.forEach(l => vowels.forEach(v => POOL.push({ l, v, t: syl(l, v), s: sound(l, v) })));
+    const lim = Object.assign({}, LIMIT, opt.limit || {});
+    letters.forEach(l => vowels.filter(v => !lim[l] || lim[l].includes(v)).forEach(v => POOL.push({ l, v, t: syl(l, v), s: sound(l, v) })));
     finals.forEach(l => POOL.push({ l, v: null, t: l, s: FINAL[l] }));
     root.classList.add('sd');
     root.innerHTML = `
