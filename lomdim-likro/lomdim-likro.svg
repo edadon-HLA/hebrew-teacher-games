@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 280">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff7e6"/><stop offset="1" stop-color="#ffe2b8"/></linearGradient></defs>
+<rect width="420" height="280" fill="url(#g)"/>
+<path d="M210 70 C170 50 110 48 60 60 L60 230 C110 218 170 220 210 240 Z" fill="#fff" stroke="#18213a" stroke-width="6" stroke-linejoin="round"/>
+<path d="M210 70 C250 50 310 48 360 60 L360 230 C310 218 250 220 210 240 Z" fill="#fff" stroke="#18213a" stroke-width="6" stroke-linejoin="round"/>
+<line x1="210" y1="70" x2="210" y2="240" stroke="#18213a" stroke-width="6"/>
+<text x="285" y="185" font-family="Arial, sans-serif" font-size="120" font-weight="700" fill="#2a8bd0" text-anchor="middle">א</text>
+<text x="135" y="185" font-family="Arial, sans-serif" font-size="120" font-weight="700" fill="#e0703a" text-anchor="middle">ב</text>
+</svg>

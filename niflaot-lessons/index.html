@@ -20,6 +20,8 @@ main{max-width:1000px;margin:40px auto;padding:0 20px}
 .lesson p{margin:0 0 20px;color:#59647d;font-size:18px}
 .open{display:inline-block;background:#18213a;color:white;padding:12px 20px;border-radius:10px;font-weight:bold}
 .back{display:inline-block;margin-top:24px;color:#18213a;font-weight:bold}
+.to-lomdim{display:block;margin:0 0 24px;background:#fff7e6;border:2px dashed #e0a24a;border-radius:14px;padding:12px 18px;color:#18213a;text-decoration:none;font-size:18px;text-align:right}
+.to-lomdim:hover{background:#ffefcc}
 @media(max-width:650px){
   .lesson{flex-direction:column;align-items:stretch;text-align:center}
   .lesson-image{width:100%;max-width:260px;margin:0 auto}
@@ -36,10 +38,11 @@ main{max-width:1000px;margin:40px auto;padding:0 20px}
 .site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
 @media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
 </style></head>
-<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><a href="https://eldar1234334.github.io/SpellQuest-AlphaBet/" target="_blank" rel="noopener">🧙 SpellQuest AlphaBet</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../niflaot-lessons/index.html'}">← חזרה</button></nav>
+<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../lomdim-likro/index.html">🔤 לוֹמְדִים לִקְרֹא</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><a href="https://eldar1234334.github.io/SpellQuest-AlphaBet/" target="_blank" rel="noopener">🧙 SpellQuest AlphaBet</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../niflaot-lessons/index.html'}">← חזרה</button></nav>
 <header><h1>Niflaot Lessons</h1></header>
 <main>
 <div id="nk-admin" hidden></div>
+<a class="to-lomdim" href="../lomdim-likro/index.html">🔤 שִׁעוּרֵי הַקְּרִיאָה (הָאוֹתִיּוֹת) עָבְרוּ: <b>לוֹמְדִים לִקְרֹא →</b></a>
 <a class="lesson" href="./Niflaot-page-12.html">
 <img class="lesson-image" src="./niflaot.svg" alt="Niflaot page 12">
 <div class="lesson-content">
@@ -85,14 +88,6 @@ main{max-width:1000px;margin:40px auto;padding:0 20px}
 <div class="lesson-content">
 <h2>Niflaot page 21</h2>
 <p>שיעור · שיחה בטלפון: שיר ואמא בסופרמרקט · מספרים בזכר ובנקבה</p>
-<span class="open">פתיחת השיעור ←</span>
-</div>
-</a>
-<a class="lesson" href="./Niflaot-reading-shin.html">
-<img class="lesson-image" src="./niflaot.svg" alt="Niflaot reading: the letter shin">
-<div class="lesson-content">
-<h2>קְרִיאָה · הָאוֹת שׁ</h2>
-<p>שִׁעוּר קְרִיאָה 1 · חוֹבֶרֶת קְרִיאָה וּכְתִיבָה, עַמּוּדִים 3-6 · שָׁ שַׁ שְׁ</p>
 <span class="open">פתיחת השיעור ←</span>
 </div>
 </a>
@@ -150,7 +145,6 @@ main{max-width:1000px;margin:40px auto;padding:0 20px}
 /* PDFs to print for each lesson (shared/printables-list.js). NEW LESSON = add its PDFs here. */
 window.PRINTABLES = {
   'Niflaot-page-21': [['Exit ticket (4 per page)', 'Niflaot-page-21-exit-ticket.pdf']],
-  'Niflaot-reading-shin': [['Entry ticket – letter search (4 per page)', 'Niflaot-reading-shin-letter-search.pdf'], ['Workbook pages 3–6', 'Niflaot-reading-shin-workbook-pp3-6.pdf'], ['Response cards (שׁ sounds)', 'Niflaot-reading-shin-response-cards.pdf'], ['Yes / no cards', '../games/tzlil/cards-yes-no.pdf'], ['Exit ticket (4 per page)', 'Niflaot-reading-shin-exit-ticket.pdf']],
   'Niflaot-pages-22-24': [['Entry ticket – word search (4 per page)', 'Niflaot-pages-22-24-word-search.pdf'], ['Book pages 22–24', 'Niflaot-pages-22-24-book-copy.pdf'], ['Text + tasks (2 per page)', 'Niflaot-pages-22-24-text-task.pdf'], ['Response cards (flags, ✓ / ✗, בּ / מ)', 'Niflaot-pages-22-24-response-cards.pdf'], ['Exit ticket (4 per page)', 'Niflaot-pages-22-24-exit-ticket.pdf']],
   'Niflaot-sicha-babayit': [['Entry ticket – word search (4 per page)', 'Niflaot-sicha-babayit-word-search.pdf'], ['Response cards', 'Niflaot-sicha-babayit-response-cards.pdf'], ['Exit ticket (4 per page)', 'Niflaot-sicha-babayit-exit-ticket.pdf']],
   'Niflaot-mi-mevashel': [['Entry ticket – word search (4 per page)', 'Niflaot-mi-mevashel-word-search.pdf'], ['Book page 25', 'Niflaot-mi-mevashel-book-p25.pdf'], ['Response cards (colors, he / she verbs)', 'Niflaot-mi-mevashel-response-cards.pdf'], ['Exit ticket (4 per page)', 'Niflaot-mi-mevashel-exit-ticket.pdf']],
