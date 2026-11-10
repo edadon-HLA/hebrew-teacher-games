@@ -26,17 +26,17 @@ window.BET = (() => {
   ].map(b => ({ ...b, s: sh[b.k] }));
 
   /* what each card says (English sound labels only) */
-  const sound = { ka: 'ba', pa: 'ba', sv: 'b', plain: 'b' };
+  const sound = { ka: 'ba', pa: 'ba', sv: 'be', plain: 'b' };   /* teacher's rule: shva = e */
 
-  /* exit ticket: syllable + 3 pictures, ok = index of the right picture. pic = file under lomdim-likro/, emo = emoji, svg = key in SVG */
+  /* exit ticket: sound + 3 KNOWN pictures (workbook pictures of this lesson and of the שׁ lesson; teacher: no new words),
+   * ok = index of the right picture. pic = file under lomdim-likro/. Kamatz = patach, so בַּ also fits בָּ words. */
+  const TZ = '../games/tzlil/';
   const exit = [
-    { s: sh.pa, ok: 1, items: [{ emo: '🐟', he: 'דָּג' }, { emo: '🧅', he: 'בָּצָל' }, { emo: '🐶', he: 'כֶּלֶב' }] },
-    { s: sh.sv, ok: 2, items: [{ emo: '🚗', he: 'מְכוֹנִית' }, { emo: '🐴', he: 'סוּס' }, { svg: 'pool', he: 'בְּרֵכָה' }] },
-    { s: sh.pa, ok: 0, items: [{ emo: '⚡', he: 'בָּרָק' }, { emo: '❤️', he: 'לֵב' }, { emo: '💧', he: 'מַיִם' }] },
-    { s: shin.ka, ok: 2, items: [{ emo: '🌳', he: 'עֵץ' }, { emo: '🐱', he: 'חָתוּל' }, { pic: '../games/tzlil/pic-clock.png', he: 'שָׁעוֹן' }] }
+    { s: sh.pa, ok: 0, items: [{ pic: 'bet/duck.png', he: 'בַּרְוָז' }, { pic: 'bet/eight.png', he: 'שְׁמוֹנֶה' }, { pic: TZ + 'pic-sky.png', he: 'שָׁמַיִם' }] },
+    { s: sh.sv, ok: 2, items: [{ pic: 'bet/balloon.png', he: 'בָּלוֹן' }, { pic: TZ + 'pic-three.png', he: 'שָׁלוֹשׁ' }, { pic: 'bet/clothes.png', he: 'בְּגָדִים' }] },
+    { s: shin.ka, ok: 1, items: [{ pic: TZ + 'pic-two.png', he: 'שְׁתַּיִם' }, { pic: TZ + 'pic-clock.png', he: 'שָׁעוֹן' }, { pic: 'bet/bottle.png', he: 'בַּקְבּוּק' }] },
+    { s: sh.sv, ok: 2, items: [{ pic: 'bet/house.png', he: 'בַּיִת' }, { pic: TZ + 'pic-carpet.png', he: 'שָׁטִיחַ' }, { pic: 'bet/broccoli.png', he: 'בְּרוֹקוֹלִי' }] }
   ];
-  const SVG = {
-    pool: `<svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="22" width="108" height="62" rx="6" fill="#bfe6fb" stroke="#1f6fa8" stroke-width="4"/><path d="M14 44q8-6 16 0t16 0 16 0 16 0 16 0 16 0M14 62q8-6 16 0t16 0 16 0 16 0 16 0 16 0" fill="none" stroke="#1f6fa8" stroke-width="3"/><g fill="none" stroke="#6b7280" stroke-width="4" stroke-linecap="round"><path d="M88 6v44M104 6v44"/><path d="M88 18h16M88 32h16"/><path d="M88 6q0-4 4-4M104 6q0-4-4-4"/></g></svg>`
-  };
+  const SVG = {};
   return { sh, shin, grid, board, sound, exit, SVG, targets: grid.flat().filter(c => c.t).length };
 })();

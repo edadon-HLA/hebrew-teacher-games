@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
 <link rel="stylesheet" href="../niflaot-lessons/lesson-kit.css?v=1792519767">
+<link rel="stylesheet" href="sound-drill.css?v=1">
 <style id="site-navigation">
 .site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
 .site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
@@ -113,6 +114,9 @@
 /* ---- בּ lesson additions ---- */
 /* warm-up word reveal */
 .r-stage .w.hid{color:#b9b2c9}
+.r-stage .pic .sy{font:800 clamp(110px,20vh,180px)/1.1 var(--f-he);color:var(--ink)}
+.r-stage .v.hid{color:#b9b2c9}
+.r-card.q{color:#b9b2c9}
 /* interactive workbook pages (book-page model of Niflaot-karov-rachok 4a, prefix k-) */
 .k-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
 .k-tabs button{font:800 20px var(--f-he);border:3px solid var(--line);background:#fff;border-radius:999px;padding:6px 18px;cursor:pointer;color:var(--ink)}
@@ -165,8 +169,8 @@
 .x-rows{display:grid;gap:12px;max-width:760px;margin:0 auto}
 .x-row{display:grid;grid-template-columns:90px repeat(3,minmax(0,1fr));gap:10px;align-items:center;background:#fff;border:3px solid var(--line);border-radius:18px;padding:8px}
 .x-row .sy{font:800 54px/1.1 var(--f-he);text-align:center;color:#16527d}
-.x-row button{position:relative;height:96px;background:#fff;border:2px solid var(--line);border-radius:14px;cursor:pointer;display:grid;place-items:center;padding:4px}
-.x-row button .emo{font-size:60px;line-height:1}.x-row button img,.x-row button svg{max-height:84px;max-width:100%;width:auto}
+.x-row button{position:relative;height:110px;background:#fff;border:2px solid var(--line);border-radius:14px;cursor:pointer;display:grid;place-items:center;padding:4px}
+.x-row button .emo{font-size:60px;line-height:1}.x-row button img,.x-row button svg{max-height:78px;max-width:100%;width:auto}.x-rows.rv .x-row button{align-items:start}
 .x-row button .k-ring{position:absolute;inset:-3px;border:5px solid #2a6fd0;border-radius:50%;display:none;pointer-events:none}
 .x-row button.on .k-ring{display:block}.x-row button.ok .k-ring{border-color:var(--green)}.x-row button.no .k-ring{border-color:var(--coral)}
 .x-row button .wd{position:absolute;bottom:2px;font:700 15px var(--f-he);color:var(--muted);display:none}.x-rows.rv button .wd{display:block}
@@ -181,7 +185,7 @@
   <p class="he-title">בָּ · בַּ · בְּ</p>
 </header>
 <nav class="steps"><ol>
-  <li><a href="#s1"><b>1</b> כַּרְטִיס כְּנִיסָה</a></li><li><a href="#s2"><b>2</b> מָה בַּתְּמוּנָה?</a></li><li><a href="#s3"><b>3</b> הָאוֹת וְהַהֲבָרוֹת</a></li><li><a href="#s4"><b>4</b> עוֹשִׂים</a></li><li><a href="#s5"><b>5</b> Exit Ticket</a></li><li><a href="#s6"><b>🖨️</b> הַדְפָּסָה</a></li>
+  <li><a href="#s1"><b>1</b> כַּרְטִיס כְּנִיסָה</a></li><li><a href="#s2"><b>2</b> חִמּוּם: שׁ</a></li><li><a href="#s3"><b>3</b> הָאוֹת וְהַהֲבָרוֹת</a></li><li><a href="#s4"><b>4</b> עוֹשִׂים</a></li><li><a href="#s5"><b>5</b> Exit Ticket</a></li><li><a href="#s6"><b>🖨️</b> הַדְפָּסָה</a></li>
 </ol></nav>
 
 <!-- ===== 1 entry ticket: שׁ review ===== -->
@@ -206,11 +210,12 @@
 <!-- ===== 2 warm-up ===== -->
 <section class="step" id="s2">
   <span class="tag green"><span class="tnum">2</span> חִמּוּם · 3–5 דַּקּוֹת</span>
-  <p class="lead">מָה בַּתְּמוּנָה?</p>
-  <p class="sub">תְּמוּנָה עַל הַמָּסָךְ — כֻּלָּם אוֹמְרִים אֶת הַמִּלָּה יַחַד — הַמּוֹרֶה לוֹחֵץ וּמַרְאֶה אֶת הַמִּלָּה.</p>
+  <p class="lead">חוֹזְרִים עַל הָאוֹת שׁ — אוֹמְרִים אֶת הַצְּלִיל</p>
+  <p class="sub">עַל הַמָּסָךְ הֲבָרָה אוֹ תְּמוּנָה מֵהַשִּׁעוּר שֶׁל שׁ — כֻּלָּם אוֹמְרִים אֶת הַצְּלִיל בְּקוֹל יַחַד — הַמּוֹרֶה לוֹחֵץ וּמַרְאֶה אֶת הַצְּלִיל.</p>
   <div class="r-stage" id="rWu">
     <div class="pic" id="wuPic"></div>
     <div class="w" id="wuWord">?</div>
+    <div class="v" id="wuSnd" dir="ltr"></div>
   </div>
   <div class="r-bar" style="justify-content:center">
     <button class="btn ghost" id="wuPrev" type="button">▶ הקודם</button>
@@ -218,12 +223,11 @@
     <button class="btn ghost" id="wuNext" type="button">הבא ◀</button>
   </div>
   <div class="r-bar" style="justify-content:center">
-    <button class="btn good" id="wuRv" type="button">👁 הַצִּיגוּ אֶת הַמִּלָּה</button>
+    <button class="btn good" id="wuRv" type="button">👁 הַצִּיגוּ אֶת הַצְּלִיל</button>
     <label class="r-dl" style="cursor:pointer"><input type="checkbox" class="rVoiceAny"> 🔊 קוֹל</label>
   </div>
   <details class="note"><summary>📝 מהלך קצר</summary>
-    <p>מִלִּים מֻכָּרוֹת: בַּיִת, בָּנָנָה, בָּלוֹן, כֶּלֶב, שֻׁלְחָן, סֵפֶר, בַּקְבּוּק, תַּפּוּחַ. אֵין כַּרְטִיסִים — כֻּלָּם אוֹמְרִים בְּיַחַד.</p>
-    <p>שִׂימוּ לֵב לַצְּלִיל הָרִאשׁוֹן - הַיּוֹם נִלְמַד אֵיזֶה צְלִיל פּוֹתֵחַ אֶת בַּיִת, בָּנָנָה, בָּלוֹן.</p>
+    <p>חֲזָרָה עַל מָה שֶׁכְּבָר יוֹדְעִים (הָאוֹת שׁ). קוֹדֶם הַהֲבָרוֹת שָׁ, שַׁ, שְׁ — כֻּלָּם אוֹמְרִים אֶת הַצְּלִיל, וְהַמּוֹרֶה לוֹחֵץ כְּדֵי לְהַצִּיג אוֹתוֹ. אַחַר כָּךְ הַתְּמוּנוֹת מֵהַחוֹבֶרֶת (שָׁלוֹשׁ, שָׁטִיחַ, שָׁעוֹן, שָׁמַיִם, שָׁחוֹר, שְׁתַּיִם): אוֹמְרִים אֶת הַמִּלָּה וְאֶת הַצְּלִיל הָרִאשׁוֹן. אֵין כַּרְטִיסִים — כֻּלָּם אוֹמְרִים בְּיַחַד.</p>
   </details>
 </section>
 
@@ -232,7 +236,7 @@
   <span class="tag sky"><span class="tnum">3</span> הַסְבֵּר · 10 דַּקּוֹת</span>
   <div class="sf-part">
   <p class="lead">כַּרְטִיס הָאוֹת: בּ</p>
-  <p class="sub">לוֹחֲצִים עַל כָּל צוּרָה — שׁוֹמְעִים אֶת הַצְּלִיל וְקוֹרְאִים בְּקוֹל יַחַד (חוֹבֶרֶת, עַמּוּד 7). <span class="r-en" dir="ltr" style="display:block">Kamatz and patach both say “a”: <bdi dir="rtl">בָּ</bdi> = <bdi dir="rtl">בַּ</bdi> = ba. Shva = no vowel: <bdi dir="rtl">בְּ</bdi> = b.</span></p>
+  <p class="sub">לוֹחֲצִים עַל כָּל צוּרָה — שׁוֹמְעִים אֶת הַצְּלִיל וְקוֹרְאִים בְּקוֹל יַחַד (חוֹבֶרֶת, עַמּוּד 7). <span class="r-en" dir="ltr" style="display:block">Kamatz and patach both say “a”: <bdi dir="rtl">בָּ</bdi> = <bdi dir="rtl">בַּ</bdi> = ba. Shva says “e”: <bdi dir="rtl">בְּ</bdi> = be.</span></p>
   <div class="r-lcard">
     <div class="r-big"><div class="l">בּ</div><img src="bet/banana.png" alt="בננה"><div class="cap">בָּנָנָה</div></div>
     <div>
@@ -248,8 +252,8 @@
   </div>
 
   <div class="sf-part">
-  <p class="lead" style="margin-top:26px">לוּחַ "קִרְאוּ" — מַרִימִים כַּרְטִיס</p>
-  <p class="sub">הַמּוֹרֶה מְצַבִּיעַ עַל הֲבָרָה, הַכִּתָּה סוֹפֶרֶת 3-2-1 וּמַרִימָה אֶת הַכַּרְטִיס הַמַּתְאִים. אַחַר כָּךְ קוֹרְאִים יַחַד. הַסֵּדֶר מִימִין לִשְׂמֹאל, כְּמוֹ בַּחוֹבֶרֶת (עַמּוּד 7).</p>
+  <p class="lead" style="margin-top:26px">לוּחַ "קִרְאוּ" — אוֹמְרִים אֶת הַצְּלִיל</p>
+  <p class="sub">הַמּוֹרֶה מְצַבִּיעַ עַל הֲבָרָה, הַכִּתָּה סוֹפֶרֶת 3-2-1 וְאוֹמֶרֶת אֶת הַצְּלִיל בְּקוֹל. אַחַר כָּךְ הַמּוֹרֶה מַצִּיג אֶת הַצְּלִיל. הַסֵּדֶר מִימִין לִשְׂמֹאל, כְּמוֹ בַּחוֹבֶרֶת (עַמּוּד 7).</p>
   <div class="r-board" id="rBoard"></div>
   <div class="r-pick" id="rPick"></div>
   <div class="r-bar" style="justify-content:center">
@@ -258,13 +262,21 @@
     <button class="btn ghost" id="bNext" type="button">הבא ◀</button>
   </div>
   <div class="r-bar" style="justify-content:center">
-    <button class="r-cd" data-cd type="button">🕒 3… 2… 1… הָרִימוּ!</button>
-    <button class="btn good" id="bRv" type="button">👁 הַצִּיגוּ אֶת הַכַּרְטִיס</button>
+    <button class="r-cd" data-cd type="button">🕒 3… 2… 1… אוֹמְרִים!</button>
+    <button class="btn good" id="bRv" type="button">👁 הַצִּיגוּ אֶת הַצְּלִיל</button>
     <button class="btn ghost" id="bAll" type="button">הַצִּיגוּ הַכֹּל</button>
-    <a class="r-dl" href="Lomdim-likro-bet-response-cards.pdf" target="_blank" rel="noopener">🖨️ כַּרְטִיסֵי תְּשׁוּבָה (PDF)</a>
   </div>
   <details class="note"><summary>📝 מהלך קצר</summary>
-    <p>בַּלּוּחַ שְׁמוֹנֶה הֲבָרוֹת, אַחַת אַחֲרֵי הַשְּׁנִיָּה. לְכָל תַּלְמִיד אַרְבָּעָה כַּרְטִיסִים: בָּ, בַּ, בְּ וְגַם בּ בְּלִי נִקּוּד (הוּא מוֹפִיעַ בַּלּוּחַ שָׁלוֹשׁ פְּעָמִים). אַחֲרֵי כָּל הַרָמָה — קוֹרְאִים יַחַד.</p>
+    <p>בַּלּוּחַ שְׁמוֹנֶה הֲבָרוֹת, אַחַת אַחֲרֵי הַשְּׁנִיָּה. אֵין כַּרְטִיסִים — הַכִּתָּה אוֹמֶרֶת אֶת הַצְּלִיל בְּקוֹל, וְאָז הַמּוֹרֶה לוֹחֵץ "הַצִּיגוּ אֶת הַצְּלִיל". בּ בְּלִי נִקּוּד מוֹפִיעַ בַּלּוּחַ שָׁלוֹשׁ פְּעָמִים.</p>
+  </details>
+  </div>
+
+  <div class="sf-part">
+  <p class="lead" style="margin-top:26px">רוֹאִים אוֹת — אוֹמְרִים אֶת הַצְּלִיל</p>
+  <p class="sub">אוֹת עִם תְּנוּעָה עַל הַמָּסָךְ — כָּל הַכִּתָּה אוֹמֶרֶת אֶת הַצְּלִיל בְּקוֹל — לְחִיצָה (אוֹ "👁 הַצְּלִיל") מַצִּיגָה אוֹתוֹ. רַק הָאוֹתִיּוֹת וְהַתְּנוּעוֹת שֶׁכְּבָר לָמַדְנוּ: שׁ, בּ · קָמָץ, פַּתָּח, שְׁוָא.</p>
+  <div id="sDrill"></div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>כְּמוֹ בְּכִתָּה ו׳. הַמּוֹרֶה בּוֹחֵר: "אוֹת אַחַת" (שׁ אוֹ בּ עִם כָּל הַתְּנוּעוֹת), "תְּנוּעָה אַחַת" (קָמָץ, פַּתָּח אוֹ שְׁוָא עִם כָּל הָאוֹתִיּוֹת) אוֹ "עִרְבּוּב". הַכִּתָּה אוֹמֶרֶת בְּקוֹל, וְאָז לוֹחֲצִים עַל הָאוֹת כְּדֵי לְהַצִּיג אֶת הַצְּלִיל. "הַצֵּג צְלִיל" מַרְאֶה אֶת הַצְּלִיל מִיָּד. חִצִּים בַּמִּקְלֶדֶת = הַבָּא / הַקּוֹדֵם. קָמָץ וּפַתָּח = a, שְׁוָא = e. בְּכָל שִׁעוּר נוֹסֶפֶת הָאוֹת הַחֲדָשָׁה.</p>
   </details>
   </div>
 </section>
@@ -273,7 +285,20 @@
 <section class="step" id="s4">
   <span class="tag"><span class="tnum">4</span> עוֹשִׂים · 15–20 דַּקּוֹת</span>
   <div class="sf-part">
-  <div class="r-cw" role="note">
+  <p class="lead">מִשְׂחָק: תּוֹפְסִים צְלִיל</p>
+  <p class="sub">תְּמוּנָה — וְהַכִּתָּה מַחְלִיטָה: מַתְחִיל בְּ־בּ? כַּרְטִיסֵי ✔ / ✘ וְסְפִירָה 3-2-1. הַתְּמוּנוֹת שֶׁל הַחוֹבֶרֶת בָּאוֹת רִאשׁוֹנוֹת.</p>
+  <div class="shortcuts">
+    <a class="sc" href="../games/tofsim-tzlil.html?letter=bet" target="_blank" rel="noopener"><span class="ic">🔊</span><div><h3>תּוֹפְסִים צְלִיל · בּ</h3><p>תְּמוּנָה, ✔ / ✘, סְפִירָה וְחִשּׂוּף</p></div><span class="go">◀</span></a>
+    <a class="sc" href="../games/tofsim-tzlil.html?letter=bet&word=1" target="_blank" rel="noopener"><span class="ic">📖</span><div><h3>עִם הַמִּלָּה כְּתוּבָה</h3><p>רוֹאִים תְּמוּנָה וְגַם אֶת הַמִּלָּה</p></div><span class="go">◀</span></a>
+    <a class="sc" href="../games/tzlil/cards-yes-no.pdf" target="_blank" rel="noopener"><span class="ic">✔✘</span><div><h3>כַּרְטִיסֵי ✔ / ✘</h3><p>לַמִּשְׂחָק (PDF)</p></div><span class="go">◀</span></a>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>לִפְנֵי הָעֲבוֹדָה בַּחוֹבֶרֶת: מְשַׂחֲקִים יַחַד בְּ"תּוֹפְסִים צְלִיל". כָּל תַּלְמִיד מַחֲזִיק כַּרְטִיסֵי ✔ / ✘.</p>
+  </details>
+  </div>
+
+  <div class="sf-part">
+  <div class="r-cw" role="note" style="margin-top:22px">
     <h3>📘 עֲבוֹדַת כִּתָּה בַּחוֹבֶרֶת — עַמּוּד 8</h3>
     <p>כָּל תַּלְמִיד מוֹתֵחַ קַו בַּחוֹבֶרֶת. אַחַר כָּךְ בּוֹדְקִים יַחַד עַל הַמָּסָךְ: לוֹחֲצִים עַל תְּמוּנָה.</p>
   </div>
@@ -283,14 +308,6 @@
     <div class="k-msg" id="p8Msg"></div>
     <div class="k-bar"><button class="btn good" type="button" id="p8Chk">✓ בּוֹדְקִים</button><button class="btn ghost" type="button" id="p8Ans">👁 הַצִּיגוּ תְּשׁוּבוֹת</button><button class="btn ghost" type="button" id="p8Rst">↺</button></div>
     <span class="pn">8</span>
-  </div>
-
-  <p class="lead" style="margin-top:22px">מִשְׂחָק: תּוֹפְסִים צְלִיל</p>
-  <p class="sub">תְּמוּנָה — וְהַכִּתָּה מַחְלִיטָה: מַתְחִיל בְּ־בּ? כַּרְטִיסֵי ✔ / ✘ וְסְפִירָה 3-2-1. הַתְּמוּנוֹת שֶׁל הַחוֹבֶרֶת בָּאוֹת רִאשׁוֹנוֹת.</p>
-  <div class="shortcuts">
-    <a class="sc" href="../games/tofsim-tzlil.html?letter=bet" target="_blank" rel="noopener"><span class="ic">🔊</span><div><h3>תּוֹפְסִים צְלִיל · בּ</h3><p>תְּמוּנָה, ✔ / ✘, סְפִירָה וְחִשּׂוּף</p></div><span class="go">◀</span></a>
-    <a class="sc" href="../games/tofsim-tzlil.html?letter=bet&word=1" target="_blank" rel="noopener"><span class="ic">📖</span><div><h3>עִם הַמִּלָּה כְּתוּבָה</h3><p>רוֹאִים תְּמוּנָה וְגַם אֶת הַמִּלָּה</p></div><span class="go">◀</span></a>
-    <a class="sc" href="../games/tzlil/cards-yes-no.pdf" target="_blank" rel="noopener"><span class="ic">✔✘</span><div><h3>כַּרְטִיסֵי ✔ / ✘</h3><p>לַמִּשְׂחָק (PDF)</p></div><span class="go">◀</span></a>
   </div>
   <details class="note"><summary>📝 מהלך קצר</summary>
     <p>בָּנָנָה, בַּרְוָז, בַּקְבּוּק, בַּיִת, בָּלוֹן — מַתְחִילִים בְּ־בַּ. תַּפּוּחַ וְתַפּוּז — לֹא. לְחִיצָה עַל תְּמוּנָה נְכוֹנָה מוֹתַחַת קַו; עַל תְּמוּנָה לֹא נְכוֹנָה — ✘. "בּוֹדְקִים" מְסַמֵּן אִם חָסֵר קַו.</p>
@@ -362,7 +379,7 @@
   </div>
   <p class="sub r-en" dir="ltr" style="margin-top:14px"><b>Reflection:</b> circle how you feel — “I can read and write <bdi dir="rtl">בָּ בַּ בְּ</bdi>”: 😀 🙂 😕</p>
   <details class="note"><summary>📝 מהלך קצר</summary>
-    <p>מְשִׂימָה חֲדָשָׁה, לֹא מֵהַחוֹבֶרֶת. כָּל תַּלְמִיד לְבַד. הַתְּשׁוּבוֹת: בַּ ⬅ בָּצָל · בְּ ⬅ בְּרֵכָה · בַּ ⬅ בָּרָק · שָׁ ⬅ שָׁעוֹן (הָאוֹת מֵהַשִּׁעוּר הַקּוֹדֵם). הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.</p>
+    <p>מְשִׂימָה חֲדָשָׁה, לֹא מֵהַחוֹבֶרֶת. כָּל תַּלְמִיד לְבַד. רַק מִלִּים מֻכָּרוֹת מֵהַשִּׁעוּר הַזֶּה וּמֵהַשִּׁעוּר שֶׁל שׁ. הַתְּשׁוּבוֹת: בַּ ⬅ בַּרְוָז · בְּ ⬅ בְּגָדִים · שָׁ ⬅ שָׁעוֹן · בְּ ⬅ בְּרוֹקוֹלִי. הַמּוֹרֶה אוֹסֵף בַּיְּצִיאָה.</p>
   </details>
 </section>
 
@@ -371,7 +388,6 @@
   <span class="tag sky"><span class="tnum">🖨️</span> לְהַדְפָּסָה</span>
   <div class="shortcuts" style="margin-top:12px">
     <a class="sc" href="Lomdim-likro-bet-letter-search.pdf" target="_blank" rel="noopener"><span class="ic">🔎</span><div><h3>תִּפְזֹרֶת אוֹתִיּוֹת (שׁ)</h3><p>כַּרְטִיס כְּנִיסָה · 4 בְּדַף</p></div><span class="go">◀</span></a>
-    <a class="sc" href="Lomdim-likro-bet-response-cards.pdf" target="_blank" rel="noopener"><span class="ic">🃏</span><div><h3>כַּרְטִיסֵי תְּשׁוּבָה</h3><p>בָּ · בַּ · בְּ · בּ · ✔ / ✘</p></div><span class="go">◀</span></a>
     <a class="sc" href="Lomdim-likro-bet-exit-ticket.pdf" target="_blank" rel="noopener"><span class="ic">🎟️</span><div><h3>Exit Ticket</h3><p>4 per A4 page</p></div><span class="go">◀</span></a>
   </div>
 </section>
@@ -379,7 +395,8 @@
 </div>
 <div id="rCd" aria-live="assertive"><div id="rCdT">3</div></div>
 <script src="../niflaot-lessons/lesson-kit.js?v=1792421680"></script>
-<script src="bet/data.js?v=1"></script>
+<script src="bet/data.js?v=2"></script>
+<script src="sound-drill.js?v=1"></script>
 <script>
 (() => {
 'use strict';
@@ -401,7 +418,7 @@ function countdown(done) {
   const ov = $('rCd'), t = $('rCdT'); let n = 3; ov.classList.add('on'); t.textContent = n; beep(520);
   const tick = setInterval(() => {
     n--; if (n > 0) { t.textContent = n; beep(520); return; }
-    clearInterval(tick); t.innerHTML = 'הָרִימוּ!<small>בָּ · בַּ · בְּ · בּ</small>'; beep(880, .3);
+    clearInterval(tick); t.innerHTML = 'אוֹמְרִים!<small>בְּקוֹל, כֻּלָּם יַחַד</small>'; beep(880, .3);
     setTimeout(() => { ov.classList.remove('on'); cdBusy = false; if (done) done(); }, 1300);
   }, 1000);
 }
@@ -423,22 +440,29 @@ $('rShowAll').onclick = () => { grid.querySelectorAll('[data-t="1"]').forEach(b 
 $('rClr').onclick = () => { grid.querySelectorAll('.circ, .show').forEach(b => b.classList.remove('circ', 'show')); count(); };
 count();
 
-/* ---------- 2. warm-up: what is in the picture? ---------- */
-const table = `<svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="30" width="160" height="22" rx="6" fill="#c98b4d" stroke="#6b4423" stroke-width="5"/><rect x="40" y="52" width="16" height="72" fill="#c98b4d" stroke="#6b4423" stroke-width="5"/><rect x="144" y="52" width="16" height="72" fill="#c98b4d" stroke="#6b4423" stroke-width="5"/></svg>`;
+/* ---------- 2. warm-up: the letter already learned (שׁ): syllables, then the workbook pictures of the שׁ lesson ---------- */
+const TZ = '../games/tzlil/';
 const WU = [
-  { he: 'בַּיִת', pic: 'bet/house.png' }, { he: 'בָּנָנָה', pic: 'bet/banana.png' }, { he: 'בָּלוֹן', pic: 'bet/balloon.png' },
-  { he: 'כֶּלֶב', emo: '🐶' }, { he: 'שֻׁלְחָן', svg: table }, { he: 'סֵפֶר', emo: '📕' },
-  { he: 'בַּקְבּוּק', pic: 'bet/bottle.png' }, { he: 'תַּפּוּחַ', pic: 'bet/apple.png' }
+  { sy: S.shin.ka, snd: 'sha' }, { sy: S.shin.pa, snd: 'sha' }, { sy: S.shin.sv, snd: 'she' },
+  { he: 'שָׁלוֹשׁ', sy: S.shin.ka, snd: 'sha', pic: TZ + 'pic-three.png' }, { he: 'שָׁטִיחַ', sy: S.shin.ka, snd: 'sha', pic: TZ + 'pic-carpet.png' },
+  { he: 'שָׁעוֹן', sy: S.shin.ka, snd: 'sha', pic: TZ + 'pic-clock.png' }, { he: 'שָׁמַיִם', sy: S.shin.ka, snd: 'sha', pic: TZ + 'pic-sky.png' },
+  { he: 'שָׁחוֹר', sy: S.shin.ka, snd: 'sha', pic: TZ + 'pic-blot.png' }, { he: 'שְׁתַּיִם', sy: S.shin.sv, snd: 'she', pic: TZ + 'pic-two.png' }
 ];
 let wi = 0, wRev = false;
 const first = w => { const m = w.match(/^([א-ת][֑-ׇ]*)([\s\S]*)$/); return m ? `<b>${m[1]}</b>${m[2]}` : w; };
 function wuShow() {
   const it = WU[wi]; wRev = false;
-  $('wuPic').innerHTML = it.pic ? `<img src="${it.pic}" alt="" style="max-height:100%;max-width:100%">` : it.svg || `<div class="emo" aria-hidden="true">${it.emo}</div>`;
-  $('wuWord').textContent = '?'; $('wuWord').className = 'w hid';
+  $('wuPic').innerHTML = it.pic ? `<img src="${it.pic}" alt="" style="max-height:100%;max-width:100%">` : `<div class="sy">${it.sy}</div>`;
+  $('wuWord').textContent = it.pic ? '?' : ''; $('wuWord').className = 'w hid';
+  $('wuSnd').textContent = '?'; $('wuSnd').className = 'v hid';
   $('wuCnt').textContent = (wi + 1) + ' / ' + WU.length;
 }
-function wuReveal() { const it = WU[wi]; wRev = true; $('wuWord').className = 'w'; $('wuWord').innerHTML = first(it.he); beep(880, .2); say(it.he); }
+function wuReveal() {
+  const it = WU[wi]; wRev = true;
+  if (it.pic) { $('wuWord').className = 'w'; $('wuWord').innerHTML = first(it.he); }
+  $('wuSnd').className = 'v'; $('wuSnd').innerHTML = it.pic ? `<bdi dir="rtl">${it.sy}</bdi> = ${it.snd}` : it.snd;
+  beep(880, .2); say(it.he || it.sy);
+}
 const wuGo = d => { wi = (wi + d + WU.length) % WU.length; wuShow(); };
 $('wuRv').onclick = () => wRev ? wuGo(1) : wuReveal();
 $('wuPic').onclick = () => wRev ? null : wuReveal();
@@ -471,24 +495,25 @@ for (let r = 0; r < 2; r++) {
   });
   board.appendChild(row);
 }
-const CARD_ORDER = ['ka', 'pa', 'sv', 'plain'];
-const pick = $('rPick'), pc = {};
-CARD_ORDER.forEach(k => { const c = document.createElement('div'); c.className = 'r-card'; c.innerHTML = `${S.sh[k]}<small>${S.sound[k]}${k === 'plain' ? ' · no vowel' : ''}</small>`; pick.appendChild(c); pc[k] = c; });
+const pick = $('rPick'), pcard = document.createElement('div'); pick.appendChild(pcard);
 let bi = 0, bRev = false;
 function bShow() {
   bRev = false; syl.forEach((s, i) => s.classList.toggle('cur', i === bi));
-  Object.values(pc).forEach(c => c.classList.remove('hit', 'hide'));
+  pcard.className = 'r-card q'; pcard.innerHTML = '?<small>&nbsp;</small>';
   $('bCnt').textContent = (bi + 1) + ' / ' + S.board.length;
 }
 function bReveal() {
-  bRev = true; const k = S.board[bi].k; Object.entries(pc).forEach(([kk, c]) => { c.classList.toggle('hit', kk === k); c.classList.toggle('hide', kk !== k); });
-  beep(880, .25); say(S.board[bi].s);
+  bRev = true; const b = S.board[bi]; pcard.className = 'r-card hit'; pcard.innerHTML = `${b.s}<small>${S.sound[b.k]}${b.k === 'plain' ? ' · no vowel' : ''}</small>`;
+  beep(880, .25); say(b.s);
 }
 const bGo = d => { bi = (bi + d + S.board.length) % S.board.length; bShow(); };
 $('bRv').onclick = () => bRev ? bGo(1) : bReveal();
 $('bNext').onclick = () => bGo(1); $('bPrev').onclick = () => bGo(-1);
 $('bAll').onclick = () => { board.classList.toggle('all'); };
 bShow();
+
+/* ---------- 3c. see a letter, say the sound: only the letters and vowels learned so far (shared engine sound-drill.js) ---------- */
+SoundDrill.mount($('sDrill'), { letters: ['שׁ', 'בּ'], vowels: ['ka', 'pa', 'sv'] });
 
 /* ---------- 4a. workbook p.8: draw a line from the circle to the pictures that start with בַּ ----------
  * boxes in pixels of the 1750 x 2265 page render (picture cut + 15 px margin); the stage shows y 300-2200 */
