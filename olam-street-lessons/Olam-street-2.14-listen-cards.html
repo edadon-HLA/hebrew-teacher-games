@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כרטיסי תמונה / מילה · רחוב העולם 2.14 (להדפסה)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* ?part=1|2|3 — the 5 core words of that row. Page 1-2: DOUBLE-SIDED (picture front, word back; flip on the LONG edge).
+   Page 3-4: single-sided (pictures, then words). Part 3 adds page 5: the מָתוֹק / מָרִיר sort cards. Same big size as 2.10-2.13.
+   Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.page{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(0,1fr));direction:ltr;page-break-after:always;break-after:page;position:relative;padding-top:5mm;overflow:hidden}
+.page:last-child{page-break-after:auto;break-after:auto}
+.page.big{grid-template-rows:minmax(0,1fr) minmax(0,1fr);grid-template-columns:1fr}
+.c{border:1.5px dashed #6b6880;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3mm;gap:2mm;overflow:hidden;direction:rtl;min-height:0}
+.c.pic svg{height:52mm;width:auto;max-width:86mm}
+.c.pic .emo{font-size:70pt;line-height:1}
+.c.word .w{font-size:36pt;font-weight:800;line-height:1.2;padding:0 2mm}
+.c.back{background:#fffaf0}
+.c.sort svg{height:70mm;width:auto;max-width:170mm}.c.sort .w{font-size:54pt;font-weight:800}
+.c.note{align-items:flex-start;justify-content:flex-start;text-align:right;font-size:11.5pt;line-height:1.6;color:#4a4a5e;border-style:dotted}
+.c.note b{font-size:13pt;color:#23233a}
+.lab{position:absolute;top:0;line-height:5mm;left:0;right:0;text-align:center;font-size:8pt;color:#9aa3b2;direction:rtl}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="../games/food-art.js"></script>
+<script src="../games/hungry-art.js?v=3"></script>
+<script src="olam-2.14-data.js?v=1"></script>
+<script>
+const P = +(new URLSearchParams(location.search).get('part') || 1), L = L214, K = L.WORDS[P].map(w => w[0]);
+const front = k => `<div class="c pic">${L.ART[k]}</div>`;
+const word = (k, b) => `<div class="c word${b ? ' back' : ''}"><div class="w">${L.HE[k]}</div></div>`;
+const note = `<div class="c note"><div><b>🎴 רְחוֹב הָעוֹלָם <bdi dir="ltr">2.14</bdi> · חֵלֶק ${P}</b><br>
+<b>דּוּ־צְדָדִי (עַמּוּדִים 1–2):</b> מַדְפִּיסִים דּוּ־צְדָדִי וְהוֹפְכִים עַל הַצַּד הָאָרֹךְ — תְּמוּנָה מִצַּד אֶחָד, מִלָּה מֵהַצַּד הַשֵּׁנִי. גּוֹזְרִים לְאֹרֶךְ הַקַּוִּים.<br>
+<b>חַד־צְדָדִי (עַמּוּדִים 3–4):</b> דַּף תְּמוּנוֹת וְדַף מִלִּים.<br>
+• שׁוֹמְעִים וּמְרִימִים · רָמָה 1: הָרִימוּ תְּמוּנָה · רָמָה 2: הָרִימוּ מִלָּה. "3… 2… 1… הָרִימוּ!"</div></div>`;
+const blank = '<div class="c" style="border-color:transparent"></div>';
+/* 6 cells (3 rows x 2): 5 cards + the note; the back page mirrors each row so every word is behind its picture */
+const frontCells = K.map(front).concat([note]);
+const backRow = r => { const a = r * 2, b = a + 1; return [b < 5 ? word(K[b], 1) : blank, a < 5 ? word(K[a], 1) : blank]; };
+const backCells = [0, 1, 2].flatMap(backRow);
+const page = (cells, cls, label) => `<div class="page ${cls || ''}">${label ? `<div class="lab">${label}</div>` : ''}${cells.join('')}</div>`;
+let html = page(frontCells, '', 'דּוּ־צְדָדִי · צַד קִדְמִי — תְּמוּנוֹת') + page(backCells, '', 'דּוּ־צְדָדִי · צַד אֲחוֹרִי — מִלִּים (הַשּׁוּרוֹת מְשֻׁקָּפוֹת; הוֹפְכִים עַל הַצַּד הָאָרֹךְ)') +
+  page(K.map(front).concat([blank]), '', 'חַד־צְדָדִי · כַּרְטִיסֵי תְּמוּנָה') + page(K.map(k => word(k)).concat([blank]), '', 'חַד־צְדָדִי · כַּרְטִיסֵי מִלָּה');
+if (P === 3) html += page(['matok', 'marir'].map(k => `<div class="c sort">${L.ART[k]}<div class="w">${L.HE[k]}</div></div>`), 'big', 'מִשְׂחַק "מָתוֹק אוֹ מָרִיר?" — כַּרְטִיס אֶחָד לְכָל צַד');
+document.getElementById('out').innerHTML = html;
+</script>
+</body>
+</html>

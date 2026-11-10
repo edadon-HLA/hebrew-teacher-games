@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>דף עבודה · רחוב העולם 2.14 (האזנה)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* ?part=1..4 — the student worksheet (same format every lesson, teacher: "A: Same each lesson") + the answer key page.
+   Black and white. Letter-safe box 190 x 255 mm. Part 4: 2 student pages + the key. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#111;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.pg{width:190mm;height:255mm;margin:0 auto;page-break-after:always;break-after:page;overflow:hidden;display:flex;flex-direction:column;gap:2.5mm}
+.pg:last-child{page-break-after:auto;break-after:auto}
+svg,.emo{filter:grayscale(1) contrast(1.15)}
+.hd{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2.5px solid #111;padding-bottom:1.5mm}
+.hd b{font-size:20pt;font-weight:800}.hd small{font-size:11pt;color:#444;font-weight:700}
+.nm{display:flex;gap:5mm;font-size:12pt;font-weight:700;align-items:flex-end}.nm i{flex:1;border-bottom:1.2px solid #111;height:6mm}
+h2{margin:1mm 0 0;font-size:14pt;font-weight:800}h2 span{display:inline-grid;place-items:center;width:7mm;height:7mm;border-radius:50%;border:1.5px solid #111;font-size:11pt;margin-inline-end:2mm}
+.ins{font-size:11pt;color:#333;margin:-1mm 0 1mm}
+.match{display:grid;grid-template-columns:1fr 34mm 1fr;align-items:center;row-gap:1.5mm}
+.match .w{font-size:18pt;font-weight:800;display:flex;justify-content:space-between;align-items:center;padding-inline-start:4mm}
+.match .w::after,.match .p::before{content:'';width:3mm;height:3mm;border-radius:50%;background:#111;display:inline-block}
+.match .p{display:flex;align-items:center;gap:3mm;height:15.5mm}
+.match .p svg{height:14.5mm;width:auto;max-width:40mm}.match .p .emo{font-size:30pt;line-height:1}
+.match .p b{font-size:12pt}
+.m3{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
+.m3 .match{grid-template-columns:1fr 8mm 1fr}.m3 .match .w{font-size:13pt;padding:0}.m3 .match .p{height:15mm}.m3 .match .p svg{height:14mm;max-width:26mm}.m3 .match .p .emo{font-size:26pt}
+.m3 h3{margin:0;font-size:11pt;text-align:center}
+.circ{display:grid;gap:1.6mm}
+.circ .r{display:grid;grid-template-columns:10mm repeat(3,1fr);align-items:center;border:1px solid #bbb;border-radius:3mm;padding:.5mm 2mm;height:18.5mm}
+.circ .r b{font-size:16pt}
+.circ .r div{display:flex;justify-content:center;align-items:center;height:17mm;position:relative}
+.circ .r svg{height:15.5mm;width:auto;max-width:44mm}.circ .r .emo{font-size:34pt;line-height:1}
+.circ .r div.ok::after{content:'';position:absolute;inset:-1mm 6mm;border:2.5px solid #111;border-radius:50%}
+.who{display:grid;gap:2mm}
+.who .r{display:grid;grid-template-columns:8mm 1fr auto;gap:2mm;align-items:center;border:1px solid #bbb;border-radius:3mm;padding:2mm}
+.who .r .t{font-size:14pt;font-weight:700}.who .r .c{display:flex;gap:3mm}.who .r .c span{border:1.3px solid #111;border-radius:99px;padding:0 3mm;font-size:13pt;font-weight:800}
+.who .r .c span.ok{outline:2.5px solid #111;outline-offset:1.5mm}
+.ft{margin-top:auto;font-size:11pt;font-weight:700;border-top:1px dashed #999;padding-top:1.5mm}
+.key{background:#f3f3f3;border-radius:3mm;padding:2mm 4mm;font-size:13pt;line-height:1.9}
+@media screen{body{background:#eee;padding:10px}.pg{background:#fff;padding:0 4mm;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="../games/food-art.js"></script>
+<script src="../games/hungry-art.js?v=3"></script>
+<script src="olam-2.14-data.js?v=1"></script>
+<script>
+const P = +(new URLSearchParams(location.search).get('part') || 1), L = L214, A = L.ART, HE = L.HE;
+const ORDER = [2, 4, 0, 3, 1], LET = ['א', 'ב', 'ג', 'ד', 'ה'];   /* fixed picture order on the right-hand column, letters for the key */
+const head = (t, extra) => `<div class="hd"><b>${t}</b><small>רְחוֹב הָעוֹלָם <bdi dir="ltr">2.14</bdi> · חֵלֶק ${P}${extra || ''}</small></div><div class="nm"><span>שֵׁם:</span><i></i><span>תַּאֲרִיךְ:</span><i style="flex:.5"></i></div>`;
+function matchBlock(keys, small){
+  const pics = ORDER.map(i => keys[i]);
+  return `<div class="match">${keys.map((k, i) => `<div class="w">${HE[k]}</div><div></div><div class="p">${A[pics[i]]}<b>${LET[i]}</b></div>`).join('')}</div>`;
+}
+const matchKey = keys => keys.map(k => `${HE[k]} – ${LET[ORDER.indexOf(keys.indexOf(k))]}`).join(' · ');
+function circleBlock(show){ return `<div class="circ">${[0, 1, 2, 3, 4].map(i => { const r = L.circleRow(P, i), t = L.CIRCLE[P][i][0];
+  return `<div class="r"><b>${i + 1}</b>${r.map(k => `<div class="${show && k === t ? 'ok' : ''}">${A[k]}</div>`).join('')}</div>`; }).join('')}</div>`; }
+const WHO = [['אֲנִי מַעֲדִיף פִּיצָה עִם הַרְבֵּה גְּבִינָה.', 'dan'], ['אֲנִי תָּמִיד בְּעַד שׁוֹקוֹלָד.', 'roni'], ['אֲנִי אוֹהֶבֶת שׁוֹקוֹלָד לָבָן עִם מַנְגּוֹ!', 'keren'], ['גַּם אֲנִי רְעֵבָה.', 'keren'], ['כֵּן, קָדִימָה! אֲנִי רָעֵב!', 'dan']];
+const whoBlock = show => `<div class="who">${WHO.map(([t, w], i) => `<div class="r"><b>${i + 1}</b><span class="t">${t}</span><span class="c">${['keren', 'dan', 'roni'].map(c => `<span class="${show && c === w ? 'ok' : ''}">${L.CHARS[c].he}</span>`).join('')}</span></div>`).join('')}</div>`;
+const foot = '<div class="ft">📝 עֲבוֹדָה עַצְמִית — אֶפְשָׁר לָתֵת צִיּוּן (לֹא חוֹבָה)</div>';
+const p1 = '<h2><span>1</span>מַתְאִימִים</h2><div class="ins">מְחַבְּרִים בְּקַו: מִלָּה ⬅ תְּמוּנָה.</div>';
+const p2 = n => `<h2><span>${n}</span>שׁוֹמְעִים וּמַקִּיפִים</h2><div class="ins">הַמּוֹרֶה אוֹמֵר מִלָּה. מַקִּיפִים אֶת הַתְּמוּנָה הַנְּכוֹנָה.</div>`;
+let html = '';
+if (P < 4){
+  const K = L.WORDS[P].map(w => w[0]);
+  html += `<div class="pg">${head('דַּף עֲבוֹדָה')}${p1}${matchBlock(K)}${p2(2)}${circleBlock(false)}${foot}</div>`;
+  html += `<div class="pg">${head('מַפְתֵּחַ תְּשׁוּבוֹת', ' · לַמּוֹרֶה')}<h2><span>1</span>מַתְאִימִים</h2><div class="key">${matchKey(K)}</div>
+    <h2><span>2</span>שׁוֹמְעִים וּמַקִּיפִים — הַסֵּדֶר לְהַגִּיד</h2><div class="key">${L.CIRCLE[P].map((r, i) => `${i + 1} ${HE[r[0]]}`).join(' · ')}</div>${circleBlock(true)}</div>`;
+} else {
+  const R = [1, 2, 3].map(r => L.WORDS[r].map(w => w[0]));
+  html += `<div class="pg">${head('דַּף עֲבוֹדָה', ' · עַמּוּד 1')}${p1}<div class="m3">${R.map((K, r) => `<div><h3>שׁוּרָה ${r + 1}</h3>${matchBlock(K, true)}</div>`).join('')}</div>${p2(2)}${circleBlock(false)}</div>`;
+  html += `<div class="pg">${head('דַּף עֲבוֹדָה', ' · עַמּוּד 2')}<h2><span>3</span>מִי אָמַר?</h2><div class="ins">שׁוֹמְעִים אֶת הַבּוּעָה וּמַקִּיפִים: קֶרֶן, דָּן אוֹ רוֹנִי.</div>${whoBlock(false)}${foot}</div>`;
+  html += `<div class="pg">${head('מַפְתֵּחַ תְּשׁוּבוֹת', ' · לַמּוֹרֶה')}<h2><span>1</span>מַתְאִימִים</h2>
+    <div class="key">${R.map((K, r) => `שׁוּרָה ${r + 1}: ${matchKey(K)}`).join("<br>")}</div>
+    <h2><span>2</span>שׁוֹמְעִים וּמַקִּיפִים — הַסֵּדֶר לְהַגִּיד</h2><div class="key">${L.CIRCLE[4].map((r, i) => `${i + 1} ${HE[r[0]]}`).join(' · ')}</div>${circleBlock(true)}
+    <h2><span>3</span>מִי אָמַר?</h2><div class="key">${WHO.map(([t, w], i) => `${i + 1} ${L.CHARS[w].he}`).join(" · ")}</div></div>`;
+}
+document.getElementById('out').innerHTML = html;
+</script>
+</body>
+</html>

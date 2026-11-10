@@ -141,6 +141,8 @@ button{font-family:var(--f)}
 </div>
 
 <script src="food-art.js"></script>
+<script src="hungry-art.js?v=3"></script>
+<script src="../olam-street-lessons/olam-2.14-data.js?v=1"></script>
 <script>
 (() => {
 'use strict';
@@ -175,11 +177,11 @@ const MORE = [
   ['בָּטָטָה', '🍠'], ['בָּגֶט', '🥖'], ['פַּשְׁטִידָה', '🥧'], ['בָּשָׂר', '🥩'], ['אֱגוֹזִים', '🥜'],
 ];
 /* optional deck (?deck=breakfast, lesson 2.21-2.22); without it the default list is unchanged */
-const DECKS = { breakfast: () => { const F = Object.fromEntries((window.FoodArt ? FoodArt.foods4 : []).map(f => [f.id, f])); return ['water', 'milk', 'cheese', 'banana', 'cereal', 'pizza', 'salad', 'tuna'].filter(k => F[k]).map(k => [F[k].he, F[k].pic]); } };
+const DECKS = { '2.14-1': () => (window.L214 ? L214.WORDS[1].map(([k, he]) => [he, L214.ART[k]]) : []), breakfast: () => { const F = Object.fromEntries((window.FoodArt ? FoodArt.foods4 : []).map(f => [f.id, f])); return ['water', 'milk', 'cheese', 'banana', 'cereal', 'pizza', 'salad', 'tuna'].filter(k => F[k]).map(k => [F[k].he, F[k].pic]); } };
 const DECK_ID = new URLSearchParams(location.search).get('deck'), DECK = DECKS[DECK_ID] ? DECKS[DECK_ID]() : null;
 const LIST = DECK && DECK.length ? DECK : LIST0;
 const ALL = [...LIST0, ...MORE];
-$('listWords').innerHTML = LIST.map(f => `<span>${f[0]}</span>`).join(''); if (LIST !== LIST0){ const m = document.querySelector('[data-m="list"]'); const pp = m.querySelector('p'); pp.textContent = pp.textContent.replace(/^\d+/, LIST.length); m.querySelector('.pic').textContent = '💧🥛🧀🍌'; }
+$('listWords').innerHTML = LIST.map(f => `<span>${f[0]}</span>`).join(''); if (LIST !== LIST0){ const m = document.querySelector('[data-m="list"]'); const pp = m.querySelector('p'); pp.textContent = pp.textContent.replace(/^\d+/, LIST.length); if (DECK_ID === '2.14-1') pp.textContent = '5 מִלִּים מֵרְחוֹב הָעוֹלָם 2.14 (חֵלֶק 1)'; m.querySelector('.pic').textContent = DECK_ID === '2.14-1' ? '🎪🚦😋' : '💧🥛🧀🍌'; }
 
 /* settings */
 const S = { mode: 'list', pairs: 8, kind: 'same', teams: 1 };
