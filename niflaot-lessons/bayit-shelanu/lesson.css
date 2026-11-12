@@ -282,3 +282,7 @@ details.q-opt summary{cursor:pointer;font:800 20px var(--f-he)}
 .words-only .q-pic,.words-only .n-pick img{display:none}
 .s-optpic svg,.s-optpic img{width:100%;height:100%;object-fit:contain;display:block}
 .s-optpic span img{width:110px;height:110px;object-fit:contain}
+/* the picture never grows out of its box (it must not cover the word under it) */
+.s-card .ph{overflow:hidden}
+.s-card .ph img,.s-card .ph svg{max-height:clamp(130px,24vh,230px);max-width:100%;width:auto;height:auto;object-fit:contain}
+.s-card .ph svg{width:100%}
