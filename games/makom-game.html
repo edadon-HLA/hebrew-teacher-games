@@ -47,6 +47,7 @@ button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 #done{display:none;text-align:center;padding:14px;background:var(--card);border:2px solid var(--line);border-radius:20px}
 #done button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:10px 18px;background:var(--bag);color:#fff;cursor:pointer}
 svg.ic{width:1em;height:1em;vertical-align:-.12em}
+img.ph-ic{width:1em;height:1em;object-fit:contain;background:#fff;border-radius:8px;vertical-align:-.12em;pointer-events:none}
 </style>
 <style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
 .site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}
@@ -60,6 +61,7 @@ svg.ic{width:1em;height:1em;vertical-align:-.12em}
 <body>
 <nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../lomdim-likro/index.html">🔤 לוֹמְדִים לִקְרֹא</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><a href="https://eldar1234334.github.io/SpellQuest-AlphaBet/" target="_blank" rel="noopener">🧙 SpellQuest AlphaBet</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
 <h1>יֵשׁ מָקוֹם בַּתִּיק? 🎒</h1>
+<p style="text-align:center;margin:6px 0 0"><select id="setSel" aria-label="גִּרְסָה" style="font:inherit;font-size:17px;font-weight:700;padding:6px 10px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink)"><option value="">רָגִיל</option><option value="ext">✨ גִּרְסָה מֻרְחֶבֶת</option></select></p>
 <div class="wrap">
   <div class="center" id="center">
     <div id="item" role="img" aria-label="פָּרִיט"></div>
@@ -75,6 +77,7 @@ svg.ic{width:1em;height:1em;vertical-align:-.12em}
   <p class="hint">גִּרְרוּ אֶת הַפָּרִיט לַתִּיק אוֹ לַבַּיִת (אוֹ לִחְצוּ עַל הַכַּפְתּוֹרִים). לִחְצוּ עַל פָּרִיט בַּתִּיק כְּדֵי לְהַעֲבִיר אוֹתוֹ לַבַּיִת, וְעַל פָּרִיט בַּבַּיִת כְּדֵי לְהַעֲבִיר אוֹתוֹ לַתִּיק.</p>
   <div id="done"><h2>כָּל הַכָּבוֹד! 🎉</h2><p>סִדַּרְתֶּם אֶת כָּל הַפְּרִיטִים. אֶפְשָׁר עֲדַיִן לְהַעֲבִיר פְּרִיטִים בֵּין הַתִּיק לַבַּיִת.</p><button id="again">מִשְׂחָק חָדָשׁ</button></div>
 </div>
+<script src="bayit-photos.js?v=1"></script>
 <script>
 var CAP=12;
 var OVEN='<svg class="ic" viewBox="0 0 64 64"><rect x="8" y="6" width="48" height="52" rx="6" fill="#d9dde3" stroke="#555" stroke-width="3"/><rect x="8" y="6" width="48" height="13" rx="6" fill="#b8bec7" stroke="#555" stroke-width="3"/><circle cx="20" cy="12.5" r="2.5" fill="#555"/><circle cx="32" cy="12.5" r="2.5" fill="#555"/><circle cx="44" cy="12.5" r="2.5" fill="#555"/><line x1="16" y1="24" x2="48" y2="24" stroke="#555" stroke-width="3" stroke-linecap="round"/><rect x="14" y="30" width="36" height="22" rx="3" fill="#2b2a4c" stroke="#555" stroke-width="3"/><rect x="18" y="34" width="12" height="5" rx="2" fill="#fff" opacity=".3"/></svg>';
@@ -87,6 +90,14 @@ var ITEMS=[
 ["🥘","סִיר",4],
 ["📺","טֶלֶוִיזְיָה",14],[FRIDGE,"מְקָרֵר",16],[OVEN,"תַּנּוּר",14],["🛋️","סַפָּה",16],["🛏️","מִטָּה",16],["🪑","כִּסֵּא",13],["🚪","דֶּלֶת",15],["🚿","מִקְלַחַת",15]
 ];
+/* "גִּרְסָה מֻרְחֶבֶת" (?set=ext, Niflaot "הַבַּיִת שֶׁלָּנוּ 1"): the same items + 8 house things with photos from bayit-photos.js */
+var XPH=window.BAYIT_PH||{};
+function xpic(k){return'<img class="ph-ic" src="'+XPH[k]+'" alt="">'}
+var XITEMS=[[xpic("microwave"),"מִיקְרוֹגַל",14],[xpic("kettle"),"קֻמְקוּם",13],[xpic("armchair"),"כֻּרְסָה",16],[xpic("ac"),"מַזְגָן",15],
+[xpic("toothbrush"),"מִבְרֶשֶׁת שִׁנַּיִם",1],[xpic("comb"),"מַסְרֵק",1],[xpic("spoon"),"כַּף",1],[xpic("shampoo"),"שַׁמְפּוֹ",2]];
+var XDEF={"מִיקְרוֹגַל":"הַמִּיקְרוֹגַל","קֻמְקוּם":"הַקֻּמְקוּם","כֻּרְסָה":"הַכֻּרְסָה","מַזְגָן":"הַמַּזְגָן","מִבְרֶשֶׁת שִׁנַּיִם":"מִבְרֶשֶׁת הַשִּׁנַּיִם","מַסְרֵק":"הַמַּסְרֵק","כַּף":"הַכַּף","שַׁמְפּוֹ":"הַשַּׁמְפּוֹ"};
+var XF={"כֻּרְסָה":1,"מִבְרֶשֶׁת שִׁנַּיִם":1,"כַּף":1};
+function XON(){var s=document.getElementById("setSel");return!!s&&s.value==="ext"}
 var deck,cur,bag,house,busy;
 var $=function(i){return document.getElementById(i)};
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
@@ -127,7 +138,7 @@ function next(){
 }
 function start(){
   var DEF={"תַּפּוּחַ":"הַתַּפּוּחַ","בָּנָנָה":"הַבָּנָנָה","כּוֹס":"הַכּוֹס","עִפָּרוֹן":"הָעִפָּרוֹן","מַזְלֵג":"הַמַּזְלֵג","טֶלֶפוֹן":"הַטֶּלֶפוֹן","סֵפֶר":"הַסֵּפֶר","נַעַל":"הַנַּעַל","מְנוֹרָה":"הַמְּנוֹרָה","כַּדּוּר":"הַכַּדּוּר","דֻּבִּי":"הַדֻּבִּי","סִיר":"הַסִּיר","טֶלֶוִיזְיָה":"הַטֶּלֶוִיזְיָה","מְקָרֵר":"הַמְּקָרֵר","תַּנּוּר":"הַתַּנּוּר","סַפָּה":"הַסַּפָּה","מִטָּה":"הַמִּטָּה","כִּסֵּא":"הַכִּסֵּא","דֶּלֶת":"הַדֶּלֶת","מִקְלַחַת":"הַמִּקְלַחַת"};
-  var id=0;deck=shuffle(ITEMS.map(function(a){return{e:a[0],w:a[1],d:DEF[a[1]]||("הַ"+a[1]),f:{"בָּנָנָה":1,"מְנוֹרָה":1,"טֶלֶוִיזְיָה":1,"מִטָּה":1,"סַפָּה":1,"דֶּלֶת":1,"מִקְלַחַת":1,"נַעַל":1}[a[1]]===1,s:a[2],id:id++}}));
+  var id=0;deck=shuffle(ITEMS.concat(XON()?XITEMS:[]).map(function(a){return{e:a[0],w:a[1],d:DEF[a[1]]||XDEF[a[1]]||("הַ"+a[1]),f:{"בָּנָנָה":1,"מְנוֹרָה":1,"טֶלֶוִיזְיָה":1,"מִטָּה":1,"סַפָּה":1,"דֶּלֶת":1,"מִקְלַחַת":1,"נַעַל":1}[a[1]]===1||XF[a[1]]===1,s:a[2],id:id++}}));
   bag=[];house=[];render();say("מָה עוֹשִׂים עִם הַפָּרִיט? יֵשׁ מָקוֹם בַּתִּיק?","");next();
 }
 function find(arr,id){for(var i=0;i<arr.length;i++)if(arr[i].id===id)return i;return-1}
@@ -177,6 +188,8 @@ $("lhouse").addEventListener("click",function(e){
   it.addEventListener("pointercancel",function(){on=false;it.style.transform="";it.classList.remove("drag")});
 })();
 $("again").onclick=start;
+if(new URLSearchParams(location.search).get("set")==="ext")$("setSel").value="ext";
+$("setSel").onchange=start;
 start();
 </script>
 <script id="fs-script">

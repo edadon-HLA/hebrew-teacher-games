@@ -28,6 +28,8 @@ h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;text-align:ce
 .dots{display:flex;gap:5px;flex-wrap:wrap}.dots i{width:22px;height:9px;border-radius:5px;background:#e2d8c6}.dots i.cur{background:var(--sky)}.dots i.y{background:var(--green)}.dots i.n{background:var(--red)}
 .pic{max-width:440px;margin:6px auto 10px;border-radius:20px;overflow:hidden;border:5px solid #fff;box-shadow:0 8px 22px #0003;background:#fff}
 .pic svg{display:block;width:100%;height:auto}
+.pic img.ph{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;background:#fff}
+.pic svg.ho-svg{aspect-ratio:4/3}
 .desc{text-align:center;font-size:clamp(30px,5vw,46px);font-weight:800;margin:6px 0 12px;min-height:1.4em}
 .answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .ans{font:800 clamp(24px,4vw,34px) var(--f);padding:16px 10px;border-radius:18px;border:3px solid var(--line);background:#fff;cursor:pointer;color:var(--ink);display:flex;gap:10px;align-items:center;justify-content:center}
@@ -65,6 +67,7 @@ h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;text-align:ce
     </div>
     <div class="opts">
       <label>כַּמָּה שְׁאֵלוֹת? <select id="nQ"><option>8</option><option selected>12</option><option>20</option><option value="999">כָּל הַמִּלִּים</option></select></label>
+      <label>מִלִּים: <select id="wset"><option value="">רָגִיל</option><option value="bayit-ext">✨ גִּרְסָה מֻרְחֶבֶת: חֲפָצִים בַּחֲדָרִים</option><option value="binyan-ext">✨ גִּרְסָה מֻרְחֶבֶת: הַבִּנְיָן וְהַבַּיִת</option><option value="room-ext">✨ גִּרְסָה מֻרְחֶבֶת: חֶדֶר וּמִרְפֶּסֶת</option></select></label>
       <label>קוֹל: <select id="voice"><option value="0">כָּבוּי</option><option value="1">מֻפְעָל</option></select></label>
     </div>
   </div>
@@ -85,6 +88,9 @@ h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;text-align:ce
 </div>
 
 <script src="home-art.js"></script>
+<script src="bayit-photos.js?v=1"></script>
+<script src="house-outside-art.js?v=1"></script>
+<script src="verb-art.js?v=1"></script>
 <script>
 (() => {
 'use strict';
@@ -127,17 +133,66 @@ const ITEMS = [
   { k: 'hasroom', he: 'יֵשׁ מָקוֹם', d: 'יֵשׁ מָקוֹם.', c: 'move' },
   { k: 'noroom', he: 'אֵין מָקוֹם', d: 'אֵין מָקוֹם.', c: 'move' }
 ];
+/* ===== "גִּרְסָה מֻרְחֶבֶת" word sets (?set=bayit-ext | binyan-ext; Niflaot "הַבַּיִת שֶׁלָּנוּ" 1 + 2). The default set above is unchanged.
+   ph = photo key in bayit-photos.js · ho = part of the HouseOut drawing (house-outside-art.js) · hov = [x,y,w,h] crop + kids/extra */
+const X1 = [
+  { ph: 'sink', he: 'כִּיּוֹר', d: 'זֶה כִּיּוֹר.', c: 'thing' }, { ph: 'bathtub', he: 'אַמְבַּטְיָה', d: 'זוֹ אַמְבַּטְיָה.', c: 'thing' },
+  { ph: 'mirror', he: 'מַרְאָה', d: 'זוֹ מַרְאָה.', c: 'thing' }, { ph: 'towel', he: 'מַגֶּבֶת', d: 'זוֹ מַגֶּבֶת.', c: 'thing' },
+  { ph: 'cushion', he: 'כָּרִית', d: 'זוֹ כָּרִית.', c: 'thing' }, { ph: 'clock', he: 'שָׁעוֹן', d: 'זֶה שָׁעוֹן.', c: 'thing' },
+  { ph: 'plant', he: 'עָצִיץ', d: 'זֶה עָצִיץ.', c: 'thing' },
+  { ph: 'knife', he: 'סַכִּין', d: 'זוֹ סַכִּין.', c: 'kitchen' }, { ph: 'spoon', he: 'כַּף', d: 'זוֹ כַּף.', c: 'kitchen' },
+  { ph: 'kettle', he: 'קֻמְקוּם', d: 'זֶה קֻמְקוּם.', c: 'kitchen' }, { ph: 'microwave', he: 'מִיקְרוֹגַל', d: 'זֶה מִיקְרוֹגַל.', c: 'kitchen' },
+  { ph: 'dishwasher', he: 'מֵדִיחַ כֵּלִים', d: 'זֶה מֵדִיחַ כֵּלִים.', c: 'kitchen' },
+  { ph: 'toothbrush', he: 'מִבְרֶשֶׁת שִׁנַּיִם', d: 'זוֹ מִבְרֶשֶׁת שִׁנַּיִם.', c: 'bath' }, { ph: 'toothpaste', he: 'מִשְׁחַת שִׁנַּיִם', d: 'זוֹ מִשְׁחַת שִׁנַּיִם.', c: 'bath' },
+  { ph: 'shampoo', he: 'שַׁמְפּוֹ', d: 'זֶה שַׁמְפּוֹ.', c: 'bath' }, { ph: 'comb', he: 'מַסְרֵק', d: 'זֶה מַסְרֵק.', c: 'bath' },
+  { ph: 'armchair', he: 'כֻּרְסָה', d: 'זוֹ כֻּרְסָה.', c: 'furniture' }, { ph: 'remote', he: 'שַׁלָּט', d: 'זֶה שַׁלָּט.', c: 'thing' },
+  { ph: 'ac', he: 'מַזְגָן', d: 'זֶה מַזְגָן.', c: 'thing' }
+];
+const ARROW = (x1, y1, x2, y2) => `<g stroke="#e2506a" stroke-width="7" fill="none" stroke-linecap="round"><path d="M${x1} ${y1}L${x2} ${y2}"/></g><circle cx="${x2}" cy="${y2}" r="9" fill="#e2506a"/>`;
+const RING = '<g stroke="#e2506a" stroke-width="3" fill="none" stroke-linecap="round"><path d="M298 418q8 11 0 22M306 412q12 17 0 34"/></g>';
+const X2 = [
+  { ho: 'house', he: 'בַּיִת פְּרָטִי', d: 'זֶה בַּיִת פְּרָטִי.', c: 'out' }, { ho: 'roof', he: 'גַּג', d: 'זֶה גַּג.', c: 'out' },
+  { ho: 'yard', he: 'חָצֵר', d: 'זוֹ חָצֵר.', c: 'out' }, { ho: 'parking', he: 'חֲנָיָה', d: 'זוֹ חֲנָיָה.', c: 'out' },
+  { ho: 'gate', he: 'שַׁעַר', d: 'זֶה שַׁעַר.', c: 'out' }, { ho: 'bell', he: 'פַּעֲמוֹן', d: 'זֶה פַּעֲמוֹן.', c: 'out' },
+  { ho: 'key', he: 'מַפְתֵּחַ', d: 'זֶה מַפְתֵּחַ.', c: 'out' }, { ho: 'mailbox', he: 'תֵּבַת דֹּאַר', d: 'זוֹ תֵּבַת דֹּאַר.', c: 'out' },
+  { ho: 'corridor', he: 'מִסְדְּרוֹן', d: 'זֶה מִסְדְּרוֹן.', c: 'out' },
+  { hov: [200, 400, 240, 180], kids: [{ x: 330, y: 572, s: 1.1, g: 'm' }], extra: ARROW(400, 520, 344, 556), he: 'נִכְנָס', d: 'הוּא נִכְנָס.', c: 'verb' },
+  { hov: [150, 340, 240, 180], kids: [{ x: 268, y: 500, s: 1.1, g: 'f' }], extra: ARROW(270, 470, 350, 470), he: 'יוֹצֵאת', d: 'הִיא יוֹצֵאת.', c: 'verb' },
+  { hov: [170, 350, 200, 150], kids: [{ x: 300, y: 488, s: .95, g: 'm' }], extra: RING, he: 'מְצַלְצֵל בַּפַּעֲמוֹן', d: 'הוּא מְצַלְצֵל בַּפַּעֲמוֹן.', c: 'verb' }
+];
+const X3 = [
+  { ph: 'desk', he: 'שֻׁלְחַן כְּתִיבָה', d: 'זֶה שֻׁלְחַן כְּתִיבָה.', c: 'room' }, { ph: 'shelf', he: 'מַדָּף', d: 'זֶה מַדָּף.', c: 'room' },
+  { emo: '🧸🪀🚂', he: 'צַעֲצוּעִים', d: 'אֵלֶּה צַעֲצוּעִים.', c: 'room' }, { ph: 'alarm', he: 'שָׁעוֹן מְעוֹרֵר', d: 'זֶה שָׁעוֹן מְעוֹרֵר.', c: 'room' },
+  { ph: 'washer', he: 'מְכוֹנַת כְּבִיסָה', d: 'זוֹ מְכוֹנַת כְּבִיסָה.', c: 'balcony' }, { ph: 'line', he: 'חֶבֶל כְּבִיסָה', d: 'זֶה חֶבֶל כְּבִיסָה.', c: 'balcony' },
+  { ph: 'blanket', he: 'שְׂמִיכָה', d: 'זוֹ שְׂמִיכָה.', c: 'room' }, { ph: 'pillow', he: 'כָּרִית', d: 'זוֹ כָּרִית.', c: 'room' },
+  { ph: 'nightstand', he: 'שִׁדָּה', d: 'זוֹ שִׁדָּה.', c: 'room' },
+  { va: 'fold', g: 'm', he: 'מְקַפֵּל בְּגָדִים', d: 'הוּא מְקַפֵּל בְּגָדִים.', c: 'verb4' }, { va: 'hang', g: 'f', he: 'תּוֹלָה כְּבִיסָה', d: 'הִיא תּוֹלָה כְּבִיסָה.', c: 'verb4' },
+  { va: 'open', g: 'm', he: 'פּוֹתֵחַ חַלּוֹן', d: 'הוּא פּוֹתֵחַ חַלּוֹן.', c: 'verb4' }, { va: 'close', g: 'f', he: 'סוֹגֶרֶת דֶּלֶת', d: 'הִיא סוֹגֶרֶת דֶּלֶת.', c: 'verb4' },
+  { va: 'lighton', g: 'm', he: 'מַדְלִיק אוֹר', d: 'הוּא מַדְלִיק אוֹר.', c: 'verb4' }, { va: 'lightoff', g: 'f', he: 'מְכַבָּה אוֹר', d: 'הִיא מְכַבָּה אוֹר.', c: 'verb4' }
+];
+X1.forEach((x, n) => x.k = 'x1-' + n); X2.forEach((x, n) => x.k = 'x2-' + n); X3.forEach((x, n) => x.k = 'x3-' + n);
+const SETS = { '': ITEMS, 'bayit-ext': ITEMS.concat(X1), 'binyan-ext': ITEMS.filter(x => x.c === 'building').concat(X2), 'room-ext': X3.concat(ITEMS.filter(x => x.c === 'furniture' || x.c === 'thing')) };
+let POOL = ITEMS;
+function fit43(b){ const cx = b[0] + b[2] / 2, cy = b[1] + b[3] / 2; let w = Math.max(b[2], b[3] * 4 / 3, 160); return [cx - w / 2, cy - w * 3 / 8, w, w * 3 / 4]; }
+function picOf(it){
+  if (it.ph) return `<img class="ph" src="${(window.BAYIT_PH || {})[it.ph]}" alt="">`;
+  if (it.va) return VerbArt.svg(it.va, it.g);
+  if (it.emo) return `<div style="aspect-ratio:4/3;display:grid;place-items:center;font-size:84px">${it.emo}</div>`;
+  if (it.ho) return HouseOut.svg({ vb: fit43(HouseOut.box(it.ho, 24)) });
+  if (it.hov) return HouseOut.svg({ vb: it.hov, kids: it.kids, extra: it.extra });
+  return HomeArt.svg(it.k);
+}
 let mode = 'normal', deck = [], i = 0, score = 0, answered = false, res = [], voiceOn = false;
 const heVoice = () => (speechSynthesis.getVoices() || []).find(v => /^(he|iw)/i.test(v.lang));
 function say(t){ if (!voiceOn || !('speechSynthesis' in window)) return; const v = heVoice(); if (!v) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.voice = v; u.lang = v.lang; u.rate = .85; speechSynthesis.speak(u); }
 
 function pickWrong(item, n){
-  const same = shuffle(ITEMS.filter(x => x !== item && x.c === item.c)), other = shuffle(ITEMS.filter(x => x !== item && x.c !== item.c));
+  const same = shuffle(POOL.filter(x => x !== item && x.c === item.c)), other = shuffle(POOL.filter(x => x !== item && x.c !== item.c));
   return same.concat(other).slice(0, n);
 }
 function start(m){
-  mode = m; voiceOn = $('voice').value === '1';
-  let n = +$('nQ').value; const pool = shuffle(ITEMS); n = Math.min(n, pool.length);
+  mode = m; voiceOn = $('voice').value === '1'; POOL = SETS[$("wset").value] || ITEMS;
+  let n = +$("nQ").value; const pool = shuffle(POOL); n = Math.min(n, pool.length);
   deck = pool.slice(0, n).map((it, k) => {
     if (m === 'normal') return { it, opts: shuffle([it, ...pickWrong(it, 3)]) };
     const fits = k % 2 === 0;                                     /* half of the sentences fit the picture */
@@ -149,7 +204,7 @@ function start(m){
 function dots(){ $('dots').innerHTML = deck.map((_, k) => `<i class="${k === i && !answered ? 'cur' : res[k] === true ? 'y' : res[k] === false ? 'n' : ''}"></i>`).join(''); $('score').textContent = '⭐ ' + score; }
 function show(){
   const q = deck[i]; answered = false; $('fb').textContent = ''; $('fb').className = 'fb'; $('next').hidden = true;
-  $('pic').innerHTML = HomeArt.svg(q.it.k);
+  $("pic").innerHTML = picOf(q.it);
   const area = $('area');
   if (mode === 'normal'){
     $('desc').textContent = 'מַה זֶה?';
@@ -187,6 +242,7 @@ function end(){
   $('endMsg').textContent = s === 3 ? 'מְצֻיָּן!' : s === 2 ? 'כָּל הַכָּבוֹד!' : 'יֹפִי! עוֹד פַּעַם?';
 }
 $('mNormal').onclick = () => start('normal'); $('mEasy').onclick = () => start('easy');
+{ const st = new URLSearchParams(location.search).get("set"); if (st && SETS[st]) $("wset").value = st; }
 { const q = new URLSearchParams(location.search).get('mode'); if (q === 'easy' || q === 'normal') start(q); }
 $('next').onclick = next;
 $('again').onclick = () => start(mode);

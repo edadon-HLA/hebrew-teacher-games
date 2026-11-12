@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="gate.js?v=1793100000"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>נפלאות — הַבַּיִת שֶׁלָּנוּ 3 · מָה עוֹשִׂים בַּבַּיִת?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="lesson-kit.css?v=1792519767">
+<link rel="stylesheet" href="bayit-shelanu/lesson.css?v=3">
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+</style>
+</head>
+<body><nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../lomdim-likro/index.html">🔤 לוֹמְדִים לִקְרֹא</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><a href="https://eldar1234334.github.io/SpellQuest-AlphaBet/" target="_blank" rel="noopener">🧙 SpellQuest AlphaBet</a><button class="nav-back" type="button" onclick="if(history.length>1){history.back()}else{location.href='../niflaot-lessons/index.html'}">← חזרה</button></nav>
+
+<div class="wrap">
+<header class="top">
+  <div><p class="crumb">NIFLAOT LESSONS · נִפְלָאוֹת ג · הַבַּיִת שֶׁלָּנוּ 3</p><h1>מָה עוֹשִׂים בַּבַּיִת?</h1></div>
+  <p class="he-title">פְּעָלִים בַּחֲדָרִים</p>
+</header>
+<nav class="steps"><ol>
+  <li><a href="#s1"><b>1</b> כַּרְטִיס כְּנִיסָה</a></li><li><a href="#s2"><b>2</b> יְמֵי הַשָּׁבוּעַ</a></li><li><a href="#s3"><b>3</b> יוֹם בַּבַּיִת</a></li><li><a href="#s4"><b>4</b> עוֹשִׂים</a></li><li><a href="#s5"><b>5</b> Exit Ticket</a></li><li><a href="#s6"><b>🖨️</b> הַדְפָּסָה</a></li>
+</ol></nav>
+
+<!-- ===== 1 entry ticket ===== -->
+<section class="step" id="s1">
+  <span class="tag"><span class="tnum">1</span> כַּרְטִיס כְּנִיסָה · 2–3 דַּקּוֹת</span>
+  <p class="lead">תַּפְזֹרֶת — מוֹצְאִים אֶת הַמִּלִּים</p>
+  <p class="sub">הַמִּלִּים כְּתוּבוֹת מִיָּמִין לִשְׂמֹאל אוֹ מִלְמַעְלָה לְמַטָּה. עַל הַמָּסָךְ — לוֹחֲצִים עַל מִלָּה בָּרְשִׁימָה כְּדֵי לְסַמֵּן אוֹתָהּ בַּתַּפְזֹרֶת.</p>
+  <div class="panel">
+    <div class="m-ws"><div class="m-grid" id="mGrid"></div><div class="m-words" id="mWords"></div></div>
+    <div class="m-bar c">
+      <span class="m-count" id="mFound">0 / 8</span>
+      <button class="btn good" id="wsAll" type="button">👁 הַצִּיגוּ אֶת כָּל הַמִּלִּים</button>
+      <button class="btn ghost" id="wsClr" type="button">↺ מֵהַהַתְחָלָה</button>
+      <a class="m-dl" href="Niflaot-bayit-shelanu-3-word-search.pdf" target="_blank" rel="noopener">🖨️ דַּף תַּפְזֹרֶת (PDF · 4 בְּדַף)</a>
+    </div>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>מְחַלְּקִים דַּף לְכָל תַּלְמִיד כְּשֶׁהֵם נִכְנָסִים. רַק מִלִּים מֻכָּרוֹת מִשִּׁעוּר 1 וּמִמִּשְׂחַק הַמַּחֲבוֹאִים. מַקִּיפִים לְבַד, בְּשֶׁקֶט. בַּסּוֹף תַּלְמִיד אוֹמֵר מִלָּה, הַמּוֹרֶה לוֹחֵץ עָלֶיהָ וְכָל הַכִּתָּה קוֹרֵאת יַחַד.</p>
+  </details>
+</section>
+
+
+<!-- ===== 2 warm-up ===== -->
+<section class="step" id="s2">
+  <span class="tag green"><span class="tnum">2</span> חִמּוּם · 3–5 דַּקּוֹת</span>
+  <p class="lead">יְמֵי הַשָּׁבוּעַ</p>
+  <div class="shortcuts" style="margin-top:8px">
+    <a class="sc" href="../games/days-of-week.html" target="_blank" rel="noopener"><span class="ic">📅</span><div><h3>יְמֵי הַשָּׁבוּעַ</h3><p>גִּרְסָה קַלָּה — מְסַמְּנִים V עַל הַיּוֹם הַנָּכוֹן</p></div><span class="go">◀</span></a>
+  </div>
+  <div class="q-lines">
+    <div class="q-line"><b>מוֹרֶה:</b>מָה הַיּוֹם? ⬅ הַיּוֹם יוֹם שְׁלִישִׁי.</div>
+    <div class="q-line"><b>מוֹרֶה:</b>מָה מָחָר? ⬅ מָחָר יוֹם רְבִיעִי.</div>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary><p>הַמּוֹרֶה שׁוֹאֵל, הַכִּתָּה עוֹנָה יַחַד בְּקוֹל, וְאָז תַּלְמִיד לוֹחֵץ. 3-4 סִבּוּבִים מֵהַמִּשְׂחָק.</p></details>
+</section>
+
+<!-- ===== 3 lecturing ===== -->
+<section class="step" id="s3">
+  <span class="tag sky"><span class="tnum">3</span> הַסְבֵּר · 10 דַּקּוֹת</span>
+  <div class="sf-part">
+  <details class="q-opt"><summary>⭐ לְפִי שִׁקּוּל הַמּוֹרֶה — חֲזָרָה עַל שִׁעוּר 2: הַבִּנְיָן מִבַּחוּץ</summary>
+    <div class="shortcuts" style="margin-top:8px"><a class="sc" href="../games/habinyan-shelanu.html?mode=ext" target="_blank" rel="noopener"><span class="ic">🏡</span><div><h3>הַבִּנְיָן שֶׁלָּנוּ ✨ הַבִּנְיָן מִבַּחוּץ</h3><p>הַמּוֹרֶה שׁוֹאֵל, תַּלְמִיד לוֹחֵץ</p></div><span class="go">◀</span></a></div>
+    <div class="q-lines"><div class="q-line">אֵיפֹה הַגַּג? · אֵיפֹה הַפַּעֲמוֹן? · אֵיפֹה תֵּבַת הַדֹּאַר? · אֵיפֹה הַחֲנָיָה?</div></div>
+  </details>
+  <p class="lead" style="margin-top:14px">יוֹם בַּבַּיִת שֶׁל מִשְׁפַּחַת יִשְׂרְאֵלִי</p>
+  <p class="sub">לוֹחֲצִים עַל תְּמוּנָה ⬅ שׁוֹמְעִים אֶת הַמִּשְׁפָּט ⬅ הַכִּתָּה חוֹזֶרֶת. הַפֹּעַל מֻדְגָּשׁ; ⭐ = פֹּעַל חָדָשׁ.</p>
+  <div id="frames"></div>
+  <div class="q-lines" style="margin-top:12px">
+    <div class="q-line"><b>שְׁאֵלָה:</b>מִי שׁוֹטֵף כֵּלִים? ⬅ אַבָּא.</div>
+    <div class="q-line"><b>שְׁאֵלָה:</b>אֵיפֹה סַבְתָּא נָחָה? ⬅ בַּסָּלוֹן, עַל הַסַּפָּה.</div>
+    <div class="q-line"><b>שְׁאֵלָה:</b>מָה יוֹנָתָן עוֹשֶׂה בַּחֶדֶר שֶׁלּוֹ? ⬅ הוּא עוֹשֶׂה שִׁעוּרֵי בַּיִת.</div>
+  </div>
+  <details class="note"><summary>📝 מהלך קצר</summary><p>מִשְׁפַּחַת יִשְׂרְאֵלִי (אַבָּא, אִמָּא, שִׁיר, יוֹנָתָן, נוֹעַם, סַבְתָּא) מֻכֶּרֶת לַכִּתָּה. 8 תְּמוּנוֹת בַּבַּיִת מִמִּשְׂחַק הַמַּחֲבוֹאִים. אַחֲרֵי הַתְּמוּנוֹת — שְׁאֵלוֹת מְהִירוֹת, הַכִּתָּה עוֹנָה בְּקוֹל. תַּרְבּוּת: בְּהַרְבֵּה מִשְׁפָּחוֹת בְּיִשְׂרָאֵל הַיְּלָדִים עוֹזְרִים — מְסַדְּרִים אֶת הַשֻּׁלְחָן לַאֲרוּחַת שַׁבָּת וְשׁוֹטְפִים כֵּלִים אַחֲרֶיהָ.</p></details>
+  </div>
+
+  <div class="sf-part">
+  <p class="lead" style="margin-top:22px">הוּא אוֹ הִיא?</p>
+  <div class="m-rule">
+    <div><div class="k">הוּא</div><div class="e">עוֹשֶׂ<b>ה</b> שִׁעוּרֵי בַּיִת</div><div class="e">שׁוֹטֵ<b>ף</b> כֵּלִים</div><div class="e">מְנַקֶּ<b>ה</b></div><div class="e">נָ<b>ח</b></div></div>
+    <div><div class="k">הִיא</div><div class="e">עוֹשָׂ<b>ה</b> שִׁעוּרֵי בַּיִת</div><div class="e">שׁוֹטֶ<b>פֶת</b> כֵּלִים</div><div class="e">מְנַקָּ<b>ה</b></div><div class="e">נָחָ<b>ה</b></div></div>
+  </div>
+  <p class="sub" style="margin-top:12px">הַכִּתָּה מַרִימָה הוּא אוֹ הִיא (3-2-1 הָרִימוּ!) ⬅ הַמּוֹרֶה לוֹחֵץ.</p>
+  <div id="qHH"></div>
+  <div class="m-bar"><a class="m-dl" href="Niflaot-mi-mevashel-response-cards.pdf" target="_blank" rel="noopener">🖨️ כַּרְטִיסֵי הוּא / הִיא (PDF)</a></div>
+  <details class="note"><summary>📝 מהלך קצר</summary><p>כְּמוֹ כַּרְטִיס מְבַשֵּׁל / מְבַשֶּׁלֶת מֵ"שִׂיחָה בַּבַּיִת הֶחָדָשׁ". שִׂימוּ לֵב: עוֹשֶׂה / עוֹשָׂה וּמְנַקֶּה / מְנַקָּה נִשְׁמָעִים כִּמְעַט אוֹתוֹ דָּבָר — מַדְגִּישִׁים אֶת הַתְּנוּעָה.</p></details>
+  </div>
+</section>
+
+<!-- ===== 4 do it ===== -->
+<section class="step" id="s4">
+  <span class="tag"><span class="tnum">4</span> עוֹשִׂים · 15–20 דַּקּוֹת</span>
+  <div class="sf-part">
+  <p class="lead">א · אֵיפֹה הַיֶּלֶד? — גִּרְסָה מֻרְחֶבֶת</p>
+  <div class="shortcuts" style="margin-top:8px">
+    <a class="sc" href="../games/where-is-the-child.html?set=ext&amp;upto=3" target="_blank" rel="noopener"><span class="ic">🏠</span><div><h3>אֵיפֹה הַיֶּלֶד וְהַיַּלְדָּה? ✨ גִּרְסָה מֻרְחֶבֶת</h3><p>שׁוֹטֵף כֵּלִים · עוֹשֶׂה שִׁעוּרֵי בַּיִת · מְנַקֶּה · נָח</p></div><span class="go">◀</span></a>
+  </div>
+  <p class="sub">הַמִּשְׂחָק מַרְאֶה מִשְׁפָּט ⬅ מַרִימִים כַּרְטִיס חֶדֶר (3-2-1 הָרִימוּ!) ⬅ אוֹמְרִים אֶת הַמִּשְׁפָּט עִם הַחֶדֶר ("הַיַּלְדָּה שׁוֹטֶפֶת כֵּלִים בַּמִּטְבָּח.") ⬅ הַמּוֹרֶה גּוֹרֵר.</p>
+  <div class="m-bar"><button class="m-cd" id="cd4a" type="button">🕒 3… 2… 1… הָרִימוּ!</button><a class="m-dl" href="Niflaot-bayit-shelanu-room-cards.pdf" target="_blank" rel="noopener">🖨️ כַּרְטִיסֵי חֲדָרִים (6, עִם גִּנָּה)</a></div>
+  </div>
+
+  <div class="sf-part">
+  <p class="lead" style="margin-top:22px">ב · מִי עוֹשֶׂה מָה בַּבַּיִת? — גִּרְסָה מֻרְחֶבֶת</p>
+  <div class="shortcuts" style="margin-top:8px">
+    <a class="sc" href="../games/family-house.html?set=ext&amp;mode=easy" target="_blank" rel="noopener"><span class="ic">✅</span><div><h3>מִי עוֹשֶׂה מָה? ✨ קַל</h3><p>מַתְאִים / לֹא מַתְאִים — ✔ / ✘</p></div><span class="go">◀</span></a>
+    <a class="sc" href="../games/family-house.html?set=ext&amp;mode=normal" target="_blank" rel="noopener"><span class="ic">🔢</span><div><h3>מִי עוֹשֶׂה מָה? ✨ רָגִיל</h3><p>בּוֹחֲרִים 1 מִ־4 — כַּרְטִיסֵי מִסְפָּרִים</p></div><span class="go">◀</span></a>
+  </div>
+  <p class="sub">"קַל": מַרִימִים ✔ / ✘. אַחֲרֵי ✘ מְתַקְּנִים: "לֹא! אִמָּא נָחָה בַּסָּלוֹן." אַחַר כָּךְ 3-4 שְׁאֵלוֹת בְּ"רָגִיל" עִם כַּרְטִיסֵי מִסְפָּרִים 1-4.</p>
+  <div class="m-bar"><a class="m-dl" href="Niflaot-karov-rachok-response-cards.pdf" target="_blank" rel="noopener">🖨️ ✔ / ✘ + מִסְפָּרִים (PDF)</a></div>
+  </div>
+
+  <div class="sf-part">
+  <p class="lead" style="margin-top:22px">ג · פַּנְטוֹמִימָה</p>
+  <p class="sub">תַּלְמִיד מְקַבֵּל שׁוּרָה (הַמּוֹרֶה מַרְאֶה לוֹ אוֹ לוֹחֵשׁ) וּמַצִּיג. הַכִּתָּה מְנַחֶשֶׁת בְּמִשְׁפָּט מָלֵא: "אַתָּה שׁוֹטֵף כֵּלִים בַּמִּטְבָּח!" / "אַתְּ נָחָה עַל הַסַּפָּה!" ⬅ "נָכוֹן!" אוֹ "לֹא, אֲנִי ___."</p>
+  <div class="m-bar"><button class="btn" id="chBtn" type="button">👁 הַצֵּג אֶת הָרְשִׁימָה</button></div>
+  <div class="q-lines s-hide" id="chList"></div>
+  <p class="sub">לֹא חוֹבָה: <a href="Niflaot-pages-18-19.html" target="_blank" rel="noopener">"מִי עוֹשֶׂה מָה וְאֵיפֹה?" (עַמּוּדִים 18-19)</a></p>
+  </div>
+
+  <div class="sf-part">
+  <p class="lead" style="margin-top:22px">🗣️ מָה אֲנִי עוֹשֶׂה בַּבַּיִת?</p>
+  <p class="sub">בְּזוּגוֹת, פָּנִים מוּל פָּנִים. 2 סִבּוּבִים שֶׁל 2 דַּקּוֹת; בְּתוֹךְ כָּל סִבּוּב מִתְחַלְּפִים.</p>
+  <div id="talk"></div>
+  <details class="note"><summary>📝 מהלך קצר</summary>
+    <p>הַמּוֹרֶה מִסְתּוֹבֵב וּמַקְשִׁיב. בַּסּוֹף 2-3 תַּלְמִידִים מְסַפְּרִים עַל בֶּן הַזּוּג ("בַּבַּיִת שֶׁל דָּנָה אַבָּא מְבַשֵּׁל וְדָנָה שׁוֹטֶפֶת כֵּלִים."), וְהַכִּתָּה מְגִיבָה "גַּם אֶצְלִי!" / "אֶצְלִי לֹא!".</p>
+    <p>תְּמִיכָה (קְבוּצָה 1): רַק סִבּוּב 1, מַצְבִּיעִים עַל הַתְּמוּנוֹת. אֶתְגָּר (קְבוּצָה 3): 2 פְּעָלִים עִם וְ, וּבְסִבּוּב 2 מוֹסִיפִים "וַאֲנִי ___." הַשְּׁאֵלוֹת בְּזָכָר; כָּל אֶחָד עוֹנֶה בְּמִין שֶׁלּוֹ.</p>
+  </details>
+  </div>
+</section>
+
+<!-- ===== 5 exit ticket ===== -->
+<section class="step" id="s5">
+  <div class="m-bar" style="margin-bottom:0"><span class="tag" style="background:#ece6fb;border-color:#7a5bd1;color:#3b2a82">🎟️ Exit Ticket · 3–5 min</span><span style="flex:1"></span><a class="m-dl" href="Niflaot-bayit-shelanu-3-exit-ticket.pdf" target="_blank" rel="noopener">🖨️ Printable version (PDF · 4 per page)</a></div>
+  <p class="lead m-en" dir="ltr">A. Complete each sentence with the right word from the box. Be careful: he or she?</p>
+  <div id="qEX"></div>
+  <p class="sub m-en" dir="ltr"><b>B. Write in Hebrew one thing YOU do in your kitchen.</b> <bdi dir="rtl">בַּמִּטְבָּח אֲנִי ________.</bdi></p>
+  <details class="note"><summary>📝 מהלך קצר</summary><p>כָּל תַּלְמִיד לְבַד. תְּשׁוּבוֹת: 1 שׁוֹטֵף, 2 עוֹשָׂה, 3 נָח, 4 מְצַחְצַחַת (עוֹשֶׂה, נָחָה — מְיֻתָּרוֹת). עַל הַמָּסָךְ — לוֹחֲצִים עַל הַמִּלָּה הַנְּכוֹנָה.</p></details>
+</section>
+
+<!-- ===== printables ===== -->
+<section class="step" id="s6">
+  <span class="tag sky"><span class="tnum">🖨️</span> לְהַדְפָּסָה</span>
+  <div class="shortcuts" style="margin-top:12px">
+    <a class="sc" href="Niflaot-bayit-shelanu-3-word-search.pdf" target="_blank" rel="noopener"><span class="ic">🔎</span><div><h3>תַּפְזֹרֶת</h3><p>כַּרְטִיס כְּנִיסָה · 4 בְּדַף</p></div><span class="go">◀</span></a>
+    <a class="sc" href="Niflaot-bayit-shelanu-room-cards.pdf" target="_blank" rel="noopener"><span class="ic">🏠</span><div><h3>כַּרְטִיסֵי חֲדָרִים</h3><p>6 חֲדָרִים, עִם גִּנָּה</p></div><span class="go">◀</span></a>
+    <a class="sc" href="Niflaot-mi-mevashel-response-cards.pdf" target="_blank" rel="noopener"><span class="ic">🃏</span><div><h3>הוּא / הִיא</h3><p>מִשִּׁעוּר "מִי מְבַשֵּׁל"</p></div><span class="go">◀</span></a>
+    <a class="sc" href="Niflaot-karov-rachok-response-cards.pdf" target="_blank" rel="noopener"><span class="ic">✔</span><div><h3>✔ / ✘ + מִסְפָּרִים</h3><p>מִשִּׁעוּר "קָרוֹב אוֹ רָחוֹק"</p></div><span class="go">◀</span></a>
+    <a class="sc" href="Niflaot-bayit-shelanu-3-exit-ticket.pdf" target="_blank" rel="noopener"><span class="ic">🎟️</span><div><h3>Exit Ticket</h3><p>4 per A4 page</p></div><span class="go">◀</span></a>
+  </div>
+</section>
+<p class="src">הַצִּיּוּרִים: הַבַּיִת מִמִּשְׂחַק הַמַּחֲבוֹאִים וְצִיּוּרֵי הָאֲתָר. לְשִׁמּוּשׁ בַּכִּתָּה בִּלְבַד.</p>
+</div>
+<script src="../games/bayit-photos.js?v=1"></script>
+<script src="../games/house-outside-art.js?v=1"></script>
+<script src="../games/verb-art.js?v=1"></script>
+<script src="../games/hide-seek-ext.js?v=1"></script>
+<script src="bayit-shelanu/data.js?v=2"></script>
+<script src="bayit-shelanu/lesson.js?v=1"></script>
+<script src="bayit-shelanu/lesson-3.js?v=1"></script>
+<script src="../shared/section-focus.js?v=5"></script>
+</body>
+</html>

@@ -40,8 +40,9 @@ h1{margin:0 0 8px;font-size:clamp(25px,4vw,40px)}
 <header>
 <h1>🧠 מִשְׂחַק זִכָּרוֹן – מִלִּים וּתְמוּנוֹת</h1>
 <div class="subtitle">הַתְאִימוּ כָּל מִלָּה לַתְּמוּנָה הַמַּתְאִימָה</div>
-<div class="info">זוּגוֹת שֶׁנִּמְצְאוּ: <strong id="pairs">0</strong> / 10</div>
+<div class="info">זוּגוֹת שֶׁנִּמְצְאוּ: <strong id="pairs">0</strong> / <span id="pairsAll">10</span></div>
 <div class="controls">
+<select class="control" id="deckSel" aria-label="גִּרְסָה"><option value="">רָגִיל</option><option value="ext">✨ גִּרְסָה מֻרְחֶבֶת: חֲפָצִים בַּבַּיִת</option></select>
 <button class="control" id="newGame" type="button">🔄 מִשְׂחָק חָדָשׁ</button>
 <button class="control" id="soundButton" type="button">🔊 צְלִיל: פָּעִיל</button>
 </div>
@@ -49,6 +50,7 @@ h1{margin:0 0 8px;font-size:clamp(25px,4vw,40px)}
 <main id="game" aria-label="מִשְׂחַק זִכָּרוֹן"></main>
 <div id="message" aria-live="polite"></div>
 
+<script src="bayit-photos.js?v=1"></script>
 <script>
 (function(){
 "use strict";
@@ -60,7 +62,11 @@ const exactImages = {
 "תנור": "data:image/jpeg;base64,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"
 };
 
-const pairs = [
+/* "גִּרְסָה מֻרְחֶבֶת: חֲפָצִים בַּבַּיִת" (?deck=ext, Niflaot "הַבַּיִת שֶׁלָּנוּ 1"): 8 pairs with photos from bayit-photos.js */
+const PH = window.BAYIT_PH || {};
+const EXT_PAIRS = [["מיקרוגל", PH.microwave], ["קומקום", PH.kettle], ["מדיח כלים", PH.dishwasher], ["מברשת שיניים", PH.toothbrush],
+  ["שמפו", PH.shampoo], ["כורסה", PH.armchair], ["שלט", PH.remote], ["מזגן", PH.ac]];
+const BASE_PAIRS = [
 ["שולחן", exactImages["שולחן"]],
 ["וילון", exactImages["וילון"]],
 ["ספה", "🛋️"],
@@ -73,7 +79,10 @@ const pairs = [
 ["בית", "🏠"]
 ];
 
-const niqqud = {"שולחן":"שֻׁלְחָן","וילון":"וִילוֹן","ספה":"סַפָּה","מנורה":"מְנוֹרָה","מיטה":"מִטָּה","מקרר":"מְקָרֵר","תנור":"תַּנּוּר","תפוח":"תַּפּוּחַ","בניין":"בִּנְיָן","בית":"בַּיִת"};
+const deckSel = document.getElementById("deckSel");
+if (new URLSearchParams(location.search).get("deck") === "ext") deckSel.value = "ext";
+let pairs = BASE_PAIRS;
+const niqqud = {"מיקרוגל":"מִיקְרוֹגַל","קומקום":"קֻמְקוּם","מדיח כלים":"מֵדִיחַ כֵּלִים","מברשת שיניים":"מִבְרֶשֶׁת שִׁנַּיִם","שמפו":"שַׁמְפּוֹ","כורסה":"כֻּרְסָה","שלט":"שַׁלָּט","מזגן":"מַזְגָן","שולחן":"שֻׁלְחָן","וילון":"וִילוֹן","ספה":"סַפָּה","מנורה":"מְנוֹרָה","מיטה":"מִטָּה","מקרר":"מְקָרֵר","תנור":"תַּנּוּר","תפוח":"תַּפּוּחַ","בניין":"בִּנְיָן","בית":"בַּיִת"};
 
 const game=document.getElementById("game");
 const pairsDisplay=document.getElementById("pairs");
@@ -93,6 +102,8 @@ function render(){
   message.textContent="";
   first=null; second=null; busy=false; found=0;
   pairsDisplay.textContent="0";
+  pairs = deckSel.value === "ext" ? EXT_PAIRS : BASE_PAIRS;
+  document.getElementById("pairsAll").textContent = pairs.length;
 
   const cards=[];
   pairs.forEach((p,i)=>{
@@ -129,7 +140,7 @@ function makeCard(d){
   }else{
     const pic=document.createElement("span");
     pic.className="picture";
-    if(typeof d.value==="string" && d.value.startsWith("data:image/")){
+    if(typeof d.value==="string" && /^(data:image\/|https?:)/.test(d.value)){
       const img=document.createElement("img");
       img.src=d.value;
       img.alt="תְּמוּנָה";
@@ -188,6 +199,7 @@ function beep(freq,duration){
 }
 
 newGameButton.addEventListener("click",render);
+deckSel.addEventListener("change",render);
 soundButton.addEventListener("click",()=>{
   soundOn=!soundOn;
   soundButton.textContent=soundOn?"🔊 צְלִיל: פָּעִיל":"🔇 צְלִיל: כָּבוּי";
