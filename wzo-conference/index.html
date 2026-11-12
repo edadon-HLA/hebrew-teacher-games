@@ -18,8 +18,8 @@ h2{font-size:clamp(28px,3.4vw,36px);margin:0 0 4px;line-height:1.2}
 
 /* intro */
 .intro{display:grid;grid-template-columns:230px 1fr;gap:34px;align-items:center}
-.photo{width:230px;height:230px;border-radius:50%;overflow:hidden;border:6px solid #fff;box-shadow:0 0 0 3px #c7d2fe,0 10px 30px #1b284226;background:#e0e7ff}
-.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 28%;display:block}
+.photo{width:230px;height:300px;border-radius:28px;overflow:hidden;border:6px solid #fff;box-shadow:0 0 0 3px #c7d2fe,0 10px 30px #1b284226;background:#e0e7ff}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 36%;display:block}
 .badge{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:999px;padding:6px 16px;font-weight:800;font-size:18px;margin-bottom:10px}
 .facts{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:12px}
 .facts li{padding-right:42px;position:relative}
@@ -94,7 +94,7 @@ footer{text-align:center;color:var(--muted);padding:10px 22px 40px;font-size:18p
   main{padding:6px 14px 50px}
   .intro{grid-template-columns:1fr;justify-items:center;text-align:center}
   .facts{text-align:right}
-  .photo{width:170px;height:170px}
+  .photo{width:170px;height:222px;border-radius:22px}
   .cards,.tips{grid-template-columns:1fr}
   #promptBox{font-size:16px;padding:86px 14px 16px 14px}
   #copyBtn{width:62px;height:62px}
@@ -171,7 +171,8 @@ footer{text-align:center;color:var(--muted);padding:10px 22px 40px;font-size:18p
   </div>
   <div class="slot-body" id="slotBody">
 <!-- NEW-LESSON-SLOT-START -->
-<a class="new-lesson-link" href="lessons/lesson-1794525162801/index.html" target="_blank" rel="noopener">✨ בית – לַשִּׁעוּר הֶחָדָשׁ</a>
+<a class="new-lesson-link" href="lessons/lesson-1794526335121/index.html" target="_blank" rel="noopener">✨ אוכל ישראלי – לַשִּׁעוּר הֶחָדָשׁ</a>
+  '   <a class="new-lesson-link" href="lessons/{SLUG}/index.html" target="_blank" rel="noopener">{TOPIC_HTML} – open the new lesson</a>',
 <!-- NEW-LESSON-SLOT-END -->
   </div>
   <button class="btn btn-red" id="resetBtn" type="button">🗑️ מְחִיקַת הַשִּׁעוּר הֶחָדָשׁ (לְהַדְגָּמָה חוֹזֶרֶת)</button>
@@ -216,21 +217,21 @@ footer{text-align:center;color:var(--muted);padding:10px 22px 40px;font-size:18p
 /* ===== Tips: Eldar, edit this list (he = the tip, ex = the example) ===== */
 var TIPS = [
   { he: 'הַגְדִּירוּ Skills: כִּתְבוּ פַּעַם אַחַת אֵיךְ עוֹשִׂים מְשִׂימָה שֶׁחוֹזֶרֶת, וְ-Claude יַעֲשֶׂה אוֹתָהּ כָּךְ כׇּל פַּעַם.',
-    ex: 'לְמָשָׁל: skill שֶׁל ״בְּנִיַּת שִׁעוּר רְחוֹב הָעוֹלָם״.' },
+    ex: 'skill שֶׁל ״בְּנִיַּת שִׁעוּר רְחוֹב הָעוֹלָם״.' },
   { he: 'שִׂיחָה אַחַת – תַּפְקִיד אֶחָד. לֹא מְעַרְבְּבִים.',
-    ex: 'לְמָשָׁל: שִׂיחָה לְתִכְנוּן, שִׂיחָה לִבְנִיַּת מִשְׂחָק, שִׂיחָה לִבְדִיקָה.' },
+    ex: 'שִׂיחָה לְתִכְנוּן, שִׂיחָה לִבְנִיַּת מִשְׂחָק, שִׂיחָה לִבְדִיקָה.' },
   { he: 'שִׂימוּ אֶת הַכְּלָלִים שֶׁלָּכֶם בְּקוֹבֶץ (CLAUDE.md).',
-    ex: 'לְמָשָׁל: סִגְנוֹן, נִקּוּד מָלֵא, מִימִין לִשְׂמֹאל, גֹּדֶל אוֹתִיּוֹת, אֵיפֹה שׁוֹמְרִים קְבָצִים.' },
+    ex: 'סִגְנוֹן, נִקּוּד מָלֵא, מִימִין לִשְׂמֹאל, גֹּדֶל אוֹתִיּוֹת, אֵיפֹה שׁוֹמְרִים קְבָצִים.' },
   { he: 'תָּאֲרוּ אֶת הַיֶּלֶד, לֹא אֶת הַקּוֹד.',
-    ex: 'לְמָשָׁל: ״כִּתָּה ה׳, מַתְחִילִים, בְּסוֹף הַשִּׁעוּר יֵדְעוּ 10 מַאֲכָלִים״.' },
+    ex: '״כִּתָּה ה׳, מַתְחִילִים, בְּסוֹף הַשִּׁעוּר יֵדְעוּ 10 מַאֲכָלִים״.' },
   { he: 'מַתְחִילִים קָטָן, וְאָז מְשַׁפְּרִים.',
-    ex: 'לְמָשָׁל: מִשְׂחָק אֶחָד ← מִסְתַּכְּלִים ← ״יוֹתֵר גָּדוֹל / תּוֹסִיף צְלִיל / שָׁלָב קָשֶׁה יוֹתֵר״.' },
+    ex: 'מִשְׂחָק אֶחָד ← מִסְתַּכְּלִים ← ״יוֹתֵר גָּדוֹל / תּוֹסִיף צְלִיל / שָׁלָב קָשֶׁה יוֹתֵר״.' },
   { he: 'תָּמִיד בּוֹדְקִים בְּעַצְמֵנוּ אֶת הָעִבְרִית וְאֶת הַנִּקּוּד לִפְנֵי שֶׁזֶּה מַגִּיעַ לַתַּלְמִידִים.',
-    ex: 'לְמָשָׁל: קוֹרְאִים כׇּל מִלָּה בְּקוֹל, כְּמוֹ תַּלְמִיד.' },
+    ex: 'קוֹרְאִים כׇּל מִלָּה בְּקוֹל, כְּמוֹ תַּלְמִיד.' },
   { he: 'שׁוֹמְרִים גִּבּוּי מוּכָן וְהַקְלָטָה.',
-    ex: 'לְמָשָׁל: הַכַּפְתּוֹר הַכָּתֹם ״תַּקָּלָה בַּתִּקְשֹׁרֶת״ לְמַעְלָה.' },
+    ex: 'הַכַּפְתּוֹר הַכָּתֹם ״תַּקָּלָה בַּתִּקְשֹׁרֶת״ לְמַעְלָה.' },
   { he: 'אַתֶּם עֲדַיִן הַמּוֹרִים. הַ-AI בּוֹנֶה – אַתֶּם מַחְלִיטִים.',
-    ex: 'לְמָשָׁל: אַתֶּם בּוֹחֲרִים מָה מַגִּיעַ לַכִּתָּה.' }
+    ex: 'אַתֶּם בּוֹחֲרִים מָה מַגִּיעַ לַכִּתָּה.' }
 ];
 
 /* ===== Prompt template ({TOPIC}, {GRADE}, {SLUG}, {TOPIC_HTML}); English works best for Claude ===== */
@@ -328,48 +329,61 @@ var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּ�
     }, box);
   });
 
-  // ===== the new-lesson slot follows the live site (so the audience sees the link appear / disappear) =====
-  var slotBody = $('slotBody'), HIDE_KEY = 'wzo-hidden-slot';
+  // ===== the new-lesson slot follows the LIVE site (so the audience sees the link appear / disappear) =====
+  // It always reads the live page, also when this page is opened from this PC (localhost or a file), and
+  // turns the slot's relative links into live links, so the link opens the published lesson.
+  var LIVE_PAGE = LIVE + 'wzo-conference/index.html', LIVE_DIR = LIVE + 'wzo-conference/';
+  var slotBody = $('slotBody'), HIDE_KEY = 'wzo-hidden-slot', lastRaw = '';
   var START = '<!-- NEW-LESSON-' + 'SLOT-START -->', END = '<!-- NEW-LESSON-' + 'SLOT-END -->';
   function norm(s) { return (s || '').replace(/\s+/g, ' ').trim(); }
   function getHidden() { try { return localStorage.getItem(HIDE_KEY) || ''; } catch (e) { return ''; } }
   function setHidden(v) { try { if (v) localStorage.setItem(HIDE_KEY, v); else localStorage.removeItem(HIDE_KEY); } catch (e) {} }
   function isEmptySlot(html) { return !/<a\b/i.test(html); }
-  function showSlot(html) {
-    var hidden = getHidden();
-    if (isEmptySlot(html)) { if (hidden) setHidden(''); }        // the live site is empty again: forget the local hide
-    else if (hidden && norm(html) === hidden) html = EMPTY_SLOT;  // this lesson was "deleted" on this screen; wait for the live reset
-    if (norm(slotBody.innerHTML.replace(/<!--[\s\S]*?-->/g, '')) !== norm(html)) slotBody.innerHTML = START + '\n' + html + '\n' + END;
+  function absolutize(html) {
+    return html.replace(/href="(?![a-z]+:|\/|#)([^"]*)"/gi, function (m, p) { return 'href="' + LIVE_DIR + p + '"'; });
   }
-  function currentSlot() {
-    var h = slotBody.innerHTML, a = h.indexOf(START), b = h.indexOf(END);
-    return a >= 0 && b > a ? h.slice(a + START.length, b) : h;
+  function showSlot(raw) {
+    lastRaw = raw;
+    var hidden = getHidden(), html = raw;
+    if (isEmptySlot(raw)) { if (hidden) setHidden(''); }         // the live site is empty again: forget the local hide
+    else if (hidden && norm(raw) === hidden) html = EMPTY_SLOT;   // "deleted" on this screen; waiting for the live reset
+    html = absolutize(html);
+    if (norm(slotBody.getAttribute('data-shown')) !== norm(html)) {
+      slotBody.innerHTML = START + '\n' + html + '\n' + END;
+      slotBody.setAttribute('data-shown', norm(html));
+    }
   }
-  var initial = currentSlot();
-  showSlot(initial);
+  function slotOf(t) { var a = t.indexOf(START), b = t.indexOf(END, a + 1); return a >= 0 && b > a ? t.slice(a + START.length, b) : null; }
+  showSlot(slotOf(slotBody.innerHTML) || '');
   function poll() {
-    if (location.protocol === 'file:') return;
-    fetch(location.pathname + '?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : null; }).then(function (t) {
-      if (!t) return;
-      var a = t.indexOf(START), b = t.indexOf(END, a + 1);
-      if (a >= 0 && b > a) showSlot(t.slice(a + START.length, b));
+    fetch(LIVE_PAGE + '?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : null; }).then(function (t) {
+      var s = t && slotOf(t); if (s !== null && s !== undefined && t) showSlot(s);
     }).catch(function () {});
   }
-  setInterval(poll, 8000);
+  poll();
+  setInterval(poll, 6000);
   document.addEventListener('visibilitychange', function () { if (!document.hidden) poll(); });
 
-  // ===== red button: empty the slot on this screen now + copy the reset command for Claude Code (live site) =====
-  $('resetBtn').addEventListener('click', function () {
-    var html = currentSlot();
-    if (isEmptySlot(html)) { $('resetStatus').textContent = 'הַמָּקוֹם כְּבָר רֵיק – אֶפְשָׁר לְהַדְגִּים שׁוּב.'; return; }
-    if (!confirm('לִמְחֹק אֶת הַשִּׁעוּר הֶחָדָשׁ מֵהָאֲתַר?')) return;
-    setHidden(norm(html));
-    slotBody.innerHTML = START + '\n' + EMPTY_SLOT + '\n' + END;
+  // ===== red button: press twice. Empties the slot on this screen now + copies the reset command for Claude Code (live site) =====
+  var armed = 0, resetBtn = $('resetBtn'), resetLabel = resetBtn.textContent;
+  function disarm() { armed = 0; resetBtn.textContent = resetLabel; }
+  resetBtn.addEventListener('click', function () {
+    if (isEmptySlot(lastRaw) || (getHidden() && norm(lastRaw) === getHidden())) {
+      if (!isEmptySlot(lastRaw)) { copyText(RESET_PROMPT, function () {}); }
+      $('resetStatus').innerHTML = isEmptySlot(lastRaw) ? 'הַמָּקוֹם רֵיק – אֶפְשָׁר לְהַדְגִּים שׁוּב.'
+        : 'מְחַכִּים שֶׁהָאֲתַר הַחַי יִתְעַדְכֵּן. אִם עוֹד לֹא הִדְבַּקְתֶּם, הַדְבִּיקוּ בְּ-Claude Code: <code></code>';
+      var c0 = $('resetStatus').querySelector('code'); if (c0) c0.textContent = RESET_PROMPT;
+      return;
+    }
+    if (!armed) { armed = setTimeout(disarm, 4000); resetBtn.textContent = '⚠️ לַחֲצוּ שׁוּב לְאִשּׁוּר'; return; }
+    clearTimeout(armed); disarm();
+    setHidden(norm(lastRaw));
+    showSlot(lastRaw);
     copyText(RESET_PROMPT, function (ok) {
-      $('resetStatus').innerHTML = ok
-        ? '✓ הַמָּקוֹם רֵיק בַּמָּסָךְ הַזֶּה. פְּקֻדַּת הַמְּחִיקָה הוּעְתְּקָה – הַדְבִּיקוּ אוֹתָהּ בְּ-Claude Code כְּדֵי לִמְחֹק גַּם בָּאֲתַר הַחַי.'
-        : 'הַמָּקוֹם רֵיק בַּמָּסָךְ הַזֶּה. כְּדֵי לִמְחֹק גַּם בָּאֲתַר הַחַי, הַדְבִּיקוּ בְּ-Claude Code: <code></code>';
-      var c = $('resetStatus').querySelector('code'); if (c) c.textContent = RESET_PROMPT;
+      $('resetStatus').innerHTML = (ok
+        ? '✓ הַמָּקוֹם רֵיק בַּמָּסָךְ הַזֶּה. פְּקֻדַּת הַמְּחִיקָה הוּעְתְּקָה – הַדְבִּיקוּ אוֹתָהּ בְּ-Claude Code כְּדֵי לִמְחֹק גַּם בָּאֲתַר הַחַי:'
+        : 'הַמָּקוֹם רֵיק בַּמָּסָךְ הַזֶּה. כְּדֵי לִמְחֹק גַּם בָּאֲתַר הַחַי, הַעְתִּיקוּ לְ-Claude Code:') + ' <code></code>';
+      $('resetStatus').querySelector('code').textContent = RESET_PROMPT;
     });
   });
 })();
