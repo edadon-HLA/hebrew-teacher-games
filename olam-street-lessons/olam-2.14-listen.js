@@ -82,12 +82,12 @@ function spotlight(root, keys){
     <div class="bar2" style="justify-content:center"><button class="btn" data-a="prev" type="button">▶ הַקּוֹדֵם</button><button class="btn primary" data-a="say" type="button">🔊 שׁוּב</button><button class="btn primary" data-a="next" type="button">הַבָּא ◀</button></div>
     <div class="L-dots">${keys.map((k, i) => `<button type="button" data-i="${i}" aria-label="${L.HE[k]}">${art(k)}</button>`).join('')}</div></div>`;
   let i = 0; const q = s => root.querySelector(s);
-  function show(){ const k = keys[i]; q('.pic').innerHTML = art(k); q('.w').textContent = L.HE[k]; root.querySelectorAll('.L-dots button').forEach((b, j) => b.classList.toggle('on', j === i)); say(L.HE[k], 'keren', .7); }
+  function show(silent){ const k = keys[i]; q('.pic').innerHTML = art(k); q('.w').textContent = L.HE[k]; root.querySelectorAll('.L-dots button').forEach((b, j) => b.classList.toggle('on', j === i)); if (!silent) say(L.HE[k], 'keren', .7); }
   q('[data-a="prev"]').onclick = () => { i = (i + keys.length - 1) % keys.length; show(); };
   q('[data-a="next"]').onclick = () => { i = (i + 1) % keys.length; show(); };
   q('[data-a="say"]').onclick = () => say(L.HE[keys[i]], 'keren', .7);
   root.querySelectorAll('.L-dots button').forEach(b => b.onclick = () => { i = +b.dataset.i; show(); });
-  show();
+  show(true); /* silent on page load (teacher 11/12) */
 }
 
 /* ---------- the quiz engine ----------
@@ -101,7 +101,7 @@ function quiz(root, items0, o){
     <div class="bar2" style="justify-content:center"><button class="btn" data-a="prev" type="button">▶ הַקּוֹדֵם</button><button class="btn primary" data-a="next" type="button">הַבָּא ◀</button>
       <button class="btn" data-a="ear" type="button">↺ שׁוּב</button><button class="cdbtn" data-a="cd" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn primary big" data-a="rv" type="button">👁 הַצִּיגוּ</button>${o.mix ? '<button class="btn ghost" data-a="mix" type="button">🔀 עִרְבּוּב</button>' : ''}</div>`;
   const q = s => root.querySelector(s), st = q('.L-stage');
-  let items = [], i = 0, done = false;
+  let items = [], i = 0, done = false, started = false; /* no sound until the teacher clicks (teacher 11/12: audio played by itself on page load) */
   const make = () => { items = o.mix ? shuffle(items0).slice(0, o.n || items0.length) : items0.slice(0, o.n || items0.length); i = 0; show(); };
   function hear(it){ if (it.clip != null) clip(it.clip); else if (it.say) say(it.say, it.who); }
   function show(){ const it = items[i]; done = false; st.classList.remove('yes');
@@ -110,16 +110,16 @@ function quiz(root, items0, o){
     const ch = o.chMix ? shuffle(it.ch) : it.ch;
     q('.L-cards').innerHTML = ch.map((c, k) => `<button type="button" class="L-card ${c.cls || ''}" data-k="${c.id}">${o.num ? `<span class="n">${k + 1}</span>` : ''}${c.html}<span class="mk"></span></button>`).join('');
     q('.L-cards').querySelectorAll('.L-card').forEach(b => b.onclick = () => { if (it.ok == null){ b.classList.toggle('hit'); tone(true, 660); return; } if (done) return; if (b.dataset.k === String(it.ok)) right(); else { b.classList.add('no'); b.querySelector('.mk').textContent = '✘'; tone(false); } });
-    q('[data-a="prev"]').disabled = i === 0; if (o.autoPlay !== false) hear(it); }
+    q('[data-a="prev"]').disabled = i === 0; if (o.autoPlay !== false && started) hear(it); }
   function right(){ const it = items[i]; done = true; st.classList.add('yes');
     if (it.ok != null) q('.L-cards').querySelectorAll('.L-card').forEach(b => { const ok = b.dataset.k === String(it.ok); b.classList.toggle('hit', ok); b.classList.toggle('hide', !ok); if (ok) b.querySelector('.mk').textContent = '✔'; });
     q('.full').innerHTML = it.full || ''; tone(true); if (it.sayFull) say(it.sayFull, it.who); if (it.after) it.after(); }
-  q('[data-a="prev"]').onclick = () => { if (i > 0){ i--; show(); } };
-  q('[data-a="next"]').onclick = () => { if (i < items.length - 1){ i++; show(); } else make(); };
-  q('[data-a="ear"]').onclick = () => hear(items[i]);
+  q('[data-a="prev"]').onclick = () => { started = true; if (i > 0){ i--; show(); } };
+  q('[data-a="next"]').onclick = () => { started = true; if (i < items.length - 1){ i++; show(); } else make(); };
+  q('[data-a="ear"]').onclick = () => { started = true; hear(items[i]); };
   q('[data-a="cd"]').onclick = countdown;
   q('[data-a="rv"]').onclick = () => { if (!done) right(); };
-  if (o.mix) q('[data-a="mix"]').onclick = make;
+  if (o.mix) q('[data-a="mix"]').onclick = () => { started = true; make(); };
   make();
 }
 /* answer-card helpers */
