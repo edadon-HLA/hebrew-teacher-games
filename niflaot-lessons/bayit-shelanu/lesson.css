@@ -280,3 +280,5 @@ details.q-opt summary{cursor:pointer;font:800 20px var(--f-he)}
 .s-ex1 button.ok{border-color:var(--green);background:var(--green-soft)}.s-ex1 button.no{border-color:var(--coral);opacity:.5}
 @media(max-width:860px){.s-scene{grid-template-columns:1fr}.s-frames,.s-kids{grid-template-columns:1fr 1fr}.s-ex1 .row{grid-template-columns:1fr 1fr}}
 .words-only .q-pic,.words-only .n-pick img{display:none}
+.s-optpic svg,.s-optpic img{width:100%;height:100%;object-fit:contain;display:block}
+.s-optpic span img{width:110px;height:110px;object-fit:contain}
