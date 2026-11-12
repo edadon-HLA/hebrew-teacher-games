@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>WZO Conference | משחקי עברית</title>
+<style>
+:root{--bg:#f7f8fc;--ink:#182235;--muted:#5b667c;--line:#dfe4ec;--card:#fff;--brand:#3730a3;--brand-soft:#eef2ff;--ok:#15803d;--warn:#b45309;--warn-soft:#fff7ed}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Noto Sans Hebrew",sans-serif;font-size:22px;line-height:1.55}
+main{max-width:1080px;margin:auto;padding:10px 22px 70px}
+section{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:30px 32px;margin:26px 0;box-shadow:0 8px 25px #1b28420d}
+h1{font-size:clamp(36px,5vw,54px);margin:0 0 6px;line-height:1.15}
+h2{font-size:clamp(28px,3.4vw,36px);margin:0 0 4px;line-height:1.2}
+.en{direction:ltr;unicode-bidi:isolate;color:var(--muted);font-size:.8em;display:block}
+h2 .en,h1 .en{font-weight:700}
+.sec-num{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--brand-soft);color:var(--brand);font-weight:900;font-size:24px;margin-left:12px;vertical-align:middle}
+
+/* 1. intro */
+.intro{display:grid;grid-template-columns:200px 1fr;gap:30px;align-items:center}
+.photo{width:200px;height:200px;border-radius:50%;background:linear-gradient(135deg,#e0e7ff,#fce7f3);border:4px dashed #c7cfdd;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);font-size:16px;text-align:center;overflow:hidden}
+.photo span{font-size:64px;line-height:1}
+.photo img{width:100%;height:100%;object-fit:cover}
+.badge{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:999px;padding:6px 16px;font-weight:800;font-size:18px;margin-bottom:10px}
+.facts{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:10px}
+.facts li{padding-right:38px;position:relative}
+.facts li::before{content:attr(data-i);position:absolute;right:0;top:0}
+
+/* 2-3. topic + prompt */
+label.big{display:block;font-weight:900;font-size:28px}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:stretch;margin-top:12px}
+#topic{flex:1 1 380px;min-width:0;font:inherit;font-size:28px;padding:16px 20px;border:3px solid #c7cfdd;border-radius:16px;background:#fff;color:var(--ink);unicode-bidi:plaintext;text-align:start}
+#topic:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 4px #c7d2fe}
+.grade{display:flex;align-items:center;gap:8px;font-weight:700}
+.grade select{font:inherit;font-size:24px;padding:12px 10px;border:3px solid #c7cfdd;border-radius:14px;background:#fff}
+.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:900;border-radius:16px;padding:16px 28px;font-size:26px;line-height:1.2;text-decoration:none;display:inline-flex;flex-direction:column;align-items:center;justify-content:center}
+.btn small{font-size:.72em;font-weight:700;opacity:.9}
+.btn-main{background:var(--brand);color:#fff;box-shadow:0 6px 0 #1e1b4b}
+.btn-main:hover{background:#312e81}
+.btn-main:active{transform:translateY(4px);box-shadow:0 2px 0 #1e1b4b}
+#msg{min-height:1.6em;margin-top:12px;font-weight:700;color:var(--warn)}
+#msg.show{background:var(--warn-soft);border:2px solid #fed7aa;border-radius:14px;padding:10px 16px}
+
+#promptArea[hidden]{display:none}
+.prompt-wrap{position:relative;margin-top:14px}
+#promptBox{display:block;width:100%;direction:ltr;text-align:left;unicode-bidi:plaintext;font-family:Consolas,"Courier New",monospace;font-size:19px;line-height:1.5;color:#0f172a;background:#f1f5f9;border:2px solid #cbd5e1;border-radius:16px;padding:20px 100px 20px 20px;resize:vertical;white-space:pre-wrap;overflow-wrap:anywhere;min-height:220px}
+#copyBtn{position:absolute;top:14px;right:14px;width:72px;height:72px;border-radius:18px;border:3px solid var(--brand);background:#fff;color:var(--brand);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px #1b28421f}
+#copyBtn:hover{background:var(--brand-soft)}
+#copyBtn svg{width:38px;height:38px}
+#copyBtn.done{border-color:var(--ok);color:var(--ok);background:#f0fdf4}
+#copyStatus{font-weight:800;color:var(--ok);min-height:1.5em;margin-top:8px;direction:ltr;text-align:left}
+
+/* 4. new lesson slot */
+.slot{border:3px dashed #a5b4fc;background:#f8faff}
+.slot-body{margin-top:12px;font-size:26px}
+.slot-empty{color:#8a94a8;margin:0}
+.new-lesson-link{display:inline-block;background:var(--ok);color:#fff;font-weight:900;text-decoration:none;border-radius:16px;padding:16px 26px;box-shadow:0 6px 0 #14532d;unicode-bidi:plaintext}
+.new-lesson-link:hover{background:#166534}
+
+/* 5. backup */
+.backup{display:flex;margin:-8px 0 26px;padding:20px 26px;border-radius:20px;background:var(--warn-soft);border:3px solid #fdba74;color:#7c2d12;text-decoration:none;font-weight:900;font-size:26px;align-items:center;gap:18px;box-shadow:0 6px 18px #b453091a}
+.backup:hover{background:#ffedd5}
+.backup .ico{font-size:44px}
+.backup .en{color:#9a3412}
+
+/* 6. link cards */
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin:26px 0}
+.card{background:#fff;border:2px solid var(--line);border-radius:24px;padding:32px 26px;text-align:center;text-decoration:none;color:var(--ink);box-shadow:0 8px 25px #1b28420d;transition:.2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 30px #1b284218;border-color:#c7cfdd}
+.card .icon{font-size:72px;line-height:1.1}
+.card h3{font-size:32px;margin:12px 0 6px}
+.card p{margin:0;color:var(--muted)}
+.card .tag{display:inline-block;margin-top:14px;font-size:18px;font-weight:800;background:var(--brand-soft);color:var(--brand);border-radius:999px;padding:5px 14px}
+.card.sq{border-color:#c4b5fd;background:linear-gradient(#fff,#f5f2ff)}
+
+/* 7. tips */
+.tips{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:18px;padding:0;list-style:none;counter-reset:tip}
+.tip{border:2px solid var(--line);border-radius:20px;padding:20px 22px 20px 22px;background:#fbfcfe;counter-increment:tip;position:relative}
+.tip::before{content:counter(tip);position:absolute;top:-14px;right:18px;background:var(--brand);color:#fff;font-weight:900;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+.tip .he{font-weight:800;margin:6px 0 2px}
+.tip .ex{margin-top:8px;font-size:19px;color:#334155;background:#fff;border-right:4px solid #a5b4fc;padding:6px 12px;border-radius:8px}
+footer{text-align:center;color:var(--muted);padding:10px 22px 40px;font-size:18px}
+
+@media(max-width:820px){
+  body{font-size:20px}
+  section{padding:22px 18px;border-radius:20px}
+  main{padding:6px 14px 50px}
+  .intro{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .facts{text-align:right}
+  .photo{width:150px;height:150px}
+  .cards,.tips{grid-template-columns:1fr}
+  #promptBox{font-size:16px;padding:86px 14px 16px 14px}
+  #copyBtn{width:62px;height:62px}
+  .btn{width:100%}
+  .backup{font-size:21px}
+}
+</style>
+<style id="site-navigation">
+.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}
+.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto;margin-right:4px}
+.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.site-nav a:hover,.site-nav button:hover{background:#f1f4f9;border-color:#c7cfdd}
+.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}
+@media(max-width:600px){.site-nav{padding:8px;gap:6px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}
+/* this page only: the bar scrolls away so the projector shows more content */
+.site-nav{position:static}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="ניווט באתר"><span class="nav-title">🎓 משחקי עברית · WZO</span><a class="nav-home" href="../index.html">דף הבית</a><a href="../games/index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a></nav>
+
+<main>
+
+<!-- ============ 1. SELF INTRODUCTION ============ -->
+<!-- TODO-CONFIRM: everything in this section was drafted from the site (grades, lessons, games, the app).
+     The "why I started using AI" sentence, the school wording and the greeting are invented. Eldar: edit freely.
+     Photo: put a file named eldar.jpg in this folder and replace the <span> + text inside .photo with <img src="eldar.jpg" alt="אֶלְדָּר דָּדוֹן">. -->
+<section class="intro" id="intro">
+  <div class="photo" aria-label="Photo placeholder"><span>🙂</span>photo<br>תְּמוּנָה</div>
+  <div>
+    <div class="badge">WZO Conference · כֶּנֶס הַהִסְתַּדְּרוּת הַצִּיּוֹנִית</div>
+    <h1>שָׁלוֹם, אֲנִי אֶלְדָּר דָּדוֹן <span class="en">Hi, I'm Eldar Dadon</span></h1>
+    <ul class="facts">
+      <!-- TODO-CONFIRM: school name and grades (taken from the site: HLA Charter School, grades 5-6) -->
+      <li data-i="👨‍🏫">מוֹרֶה לְעִבְרִית בְּבֵית סֵפֶר HLA Charter School, כִּתּוֹת ה׳–ו׳.<span class="en">Hebrew teacher at HLA Charter School, grades 5–6.</span></li>
+      <!-- TODO-CONFIRM: invented "why" sentence -->
+      <li data-i="💡">הִתְחַלְתִּי לְהִשְׁתַּמֵּשׁ בְּ-AI כְּדֵי לִבְנוֹת לַתַּלְמִידִים שֶׁלִּי בְּדִיּוּק אֶת מָה שֶׁהֵם צְרִיכִים – מַהֵר, וּבְעִבְרִית עִם נִקּוּד.<span class="en">I started using AI to build exactly what my students need – fast, and in Hebrew with nikud.</span></li>
+      <li data-i="🌐">אֲתַר עִם מִשְׂחָקִים וּמַעַרְכֵי שִׁעוּר מְלֵאִים: רְחוֹב הָעוֹלָם, נִפְלָאוֹת וְעוֹד.<span class="en">A website with games and full lesson plans: Olam Street, Niflaot and more.</span></li>
+      <li data-i="🧙">SpellQuest AlphaBet – אַפְּלִיקַצְיַת הַרְפַּתְקָאוֹת לִלְמִידַת קְרִיאָה וּכְתִיבָה בְּעִבְרִית.<span class="en">SpellQuest AlphaBet – an adventure app for learning to read and write Hebrew.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 2. TOPIC BOX ============ -->
+<section id="build">
+  <h2><span class="sec-num">1</span>בּוֹנִים שִׁעוּר חָדָשׁ – עַכְשָׁו <span class="en">Let's build a new lesson – live</span></h2>
+  <form id="topicForm" autocomplete="off" novalidate>
+    <label class="big" for="topic" style="margin-top:16px">נוֹשֵׂא הַשִּׁעוּר<span class="en">Lesson topic</span></label>
+    <div class="row">
+      <input id="topic" type="text" maxlength="120" placeholder="לְמָשָׁל: פֵּרוֹת / e.g. fruits" aria-describedby="msg">
+      <label class="grade" for="grade">כִּתָּה <span class="en" style="display:inline">Grade</span>
+        <select id="grade"><option value="5" selected>5</option><option value="6">6</option></select>
+      </label>
+      <button class="btn btn-main" id="genBtn" type="submit">צְרוּ פְּרוֹמְפְּט<small>Generate prompt</small></button>
+    </div>
+    <div id="msg" role="status" aria-live="polite"></div>
+  </form>
+
+  <!-- ============ 3. PROMPT AREA ============ -->
+  <div id="promptArea" hidden>
+    <h2 style="margin-top:22px;font-size:28px">הַפְּרוֹמְפְּט <span class="en" style="display:inline">· The prompt (copy it into Claude Code)</span></h2>
+    <div class="prompt-wrap">
+      <textarea id="promptBox" readonly spellcheck="false" aria-label="Generated prompt"></textarea>
+      <button id="copyBtn" type="button" title="Copy / הַעְתֵּק" aria-label="Copy the prompt">
+        <svg class="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M4 12l5 5L20 6"/></svg>
+      </button>
+    </div>
+    <div id="copyStatus" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ============ 4. NEW LESSON SLOT ============ -->
+<section class="slot" id="newLesson">
+  <h2><span class="sec-num">2</span>הַשִּׁעוּר הֶחָדָשׁ <span class="en">The new lesson</span></h2>
+  <div class="slot-body">
+<!-- NEW-LESSON-SLOT-START -->
+<a class="new-lesson-link" href="lessons/lesson-1794525162801/index.html" target="_blank" rel="noopener">בית – open the new lesson</a>
+<!-- NEW-LESSON-SLOT-END -->
+  </div>
+</section>
+
+<!-- ============ 5. BACKUP LINK ============ -->
+<a class="backup" id="backupLink" href="backup/index.html">
+  <span class="ico">🛟</span>
+  <span>תַּקָּלָה בַּתִּקְשֹׁרֶת? פִּתְחוּ אֶת הַשִּׁעוּר הַמּוּכָן<span class="en">Connection problem? Open the ready-made lesson</span></span>
+</a>
+
+<!-- ============ 6. LINK CARDS ============ -->
+<div class="cards">
+  <a class="card" href="../olam-street-lessons/index.html" target="_blank" rel="noopener">
+    <div class="icon">📚</div>
+    <h3>רְחוֹב הָעוֹלָם</h3>
+    <p>Olam Street – full lessons</p>
+    <span class="tag">opens in a new tab ↗</span>
+  </a>
+  <!-- TODO-CONFIRM: SpellQuest test build. /test/ is where the Demo button shows, but on 2026-11-12 it returned 404
+       (no test-* branch was on the SpellQuest repo, so the deploy had no /test/ folder). It works again after any
+       test-* branch is pushed to Eldar1234334/SpellQuest-AlphaBet and the site redeploys. Live app (no Demo button):
+       https://eldar1234334.github.io/SpellQuest-AlphaBet/ -->
+  <a class="card sq" href="https://eldar1234334.github.io/SpellQuest-AlphaBet/test/" target="_blank" rel="noopener">
+    <div class="icon">🧙</div>
+    <h3>SpellQuest AlphaBet</h3>
+    <p>גִּרְסַת נִסָּיוֹן עִם כַּפְתּוֹר DEMO<span class="en">Test version with the DEMO button</span></p>
+    <span class="tag">opens in a new tab ↗</span>
+  </a>
+</div>
+
+<!-- ============ 7. TIPS ============ -->
+<section id="tips">
+  <h2><span class="sec-num">3</span>טִיפִּים לָעֲבוֹדָה עִם Claude Code <span class="en">Tips for working with Claude Code</span></h2>
+  <ol class="tips" id="tipsList"></ol>
+</section>
+
+</main>
+<footer>WZO Conference · Eldar Dadon · <a href="../index.html">hebrew-teacher-games</a></footer>
+
+<script>
+/* ===== Tips: Eldar, edit this list (he = Hebrew, en = English, ex = example) ===== */
+var TIPS = [
+  { he: 'הַגְדִּירוּ Skills: כִּתְבוּ פַּעַם אַחַת אֵיךְ עוֹשִׂים מְשִׂימָה שֶׁחוֹזֶרֶת, וְ-Claude יַעֲשֶׂה אוֹתָהּ כָּךְ כָּל פַּעַם.',
+    en: 'Define skills: write a skill once for a task you repeat, and Claude follows it every time.',
+    ex: 'e.g. a skill called "build an Olam Street lesson"' },
+  { he: 'שִׂיחָה אַחַת – תַּפְקִיד אֶחָד: שִׂיחָה לְתִכְנוּן, שִׂיחָה לִבְנִיַּת מִשְׂחָק, שִׂיחָה לִבְדִיקָה.',
+    en: 'One session, one responsibility. Don\'t mix.',
+    ex: 'e.g. "Planner" plans the week, "Builder" builds the game, "QA" checks it' },
+  { he: 'שִׂימוּ אֶת הַכְּלָלִים שֶׁלָּכֶם בְּקוֹבֶץ (CLAUDE.md).',
+    en: 'Put your rules in a file (CLAUDE.md).',
+    ex: 'e.g. style, full nikud, right-to-left, font size, where files go' },
+  { he: 'תָּאֲרוּ אֶת הַיֶּלֶד, לֹא אֶת הַקּוֹד.',
+    en: 'Describe the child, not the code.',
+    ex: 'e.g. "grade 5, beginners, after the lesson they can name 10 foods"' },
+  { he: 'הַתְחִילוּ קָטָן, וְאָז שַׁפְּרוּ.',
+    en: 'Start small, then iterate.',
+    ex: 'e.g. one game → look → "make it bigger / add a sound / harder level"' },
+  { he: 'תָּמִיד בִּדְקוּ בְּעַצְמְכֶם אֶת הָעִבְרִית וְאֶת הַנִּקּוּד לִפְנֵי שֶׁזֶּה מַגִּיעַ לַתַּלְמִידִים.',
+    en: 'Always check the Hebrew and the nikud yourself before it reaches students.',
+    ex: 'e.g. read every word aloud once, like a student would' },
+  { he: 'שִׁמְרוּ גִּבּוּי מוּכָן וְהַקְלָטָה.',
+    en: 'Keep a backup ready and a recording.',
+    ex: 'e.g. the orange "connection problem" button above' },
+  { he: 'אַתֶּם עֲדַיִן הַמּוֹרִים. הַ-AI בּוֹנֶה – אַתֶּם מַחְלִיטִים.',
+    en: 'You are still the teacher. AI builds, you decide.',
+    ex: 'e.g. you choose what goes in front of the class' }
+];
+
+/* ===== Prompt template ({TOPIC}, {GRADE}, {SLUG}, {TOPIC_HTML}) ===== */
+var TEMPLATE = [
+  'Build a new Hebrew lesson for my class on this topic: "{TOPIC}". Students: grade {GRADE}, Hebrew as a second language in the US.',
+  '',
+  '1. Create a folder: wzo-conference/lessons/{SLUG}/ and put everything there. {SLUG} = a short lowercase English slug of the topic.',
+  '2. The lesson is one page, index.html, right-to-left, big readable font, bright colors, works on a touchscreen, full nikud on all Hebrew words, no external dependencies. It contains:',
+  '   - a short warm-up (3 questions),',
+  '   - 10 topic words with emoji pictures,',
+  '   - one interactive game (matching words to pictures) with score, an encouraging message when right, "try again" when wrong, a result screen and "play again",',
+  '   - a 3-question exit ticket.',
+  '3. Follow the style of the existing games and lessons on this site.',
+  '4. When the lesson works, publish the site the same way the site is normally published, and confirm the link opens.',
+  '5. Then edit ONLY wzo-conference/index.html: replace everything between <!-- NEW-LESSON-' + 'SLOT-START --> and <!-- NEW-LESSON-' + 'SLOT-END --> with exactly:',
+  '   <a class="new-lesson-link" href="lessons/{SLUG}/index.html" target="_blank" rel="noopener">{TOPIC_HTML} – open the new lesson</a>',
+  '   Do not change anything else in that file, and do not touch any other page. Publish again.',
+  '6. Tell me the live link when done. Work fast: a single focused pass, no extra questions.'
+].join('\n');
+
+(function () {
+  // tips
+  var ol = document.getElementById('tipsList');
+  TIPS.forEach(function (t) {
+    var li = document.createElement('li'); li.className = 'tip';
+    var he = document.createElement('div'); he.className = 'he'; he.textContent = t.he;
+    var en = document.createElement('span'); en.className = 'en'; en.textContent = t.en;
+    var ex = document.createElement('div'); ex.className = 'ex'; ex.dir = 'ltr'; ex.style.textAlign = 'left'; ex.textContent = t.ex;
+    li.appendChild(he); li.appendChild(en); if (t.ex) li.appendChild(ex); ol.appendChild(li);
+  });
+
+  function slugify(topic) {
+    if (!/[A-Za-z]/.test(topic)) return 'lesson-' + Date.now();
+    var s = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    if (s.length > 40) s = s.slice(0, 40).replace(/-[^-]*$/, '') || s.slice(0, 40);
+    return s || 'lesson-' + Date.now();
+  }
+  function escHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function fill(topic, grade) {
+    var slug = slugify(topic);
+    // split/join instead of String.replace so "$&", "$1" etc. typed in the topic are inserted literally
+    return TEMPLATE.split('{TOPIC_HTML}').join(escHtml(topic))
+      .split('{SLUG}').join(slug).split('{GRADE}').join(grade).split('{TOPIC}').join(topic);
+  }
+
+  var form = document.getElementById('topicForm'), input = document.getElementById('topic'),
+      grade = document.getElementById('grade'), msg = document.getElementById('msg'),
+      area = document.getElementById('promptArea'), box = document.getElementById('promptBox'),
+      copyBtn = document.getElementById('copyBtn'), status = document.getElementById('copyStatus');
+
+  function fit() { box.style.height = 'auto'; box.style.height = (box.scrollHeight + 6) + 'px'; }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var topic = input.value.trim().replace(/\s+/g, ' ');
+    if (!topic) {
+      msg.innerHTML = '✏️ כִּתְבוּ נוֹשֵׂא קֹדֶם – לְמָשָׁל ״פֵּרוֹת״.<span class="en">Type a topic first – for example “fruits”.</span>';
+      msg.className = 'show'; area.hidden = true; input.focus(); return;
+    }
+    msg.textContent = ''; msg.className = '';
+    box.value = fill(topic, grade.value);
+    area.hidden = false; status.textContent = ''; fit();
+    area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  input.addEventListener('input', function () { if (msg.className && input.value.trim()) { msg.textContent = ''; msg.className = ''; } });
+  window.addEventListener('resize', function () { if (!area.hidden) fit(); });
+
+  var timer;
+  function showDone(ok) {
+    clearTimeout(timer);
+    copyBtn.querySelector('.i-copy').style.display = ok ? 'none' : '';
+    copyBtn.querySelector('.i-check').style.display = ok ? '' : 'none';
+    copyBtn.classList.toggle('done', ok);
+    status.style.color = ok ? '' : '#b45309';
+    status.textContent = ok ? '✓ Copied! Paste it into Claude Code.' : 'Press Ctrl+C (or ⌘+C) to copy the selected text.';
+    timer = setTimeout(function () {
+      copyBtn.querySelector('.i-copy').style.display = ''; copyBtn.querySelector('.i-check').style.display = 'none';
+      copyBtn.classList.remove('done'); status.textContent = '';
+    }, ok ? 2000 : 5000);
+  }
+  function fallbackCopy(text) {
+    var ok = false, ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '-9999px'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);
+    try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+    document.body.removeChild(ta);
+    if (!ok) { box.focus(); box.select(); box.setSelectionRange(0, box.value.length); } // leave it selected for Ctrl+C
+    return ok;
+  }
+  copyBtn.addEventListener('click', function () {
+    var text = box.value;
+    if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { showDone(true); }, function () { showDone(fallbackCopy(text)); });
+    } else {
+      showDone(fallbackCopy(text));
+    }
+  });
+})();
+</script>
+</body>
+</html>
