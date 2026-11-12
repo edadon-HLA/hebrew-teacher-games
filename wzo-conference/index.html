@@ -143,7 +143,7 @@ footer{text-align:center;color:var(--muted);padding:10px 22px 40px;font-size:18p
       <label class="grade" for="grade">כִּתָּה <span class="en" style="display:inline">Grade</span>
         <select id="grade"><option value="5" selected>5</option><option value="6">6</option></select>
       </label>
-      <button class="btn btn-main" id="genBtn" type="submit">צוֹר פְּרוֹמְפְּט<small>Generate prompt</small></button>
+      <button class="btn btn-main" id="genBtn" type="submit">צְרוּ פְּרוֹמְפְּט<small>Generate prompt</small></button>
     </div>
     <div id="msg" role="status" aria-live="polite"></div>
   </form>
@@ -210,7 +210,7 @@ footer{text-align:center;color:var(--muted);padding:10px 22px 40px;font-size:18p
 <script>
 /* ===== Tips: Eldar, edit this list (he = Hebrew, en = English, ex = example) ===== */
 var TIPS = [
-  { he: 'הַגְדִּירוּ Skills: כִּתְבוּ פַּעַם אַחַת אֵיךְ עוֹשִׂים מְשִׂימָה שֶׁחוֹזֶרֶת, ו-Claude יַעֲשֶׂה אוֹתָהּ כָּךְ כָּל פַּעַם.',
+  { he: 'הַגְדִּירוּ Skills: כִּתְבוּ פַּעַם אַחַת אֵיךְ עוֹשִׂים מְשִׂימָה שֶׁחוֹזֶרֶת, וְ-Claude יַעֲשֶׂה אוֹתָהּ כָּךְ כָּל פַּעַם.',
     en: 'Define skills: write a skill once for a task you repeat, and Claude follows it every time.',
     ex: 'e.g. a skill called "build an Olam Street lesson"' },
   { he: 'שִׂיחָה אַחַת – תַּפְקִיד אֶחָד: שִׂיחָה לְתִכְנוּן, שִׂיחָה לִבְנִיַּת מִשְׂחָק, שִׂיחָה לִבְדִיקָה.',
@@ -231,7 +231,7 @@ var TIPS = [
   { he: 'שִׁמְרוּ גִּבּוּי מוּכָן וְהַקְלָטָה.',
     en: 'Keep a backup ready and a recording.',
     ex: 'e.g. the orange "connection problem" button above' },
-  { he: 'אַתֶּם עֲדַיִן הַמּוֹרִים. ה-AI בּוֹנֶה – אַתֶּם מַחְלִיטִים.',
+  { he: 'אַתֶּם עֲדַיִן הַמּוֹרִים. הַ-AI בּוֹנֶה – אַתֶּם מַחְלִיטִים.',
     en: 'You are still the teacher. AI builds, you decide.',
     ex: 'e.g. you choose what goes in front of the class' }
 ];
@@ -248,7 +248,7 @@ var TEMPLATE = [
   '   - a 3-question exit ticket.',
   '3. Follow the style of the existing games and lessons on this site.',
   '4. When the lesson works, publish the site the same way the site is normally published, and confirm the link opens.',
-  '5. Then edit ONLY wzo-conference/index.html: replace everything between <!-- NEW-LESSON-SLOT-START --> and <!-- NEW-LESSON-SLOT-END --> with exactly:',
+  '5. Then edit ONLY wzo-conference/index.html: replace everything between <!-- NEW-LESSON-' + 'SLOT-START --> and <!-- NEW-LESSON-' + 'SLOT-END --> with exactly:',
   '   <a class="new-lesson-link" href="lessons/{SLUG}/index.html" target="_blank" rel="noopener">{TOPIC_HTML} – open the new lesson</a>',
   '   Do not change anything else in that file, and do not touch any other page. Publish again.',
   '6. Tell me the live link when done. Work fast: a single focused pass, no extra questions.'
@@ -290,7 +290,7 @@ var TEMPLATE = [
     var topic = input.value.trim().replace(/\s+/g, ' ');
     if (!topic) {
       msg.textContent = '✏️ כִּתְבוּ נוֹשֵׂא קֹדֶם – לְמָשָׁל "פֵּרוֹת". · Type a topic first – for example "fruits".';
-      msg.className = 'show'; input.focus(); return;
+      msg.className = 'show'; area.hidden = true; input.focus(); return;
     }
     msg.textContent = ''; msg.className = '';
     box.value = fill(topic, grade.value);
