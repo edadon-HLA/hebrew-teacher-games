@@ -286,3 +286,12 @@ details.q-opt summary{cursor:pointer;font:800 20px var(--f-he)}
 .s-card .ph{overflow:hidden}
 .s-card .ph img,.s-card .ph svg{max-height:clamp(130px,24vh,230px);max-width:100%;width:auto;height:auto;object-fit:contain}
 .s-card .ph svg{width:100%}
+/* lesson 5: presentation frame */
+.s-pres{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(240px,1fr);gap:14px;align-items:start}
+.s-checkl{display:grid;gap:6px;background:#fff;border:3px solid #7a4cc2;border-radius:18px;padding:10px}
+.s-checkl b{font:800 22px var(--f-he);color:#7a4cc2}
+.s-checkl button{text-align:right;font:800 clamp(17px,2vw,22px)/1.4 var(--f-he);border:2px solid var(--line);background:#fff;border-radius:12px;padding:4px 10px;cursor:pointer;color:var(--ink)}
+.s-checkl button small{font:700 13px var(--f-display);color:var(--muted)}
+.s-checkl button.on{background:var(--green-soft);border-color:var(--green)}
+.s-checkl button.clr{justify-self:start;padding:2px 12px}
+@media(max-width:860px){.s-pres{grid-template-columns:1fr}}

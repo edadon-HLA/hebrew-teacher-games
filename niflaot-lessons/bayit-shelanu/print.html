@@ -79,7 +79,7 @@ td.w{width:40mm}
 (() => {
 const P = new URLSearchParams(location.search), T = P.get('t') || 'ws', L = +P.get('l') || 1, PH = window.BAYIT_PH || {};
 const img = k => PH[k] ? `<img src="${PH[k]}" alt="">` : '';
-const TITLES = { 1: 'הַבַּיִת שֶׁלָּנוּ 1 · מָה יֵשׁ בַּחֲדָרִים?', 2: 'הַבַּיִת שֶׁלָּנוּ 2 · בַּיִת אוֹ דִּירָה?', 3: 'הַבַּיִת שֶׁלָּנוּ 3 · מָה עוֹשִׂים בַּבַּיִת?', 4: 'הַבַּיִת שֶׁלָּנוּ 4 · שׁוֹאֲלִים וְעוֹנִים' };
+const TITLES = { 1: 'הַבַּיִת שֶׁלָּנוּ 1 · מָה יֵשׁ בַּחֲדָרִים?', 2: 'הַבַּיִת שֶׁלָּנוּ 2 · בַּיִת אוֹ דִּירָה?', 3: 'הַבַּיִת שֶׁלָּנוּ 3 · מָה עוֹשִׂים בַּבַּיִת?', 4: 'הַבַּיִת שֶׁלָּנוּ 4 · שׁוֹאֲלִים וְעוֹנִים', 5: 'הַבַּיִת שֶׁלָּנוּ 5 · רֵאָיוֹן וּמַצֶּגֶת' };
 const quad = html => `<div class="sheet">${(`<div class="cell">${html}</div>`).repeat(4)}</div>`;
 const head = () => `<div class="hd"><b>🎟️ Exit Ticket</b><span>Niflaot · <bdi dir="rtl">הַבַּיִת שֶׁלָּנוּ ${L}</bdi></span></div><div class="name">Name: <i></i><span>Date:</span><i class="d"></i></div>`;
 const self = t => `<div class="self">${t} <span class="b">yes</span><span class="b">almost</span><span class="b">not yet</span></div>`;
@@ -109,6 +109,28 @@ if (T === 'exit'){
       `</div><div class="q">B. Write in Hebrew: What is in YOUR bedroom?</div><div class="he">בַּחֶדֶר שֶׁלִּי יֵשׁ <i style="width:45mm"></i>.</div>`;
   }
   out = quad(`<div class="t">${head()}${body}</div>`);
+}
+if (T === 'exit' && L === 5){   /* lesson 5: Hebrew task, English instruction lines, English reflection (teacher, 11/12) */
+  const E = BSD.EXIT[5];
+  out = quad(`<div class="t">${head()}<div class="q">A. Read Noa's sentences. Circle <bdi dir="rtl">נָכוֹן</bdi> or <bdi dir="rtl">לֹא נָכוֹן</bdi>.</div><div class="txt" style="font-size:8.3pt;line-height:1.4">${E.text}</div>` +
+    E.tf.map(([t], i) => `<div class="ln"><span class="n">${i + 1}</span><div class="he" style="font-size:9.5pt;line-height:1.35">${t} <b style="border:1px solid #9aa3b2;border-radius:2mm;padding:0 1mm;font-size:8.5pt;white-space:nowrap">נָכוֹן</b> <b style="border:1px solid #9aa3b2;border-radius:2mm;padding:0 1mm;font-size:8.5pt;white-space:nowrap">לֹא נָכוֹן</b></div></div>`).join('') +
+    `<div class="q" style="font-size:9pt">B. Answer the questions about YOUR home in Hebrew.</div><div class="he" style="font-size:9pt;line-height:1.5">${E.qs.map(([q, a]) => `${q} — ${a}<i style="width:16mm"></i>`).join("<br>")}</div>
+    <div class="q" style="font-weight:700;font-size:8.5pt">Self-check: tick what you said in your talk today.</div><div style="font-size:7.8pt;display:grid;grid-template-columns:1fr 1.3fr;gap:0 2mm;line-height:1.25">☐ where I am from<span>☐ house or apartment, and the floor</span>☐ two things in my room<span>☐ what I do in two rooms</span></div>
+    <div style="font-size:7.8pt">One thing I want to say better next time: <span style="display:inline-block;width:30mm;border-bottom:1px solid #23233a"></span></div></div>`);
+}
+if (T === 'checklist'){
+  const H = ['מֵאֵיפֹה', 'בַּיִת / דִּירָה', 'קוֹמָה', '2 דְּבָרִים בַּחֶדֶר', 'פְּעֻלּוֹת בִּשְׁנֵי חֲדָרִים', 'עָנָה עַל שְׁאֵלָה', 'סַךְ הַכֹּל'];
+  out = `<div class="sheet2" style="grid-template-rows:255mm"><div class="half" style="height:255mm"><h2><span>✔ רְשִׁימַת בְּדִיקָה — מַצֶּגֶת "הַבַּיִת שֶׁלִּי"</span><small>נִפְלָאוֹת ג · הַבַּיִת שֶׁלָּנוּ 5 · Teacher's speaking checklist</small></h2>
+    <div style="font-size:10pt;font-weight:700">כִּתָּה: ________ · תַּאֲרִיךְ: ________ · נְקֻדָּה אַחַת לְכָל פְּרִיט (5) + עָנָה עַל שְׁאֵלָה</div>
+    <table style="font-size:9.5pt"><tr><th style="width:42mm">שֵׁם הַתַּלְמִיד</th>${H.map(h => `<th style="text-align:center">${h}</th>`).join('')}</tr>${'<tr style="height:7.6mm"><td></td>' + '<td></td>'.repeat(H.length) + '</tr>'}${('<tr style="height:7.6mm"><td></td>' + '<td></td>'.repeat(H.length) + '</tr>').repeat(26)}</table></div></div>`;
+}
+if (T === 'plan'){
+  const W = ['מִטְבָּח', 'סָלוֹן', 'חֶדֶר שֵׁנָה', 'חֶדֶר רַחֲצָה', 'מִרְפֶּסֶת', 'מְקָרֵר', 'כֻּרְסָה', 'שֻׁלְחַן כְּתִיבָה', 'מִטָּה', 'סַפָּה', 'מַעֲלִית', 'קוֹמָה'];
+  out = `<div class="sheet2" style="grid-template-rows:255mm"><div class="half" style="height:255mm"><h2><span>🏠 הַתָּכְנִית שֶׁל הַבַּיִת שֶׁלִּי</span><small>נִפְלָאוֹת ג · הַבַּיִת שֶׁלָּנוּ 5</small></h2>
+    <div style="font-size:11pt;font-weight:700">שֵׁם: ____________ · אֲנִי גָּר / גָּרָה בְּבַיִת פְּרָטִי / בְּדִירָה, בְּקוֹמָה ___.</div>
+    <div style="font-size:10.5pt">מְצַיְּרִים קֻפְסָה לְכָל חֶדֶר, כּוֹתְבִים אֶת הַשֵּׁם שֶׁל הַחֶדֶר, וּמְצַיְּרִים 2 דְּבָרִים בְּכָל חֶדֶר.</div>
+    <div style="flex:1;border:2.5px solid #23233a;border-radius:3mm;margin:2mm 0"></div>
+    <div class="bank" style="justify-content:flex-start">${W.map(w => `<span style="font-size:12pt">${w}</span>`).join('')}</div></div></div>`;
 }
 if (T === 'rooms'){
   const R = BSD.ROOMS.map(r => `<div class="cell card">${img(r.ph)}<b>${r.he}</b></div>`);
