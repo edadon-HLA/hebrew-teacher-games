@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Niflaot — הַבַּיִת שֶׁלָּנוּ — printables</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
+<!-- One template for every printable of the unit: ?t=ws|exit&l=1..4, ?t=rooms, ?t=qwords, ?t=survey, ?t=interview.
+     Letter-safe box 190 x 255 mm (A4 page, 21 mm top/bottom margins). Rendered to ../Niflaot-bayit-shelanu-*.pdf with headless Chrome. -->
+<style>
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+bdi{unicode-bidi:isolate}
+.sheet{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:95mm 95mm;grid-template-rows:127.5mm 127.5mm;overflow:hidden;break-inside:avoid;break-after:page}
+.sheet:last-child{break-after:auto}
+.sheet2{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-rows:127.5mm 127.5mm;overflow:hidden;break-after:page}
+.cell{border:1px dashed #9aa3b2;height:127.5mm;min-height:0;overflow:hidden}
+/* word search (zoomed .pg inside a quarter) */
+.pg{width:190mm;zoom:.45;padding:2mm}
+.pg h1{margin:0;font-size:24pt;font-weight:800;display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid #7a4cc2;padding-bottom:2mm}
+.pg h1 small{font-size:12pt;color:#6b6880;font-weight:700}
+.nm{display:flex;gap:6mm;margin:5mm 0 3mm;font-size:17pt;font-weight:700;align-items:flex-end}.nm i{flex:1;border-bottom:1.3px solid #23233a;height:7mm}
+.ask{font-size:17pt;font-weight:800;margin:2mm 0 4mm}
+.words{display:grid;grid-template-columns:repeat(4,1fr);gap:2.5mm;margin-bottom:5mm}
+.words span{border:1.4px solid #7a4cc2;background:#f3ecff;border-radius:3mm;text-align:center;font-size:22pt;font-weight:800;padding:1.5mm 0}
+.g{display:grid;grid-template-columns:repeat(10,1fr);gap:1.8mm}
+.g div{height:17mm;border:1.4px solid #9aa3b2;border-radius:2.5mm;display:grid;place-items:center;font-size:26pt;font-weight:800}
+.tip{margin-top:5mm;font-size:15pt;color:#6b6880}
+/* exit ticket */
+.t{padding:4mm 5mm 3mm;direction:ltr;display:flex;flex-direction:column;gap:1.6mm}
+.t>*{flex-shrink:0}
+.hd{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #7a4cc2;padding-bottom:1.5mm}
+.hd b{font-size:15pt;font-weight:800;white-space:nowrap}.hd span{font-size:8.5pt;color:#6b6880}
+.name{font-size:11pt;font-weight:700;display:flex;gap:2mm;align-items:flex-end}.name i{flex:1;border-bottom:1.2px solid #23233a;height:6mm}.name i.d{flex:.7}
+.q{font-size:9.5pt;font-weight:800}
+.ln{display:grid;grid-template-columns:6mm 1fr;gap:1.5mm;align-items:center}
+.ln .n{width:6mm;height:6mm;border-radius:50%;background:#7a4cc2;color:#fff;font-size:9pt;font-weight:800;display:grid;place-items:center}
+.he{direction:rtl;text-align:right;font-size:12pt;font-weight:700;line-height:1.7}
+.he i{display:inline-block;width:26mm;border-bottom:1.2px solid #23233a;height:1em}
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2mm;direction:rtl}
+.opts span{border:1px solid #c9ced8;border-radius:2mm;text-align:center;font-size:8.5pt;font-weight:800;line-height:1.2;padding:.6mm}
+.opts img{width:100%;height:11mm;object-fit:contain;display:block}
+.rm{font-size:11pt;font-weight:800;color:#7a4cc2;direction:rtl;text-align:right}
+.bank{direction:rtl;display:flex;flex-wrap:wrap;gap:1.2mm;justify-content:center}
+.bank span{border:1px solid #2a8bd0;border-radius:2mm;padding:0 1.8mm;font-size:10.5pt;font-weight:800}
+.pic{height:38mm;border:1px solid #c9ced8;border-radius:2mm;overflow:hidden}.pic svg{width:100%;height:100%;display:block}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1mm 3mm;direction:rtl;font-size:11.5pt;font-weight:700}
+.two div{white-space:nowrap}.two i{display:inline-block;width:24mm;border-bottom:1.2px solid #23233a;height:1em}
+.txt{direction:rtl;text-align:right;font-size:9.6pt;font-weight:700;line-height:1.55;border:1px solid #7a4cc2;border-radius:2mm;padding:1mm 2mm}
+.qq{direction:rtl;display:grid;grid-template-columns:1fr;gap:.6mm}
+.qq .r{display:grid;grid-template-columns:5mm 30mm 1fr;gap:1mm;align-items:center;font-size:9pt;font-weight:800}
+.qq .r .n{width:5mm;height:5mm;border-radius:50%;background:#7a4cc2;color:#fff;font-size:8pt;display:grid;place-items:center}
+.qq .ch{display:flex;gap:1mm}.qq .ch span{width:15mm;height:11mm;border:1px solid #9aa3b2;border-radius:1.5mm;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:14pt}
+.qq .ch svg,.qq .ch img{width:100%;height:100%;object-fit:contain;display:block}
+.self{font-size:9pt;display:flex;gap:2mm;align-items:center;flex-wrap:wrap;margin-top:auto}.self span.b{border:1px solid #9aa3b2;border-radius:3mm;padding:0 2mm}
+/* cards */
+.card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4mm;padding:6mm}
+.card img{width:80mm;height:68mm;object-fit:cover;border-radius:4mm;border:1px solid #c9ced8}
+.card b{font-size:38pt;font-weight:800;line-height:1.2}
+.card.big b{font-size:80pt}
+.lab{position:absolute;font-size:9pt;color:#6b6880}
+/* half-page sheets */
+.half{padding:6mm 8mm;display:flex;flex-direction:column;gap:2mm}
+.half h2{margin:0;font-size:17pt;font-weight:800;border-bottom:2px solid #7a4cc2;padding-bottom:1mm;display:flex;justify-content:space-between;align-items:baseline}
+.half h2 small{font-size:9pt;color:#6b6880}
+table{width:100%;border-collapse:collapse;font-size:11pt;font-weight:700}
+td,th{border:1px solid #9aa3b2;padding:1.2mm 2mm;text-align:right;vertical-align:middle}
+th{background:#f3ecff;font-size:10.5pt}
+td.w{width:40mm}
+@media screen{body{background:#eee;padding:10px}.sheet,.sheet2{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+<script src="../../games/bayit-photos.js?v=1"></script>
+<script src="../../games/house-outside-art.js?v=1"></script>
+<script src="../../games/verb-art.js?v=1"></script>
+<script src="data.js?v=1"></script>
+</head>
+<body>
+<script>
+(() => {
+const P = new URLSearchParams(location.search), T = P.get('t') || 'ws', L = +P.get('l') || 1, PH = window.BAYIT_PH || {};
+const img = k => PH[k] ? `<img src="${PH[k]}" alt="">` : '';
+const TITLES = { 1: 'הַבַּיִת שֶׁלָּנוּ 1 · מָה יֵשׁ בַּחֲדָרִים?', 2: 'הַבַּיִת שֶׁלָּנוּ 2 · בַּיִת אוֹ דִּירָה?', 3: 'הַבַּיִת שֶׁלָּנוּ 3 · מָה עוֹשִׂים בַּבַּיִת?', 4: 'הַבַּיִת שֶׁלָּנוּ 4 · שׁוֹאֲלִים וְעוֹנִים' };
+const quad = html => `<div class="sheet">${(`<div class="cell">${html}</div>`).repeat(4)}</div>`;
+const head = () => `<div class="hd"><b>🎟️ Exit Ticket</b><span>Niflaot · <bdi dir="rtl">הַבַּיִת שֶׁלָּנוּ ${L}</bdi></span></div><div class="name">Name: <i></i><span>Date:</span><i class="d"></i></div>`;
+const self = t => `<div class="self">${t} <span class="b">yes</span><span class="b">almost</span><span class="b">not yet</span></div>`;
+let out = '';
+if (T === 'ws'){
+  const D = BSD.grid(L);
+  out = quad(`<div class="pg"><h1><span>תַּפְזֹרֶת</span><small>נִפְלָאוֹת ג · ${TITLES[L]}</small></h1><div class="nm"><span>שֵׁם:</span><i></i><span>תַּאֲרִיךְ:</span><i style="flex:.5"></i></div>
+    <div class="ask">מִצְאוּ וְהַקִּיפוּ אֶת הַמִּלִּים:</div><div class="words">${D.WORDS.map(w => `<span>${w.he}</span>`).join('')}</div>
+    <div class="g">${D.GRID.flat().map(c => `<div>${c}</div>`).join('')}</div><p class="tip">הַמִּלִּים כְּתוּבוֹת מִיָּמִין לִשְׂמֹאל ⬅ אוֹ מִלְמַעְלָה לְמַטָּה ⬇.</p></div>`);
+}
+if (T === 'exit'){
+  const E = BSD.EXIT[L]; let body = '';
+  if (L === 1) body = `<div class="q">A. Each row is one room. Circle the thing that does NOT belong in this room.</div>` +
+    E.rows.map((r, i) => `<div class="ln"><span class="n">${i + 1}</span><div><div class="rm">${r.room}:</div><div class="opts">${r.opts.map(([he, k]) => `<span>${img(k)}${he}</span>`).join('')}</div></div></div>`).join('') +
+    `<div class="q">B. Complete the sentence about YOUR home in Hebrew.</div><div class="he">בַּמִּטְבָּח שֶׁלִּי יֵשׁ <i></i> וְ<i></i>.</div>` + self('Today I can name things in each room:');
+  if (L === 2) body = `<div class="q">A. Look at the picture. Write the correct word next to each number. Use the word bank.</div>
+    <div class="pic">${HouseOut.svg({ vb: E.vb, nums: E.marks })}</div><div class="bank">${E.bank.map(w => `<span>${w}</span>`).join('')}</div>
+    <div class="two">${E.nums.map(([n]) => `<div>${n}. <i></i></div>`).join('')}</div>
+    <div class="q">B. Answer in Hebrew about YOUR home.</div><div class="he" style="font-size:11pt;line-height:1.6">אַתָּה גָּר בְּבַיִת פְּרָטִי אוֹ בְּדִירָה? <i></i><br>בְּאֵיזוֹ קוֹמָה? <i></i></div>`;
+  if (L === 3) body = `<div class="q">A. Complete each sentence with the right word from the box. Be careful: he or she?</div><div class="bank">${E.bank.map(w => `<span>${w}</span>`).join('')}</div>` +
+    E.items.map(([who, rest], i) => `<div class="ln"><span class="n">${i + 1}</span><div class="he">${who} <i></i> ${rest}</div></div>`).join('') +
+    `<div class="q">B. Write in Hebrew one thing YOU do in your kitchen.</div><div class="he">בַּמִּטְבָּח אֲנִי <i style="width:45mm"></i>.</div>` + self('Today I can say what people do at home:');
+  if (L === 4){
+    const pic = o => o.ho ? HouseOut.svg({ vb: o.ho === 'house' ? [90, 180, 300, 225] : [560, 20, 440, 330] }) : o.va ? VerbArt.svg(o.va, 'm') : (img(o.ph) || '') + (o.emo && !o.ph ? o.emo : '');
+    body = `<div class="q">A. Read about Gil. Then circle the correct picture for each question.</div><div class="txt">${E.text}</div><div class="qq">` +
+      E.qs.map((q, i) => `<div class="r"><span class="n">${i + 1}</span><span>${q.q}</span><div class="ch">${q.opts.map(o => `<span>${o.ph === 'desk' ? img('desk') + '<b style="font-size:12pt">🧸</b>' : pic(o)}</span>`).join('')}</div></div>`).join('') +
+      `</div><div class="q">B. Write in Hebrew: What is in YOUR bedroom?</div><div class="he">בַּחֶדֶר שֶׁלִּי יֵשׁ <i style="width:45mm"></i>.</div>`;
+  }
+  out = quad(`<div class="t">${head()}${body}</div>`);
+}
+if (T === 'rooms'){
+  const R = BSD.ROOMS.map(r => `<div class="cell card">${img(r.ph)}<b>${r.he}</b></div>`);
+  out = `<div class="sheet">${R.slice(0, 4).join('')}</div><div class="sheet">${R.slice(4).join('')}<div class="cell"></div><div class="cell"></div></div>`;
+}
+if (T === 'qwords') out = `<div class="sheet">${['מִי?', 'מָה?', 'כַּמָּה?', 'בְּאֵיזוֹ?'].map(w => `<div class="cell card big"><b>${w}</b></div>`).join('')}</div>`;
+if (T === 'survey'){
+  const rows = [['גָּר בְּבַיִת פְּרָטִי', 'אַתָּה גָּר בְּבַיִת פְּרָטִי?'], ['גָּר בְּדִירָה', 'אַתָּה גָּר בְּדִירָה?'], ['גָּר מֵעַל קוֹמָה שָׁלוֹשׁ', 'בְּאֵיזוֹ קוֹמָה אַתָּה גָּר?'],
+    ['יֵשׁ לוֹ מַעֲלִית', 'יֵשׁ מַעֲלִית בַּבִּנְיָן שֶׁלְּךָ?'], ['יֵשׁ לוֹ חָצֵר', 'יֵשׁ לָכֶם חָצֵר?'], ['הוּא מֵעִיר אַחֶרֶת', 'מֵאֵיפֹה אַתָּה?']];
+  const one = `<div class="cell half"><h2><span>מְחַפְּשִׂים מִישֶׁהוּ שֶׁ...</span><small>נִפְלָאוֹת ג · ${TITLES[2]}</small></h2><div style="font-size:11pt;font-weight:700">שֵׁם: ____________ · שׁוֹאֲלִים 3 חֲבֵרִים וְכוֹתְבִים אֶת הַשֵּׁם.</div>
+    <table><tr><th>מְחַפְּשִׂים מִישֶׁהוּ שֶׁ...</th><th>שׁוֹאֲלִים</th><th class="w">שֵׁם</th></tr>${rows.map(([a, b]) => `<tr><td>${a}</td><td>"${b}"</td><td></td></tr>`).join('')}</table></div>`;
+  out = `<div class="sheet2">${one}${one}</div>`;
+}
+if (T === 'interview'){
+  const Q = [['מֵאֵיפֹה אַתָּה?', 'אֲנִי מִ___.'], ['אַתָּה גָּר בְּבַיִת פְּרָטִי אוֹ בְּדִירָה?', 'אֲנִי גָּר / גָּרָה בְּ___.'], ['בְּאֵיזוֹ קוֹמָה? יֵשׁ מַעֲלִית?', 'בְּקוֹמָה ___. יֵשׁ / אֵין מַעֲלִית.'],
+    ['כַּמָּה חֲדָרִים יֵשׁ בַּבַּיִת שֶׁלְּךָ?', 'יֵשׁ ___ חֲדָרִים.'], ['מָה יֵשׁ בַּחֶדֶר שֶׁלְּךָ?', 'בַּחֶדֶר שֶׁלִּי יֵשׁ ___ וְ___.'], ['מָה אַתָּה עוֹשֶׂה בַּ___?', 'בַּ___ אֲנִי ___.'],
+    ['מִי מְבַשֵּׁל / מִי מְקַפֵּל בְּגָדִים בַּבַּיִת שֶׁלְּךָ?', '___ מְבַשֵּׁל / מְבַשֶּׁלֶת. ___ מְקַפֵּל / מְקַפֶּלֶת בְּגָדִים.']];
+  const one = `<div class="cell half"><h2><span>🎤 רֵאָיוֹן: הַבַּיִת שֶׁלְּךָ</span><small>נִפְלָאוֹת ג · ${TITLES[4]}</small></h2><div style="font-size:10.5pt;font-weight:700">שֵׁם: ____________ · שֵׁם הֶחָבֵר / הַחֲבֵרָה: ____________</div>
+    <table style="font-size:9.5pt"><tr><th>שְׁאֵלָה</th><th>אֲנִי</th><th>הֶחָבֵר / הַחֲבֵרָה שֶׁלִּי</th></tr>${Q.map(([q, a], i) => `<tr><td style="width:62mm">${i + 1}. ${q}<br><span style="color:#6b6880;font-size:8.5pt">${a}</span></td><td></td><td></td></tr>`).join('')}</table></div>`;
+  out = `<div class="sheet2">${one}${one}</div>`;
+}
+document.body.innerHTML = out;
+})();
+</script>
+</body>
+</html>
