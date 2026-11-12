@@ -289,7 +289,7 @@ var TEMPLATE = [
     e.preventDefault();
     var topic = input.value.trim().replace(/\s+/g, ' ');
     if (!topic) {
-      msg.textContent = '✏️ כִּתְבוּ נוֹשֵׂא קֹדֶם – לְמָשָׁל "פֵּרוֹת". · Type a topic first – for example "fruits".';
+      msg.innerHTML = '✏️ כִּתְבוּ נוֹשֵׂא קֹדֶם – לְמָשָׁל ״פֵּרוֹת״.<span class="en">Type a topic first – for example “fruits”.</span>';
       msg.className = 'show'; area.hidden = true; input.focus(); return;
     }
     msg.textContent = ''; msg.className = '';
