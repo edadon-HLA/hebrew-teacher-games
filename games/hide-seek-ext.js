@@ -29,23 +29,37 @@ window.HIDE_EXT = {
       /* remote control on the sofa */
       '<g transform="rotate(-8 129 428)"><rect x="118" y="424" width="22" height="8" rx="3" fill="#212121"/><circle cx="123" cy="428" r="1.6" fill="#e53935"/><circle cx="129" cy="428" r="1.2" fill="#9e9e9e"/><circle cx="134" cy="428" r="1.2" fill="#9e9e9e"/></g>' +
       /* armchair in front of the TV */
-      '<rect x="232" y="420" width="46" height="34" rx="10" fill="#8e24aa"/><rect x="226" y="438" width="14" height="32" rx="6" fill="#6a1b9a"/><rect x="270" y="438" width="14" height="32" rx="6" fill="#6a1b9a"/><rect x="238" y="446" width="34" height="18" rx="6" fill="#ab47bc"/><rect x="232" y="468" width="5" height="9" fill="#4a148c"/><rect x="273" y="468" width="5" height="9" fill="#4a148c"/></g>'
+      '<rect x="232" y="420" width="46" height="34" rx="10" fill="#8e24aa"/><rect x="226" y="438" width="14" height="32" rx="6" fill="#6a1b9a"/><rect x="270" y="438" width="14" height="32" rx="6" fill="#6a1b9a"/><rect x="238" y="446" width="34" height="18" rx="6" fill="#ab47bc"/><rect x="232" y="468" width="5" height="9" fill="#4a148c"/><rect x="273" y="468" width="5" height="9" fill="#4a148c"/></g>',
+    bedroom:
+      /* lesson 4: shelf with books, alarm clock, desk with chair, toys */
+      '<g class="ext-art ext-lv4"><rect x="196" y="130" width="58" height="5" rx="2" fill="#8d6e63"/><g><rect x="200" y="116" width="6" height="14" fill="#e53935"/><rect x="207" y="118" width="6" height="12" fill="#1e88e5"/><rect x="214" y="115" width="5" height="15" fill="#43a047"/><rect x="220" y="119" width="7" height="11" fill="#fdd835"/><rect x="240" y="120" width="10" height="10" rx="2" fill="#8e24aa"/></g>' +
+      '<circle cx="217" cy="180" r="7" fill="#fff" stroke="#e53935" stroke-width="2.5"/><path d="M217 180v-4M217 180l3 2" stroke="#263238" stroke-width="1.5" stroke-linecap="round"/><circle cx="211" cy="173" r="2.5" fill="#e53935"/><circle cx="223" cy="173" r="2.5" fill="#e53935"/><path d="M212 187l-2 3M222 187l2 3" stroke="#e53935" stroke-width="1.5"/>' +
+      '<rect x="262" y="196" width="72" height="7" rx="2" fill="#a1887f"/><rect x="266" y="203" width="5" height="34" fill="#795548"/><rect x="325" y="203" width="5" height="34" fill="#795548"/><rect x="300" y="203" width="25" height="18" fill="#bcaaa4"/><circle cx="312" cy="212" r="2" fill="#5d4037"/>' +
+      '<rect x="276" y="184" width="16" height="12" rx="1" fill="#fff" stroke="#90a4ae"/><path d="M279 188h10M279 191h8" stroke="#90a4ae"/><rect x="294" y="186" width="2" height="10" fill="#fdd835" transform="rotate(20 295 191)"/>' +
+      '<rect x="276" y="214" width="20" height="5" rx="2" fill="#ef5350"/><rect x="278" y="219" width="3" height="18" fill="#c62828"/><rect x="291" y="219" width="3" height="18" fill="#c62828"/><rect x="290" y="198" width="4" height="18" fill="#c62828"/>' +
+      '<circle cx="50" cy="240" r="8" fill="#ffca28" stroke="#f57f17" stroke-width="1.5"/><path d="M42 240h16" stroke="#f57f17" stroke-width="1.5"/><g transform="translate(72 230)"><circle cx="0" cy="0" r="6" fill="#a1887f"/><circle cx="-5" cy="-5" r="2.5" fill="#a1887f"/><circle cx="5" cy="-5" r="2.5" fill="#a1887f"/><ellipse cx="0" cy="11" rx="7" ry="8" fill="#a1887f"/><circle cx="-2" cy="-1" r="1" fill="#3e2723"/><circle cx="2" cy="-1" r="1" fill="#3e2723"/></g><rect x="88" y="236" width="9" height="9" fill="#42a5f5"/><rect x="97" y="236" width="9" height="9" fill="#ef5350"/><rect x="92" y="227" width="9" height="9" fill="#66bb6a"/></g>',
   },
   places: [
-    { id: 'x_microwave', room: 'kitchen', n: 'מִיקְרוֹגַל', hard: 'לְיַד הַמִּיקְרוֹגַל', z: ['r', 350, 278, 52, 32] },
-    { id: 'x_kettle', room: 'kitchen', n: 'קֻמְקוּם', hard: 'לְיַד הַקֻּמְקוּם', z: ['r', 554, 398, 38, 32] },
-    { id: 'x_dishwasher', room: 'kitchen', n: 'מֵדִיחַ כֵּלִים', hard: 'לְיַד מֵדִיחַ הַכֵּלִים', z: ['r', 456, 400, 44, 56] },
-    { id: 'x_cutlery', room: 'kitchen', n: 'סַכִּין וְכַף', hard: 'לְיַד הַסַּכִּין וְהַכַּף', z: ['r', 462, 350, 46, 40] },
-    { id: 'x_teeth', room: 'bath', n: 'מִבְרֶשֶׁת שִׁנַּיִם וּמִשְׁחַת שִׁנַּיִם', hard: 'לְיַד הַמִּבְרֶשֶׁת וְהַמִּשְׁחָה', z: ['r', 545, 82, 27, 36] },
-    { id: 'x_shampoo', room: 'bath', n: 'שַׁמְפּוֹ', hard: 'לְיַד הַשַּׁמְפּוֹ', z: ['r', 347, 140, 24, 33] },
-    { id: 'x_comb', room: 'bath', n: 'מַסְרֵק', hard: 'לְיַד הַמַּסְרֵק', z: ['r', 573, 96, 26, 24] },
-    { id: 'x_armchair', room: 'living', n: 'כֻּרְסָה', hard: 'מֵאֲחוֹרֵי הַכֻּרְסָה', z: ['r', 224, 418, 62, 60] },
-    { id: 'x_remote', room: 'living', n: 'שַׁלָּט', hard: 'לְיַד הַשַּׁלָּט', z: ['r', 112, 415, 34, 22] },
-    { id: 'x_ac', room: 'living', n: 'מַזְגָן', hard: 'מִתַּחַת לַמַּזְגָן', z: ['r', 212, 270, 72, 30] }
+    { id: 'x_microwave', room: 'kitchen', n: 'מִיקְרוֹגַל', hard: 'לְיַד הַמִּיקְרוֹגַל', z: ['r', 350, 278, 52, 32], lv: 1 },
+    { id: 'x_kettle', room: 'kitchen', n: 'קֻמְקוּם', hard: 'לְיַד הַקֻּמְקוּם', z: ['r', 554, 398, 38, 32], lv: 1 },
+    { id: 'x_dishwasher', room: 'kitchen', n: 'מֵדִיחַ כֵּלִים', hard: 'לְיַד מֵדִיחַ הַכֵּלִים', z: ['r', 456, 400, 44, 56], lv: 1 },
+    { id: 'x_cutlery', room: 'kitchen', n: 'סַכִּין וְכַף', hard: 'לְיַד הַסַּכִּין וְהַכַּף', z: ['r', 462, 350, 46, 40], lv: 1 },
+    { id: 'x_teeth', room: 'bath', n: 'מִבְרֶשֶׁת שִׁנַּיִם וּמִשְׁחַת שִׁנַּיִם', hard: 'לְיַד הַמִּבְרֶשֶׁת וְהַמִּשְׁחָה', z: ['r', 545, 82, 27, 36], lv: 1 },
+    { id: 'x_shampoo', room: 'bath', n: 'שַׁמְפּוֹ', hard: 'לְיַד הַשַּׁמְפּוֹ', z: ['r', 347, 140, 24, 33], lv: 1 },
+    { id: 'x_comb', room: 'bath', n: 'מַסְרֵק', hard: 'לְיַד הַמַּסְרֵק', z: ['r', 573, 96, 26, 24], lv: 1 },
+    { id: 'x_armchair', room: 'living', n: 'כֻּרְסָה', hard: 'מֵאֲחוֹרֵי הַכֻּרְסָה', z: ['r', 224, 418, 62, 60], lv: 1 },
+    { id: 'x_remote', room: 'living', n: 'שַׁלָּט', hard: 'לְיַד הַשַּׁלָּט', z: ['r', 112, 415, 34, 22], lv: 1 },
+    { id: 'x_ac', room: 'living', n: 'מַזְגָן', hard: 'מִתַּחַת לַמַּזְגָן', z: ['r', 212, 270, 72, 30], lv: 1 },
+    { id: 'x_desk', room: 'bedroom', n: 'שֻׁלְחַן כְּתִיבָה', hard: 'מִתַּחַת לְשֻׁלְחַן הַכְּתִיבָה', z: ['r', 260, 184, 76, 56], lv: 4 },
+    { id: 'x_shelf', room: 'bedroom', n: 'מַדָּף', hard: 'לְיַד הַמַּדָּף', z: ['r', 194, 112, 62, 26], lv: 4 },
+    { id: 'x_toys', room: 'bedroom', n: 'צַעֲצוּעִים', hard: 'לְיַד הַצַּעֲצוּעִים', z: ['r', 38, 222, 72, 30], lv: 4 },
+    { id: 'x_alarm', room: 'bedroom', n: 'שָׁעוֹן מְעוֹרֵר', hard: 'לְיַד הַשָּׁעוֹן הַמְּעוֹרֵר', z: ['c', 217, 180, 11], lv: 4 }
   ],
   easy: {
     kitchen: ['בַּחֶדֶר שֶׁיֵּשׁ בּוֹ מִיקְרוֹגַל'],
     bath: ['בַּחֶדֶר שֶׁיֵּשׁ בּוֹ שַׁמְפּוֹ'],
-    living: ['בַּחֶדֶר שֶׁיֵּשׁ בּוֹ כֻּרְסָה']
-  }
+    living: ['בַּחֶדֶר שֶׁיֵּשׁ בּוֹ כֻּרְסָה'],
+    bedroom: ['בַּחֶדֶר שֶׁיֵּשׁ בּוֹ שֻׁלְחַן כְּתִיבָה']
+  },
+  easyLv: { bedroom: 4 }
 };

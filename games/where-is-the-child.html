@@ -35,6 +35,10 @@ h1{margin:0;font-size:clamp(24px,5vw,38px)}
 .scene{border-radius:18px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .scene svg{width:100%;height:auto;display:block}
 .room{cursor:pointer;outline:none}
+#house:not(.ext) #balcony{display:none}
+.setrow{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:10px 0}
+.setrow button{font:inherit;font-weight:700;font-size:18px;border:3px solid #f0a92e;background:#fff;border-radius:14px;padding:8px 16px;cursor:pointer;color:#23264a}
+.setrow button.on{background:#f0a92e;color:#fff}
 .room .floor{transition:fill .2s}
 .room.hot .floor{stroke:#2a7de1;stroke-width:6}
 .room:focus-visible .floor{stroke:#2a7de1;stroke-width:6}
@@ -66,7 +70,7 @@ button.big:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
 <body><nav class="site-nav"><span class="nav-title">🎓 משחקי עברית</span><a class="nav-home" href="../index.html">דף הבית</a><a href="index.html">🎮 משחקים</a><a href="../olam-street-lessons/index.html">📚 Olam Street Lessons</a><a href="../niflaot-lessons/index.html">✨ Niflaot Lessons</a><a href="../lomdim-likro/index.html">🔤 לוֹמְדִים לִקְרֹא</a><a href="../exams/index.html">📝 Exams</a><a href="../exams/teachers.html">👩‍🏫 Exams Teachers Hub</a><a href="https://eldar1234334.github.io/SpellQuest-AlphaBet/" target="_blank" rel="noopener">🧙 SpellQuest AlphaBet</a><button class="nav-back" onclick="if(history.length>1)history.back();else location.href='index.html'">← חזרה</button><button class="nav-fs" id="fsBtn" type="button" hidden>⛶ מסך מלא</button></nav>
 <div class="top"><h1 id="q"></h1><div style="display:flex;gap:8px;align-items:center"><div id="score"></div><button class="big sm" id="reset">מִשְׂחָק חָדָשׁ</button></div></div>
 <div id="dots"></div>
-<div id="start"><h2>🏠 אֵיפֹה הַיֶּלֶד וְהַיַּלְדָּה?</h2><p>גִּרְרוּ אֶת הַדְּמוּת לַחֶדֶר הַנָּכוֹן.</p><button class="big" id="go">הַתְחָלָה</button></div>
+<div id="start"><h2>🏠 אֵיפֹה הַיֶּלֶד וְהַיַּלְדָּה?</h2><p>גִּרְרוּ אֶת הַדְּמוּת לַחֶדֶר הַנָּכוֹן.</p><div class="setrow"><b>גִּרְסָה:</b><button type="button" id="setN" class="on">רְגִילָה</button><button type="button" id="setX">✨ גִּרְסָה מֻרְחֶבֶת</button></div><button class="big" id="go">הַתְחָלָה</button></div>
 <div class="main" id="game" style="display:none">
   <p class="hint" id="hint"></p>
   <div class="play">
@@ -116,6 +120,15 @@ button.big:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
 <rect x="686" y="196" width="10" height="44" rx="3" fill="#ee6c4d"/>
 <text class="lbl" x="580" y="304">חֶדֶר רְחָצָה</text>
 </g>
+<g id="balcony" class="room" data-k="balcony" tabindex="0" role="button" aria-label="מִרְפֶּסֶת">
+<rect class="floor" x="714" y="206" width="82" height="102" fill="#f6e7c8"/>
+<path d="M718 222H794" stroke="#555" stroke-width="2"/><rect x="726" y="222" width="14" height="18" fill="#ef5350"/><rect x="748" y="222" width="12" height="22" fill="#42a5f5"/><rect x="768" y="222" width="16" height="14" fill="#ffca28"/>
+<rect x="720" y="266" width="32" height="38" rx="3" fill="#fff" stroke="#90a4ae" stroke-width="2"/><rect x="723" y="269" width="26" height="6" fill="#cfd8dc"/><circle cx="736" cy="290" r="10" fill="#b3e5fc" stroke="#78909c" stroke-width="2"/>
+<path d="M772 292h18l-3 14h-12z" fill="#c8693c"/><ellipse cx="781" cy="284" rx="10" ry="9" fill="#43a047"/>
+<path d="M716 258H796M716 306V258M738 306V258M760 306V258M796 306V258" stroke="#5d6d7e" stroke-width="3" fill="none"/>
+<rect x="708" y="306" width="92" height="10" fill="#9e8670"/>
+<text class="lbl" x="755" y="338">מִרְפֶּסֶת</text>
+</g>
 <g id="living" class="room" data-k="living" tabindex="0" role="button" aria-label="סָלוֹן">
 <rect class="floor" x="98" y="322" width="292" height="153" fill="url(#wood)"/>
 <rect x="98" y="322" width="292" height="42" fill="#f4c7a1"/>
@@ -151,8 +164,25 @@ var ROOMS={
  bath:["🛁","חֶדֶר רְחָצָה","בַּחֶדֶר רְחָצָה"],
  living:["🛋️","סָלוֹן","בַּסָּלוֹן"],
  kitchen:["🍳","מִטְבָּח","בַּמִּטְבָּח"],
- garden:["🌳","גִּנָּה","בַּגִּנָּה"]
+ garden:["🌳","גִּנָּה","בַּגִּנָּה"],
+ balcony:["🌿","מִרְפֶּסֶת","בַּמִּרְפֶּסֶת"]   // only in the expanded version
 };
+/* "גִּרְסָה מֻרְחֶבֶת" (?set=ext, Niflaot "הַבַּיִת שֶׁלָּנוּ" 3-4): new actions, same format + lv = the lesson that adds it (&upto=3 hides lesson 4) */
+var XACTS=[
+ ["kitchen","🧽","שׁוֹטֵף","שׁוֹטֶפֶת","כֵּלִים","🫧","sway",null,3],
+ ["bed","📚","עוֹשֶׂה","עוֹשָׂה","שִׁעוּרֵי בַּיִת","✏️","sway",["living"],3],
+ ["bath","🧹","מְנַקֶּה","מְנַקָּה","אַמְבַּטְיָה","✨","sway",null,3],
+ ["bed","😌","נָח","נָחָה","עַל הַמִּטָּה","💤","sleep",null,3],
+ ["balcony","👕","תּוֹלֶה","תּוֹלָה","כְּבִיסָה","☀️","sway",null,4],
+ ["bed","👚","מְקַפֵּל","מְקַפֶּלֶת","בְּגָדִים","","sway",null,4],
+ ["bed","🪟","פּוֹתֵחַ","פּוֹתַחַת","חַלּוֹן","🌬️","sway",["living"],4],
+ ["living","🚪","סוֹגֵר","סוֹגֶרֶת","דֶּלֶת","","sway",["bed","bath","kitchen","balcony"],4],
+ ["bed","💡","מַדְלִיק","מַדְלִיקָה","אוֹר","✨","sway",null,4],
+ ["bed","🌙","מְכַבֶּה","מְכַבָּה","אוֹר","💤","sway",null,4]
+];
+var XQ=new URLSearchParams(location.search), XON=XQ.get("set")==="ext", XUPTO=+XQ.get("upto")||99;
+function setX(on){XON=on;document.getElementById("setN").classList.toggle("on",!on);document.getElementById("setX").classList.toggle("on",on);document.getElementById("house").classList.toggle("ext",on)}
+document.addEventListener("DOMContentLoaded",function(){setX(XON);document.getElementById("setN").onclick=function(){setX(false)};document.getElementById("setX").onclick=function(){setX(true)}});
 // [room, emoji, masculine verb, feminine verb, object]
 var WCAN='<svg class="ic" viewBox="0 0 64 64"><path d="M14 26h28v26a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4z" fill="#3aa0d8" stroke="#1f6f9c" stroke-width="3"/><path d="M42 36l14-12" stroke="#1f6f9c" stroke-width="5" stroke-linecap="round"/><path d="M53 14l9 8-4 5-9-8z" fill="#1f6f9c"/><path d="M14 32c-11 0-11 16 0 16" fill="none" stroke="#1f6f9c" stroke-width="4"/><path d="M22 26c0-11 20-11 20 0" fill="none" stroke="#1f6f9c" stroke-width="4"/></svg>';
 var HOSE='<svg class="ic" viewBox="0 0 64 64"><circle cx="30" cy="36" r="20" fill="none" stroke="#2f8f3a" stroke-width="8"/><circle cx="30" cy="36" r="8" fill="none" stroke="#2f8f3a" stroke-width="6"/><rect x="46" y="6" width="10" height="22" rx="3" fill="#f2b632"/></svg>';
@@ -181,13 +211,19 @@ function clue(a,g){return SUBJ[g][0]+" "+(g==="m"?a[2]:a[3])+(a[4]?" "+a[4]:"")}
 function sentence(a,g,rk){return clue(a,g)+" "+ROOMS[rk||a[0]][2]+"."}
 var $=function(i){return document.getElementById(i)};
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
-var ROOMC={living:[245,432],kitchen:[520,446],bed:[290,236],bath:[575,276],garden:[400,530]};
+var ROOMC={living:[245,432],kitchen:[520,446],bed:[290,236],bath:[575,276],garden:[400,530],balcony:[755,300]};
 function drawDots(){var h="";for(var i=0;i<rounds.length;i++)h+='<span class="dot'+(i<idx?" done":i===idx?" now":"")+'"></span>';$("dots").innerHTML=h}
 var rounds,idx,score,tries,locked,selected,cur;
 function build(){
   var pool=shuffle(ACTS.slice()),chosen=[],seen={};
+  if(XON){   // expanded: every new action first; watering plants may also be on the balcony
+    var nw=XACTS.filter(function(a){return a[8]<=XUPTO});
+    if(XUPTO>=4)pool=pool.map(function(a){return a[2]==="מַשְׁקֶה"?a.slice(0,7).concat([["balcony"]]):a});
+    shuffle(nw.slice()).forEach(function(a){chosen.push(a);seen[a[0]]=1});
+  }
   pool.forEach(function(a){if(!seen[a[0]]){seen[a[0]]=1;chosen.push(a)}});
   pool.forEach(function(a){if(chosen.length<12&&chosen.indexOf(a)<0)chosen.push(a)});
+  chosen=chosen.slice(0,12);
   var gs=shuffle(["m","m","m","m","m","m","f","f","f","f","f","f"]);
   var r=chosen.map(function(a,i){return [a,gs[i]]});
   for(var t=0;t<300;t++){

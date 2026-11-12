@@ -62,6 +62,7 @@ h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;text-align:ce
     </div>
     <div class="opts">
       <label>כַּמָּה שְׁאֵלוֹת? <select id="nQ"><option>8</option><option selected>12</option><option>20</option></select></label>
+      <label>גִּרְסָה: <select id="wset"><option value="">רָגִיל</option><option value="ext">✨ גִּרְסָה מֻרְחֶבֶת</option></select></label>
       <label>קוֹל: <select id="voice"><option value="0">כָּבוּי</option><option value="1">מֻפְעָל</option></select></label>
     </div>
   </div>
@@ -108,6 +109,16 @@ const ACTIONS = [
   { k: 'wash', m: 'מִתְקַלֵּחַ', f: 'מִתְקַלַּחַת', e: '🚿', rooms: ['shower'] },
   { k: 'sport', m: 'עוֹשֶׂה סְפּוֹרְט', f: 'עוֹשָׂה סְפּוֹרְט', e: '🏃', rooms: ['garden', 'living', 'balcony'] }
 ];
+/* "גִּרְסָה מֻרְחֶבֶת" (?set=ext, Niflaot "הַבַּיִת שֶׁלָּנוּ 3"): 5 more actions; half of the scenes use them. The default set is unchanged. */
+const BASE_N = ACTIONS.length;
+const XACTIONS = [
+  { k: 'dishes', m: 'שׁוֹטֵף כֵּלִים', f: 'שׁוֹטֶפֶת כֵּלִים', e: '🧽', rooms: ['kitchen'] },
+  { k: 'clean', m: 'מְנַקֶּה', f: 'מְנַקָּה', e: '🧹', rooms: ['kitchen', 'living', 'bedroom', 'shower', 'balcony'] },
+  { k: 'rest', m: 'נָח', f: 'נָחָה', e: '😌', rooms: ['bedroom', 'living', 'balcony', 'garden'] },
+  { k: 'hw', m: 'עוֹשֶׂה שִׁעוּרֵי בַּיִת', f: 'עוֹשָׂה שִׁעוּרֵי בַּיִת', e: '📚', rooms: ['bedroom', 'living', 'kitchen'] },
+  { k: 'teeth', m: 'מְצַחְצֵחַ שִׁנַּיִם', f: 'מְצַחְצַחַת שִׁנַּיִם', e: '🪥', rooms: ['shower'] }
+];
+const XON = () => { const s = document.getElementById('wset'); return !!s && s.value === 'ext'; };
 const sentence = (p, a, r) => `${p.he} ${p.g === 'm' ? a.m : a.f} ${ROOMS[r]}.`;
 
 /* ---------- the house (a cut-open house with six places) ---------- */
@@ -151,7 +162,7 @@ function say(t){ if (!voiceOn || !('speechSynthesis' in window)) return; const v
 
 function makeScene(prev){
   let p, a, r, tries = 0;
-  do { p = pick(PEOPLE); a = pick(ACTIONS); r = pick(a.rooms); tries++; } while (prev && prev.p === p && prev.a === a && tries < 20);
+  do { p = pick(PEOPLE); a = (XON() && Math.random() < .5) ? pick(XACTIONS) : pick(ACTIONS); r = pick(a.rooms); tries++; } while (prev && prev.p === p && prev.a === a && tries < 20);
   return { p, a, r };
 }
 function wrongSentences(s, n){                       /* wrong in ONE detail: a different room, person or activity */
@@ -166,7 +177,7 @@ function wrongSentences(s, n){                       /* wrong in ONE detail: a d
   return [...out.keys()];
 }
 function start(m){
-  mode = m; voiceOn = $('voice').value === '1'; const n = +$('nQ').value; deck = []; let prev = null;
+  mode = m; voiceOn = $('voice').value === '1'; ACTIONS.length = BASE_N; if (XON()) ACTIONS.push(...XACTIONS); const n = +$('nQ').value; deck = []; let prev = null;
   for (let k = 0; k < n; k++){
     const s = makeScene(prev); prev = s; const right = sentence(s.p, s.a, s.r);
     if (m === 'normal') deck.push({ s, right, opts: shuffle([right, ...wrongSentences(s, 3)]) });
@@ -217,6 +228,7 @@ function end(){
 }
 $('family').innerHTML = PEOPLE.map(p => `<div class="fam"><b>${p.e}</b>${p.he}</div>`).join('');
 $('mNormal').onclick = () => start('normal'); $('mEasy').onclick = () => start('easy');
+{ if (new URLSearchParams(location.search).get("set") === "ext") $("wset").value = "ext"; }
 { const q = new URLSearchParams(location.search).get('mode'); if (q === 'easy' || q === 'normal') start(q); }
 $('next').onclick = next; $('again').onclick = () => start(mode);
 $('menu').onclick = () => { $('end').hidden = true; $('start').hidden = false; };

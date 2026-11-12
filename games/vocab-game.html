@@ -67,7 +67,7 @@ h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;text-align:ce
     </div>
     <div class="opts">
       <label>כַּמָּה שְׁאֵלוֹת? <select id="nQ"><option>8</option><option selected>12</option><option>20</option><option value="999">כָּל הַמִּלִּים</option></select></label>
-      <label>מִלִּים: <select id="wset"><option value="">רָגִיל</option><option value="bayit-ext">✨ גִּרְסָה מֻרְחֶבֶת: חֲפָצִים בַּחֲדָרִים</option><option value="binyan-ext">✨ גִּרְסָה מֻרְחֶבֶת: הַבִּנְיָן וְהַבַּיִת</option></select></label>
+      <label>מִלִּים: <select id="wset"><option value="">רָגִיל</option><option value="bayit-ext">✨ גִּרְסָה מֻרְחֶבֶת: חֲפָצִים בַּחֲדָרִים</option><option value="binyan-ext">✨ גִּרְסָה מֻרְחֶבֶת: הַבִּנְיָן וְהַבַּיִת</option><option value="room-ext">✨ גִּרְסָה מֻרְחֶבֶת: חֶדֶר וּמִרְפֶּסֶת</option></select></label>
       <label>קוֹל: <select id="voice"><option value="0">כָּבוּי</option><option value="1">מֻפְעָל</option></select></label>
     </div>
   </div>
@@ -90,6 +90,7 @@ h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;text-align:ce
 <script src="home-art.js"></script>
 <script src="bayit-photos.js?v=1"></script>
 <script src="house-outside-art.js?v=1"></script>
+<script src="verb-art.js?v=1"></script>
 <script>
 (() => {
 'use strict';
@@ -159,12 +160,24 @@ const X2 = [
   { hov: [150, 340, 240, 180], kids: [{ x: 268, y: 500, s: 1.1, g: 'f' }], extra: ARROW(270, 470, 350, 470), he: 'יוֹצֵאת', d: 'הִיא יוֹצֵאת.', c: 'verb' },
   { hov: [170, 350, 200, 150], kids: [{ x: 300, y: 488, s: .95, g: 'm' }], extra: RING, he: 'מְצַלְצֵל בַּפַּעֲמוֹן', d: 'הוּא מְצַלְצֵל בַּפַּעֲמוֹן.', c: 'verb' }
 ];
-X1.forEach((x, n) => x.k = 'x1-' + n); X2.forEach((x, n) => x.k = 'x2-' + n);
-const SETS = { '': ITEMS, 'bayit-ext': ITEMS.concat(X1), 'binyan-ext': ITEMS.filter(x => x.c === 'building').concat(X2) };
+const X3 = [
+  { ph: 'desk', he: 'שֻׁלְחַן כְּתִיבָה', d: 'זֶה שֻׁלְחַן כְּתִיבָה.', c: 'room' }, { ph: 'shelf', he: 'מַדָּף', d: 'זֶה מַדָּף.', c: 'room' },
+  { emo: '🧸🪀🚂', he: 'צַעֲצוּעִים', d: 'אֵלֶּה צַעֲצוּעִים.', c: 'room' }, { ph: 'alarm', he: 'שָׁעוֹן מְעוֹרֵר', d: 'זֶה שָׁעוֹן מְעוֹרֵר.', c: 'room' },
+  { ph: 'washer', he: 'מְכוֹנַת כְּבִיסָה', d: 'זוֹ מְכוֹנַת כְּבִיסָה.', c: 'balcony' }, { ph: 'line', he: 'חֶבֶל כְּבִיסָה', d: 'זֶה חֶבֶל כְּבִיסָה.', c: 'balcony' },
+  { ph: 'blanket', he: 'שְׂמִיכָה', d: 'זוֹ שְׂמִיכָה.', c: 'room' }, { ph: 'pillow', he: 'כָּרִית', d: 'זוֹ כָּרִית.', c: 'room' },
+  { ph: 'nightstand', he: 'שִׁדָּה', d: 'זוֹ שִׁדָּה.', c: 'room' },
+  { va: 'fold', g: 'm', he: 'מְקַפֵּל בְּגָדִים', d: 'הוּא מְקַפֵּל בְּגָדִים.', c: 'verb4' }, { va: 'hang', g: 'f', he: 'תּוֹלָה כְּבִיסָה', d: 'הִיא תּוֹלָה כְּבִיסָה.', c: 'verb4' },
+  { va: 'open', g: 'm', he: 'פּוֹתֵחַ חַלּוֹן', d: 'הוּא פּוֹתֵחַ חַלּוֹן.', c: 'verb4' }, { va: 'close', g: 'f', he: 'סוֹגֶרֶת דֶּלֶת', d: 'הִיא סוֹגֶרֶת דֶּלֶת.', c: 'verb4' },
+  { va: 'lighton', g: 'm', he: 'מַדְלִיק אוֹר', d: 'הוּא מַדְלִיק אוֹר.', c: 'verb4' }, { va: 'lightoff', g: 'f', he: 'מְכַבָּה אוֹר', d: 'הִיא מְכַבָּה אוֹר.', c: 'verb4' }
+];
+X1.forEach((x, n) => x.k = 'x1-' + n); X2.forEach((x, n) => x.k = 'x2-' + n); X3.forEach((x, n) => x.k = 'x3-' + n);
+const SETS = { '': ITEMS, 'bayit-ext': ITEMS.concat(X1), 'binyan-ext': ITEMS.filter(x => x.c === 'building').concat(X2), 'room-ext': X3.concat(ITEMS.filter(x => x.c === 'furniture' || x.c === 'thing')) };
 let POOL = ITEMS;
 function fit43(b){ const cx = b[0] + b[2] / 2, cy = b[1] + b[3] / 2; let w = Math.max(b[2], b[3] * 4 / 3, 160); return [cx - w / 2, cy - w * 3 / 8, w, w * 3 / 4]; }
 function picOf(it){
   if (it.ph) return `<img class="ph" src="${(window.BAYIT_PH || {})[it.ph]}" alt="">`;
+  if (it.va) return VerbArt.svg(it.va, it.g);
+  if (it.emo) return `<div style="aspect-ratio:4/3;display:grid;place-items:center;font-size:84px">${it.emo}</div>`;
   if (it.ho) return HouseOut.svg({ vb: fit43(HouseOut.box(it.ho, 24)) });
   if (it.hov) return HouseOut.svg({ vb: it.hov, kids: it.kids, extra: it.extra });
   return HomeArt.svg(it.k);

@@ -68,6 +68,12 @@ main{display:grid;grid-template-columns:minmax(310px,430px) 1fr;gap:18px;padding
 .opt{margin-top:10px;font-size:1rem;font-weight:700}
 .credits{max-width:1250px;margin:0 auto;padding:0 18px 24px;color:#5b687b;font-size:.85rem;direction:ltr;text-align:left}
 .credits summary{cursor:pointer;direction:rtl;text-align:right}
+main.ext{grid-template-columns:1fr}main.ext .bwrap{display:none}
+.ho-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}.ho-word{font-size:1.8rem;font-weight:800;color:#1f608f}
+.ho-wrap svg{display:block;width:100%;height:auto;border-radius:14px;border:3px solid #d9e1ea}
+.ho-z{fill:rgba(255,255,255,.001);cursor:pointer;stroke:none}.ho-z:hover{fill:rgba(255,240,180,.25);stroke:#f59e0b;stroke-width:3;stroke-dasharray:8 5}
+.ho-z.on{fill:rgba(255,230,120,.3);stroke:#16a34a;stroke-width:5}.ho-z.bad{fill:rgba(220,38,38,.3);stroke:#dc2626;stroke-width:4}
+.ho-lbl{font:800 30px "Noto Sans Hebrew",Arial,sans-serif;fill:#172235;stroke:#fff;stroke-width:7px;paint-order:stroke;text-anchor:middle;pointer-events:none}
 </style>
 <style id="site-navigation">.site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid #dfe4ec;box-shadow:0 3px 12px rgba(20,30,50,.08);font-family:Arial,"Noto Sans Hebrew",sans-serif;direction:rtl}.site-nav .nav-title{font-weight:900;color:#182235;margin-left:auto}.site-nav a,.site-nav button{appearance:none;border:1px solid #dfe4ec;background:#fff;color:#27324a;text-decoration:none;font:700 14px Arial,"Noto Sans Hebrew",sans-serif;border-radius:10px;padding:8px 12px;cursor:pointer}.site-nav a:hover,.site-nav button:hover{background:#f1f4f9}.site-nav .nav-home{background:#182235;color:#fff;border-color:#182235}.site-nav .nav-back{background:#eef2ff;color:#3730a3;border-color:#d9defd}@media(max-width:600px){.site-nav{padding:8px}.site-nav .nav-title{width:100%;margin:0 0 2px}.site-nav a,.site-nav button{font-size:13px;padding:7px 9px}}.site-nav .nav-fs{background:#0f766e;color:#fff;border-color:#0f766e}.site-nav .nav-fs[hidden]{display:none}
 </style>
@@ -88,6 +94,7 @@ main{display:grid;grid-template-columns:minmax(310px,430px) 1fr;gap:18px;padding
 </main>
 <details class="credits"><summary>תְּמוּנוֹת / Photo credits</summary><div id="credits"></div></details>
 
+<script src="house-outside-art.js?v=1"></script>
 <script>
 const H = 50;
 const LET = ['א','ב'];
@@ -175,7 +182,7 @@ function bad(){ streak=0; paint(); }
 function paint(){ document.getElementById('score').textContent=score; document.getElementById('streak').textContent=streak; }
 
 /* ---------- tabs ---------- */
-const MODES = [['learn','📖 לוֹמְדִים'],['g1','⬆️⬇️ עוֹלֶה אוֹ יוֹרֵד?'],['g2','🛗 בַּמַּעֲלִית'],['g3','🏠 שְׁכֵנִים']];
+const MODES = [['learn','📖 לוֹמְדִים'],['g1','⬆️⬇️ עוֹלֶה אוֹ יוֹרֵד?'],['g2','🛗 בַּמַּעֲלִית'],['g3','🏠 שְׁכֵנִים'],['ext','✨ גִּרְסָה מֻרְחֶבֶת: הַבִּנְיָן מִבַּחוּץ']];
 let mode='learn', aptClick=null, tick=0;
 const tabs = document.getElementById('tabs');
 MODES.forEach(([k,t])=>{ const b=document.createElement('button'); b.className='tab'; b.textContent=t; b.dataset.k=k; b.onclick=()=>go(k); tabs.appendChild(b); });
@@ -186,7 +193,47 @@ function go(k){
   mode=k; tick++; aptClick=null; try{speechSynthesis.cancel();}catch(e){}
   tabs.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
   mark({});
-  ({learn:learn,g1:g1,g2:g2,g3:g3})[k]();
+  document.querySelector('main').classList.toggle('ext', k==='ext');
+  ({learn:learn,g1:g1,g2:g2,g3:g3,ext:extOut})[k]();
+}
+
+/* ================= גִּרְסָה מֻרְחֶבֶת: הַבִּנְיָן מִבַּחוּץ (house-outside-art.js; Niflaot "הַבַּיִת שֶׁלָּנוּ 2") ================= */
+function extOut(){
+  const PARTS = HouseOut.PARTS;
+  let quiz = false, target = null, my = tick, wr = 0;
+  P.innerHTML = `<div class="ho-bar"><button class="tab on" id="hoL">📖 לוֹמְדִים</button><button class="tab" id="hoQ">❓ אֵיפֹה ...?</button>
+    <span class="ho-word" id="hoW">לַחֲצוּ עַל חֵלֶק בַּתְּמוּנָה</span><span id="hoS"></span></div>
+    <div class="ho-wrap" id="hoWrap">${HouseOut.svg()}</div><div class="msg" id="msg"></div><div id="nx"></div>`;
+  const svg = P.querySelector('svg'), NS = 'http://www.w3.org/2000/svg', W = document.getElementById('hoW'), S = document.getElementById('hoS'), msg = document.getElementById('msg');
+  const g = document.createElementNS(NS, 'g'); svg.appendChild(g);
+  const lab = document.createElementNS(NS, 'g'); svg.appendChild(lab);
+  PARTS.forEach(p => p.z.forEach(z => {
+    const e = document.createElementNS(NS, z[0] === 'r' ? 'rect' : 'circle');
+    if (z[0] === 'r') { e.setAttribute('x', z[1]); e.setAttribute('y', z[2]); e.setAttribute('width', z[3]); e.setAttribute('height', z[4]); e.setAttribute('rx', 8); }
+    else { e.setAttribute('cx', z[1]); e.setAttribute('cy', z[2]); e.setAttribute('r', z[3]); }
+    e.setAttribute('class', 'ho-z'); e.dataset.k = p.k; e.setAttribute('role', 'button'); e.setAttribute('aria-label', p.he);
+    e.addEventListener('click', () => hit(p)); g.appendChild(e);
+  }));
+  function light(k, cls){ g.querySelectorAll('.ho-z').forEach(e => e.classList.toggle(cls, e.dataset.k === k)); }
+  function tag(p){
+    lab.innerHTML = ''; const b = HouseOut.shapeBox(p.z[0]), x = Math.min(Math.max((b[0] + b[2]) / 2, 90), 910), y = b[1] > 70 ? b[1] - 14 : b[3] + 34;
+    const t = document.createElementNS(NS, 'text'); t.setAttribute('x', x); t.setAttribute('y', y); t.setAttribute('class', 'ho-lbl'); t.textContent = p.he + (p.star ? ' ⭐' : ''); lab.appendChild(t);
+  }
+  function learnHit(p){ light(p.k, 'on'); tag(p); W.textContent = p.he; S.innerHTML = speakBtn(p.he + '. ' + p.s); say(p.he + '. ' + p.s); msg.className = 'msg ok'; msg.textContent = p.s; }
+  function ask(){
+    const pool = PARTS.filter(p => p !== target); target = pick(pool); wr = 0; lab.innerHTML = ''; light('', 'on'); light('', 'bad');
+    const q = 'אֵיפֹה ' + target.the + '?';
+    W.textContent = q; S.innerHTML = speakBtn(q); say(q); msg.textContent = ''; document.getElementById('nx').innerHTML = '';
+  }
+  function hit(p){
+    if (!quiz) return learnHit(p);
+    if (!target || my !== tick) return;
+    if (p.k === target.k){ light(p.k, 'on'); tag(p); msg.className = 'msg ok'; msg.innerHTML = '🎉 ' + p.s + ' ' + speakBtn(p.s); say(p.s); good(wr ? 5 : 10); target = null;
+      document.getElementById('nx').innerHTML = NEXT; document.getElementById('nb').onclick = ask; }
+    else { wr++; bad(); light(p.k, 'bad'); setTimeout(() => light('', 'bad'), 500); msg.className = 'msg bad'; msg.textContent = 'לֹא נָכוֹן, נַסּוּ שׁוּב.'; }
+  }
+  document.getElementById('hoL').onclick = () => { quiz = false; target = null; document.getElementById('hoL').classList.add('on'); document.getElementById('hoQ').classList.remove('on'); W.textContent = 'לַחֲצוּ עַל חֵלֶק בַּתְּמוּנָה'; S.innerHTML = ''; msg.textContent = ''; document.getElementById('nx').innerHTML = ''; lab.innerHTML = ''; light('', 'on'); };
+  document.getElementById('hoQ').onclick = () => { quiz = true; document.getElementById('hoQ').classList.add('on'); document.getElementById('hoL').classList.remove('on'); ask(); };
 }
 
 /* ================= LEARN ================= */
@@ -345,7 +392,7 @@ function g3(){
 }
 
 buildBuilding();
-go('learn');
+go(new URLSearchParams(location.search).get('mode')==='ext'?'ext':'learn');
 </script>
 <script id="fs-script">
 (function(){var b=document.getElementById("fsBtn"),d=document,e=d.documentElement;

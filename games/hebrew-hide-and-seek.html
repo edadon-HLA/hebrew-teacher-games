@@ -49,6 +49,7 @@ svg[data-mode=hard]:not(.zoomed) .enter{display:block}
 #end{text-align:center}#end h2{font-size:42px;color:#e65100}#end p{font-size:28px}
 .hide{display:none!important}
 svg:not(.ext) .ext-art,svg:not(.ext) .ext-z{display:none!important}
+svg.upto-low .ext-lv4{display:none!important}
 </style>
 
 <style id="site-navigation">
@@ -316,7 +317,7 @@ function mk(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const
   EXT.places.forEach(p=>p.ext=1);
   PLACES.concat(EXT.places).forEach(p=>{
     const parts=shapes(p).map((z,i)=>{
-      const a={class:p.ext?'z ext-z':'z','data-id':p.id,'data-room':p.room,role:'button','aria-label':p.n,tabindex:-1};
+      const a={class:p.ext?'z ext-z'+(p.lv>1?' ext-lv'+p.lv:''):'z','data-id':p.id,'data-room':p.room,role:'button','aria-label':p.n,tabindex:-1};
       if(i)a['aria-hidden']='true';
       const e=z[0]==='r'?mk('rect',Object.assign(a,{x:z[1],y:z[2],width:z[3],height:z[4],rx:8}),$('zones'))
              :z[0]==='c'?mk('circle',Object.assign(a,{cx:z[1],cy:z[2],r:z[3]}),$('zones'))
@@ -356,7 +357,7 @@ function mix(a){for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i
 function shuffleDeck(){
   let a;
   if(S.ext){   // expanded version: every new place + random old ones (up to ROUNDS)
-    const nw=mix((window.HIDE_EXT||{places:[]}).places.slice());
+    const nw=mix((window.HIDE_EXT||{places:[]}).places.filter(p=>(p.lv||1)<=S.upto));
     a=mix(nw.concat(mix(PLACES.slice()).slice(0,Math.max(0,ROUNDS-nw.length))));
   }else{
   a=PLACES.slice();
@@ -374,7 +375,7 @@ function shuffleDeck(){
 }
 
 function newGame(){
-  svg.classList.toggle('ext',!!S.ext);
+  svg.classList.toggle('ext',!!S.ext);svg.classList.toggle('upto-low',S.upto<4);
   S.playing=true;S.score=0;S.tries=0;S.idx=0;S.lock=false;S.deck=shuffleDeck();S.zoom=null;
   $('lvE').classList.toggle('on',S.level==='easy');$('lvH').classList.toggle('on',S.level==='hard');
   $('lvE').setAttribute('aria-pressed',S.level==='easy');$('lvH').setAttribute('aria-pressed',S.level==='hard');
@@ -392,7 +393,8 @@ function nextRound(){
   if(S.idx>=S.deck.length)return finish();
   S.cur=S.deck[S.idx];S.lock=false;
   const p=S.cur, verb=H[S.g==='m'?0:1];
-  const easyL=ROOMS[p.room].easy.concat(S.ext&&window.HIDE_EXT&&HIDE_EXT.easy[p.room]||[]);
+  const lvR=((window.HIDE_EXT||{}).easyLv||{})[p.room]||1, xe=S.ext&&window.HIDE_EXT&&lvR<=S.upto?HIDE_EXT.easy[p.room]:null;
+  const easyL=ROOMS[p.room].easy.concat(xe||[]);
   const phrase=S.level==='easy'?easyL[Math.random()*easyL.length|0]:p.hard;
   S.clue=S.name+' '+verb+' '+phrase+'.';   // third person: name + gender-agreed verb
   $('clueText').textContent=S.clue;
@@ -488,6 +490,7 @@ $('gm').addEventListener('click',()=>setG('m'));$('gf').addEventListener('click'
 function setX(x){S.ext=x;[['setN',!x],['setX',x]].forEach(([id,on])=>{$(id).classList.toggle('on',on);$(id).setAttribute('aria-pressed',on);});}
 $('setN').addEventListener('click',()=>setX(false));$('setX').addEventListener('click',()=>setX(true));
 if(new URLSearchParams(location.search).get('set')==='ext')setX(true);
+S.upto=+new URLSearchParams(location.search).get('upto')||99;
 function toStart(){
   S.playing=false;S.zoom=null;
   try{speechSynthesis.cancel();}catch(e){}
