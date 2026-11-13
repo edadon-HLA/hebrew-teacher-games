@@ -244,7 +244,7 @@ var TEMPLATE = [
   '2. Build it as one of our Olam Street lessons: follow the olam-lesson-plans skill (the 5 parts: word-search entry ticket, an easy warm-up from material the students already know (not the new topic), teaching the new words through a game, practice with response cards "3… 2… 1… הָרִימוּ!" in 2 levels, ✔/✘ and pair talk with a timer, and an exit ticket), but skip its workbook, Google Doc, spec and approval steps: this prompt replaces them.',
   '   Fast way: copy the whole folder wzo-conference/backup/ (the ready-made lesson, already built with that skill = the template) to wzo-conference/lessons/{SLUG}/ and replace only the topic content in the data block at the top of its script (title, word-search words, warm-up items, 10 new topic words with drawn pictures, true/false items, pair-talk questions, exit-ticket questions, teacher notes) with content for the new topic. Keep its style, structure, games, step names and Hebrew wording.',
   '   NO English anywhere (also not in the exit ticket). Full, correct nikud on every Hebrew word. No external files. The new folder is one level deeper than backup/, so fix the relative links: every "../../" becomes "../../../" and the back link "../index.html" becomes "../../index.html".',
-  '3. Edit wzo-conference/index.html ONLY between <!-- NEW-LESSON-' + 'SLOT-START --> and <!-- NEW-LESSON-' + 'SLOT-END -->: replace what is between them with exactly this one line:',
+  '3. Edit wzo-conference/index.html ONLY between <!-- NEW-LESSON-' + 'SLOT-START --> and <!-- NEW-LESSON-' + 'SLOT-END -->: delete EVERYTHING that is between them now (an older lesson link from an earlier demo, or the empty-slot line; never keep the old link) and put exactly this one line there instead, so the slot holds only the new link:',
   '   <a class="new-lesson-link" href="lessons/{SLUG}/index.html" target="_blank" rel="noopener">✨ {TOPIC_HTML} – לַשִּׁעוּר הֶחָדָשׁ</a>',
   '   Do not change anything else in that file, and do not touch any other page.',
   '4. Commit the new lesson folder and the control page ("WZO demo lesson: {SLUG}") and push to main: git push origin main (if it is rejected, pull --rebase and push again).',
@@ -352,6 +352,10 @@ var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּ�
     var hidden = getHidden(), html = raw;
     if (isEmptySlot(raw)) { if (hidden) setHidden(''); }         // the live site is empty again: forget the local hide
     else if (hidden && norm(raw) === hidden) html = EMPTY_SLOT;   // "deleted" on this screen; waiting for the live reset
+    else {                                                        // only ONE lesson button: if the slot ever holds several links, show the newest (last) one
+      var links = html.match(/<a\b[^>]*class="new-lesson-link"[^>]*>[\s\S]*?<\/a>/gi);
+      if (links && links.length) html = links[links.length - 1];
+    }
     html = absolutize(html);
     if (norm(slotBody.getAttribute('data-shown')) !== norm(html)) {
       slotBody.innerHTML = START + '\n' + html + '\n' + END;
