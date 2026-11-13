@@ -172,7 +172,6 @@ footer{text-align:center;color:var(--muted);padding:10px 22px 40px;font-size:18p
   <div class="slot-body" id="slotBody">
 <!-- NEW-LESSON-SLOT-START -->
 <a class="new-lesson-link" href="lessons/lesson-1794526335121/index.html" target="_blank" rel="noopener">✨ אוכל ישראלי – לַשִּׁעוּר הֶחָדָשׁ</a>
-  '   <a class="new-lesson-link" href="lessons/{SLUG}/index.html" target="_blank" rel="noopener">{TOPIC_HTML} – open the new lesson</a>',
 <!-- NEW-LESSON-SLOT-END -->
   </div>
   <button class="btn btn-red" id="resetBtn" type="button">🗑️ מְחִיקַת הַשִּׁעוּר הֶחָדָשׁ (לְהַדְגָּמָה חוֹזֶרֶת)</button>
@@ -338,8 +337,12 @@ var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּ�
   var slotBody = $('slotBody'), HIDE_KEY = 'wzo-hidden-slot', lastRaw = '';
   var START = '<!-- NEW-LESSON-' + 'SLOT-START -->', END = '<!-- NEW-LESSON-' + 'SLOT-END -->';
   function norm(s) { return (s || '').replace(/\s+/g, ' ').trim(); }
-  function getHidden() { try { return localStorage.getItem(HIDE_KEY) || ''; } catch (e) { return ''; } }
-  function setHidden(v) { try { if (v) localStorage.setItem(HIDE_KEY, v); else localStorage.removeItem(HIDE_KEY); } catch (e) {} }
+  // the local "deleted" mark lasts at most 5 minutes, so a reset that never reached the live site can't leave this screen empty for good
+  function getHidden() {
+    try { var o = JSON.parse(localStorage.getItem(HIDE_KEY) || 'null'); if (o && o.v && Date.now() - o.t < 300000) return o.v; localStorage.removeItem(HIDE_KEY); } catch (e) {}
+    return '';
+  }
+  function setHidden(v) { try { if (v) localStorage.setItem(HIDE_KEY, JSON.stringify({ v: v, t: Date.now() })); else localStorage.removeItem(HIDE_KEY); } catch (e) {} }
   function isEmptySlot(html) { return !/<a\b/i.test(html); }
   function absolutize(html) {
     return html.replace(/href="(?![a-z]+:|\/|#)([^"]*)"/gi, function (m, p) { return 'href="' + LIVE_DIR + p + '"'; });
