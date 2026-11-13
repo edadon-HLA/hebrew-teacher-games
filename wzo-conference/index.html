@@ -151,6 +151,10 @@ details.bts[open] summary::after{content:"▴"}
 .loop,.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;font-weight:800;font-size:20px;margin-top:6px}
 .loop span,.flow .fl{background:#f8fafc;border:2px solid var(--line);border-radius:999px;padding:6px 14px}
 .loop b,.flow b{color:var(--muted)}
+.loop-wrap{position:relative;padding-bottom:118px}
+.loop-back{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.loop-back path{fill:none;stroke:#6366f1;stroke-width:3;stroke-linecap:round}
+.loop-back text{font:800 17px Arial,"Noto Sans Hebrew",sans-serif;fill:#3730a3}
 .flow{margin:14px 0 0}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
 .chips button{appearance:none;font:inherit;font-size:20px;font-weight:800;border:2px solid #c7d2fe;background:var(--brand-soft);color:var(--brand);border-radius:999px;padding:8px 16px;cursor:pointer}
@@ -358,8 +362,11 @@ details.bts[open] summary::after{content:"▴"}
           <div class="t-box">🔍 בּוֹדֵק</div>
         </div>
       </div>
+      <div class="loop-wrap" id="loopWrap">
       <div class="loop">
-        <span>📝 תִּכְנוּן</span><b>←</b><span>🛠️ בְּנִיָּה בְּגִרְסַת נִסָּיוֹן</span><b>←</b><span>👀 אֲנִי בּוֹדֵק</span><b>←</b><span>✅ ״Go live״</span>
+        <span id="lpPlan">📝 תִּכְנוּן</span><b>←</b><span id="lpBuild">🛠️ בְּנִיָּה בְּגִרְסַת נִסָּיוֹן</span><b>←</b><span id="lpCheck">👀 אֲנִי בּוֹדֵק</span><b>←</b><span>✅ ״Go live״</span>
+      </div>
+      <svg class="loop-back" id="loopBack" aria-hidden="true"></svg>
       </div>
     </div>
   </details>
@@ -750,6 +757,54 @@ var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּ�
     st.innerHTML = '✓ הַמָּקוֹם רֵיק – אֶפְשָׁר לְהַדְגִּים שׁוּב. הַשִּׁעוּר הַבָּא יוֹפִיעַ כָּאן. <button type="button" id="undoReset" style="font:inherit;font-size:17px;border:1px solid #fecaca;background:#fff;color:#7f1d1d;border-radius:10px;padding:4px 12px;cursor:pointer">↺ הַחְזִירוּ</button>';
     $('undoReset').onclick = function () { setHidden(''); showSlot(lastRaw); st.textContent = ''; };
   });
+
+  // ===== part 5, team card: curvy feedback arrows from "I check" back to "build" and "plan" =====
+  function drawLoopBack() {
+    var wrap = $('loopWrap'), svg = $('loopBack');
+    if (!wrap || !wrap.offsetWidth) return;              // card closed: nothing to draw
+    var W = wrap.getBoundingClientRect();
+    function bottom(id) { var r = $(id).getBoundingClientRect(); return { x: r.left + r.width / 2 - W.left, y: r.bottom - W.top }; }
+    var c = bottom('lpCheck'), b = bottom('lpBuild'), p = bottom('lpPlan');
+    var NS = 'http://www.w3.org/2000/svg';
+    svg.innerHTML = '<defs><marker id="lbHead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">' +
+      '<path d="M0,0 L10,5 L0,10 z" style="fill:#6366f1;stroke:none"/></marker></defs>';
+    function curve(from, to, depth, label) {
+      var y = Math.max(from.y, to.y), path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', 'M' + (from.x + 6) + ',' + (from.y + 4) + ' C' + from.x + ',' + (y + depth) + ' ' + to.x + ',' + (y + depth) + ' ' + (to.x - 6) + ',' + (to.y + 6));
+      path.setAttribute('marker-end', 'url(#lbHead)');
+      svg.appendChild(path);
+      var t = document.createElementNS(NS, 'text');
+      t.setAttribute('x', (from.x + to.x) / 2); t.setAttribute('y', y + depth * 0.75 + 6);
+      t.setAttribute('text-anchor', 'middle'); t.setAttribute('direction', 'rtl');
+      t.style.paintOrder = 'stroke'; t.style.stroke = '#fff'; t.style.strokeWidth = '6px';
+      t.textContent = label; svg.appendChild(t);
+    }
+    if (Math.abs(c.y - b.y) < 12) {                       // one row (big screen): curves under the row
+      wrap.style.paddingBottom = '118px';
+      curve(c, b, 46, '💬 מָשׁוֹב לַבְּנִיָּה');
+      curve(c, p, 118, '💬 מָשׁוֹב לַתִּכְנוּן');
+      return;
+    }
+    // stacked (phone): arcs on the left side + one caption under the loop
+    wrap.style.paddingBottom = '44px';
+    function leftMid(id) { var r = $(id).getBoundingClientRect(); return { x: r.left - W.left, y: r.top + r.height / 2 - W.top }; }
+    var lc = leftMid('lpCheck'), lb = leftMid('lpBuild'), lp = leftMid('lpPlan');
+    function arc(from, to, out) {
+      var x = Math.max(4, Math.min(from.x, to.x) - out), path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', 'M' + (from.x - 4) + ',' + from.y + ' C' + x + ',' + from.y + ' ' + x + ',' + to.y + ' ' + (to.x - 6) + ',' + to.y);
+      path.setAttribute('marker-end', 'url(#lbHead)');
+      svg.appendChild(path);
+    }
+    arc(lc, lb, 26); arc(lc, lp, 48);
+    var t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', W.width / 2); t.setAttribute('y', W.height - 12);
+    t.setAttribute('text-anchor', 'middle'); t.setAttribute('direction', 'rtl');
+    t.textContent = '💬 מָשׁוֹב חוֹזֵר לַבְּנִיָּה אוֹ לַתִּכְנוּן'; svg.appendChild(t);
+  }
+  document.querySelectorAll('details.bts').forEach(function (d) { d.addEventListener('toggle', drawLoopBack); });
+  window.addEventListener('resize', drawLoopBack);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLoopBack);
+  drawLoopBack();
 })();
 </script>
 </body>
