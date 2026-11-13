@@ -384,7 +384,7 @@ html.printing .pmode{display:block}
 const LESSON = {
   title: 'בַּעֲלֵי חַיִּים',
   icon: 'arye',
-  crumb: 'שִׁעוּר מוּכָן · כִּתּוֹת ה׳–ו׳ · עִבְרִית',
+  crumb: 'שִׁעוּר חָדָשׁ · כִּתּוֹת ה׳–ו׳ · עִבְרִית',
   subtitle: 'מִלִּים חֲדָשׁוֹת · מִשְׂחָקִים · כַּרְטִיסֵי תְּשׁוּבָה',
 
   wordSearch: { words: ['שָׁלוֹם', 'תּוֹדָה', 'בַּיִת', 'אִמָּא', 'אַבָּא', 'סֵפֶר', 'יֶלֶד', 'כִּסֵּא'] },
@@ -553,7 +553,7 @@ const PRAISE = ['כָּל הַכָּבוֹד! 🎉', 'מְצֻיָּן! ⭐', '�
 const praise = () => PRAISE[Math.floor(Math.random() * PRAISE.length)];
 
 /* header + teacher notes */
-document.title = LESSON.title + ' · שִׁעוּר מוּכָן';
+document.title = LESSON.title + ' · שִׁעוּר חָדָשׁ';
 $('crumb').textContent = LESSON.crumb; $('title').textContent = LESSON.title; $('subtitle').textContent = LESSON.subtitle; $('ticon').innerHTML = svgOf(LESSON.icon);
 const N = LESSON.notes; [['nEntry', 'entry'], ['nWarm', 'warmup'], ['nTeach', 'teach'], ['nMatch', 'match'], ['nTf', 'tf'], ['nTalk', 'talk'], ['nExit', 'exit']].forEach(([id, k]) => $(id).textContent = N[k] || '');
 
