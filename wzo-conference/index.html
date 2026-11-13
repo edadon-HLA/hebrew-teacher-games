@@ -174,12 +174,12 @@ details.bts[open] summary::after{content:"▴"}
 .prompt-box.rtl{direction:rtl;text-align:right;font-family:Arial,"Noto Sans Hebrew",sans-serif;font-size:24px;padding:20px 20px 20px 100px}
 .prompt-wrap.rtl .copy-btn{right:auto;left:14px}
 .prompt-box.simple{font-family:Arial,"Noto Sans Hebrew",sans-serif;font-size:24px}
-.tips.recap{grid-template-columns:repeat(2,1fr);gap:16px 14px}
+.tips.recap{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,auto);grid-auto-flow:column;gap:16px 14px}
 .tips.recap .tip{padding:16px 18px}
 @media(max-width:820px){
   .agenda{position:static}
   .ag-links a small{display:none}
-  .tips.recap{grid-template-columns:1fr}
+  .tips.recap{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}
   .prompt-box{font-size:16px;padding:86px 14px 16px 14px}
   .copy-btn{width:62px;height:62px}
 }
@@ -442,20 +442,20 @@ details.bts[open] summary::after{content:"▴"}
 <script>
 /* ===== Tips: Eldar, edit this list (he = the tip, ex = the example) ===== */
 var TIPS = [
-  { he: 'הַגְדִּירוּ Skills: כִּתְבוּ פַּעַם אַחַת אֵיךְ עוֹשִׂים מְשִׂימָה שֶׁחוֹזֶרֶת, וְ-Claude יַעֲשֶׂה אוֹתָהּ כָּךְ כׇּל פַּעַם.',
-    ex: 'skill שֶׁל ״בְּנִיַּת שִׁעוּר רְחוֹב הָעוֹלָם״.' },
-  { he: 'שִׂיחָה אַחַת – תַּפְקִיד אֶחָד. לֹא מְעַרְבְּבִים.',
-    ex: 'שִׂיחָה לְתִכְנוּן, שִׂיחָה לִבְנִיַּת מִשְׂחָק, שִׂיחָה לִבְדִיקָה.' },
-  { he: 'שִׂימוּ אֶת הַכְּלָלִים שֶׁלָּכֶם בְּקוֹבֶץ (CLAUDE.md).',
-    ex: 'סִגְנוֹן, נִקּוּד מָלֵא, מִימִין לִשְׂמֹאל, גֹּדֶל אוֹתִיּוֹת, אֵיפֹה שׁוֹמְרִים קְבָצִים.' },
-  { he: 'תָּאֲרוּ אֶת הַיֶּלֶד, לֹא אֶת הַקּוֹד.',
-    ex: '״כִּתָּה ה׳, מַתְחִילִים, בְּסוֹף הַשִּׁעוּר יֵדְעוּ 10 מַאֲכָלִים״.' },
+  { he: 'תָּאֲרוּ אֶת הַשִּׁעוּר וְאֶת הַתַּלְמִידִים, לֹא אֶת הַקּוֹד.',
+    ex: '״כִּתָּה ה׳, מַתְחִילִים, אוֹהֲבִים מִשְׂחָקִים. בְּסוֹף הַשִּׁעוּר יֵדְעוּ 10 מַאֲכָלִים״.' },
   { he: 'מַתְחִילִים קָטָן, וְאָז מְשַׁפְּרִים.',
     ex: 'מִשְׂחָק אֶחָד ← מִסְתַּכְּלִים ← ״יוֹתֵר גָּדוֹל / תּוֹסִיף צְלִיל / שָׁלָב קָשֶׁה יוֹתֵר״.' },
   { he: 'תָּמִיד בּוֹדְקִים בְּעַצְמֵנוּ אֶת הָעִבְרִית וְאֶת הַנִּקּוּד לִפְנֵי שֶׁזֶּה מַגִּיעַ לַתַּלְמִידִים.',
     ex: 'קוֹרְאִים כׇּל מִלָּה בְּקוֹל, כְּמוֹ תַּלְמִיד.' },
   { he: 'שׁוֹמְרִים גִּבּוּי מוּכָן וְהַקְלָטָה.',
-    ex: 'הַכַּפְתּוֹר הַכָּתֹם ״תַּקָּלָה בַּתִּקְשֹׁרֶת״ לְמַעְלָה.' },
+    ex: 'הַכַּפְתּוֹר הַכָּתֹם ״תַּקָּלָה בַּתִּקְשֹׁרֶת״ בַּדַּף הַזֶּה.' },
+  { he: 'שִׂיחָה אַחַת – תַּפְקִיד אֶחָד. לֹא מְעַרְבְּבִים.',
+    ex: 'שִׂיחָה לְתִכְנוּן, שִׂיחָה לִבְנִיַּת מִשְׂחָק, שִׂיחָה לִבְדִיקָה.' },
+  { he: 'הַגְדִּירוּ Skills: כִּתְבוּ פַּעַם אַחַת אֵיךְ עוֹשִׂים מְשִׂימָה שֶׁחוֹזֶרֶת, וְ-Claude יַעֲשֶׂה אוֹתָהּ כָּךְ כׇּל פַּעַם.',
+    ex: 'skill שֶׁל ״בְּנִיַּת שִׁעוּר רְחוֹב הָעוֹלָם״.' },
+  { he: 'שִׂימוּ אֶת הַכְּלָלִים שֶׁלָּכֶם בְּקוֹבֶץ (CLAUDE.md).',
+    ex: 'סִגְנוֹן, נִקּוּד מָלֵא, מִימִין לִשְׂמֹאל, גֹּדֶל אוֹתִיּוֹת, אֵיפֹה שׁוֹמְרִים קְבָצִים.' },
   { he: 'אַתֶּם עֲדַיִן הַמּוֹרִים. הַ-AI בּוֹנֶה – אַתֶּם מַחְלִיטִים.',
     ex: 'אַתֶּם בּוֹחֲרִים מָה מַגִּיעַ לַכִּתָּה.' }
 ];
@@ -525,11 +525,12 @@ var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּ�
 (function () {
   var $ = function (id) { return document.getElementById(id); };
 
-  // tips (part 8 = a short recap: the tip line only; the examples were shown live in parts 5-6)
+  // tips (part 8): order set by Eldar; right column = 1-4, left column = 5-8; each with its example
   $('tipsList').classList.add('recap');
   TIPS.forEach(function (t) {
     var li = document.createElement('li'); li.className = 'tip';
     var he = document.createElement('div'); he.className = 'he'; he.textContent = t.he; li.appendChild(he);
+    if (t.ex) { var ex = document.createElement('div'); ex.className = 'ex'; ex.textContent = t.ex; li.appendChild(ex); }
     $('tipsList').appendChild(li);
   });
 
