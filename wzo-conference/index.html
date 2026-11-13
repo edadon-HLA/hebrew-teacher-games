@@ -252,9 +252,6 @@ var TEMPLATE = [
   '6. Reply with the live link only.'
 ].join('\n');
 
-/* ===== Red button: what it copies for Claude Code ===== */
-var RESET_SCRIPT = 'C:\\Users\\Edadon\\Hebrew Website\\wzo-conference\\reset-demo.ps1';
-var RESET_PROMPT = 'Reset the WZO demo (this is my explicit OK, Eldar): run  powershell -NoProfile -ExecutionPolicy Bypass -File "' + RESET_SCRIPT + '"  and tell me when it prints DONE.';
 var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּשּׁוּר לַשִּׁעוּר הֶחָדָשׁ)</p>';
 
 (function () {
@@ -337,9 +334,9 @@ var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּ�
   var slotBody = $('slotBody'), HIDE_KEY = 'wzo-hidden-slot', lastRaw = '';
   var START = '<!-- NEW-LESSON-' + 'SLOT-START -->', END = '<!-- NEW-LESSON-' + 'SLOT-END -->';
   function norm(s) { return (s || '').replace(/\s+/g, ' ').trim(); }
-  // the local "deleted" mark lasts at most 5 minutes, so a reset that never reached the live site can't leave this screen empty for good
+  // the local "deleted" mark (red button) lasts until a new lesson link arrives; 12 hours at most as a safety net
   function getHidden() {
-    try { var o = JSON.parse(localStorage.getItem(HIDE_KEY) || 'null'); if (o && o.v && Date.now() - o.t < 300000) return o.v; localStorage.removeItem(HIDE_KEY); } catch (e) {}
+    try { var o = JSON.parse(localStorage.getItem(HIDE_KEY) || 'null'); if (o && o.v && Date.now() - o.t < 43200000) return o.v; localStorage.removeItem(HIDE_KEY); } catch (e) {}
     return '';
   }
   function setHidden(v) { try { if (v) localStorage.setItem(HIDE_KEY, JSON.stringify({ v: v, t: Date.now() })); else localStorage.removeItem(HIDE_KEY); } catch (e) {} }
@@ -373,27 +370,16 @@ var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּ�
   setInterval(poll, 6000);
   document.addEventListener('visibilitychange', function () { if (!document.hidden) poll(); });
 
-  // ===== red button: press twice. Empties the slot on this screen now + copies the reset command for Claude Code (live site) =====
-  var armed = 0, resetBtn = $('resetBtn'), resetLabel = resetBtn.textContent;
-  function disarm() { armed = 0; resetBtn.textContent = resetLabel; }
+  // ===== red button (screen only): empties the slot on THIS screen at once. No Claude Code, the live file is not changed.
+  // The box stays empty until a NEW lesson link reaches the live site (the next demo replaces the old link anyway). "↺" brings it back.
+  var resetBtn = $('resetBtn');
   resetBtn.addEventListener('click', function () {
-    if (isEmptySlot(lastRaw) || (getHidden() && norm(lastRaw) === getHidden())) {
-      if (!isEmptySlot(lastRaw)) { copyText(RESET_PROMPT, function () {}); }
-      $('resetStatus').innerHTML = isEmptySlot(lastRaw) ? 'הַמָּקוֹם רֵיק – אֶפְשָׁר לְהַדְגִּים שׁוּב.'
-        : 'מְחַכִּים שֶׁהָאֲתַר הַחַי יִתְעַדְכֵּן. אִם עוֹד לֹא הִדְבַּקְתֶּם, הַדְבִּיקוּ בְּ-Claude Code: <code></code>';
-      var c0 = $('resetStatus').querySelector('code'); if (c0) c0.textContent = RESET_PROMPT;
-      return;
-    }
-    if (!armed) { armed = setTimeout(disarm, 4000); resetBtn.textContent = '⚠️ לַחֲצוּ שׁוּב לְאִשּׁוּר'; return; }
-    clearTimeout(armed); disarm();
+    var st = $('resetStatus');
+    if (isEmptySlot(lastRaw) || (getHidden() && norm(lastRaw) === getHidden())) { st.textContent = 'הַמָּקוֹם רֵיק – אֶפְשָׁר לְהַדְגִּים שׁוּב.'; return; }
     setHidden(norm(lastRaw));
     showSlot(lastRaw);
-    copyText(RESET_PROMPT, function (ok) {
-      $('resetStatus').innerHTML = (ok
-        ? '✓ הַמָּקוֹם רֵיק בַּמָּסָךְ הַזֶּה. פְּקֻדַּת הַמְּחִיקָה הוּעְתְּקָה – הַדְבִּיקוּ אוֹתָהּ בְּ-Claude Code כְּדֵי לִמְחֹק גַּם בָּאֲתַר הַחַי:'
-        : 'הַמָּקוֹם רֵיק בַּמָּסָךְ הַזֶּה. כְּדֵי לִמְחֹק גַּם בָּאֲתַר הַחַי, הַעְתִּיקוּ לְ-Claude Code:') + ' <code></code>';
-      $('resetStatus').querySelector('code').textContent = RESET_PROMPT;
-    });
+    st.innerHTML = '✓ הַמָּקוֹם רֵיק – אֶפְשָׁר לְהַדְגִּים שׁוּב. הַשִּׁעוּר הַבָּא יוֹפִיעַ כָּאן. <button type="button" id="undoReset" style="font:inherit;font-size:17px;border:1px solid #fecaca;background:#fff;color:#7f1d1d;border-radius:10px;padding:4px 12px;cursor:pointer">↺ הַחְזִירוּ</button>';
+    $('undoReset').onclick = function () { setHidden(''); showSlot(lastRaw); st.textContent = ''; };
   });
 })();
 </script>
