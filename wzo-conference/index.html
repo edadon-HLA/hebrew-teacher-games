@@ -164,6 +164,16 @@ details.bts[open] summary::after{content:"▴"}
 .copy-btn svg{width:38px;height:38px}
 .copy-btn.done{border-color:var(--ok);color:var(--ok);background:#f0fdf4}
 .copy-status{font-weight:800;color:var(--ok);min-height:1.5em;margin-top:8px}
+.modes{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+.seg{display:inline-flex;border:2px solid #c7d2fe;border-radius:14px;overflow:hidden}
+.seg button{appearance:none;border:0;background:#fff;color:var(--brand);font:inherit;font-size:20px;font-weight:800;padding:8px 16px;cursor:pointer}
+.seg button+button{border-right:2px solid #c7d2fe}
+.seg button.on{background:var(--brand);color:#fff}
+.seg[hidden]{display:none}
+.mode-info[hidden]{display:none}
+.prompt-box.rtl{direction:rtl;text-align:right;font-family:Arial,"Noto Sans Hebrew",sans-serif;font-size:24px;padding:20px 20px 20px 100px}
+.prompt-wrap.rtl .copy-btn{right:auto;left:14px}
+.prompt-box.simple{font-family:Arial,"Noto Sans Hebrew",sans-serif;font-size:24px}
 .tips.recap{grid-template-columns:repeat(2,1fr);gap:16px 14px}
 .tips.recap .tip{padding:16px 18px}
 @media(max-width:820px){
@@ -341,7 +351,7 @@ details.bts[open] summary::after{content:"▴"}
         <div class="t-lead">🧭 רֹאשׁ הַצֶּוֶת<small>מְדַבֵּר אִתִּי, מְחַלֵּק עֲבוֹדָה</small></div>
         <div class="t-arrow">⇅</div>
         <div class="t-row">
-          <div class="t-box">📘 מְתַכְנֵן נִפְלָאוֹת</div>
+          <div class="t-box">📘 מְתַכְנֵן בֵּית סֵפֶר יְסוֹדִי</div>
           <div class="t-box">📗 מְתַכְנֵן רְחוֹב הָעוֹלָם</div>
           <div class="t-box">🧩 חֳמָרִים כְּלָלִיִּים</div>
           <div class="t-box">🛠️ בּוֹנֶה הָאֲתַר</div>
@@ -358,9 +368,28 @@ details.bts[open] summary::after{content:"▴"}
 <!-- ============ PART 6. IMPROVE IT TOGETHER (live change loop) ============ -->
 <section class="part" id="p6">
   <h2><span class="sec-num">6</span>מְשַׁפְּרִים יַחַד – שִׁנּוּי אַחַר שִׁנּוּי</h2>
-  <p class="lead-line">כׇּל הַשִּׁנּוּיִים הוֹלְכִים לְשִׂיחָה אַחַת (שִׂיחָה ב׳). בְּזְמַן ש-Claude עוֹבֵד עַל שִׁנּוּי אֶחָד – אֲנַחְנוּ כְּבָר כּוֹתְבִים אֶת הַבָּא.</p>
-  <div class="flow">
-    <span class="fl">💬 מְדַבְּרִים</span><b>←</b><span class="fl">✍️ פְּרוֹמְפְּט קָצָר</span><b>←</b><span class="fl">🤖 Claude עוֹבֵד</span><b>←</b><span class="fl">✅ בָּאֲוִיר · נִכְנָס לָרְשִׁימָה</span>
+  <div class="modes">
+    <div class="seg" id="modeSeg" role="group" aria-label="סוּג הַפְּרוֹמְפְּט">
+      <button type="button" data-mode="simple" class="on">💬 פְּרוֹמְפְּט פָּשׁוּט</button>
+      <button type="button" data-mode="deep">⚙️ פְּרוֹמְפְּט מְפֹרָט</button>
+    </div>
+    <div class="seg" id="langSeg" role="group" aria-label="שָׂפָה">
+      <button type="button" data-lang="he" class="on">עִבְרִית</button>
+      <button type="button" data-lang="en">English</button>
+    </div>
+  </div>
+  <!-- simple mode: plain words in the session that built the lesson; the teacher checks and says "Go live" in front of the room -->
+  <div class="mode-info" data-for="simple">
+    <p class="lead-line">כּוֹתְבִים בְּמִלִּים פְּשׁוּטוֹת, בַּשִּׂיחָה שֶׁבָּנְתָה אֶת הַשִּׁעוּר (שִׂיחָה א׳). Claude מַרְאֶה לָנוּ – וְרַק כְּשֶׁאֲנַחְנוּ אוֹמְרִים ״Go live״ זֶה עוֹלֶה לָאֲוִיר.</p>
+    <div class="flow">
+      <span class="fl">💬 מְדַבְּרִים</span><b>←</b><span class="fl">✍️ מִשְׁפָּט פָּשׁוּט</span><b>←</b><span class="fl">🤖 Claude עוֹבֵד</span><b>←</b><span class="fl">👀 בּוֹדְקִים יַחַד</span><b>←</b><span class="fl">✅ ״Go live״</span>
+    </div>
+  </div>
+  <div class="mode-info" data-for="deep" hidden>
+    <p class="lead-line">כׇּל הַשִּׁנּוּיִים הוֹלְכִים לְשִׂיחָה אַחַת (שִׂיחָה ב׳). בְּזְמַן ש-Claude עוֹבֵד עַל שִׁנּוּי אֶחָד – אֲנַחְנוּ כְּבָר כּוֹתְבִים אֶת הַבָּא.</p>
+    <div class="flow">
+      <span class="fl">💬 מְדַבְּרִים</span><b>←</b><span class="fl">✍️ פְּרוֹמְפְּט קָצָר</span><b>←</b><span class="fl">🤖 Claude עוֹבֵד</span><b>←</b><span class="fl">✅ בָּאֲוִיר · נִכְנָס לָרְשִׁימָה</span>
+    </div>
   </div>
   <label class="big" for="change" style="margin-top:18px">מָה נְשַׁנֶּה בַּשִּׁעוּר?</label>
   <div class="chips" id="chips"></div>
@@ -381,7 +410,8 @@ details.bts[open] summary::after{content:"▴"}
     </div>
     <div id="chgStatus" class="copy-status" aria-live="polite"></div>
   </div>
-  <p class="small-note">כׇּל שִׁנּוּי שֶׁעוֹלֶה לָאֲוִיר מוֹפִיעַ בְּ״מָה שִׁנִּינוּ יַחַד״ לְמַעְלָה, וְהַכַּפְתּוֹר הַיָּרֹק פּוֹתֵחַ תָּמִיד אֶת הַגִּרְסָה הָאַחֲרוֹנָה.</p>
+  <p class="small-note mode-info" data-for="simple">אַחֲרֵי ״Go live״ פּוֹתְחִים אֶת הַשִּׁעוּר שׁוּב (Ctrl+F5) וְרוֹאִים אֶת הַשִּׁנּוּי.</p>
+  <p class="small-note mode-info" data-for="deep" hidden>כׇּל שִׁנּוּי שֶׁעוֹלֶה לָאֲוִיר מוֹפִיעַ בְּ״מָה שִׁנִּינוּ יַחַד״ לְמַעְלָה, וְהַכַּפְתּוֹר הַיָּרֹק פּוֹתֵחַ תָּמִיד אֶת הַגִּרְסָה הָאַחֲרוֹנָה.</p>
 </section>
 
 <!-- ============ PART 7. MY GAME ============ -->
@@ -454,14 +484,21 @@ var TEMPLATE = [
 ].join('\n');
 
 /* ===== Part 6: change ideas (the chips) - Eldar, edit freely ===== */
+//   chip = the button text; he / en = the SIMPLE prompt sentence (plain words, like a teacher types them)
 var CHANGE_IDEAS = [
-  'הַגְדִּילוּ אֶת הַמִּלִּים וְהַתְּמוּנוֹת',
-  'הוֹסִיפוּ צְלִיל שִׂמְחָה כְּשֶׁעוֹנִים נָכוֹן',
-  'הוֹסִיפוּ עוֹד 5 מִלִּים',
-  'הוֹסִיפוּ מִשְׂחַק זִכָּרוֹן עִם הַמִּלִּים',
-  'הוֹסִיפוּ רָמָה קָשָׁה יוֹתֵר',
-  'שַׁנּוּ אֶת צִבְעֵי הַשִּׁעוּר'
+  { chip: 'הַגְדִּילוּ אֶת הַמִּלִּים וְהַתְּמוּנוֹת', he: 'תגדיל את המילים והתמונות.', en: 'Make the words and pictures bigger.' },
+  { chip: 'הוֹסִיפוּ צְלִיל שִׂמְחָה כְּשֶׁעוֹנִים נָכוֹן', he: 'תוסיף צליל שמח כשתלמיד עונה נכון.', en: 'Add a happy sound when a student answers correctly.' },
+  { chip: 'הוֹסִיפוּ עוֹד 5 מִלִּים', he: 'תוסיף עוד 5 מילים על הנושא.', en: 'Add 5 more words on the topic.' },
+  { chip: 'הוֹסִיפוּ מִשְׂחַק זִכָּרוֹן עִם הַמִּלִּים', he: 'תוסיף משחק זיכרון עם המילים.', en: 'Add a memory game with the words.' },
+  { chip: 'הוֹסִיפוּ רָמָה קָשָׁה יוֹתֵר', he: 'תוסיף רמה קשה יותר למשחק.', en: 'Add a harder level to the game.' },
+  { chip: 'שַׁנּוּ אֶת צִבְעֵי הַשִּׁעוּר', he: 'תשנה את הצבעים של השיעור לצבעים שמחים יותר.', en: 'Change the lesson colors to brighter, happier colors.' }
 ];
+
+/* ===== Part 6: the SIMPLE prompt (plain text, no skills, no paths, no publishing: Eldar says "Go live" himself) ===== */
+var SIMPLE = {
+  he: { open: 'בשיעור שבנית עכשיו: ', close: '\nתראה לי לפני שזה עולה לאתר.' },
+  en: { open: 'In the lesson you just built: ', close: '\nShow me before it goes live.' }
+};
 
 /* ===== Part 6: the SHORT change prompt ({CHANGE}, {CHANGE_HTML}, {STAMP}) - all changes go to ONE Claude Code session ===== */
 var CHANGE_TEMPLATE = [
@@ -578,7 +615,7 @@ var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּ�
         btn.querySelector('.i-check').style.display = ok ? '' : 'none';
         btn.classList.toggle('done', ok);
         statusEl.style.color = ok ? '' : '#b45309';
-        statusEl.textContent = ok ? okText : 'לַחֲצוּ Ctrl+C כְּדֵי לְהַעְתִּיק אֶת הַטֶּקְסְט הַמְּסֻמָּן.';
+        statusEl.textContent = ok ? (typeof okText === 'function' ? okText() : okText) :'לַחֲצוּ Ctrl+C כְּדֵי לְהַעְתִּיק אֶת הַטֶּקְסְט הַמְּסֻמָּן.';
         t = setTimeout(function () {
           btn.querySelector('.i-copy').style.display = ''; btn.querySelector('.i-check').style.display = 'none';
           btn.classList.remove('done'); statusEl.textContent = '';
@@ -590,24 +627,51 @@ var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּ�
 
   // ===== part 6: change chips + the short change prompt =====
   var chg = $('change'), chgBox = $('chgBox'), chgArea = $('chgArea'), chgMsg = $('chgMsg');
+  var mode = 'simple', lang = 'he', pickedIdea = null;
+  function seg(id, attr, onPick) {
+    [].forEach.call($(id).children, function (b) {
+      b.onclick = function () {
+        [].forEach.call($(id).children, function (x) { x.classList.toggle('on', x === b); });
+        onPick(b.getAttribute(attr));
+      };
+    });
+  }
+  seg('modeSeg', 'data-mode', function (m) {
+    mode = m; $('langSeg').hidden = (m !== 'simple');
+    [].forEach.call(document.querySelectorAll('.mode-info'), function (el) { el.hidden = el.getAttribute('data-for') !== m; });
+    if (!chgArea.hidden) makeChange();
+  });
+  seg('langSeg', 'data-lang', function (l) { lang = l; if (!chgArea.hidden) makeChange(); });
   CHANGE_IDEAS.forEach(function (idea) {
-    var b = document.createElement('button'); b.type = 'button'; b.textContent = idea;
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = idea.chip;
     b.onclick = function () {
       [].forEach.call($('chips').children, function (c) { c.classList.toggle('on', c === b); });
-      chg.value = idea; chgMsg.textContent = ''; makeChange();
+      chg.value = idea.chip; pickedIdea = idea; chgMsg.textContent = ''; makeChange();
     };
     $('chips').appendChild(b);
   });
+  chg.addEventListener('input', function () { pickedIdea = null; [].forEach.call($('chips').children, function (c) { c.classList.remove('on'); }); });
   function makeChange() {
     var c = chg.value.trim().replace(/\s+/g, ' ');
     if (!c) { chgMsg.textContent = '✏️ בַּחֲרוּ רַעְיוֹן אוֹ כִּתְבוּ שִׁנּוּי.'; chgArea.hidden = true; chg.focus(); return; }
     chgMsg.textContent = '';
-    chgBox.value = CHANGE_TEMPLATE.split('{CHANGE_HTML}').join(escHtml(c)).split('{STAMP}').join(String(Date.now())).split('{CHANGE}').join(c);
+    var simple = mode === 'simple', rtl = simple && lang === 'he';
+    if (simple) {
+      var s = SIMPLE[lang], body = pickedIdea && pickedIdea.chip === c ? pickedIdea[lang] : c;
+      chgBox.value = s.open + body + s.close;
+    } else {
+      chgBox.value = CHANGE_TEMPLATE.split('{CHANGE_HTML}').join(escHtml(c)).split('{STAMP}').join(String(Date.now())).split('{CHANGE}').join(c);
+    }
+    chgBox.classList.toggle('simple', simple); chgBox.classList.toggle('rtl', rtl);
+    chgBox.parentNode.classList.toggle('rtl', rtl);
     chgArea.hidden = false; $('chgStatus').textContent = '';
     chgBox.style.height = 'auto'; chgBox.style.height = (chgBox.scrollHeight + 6) + 'px';
   }
-  $('changeForm').addEventListener('submit', function (e) { e.preventDefault(); [].forEach.call($('chips').children, function (c) { c.classList.toggle('on', c.textContent === chg.value.trim()); }); makeChange(); });
-  wireCopy($('chgCopy'), chgBox, $('chgStatus'), '✓ הוּעְתַּק! מַדְבִּיקִים בְּ-Claude Code (שִׂיחָה ב׳) – אֶפְשָׁר גַּם בִּזְמַן שֶׁהוּא עוֹבֵד.');
+  $('changeForm').addEventListener('submit', function (e) { e.preventDefault(); makeChange(); });
+  wireCopy($('chgCopy'), chgBox, $('chgStatus'), function () {
+    return mode === 'simple' ? '✓ הוּעְתַּק! מַדְבִּיקִים בַּשִּׂיחָה שֶׁבָּנְתָה אֶת הַשִּׁעוּר (שִׂיחָה א׳). כְּשֶׁהוּא מַרְאֶה – בּוֹדְקִים וְאוֹמְרִים ״Go live״.'
+      : '✓ הוּעְתַּק! מַדְבִּיקִים בְּ-Claude Code (שִׂיחָה ב׳) – אֶפְשָׁר גַּם בִּזְמַן שֶׁהוּא עוֹבֵד.';
+  });
 
   // ===== the new-lesson slot follows the LIVE site (so the audience sees the link appear / disappear) =====
   // It always reads the live page, also when this page is opened from this PC (localhost or a file), and
