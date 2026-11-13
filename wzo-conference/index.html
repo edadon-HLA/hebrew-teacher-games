@@ -233,23 +233,26 @@ var TIPS = [
     ex: 'אַתֶּם בּוֹחֲרִים מָה מַגִּיעַ לַכִּתָּה.' }
 ];
 
-/* ===== Prompt template ({TOPIC}, {GRADE}, {SLUG}, {TOPIC_HTML}); English works best for Claude ===== */
+/* ===== Prompt template ({TOPIC}, {GRADE}, {STAMP}, {TOPIC_HTML}); English works best for Claude =====
+   Every demo lesson goes into ONE fixed folder, wzo-conference/lessons/demo/, and overwrites the previous one.
+   {STAMP} (a time number) makes each new link unique, so no browser shows the old lesson from its cache. */
 var DEMO_CLONE = 'C:\\Users\\Edadon\\Hebrew Website\\wzo-demo';
 var LIVE = 'https://edadon-hla.github.io/hebrew-teacher-games/';
 var TEMPLATE = [
   'Build a new Hebrew lesson for my class on this topic: "{TOPIC}". Students: grade {GRADE}, Hebrew as a second language in the US.',
-  'I am Eldar, the teacher. This prompt is my explicit OK to publish to main (go live) and to edit the WZO control page as described below. Do every step yourself, in one fast pass, without asking me anything.',
+  'I am Eldar, the teacher. This prompt is my explicit OK to publish to main (go live), to replace the previous demo lesson and to edit the WZO control page as described below. Do every step yourself, in one fast pass, without asking me anything.',
   '',
   '1. Work ONLY in the demo clone: ' + DEMO_CLONE + ' (branch main). First run: git -C "' + DEMO_CLONE + '" pull --ff-only origin main',
-  '2. Build it as one of our Olam Street lessons: follow the olam-lesson-plans skill (the 5 parts: word-search entry ticket, an easy warm-up from material the students already know (not the new topic), teaching the new words through a game, practice with response cards "3… 2… 1… הָרִימוּ!" in 2 levels, ✔/✘ and pair talk with a timer, and an exit ticket), but skip its workbook, Google Doc, spec and approval steps: this prompt replaces them.',
-  '   Fast way: copy the whole folder wzo-conference/backup/ (the ready-made lesson, already built with that skill = the template) to wzo-conference/lessons/{SLUG}/ and replace only the topic content in the data block at the top of its script (title, word-search words, warm-up items, 10 new topic words with drawn pictures, true/false items, pair-talk questions, exit-ticket questions, teacher notes) with content for the new topic. Keep its style, structure, games, step names and Hebrew wording.',
+  '2. The demo lesson ALWAYS lives in one folder: wzo-conference/lessons/demo/ . It replaces the previous demo lesson: first delete the whole folder wzo-conference/lessons/ if it exists (old demo lessons only; never touch wzo-conference/backup/ or anything else), then copy the whole folder wzo-conference/backup/ (the ready-made lesson = the template) to wzo-conference/lessons/demo/ .',
+  '3. Build it as one of our Olam Street lessons: follow the olam-lesson-plans skill (the 5 parts: word-search entry ticket, an easy warm-up from material the students already know (not the new topic), teaching the new words through a game, practice with response cards "3… 2… 1… הָרִימוּ!" in 2 levels, ✔/✘ and pair talk with a timer, and an exit ticket), but skip its workbook, Google Doc, spec and approval steps: this prompt replaces them.',
+  '   Fast way: in the copied index.html replace only the topic content in the data block at the top of its script (title, word-search words, warm-up items, 10 new topic words with drawn pictures, true/false items, pair-talk questions, exit-ticket questions, teacher notes) with content for the new topic. Keep its style, structure, games, step names and Hebrew wording. Add <meta name="wzo-version" content="{STAMP}"> in its <head>.',
   '   NO English anywhere (also not in the exit ticket). Full, correct nikud on every Hebrew word. No external files. The new folder is one level deeper than backup/, so fix the relative links: every "../../" becomes "../../../" and the back link "../index.html" becomes "../../index.html".',
-  '3. Edit wzo-conference/index.html ONLY between <!-- NEW-LESSON-' + 'SLOT-START --> and <!-- NEW-LESSON-' + 'SLOT-END -->: delete EVERYTHING that is between them now (an older lesson link from an earlier demo, or the empty-slot line; never keep the old link) and put exactly this one line there instead, so the slot holds only the new link:',
-  '   <a class="new-lesson-link" href="lessons/{SLUG}/index.html" target="_blank" rel="noopener">✨ {TOPIC_HTML} – לַשִּׁעוּר הֶחָדָשׁ</a>',
+  '4. Edit wzo-conference/index.html ONLY between <!-- NEW-LESSON-' + 'SLOT-START --> and <!-- NEW-LESSON-' + 'SLOT-END -->: delete EVERYTHING that is between them now (an older lesson link from an earlier demo, or the empty-slot line; never keep the old link) and put exactly this one line there instead, so the slot holds only the new link:',
+  '   <a class="new-lesson-link" href="lessons/demo/index.html?v={STAMP}" target="_blank" rel="noopener">✨ {TOPIC_HTML} – לַשִּׁעוּר הֶחָדָשׁ</a>',
   '   Do not change anything else in that file, and do not touch any other page.',
-  '4. Commit the new lesson folder and the control page ("WZO demo lesson: {SLUG}") and push to main: git push origin main (if it is rejected, pull --rebase and push again).',
-  '5. GitHub Pages takes about a minute. Check every 10 seconds (PowerShell Invoke-WebRequest, add ?t=<time> to beat the cache) until ' + LIVE + 'wzo-conference/lessons/{SLUG}/index.html returns 200 (give up after 4 minutes).',
-  '6. Reply with the live link only.'
+  '5. Commit everything under wzo-conference/lessons/ (the removed old lesson and the new one) and the control page ("WZO demo lesson: {TOPIC}") and push to main: git push origin main (if it is rejected, pull --rebase and push again).',
+  '6. GitHub Pages takes about a minute. Check every 10 seconds (PowerShell Invoke-WebRequest, add ?t=<time> to beat the cache) until ' + LIVE + 'wzo-conference/lessons/demo/index.html contains {STAMP} (give up after 4 minutes).',
+  '7. Reply with the live link only: ' + LIVE + 'wzo-conference/lessons/demo/index.html?v={STAMP}'
 ].join('\n');
 
 var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּשּׁוּר לַשִּׁעוּר הֶחָדָשׁ)</p>';
@@ -266,18 +269,12 @@ var EMPTY_SLOT = '<p class="slot-empty">(כָּאן יוֹפִיעַ הַקִּ�
   });
 
   // prompt
-  function slugify(topic) {
-    if (!/[A-Za-z]/.test(topic)) return 'lesson-' + Date.now();
-    var s = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-    if (s.length > 40) s = s.slice(0, 40).replace(/-[^-]*$/, '') || s.slice(0, 40);
-    return s || 'lesson-' + Date.now();
-  }
   function escHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function fill(topic, grade) {
-    var slug = slugify(topic);
+    var stamp = String(Date.now());
     // split/join instead of String.replace so "$&", "$1" etc. typed in the topic are inserted literally
     return TEMPLATE.split('{TOPIC_HTML}').join(escHtml(topic))
-      .split('{SLUG}').join(slug).split('{GRADE}').join(grade).split('{TOPIC}').join(topic);
+      .split('{STAMP}').join(stamp).split('{GRADE}').join(grade).split('{TOPIC}').join(topic);
   }
   var input = $('topic'), msg = $('msg'), area = $('promptArea'), box = $('promptBox'), copyBtn = $('copyBtn'), status = $('copyStatus');
   function fit() { box.style.height = 'auto'; box.style.height = (box.scrollHeight + 6) + 'px'; }
