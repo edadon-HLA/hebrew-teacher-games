@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>שִׁעוּר מוּכָן</title>
+<meta name="wzo-version" content="1794531697969">
+<title>בַּעֲלֵי חַיִּים</title>
 <!-- No Google Fonts / no external files on purpose: this page must work offline (conference Wi-Fi). The font stacks fall back to system fonts.
      TEMPLATE: to make a lesson on another topic, copy this folder and change ONLY the LESSON block at the top of the first <script>.
      Printables come from this same page: ?print=entry (word search, 4 per A4) and ?print=exit (exit ticket, 4 per A4).
@@ -381,86 +382,87 @@ html.printing .pmode{display:block}
    - notes: the short teacher notes ("📝 מהלך קצר") of every part.
    ===================================================================== */
 const LESSON = {
-  title: 'עוֹנוֹת הַשָּׁנָה',
-  icon: 'aviv',
+  title: 'בַּעֲלֵי חַיִּים',
+  icon: 'arye',
   crumb: 'שִׁעוּר מוּכָן · כִּתּוֹת ה׳–ו׳ · עִבְרִית',
   subtitle: 'מִלִּים חֲדָשׁוֹת · מִשְׂחָקִים · כַּרְטִיסֵי תְּשׁוּבָה',
 
-  wordSearch: { words: ['כִּסֵּא', 'שֻׁלְחָן', 'מוֹרֶה', 'כִּתָּה', 'חָבֵר', 'עִפָּרוֹן', 'תִּיק', 'מַחְבֶּרֶת'] },
+  wordSearch: { words: ['שָׁלוֹם', 'תּוֹדָה', 'בַּיִת', 'אִמָּא', 'אַבָּא', 'סֵפֶר', 'יֶלֶד', 'כִּסֵּא'] },
 
   warmup: {
-    lead: 'כַּמָּה נְקֻדּוֹת?',
+    lead: 'אֵיזֶה צֶבַע?',
     items: [
-      { he: 'אַחַת', dots: 1 },
-      { he: 'שְׁתַּיִם', dots: 2 },
-      { he: 'שָׁלוֹשׁ', dots: 3 },
-      { he: 'אַרְבַּע', dots: 4 },
-      { he: 'חָמֵשׁ', dots: 5 },
-      { he: 'שֵׁשׁ', dots: 6 },
-      { he: 'שֶׁבַע', dots: 7 },
-      { he: 'שְׁמוֹנֶה', dots: 8 },
+      { he: 'אָדֹם', color: '#e53935' },
+      { he: 'כָּחֹל', color: '#1e66d0' },
+      { he: 'יָרֹק', color: '#2e9d4a' },
+      { he: 'צָהֹב', color: '#ffd21f' },
+      { he: 'כָּתֹם', color: '#f57c00' },
+      { he: 'סָגֹל', color: '#8e44ad' },
+      { he: 'וָרֹד', color: '#f48fb1' },
+      { he: 'שָׁחֹר', color: '#222222' },
+      { he: 'לָבָן', color: '#ffffff' },
     ],
   },
 
   words: [
-    { id: 'choref', he: 'חֹרֶף', syl: ['חֹ', 'רֶף'],
-      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="10" fill="#d6e4f2"/><path d="M0 76Q50 66 100 76V100H0Z" fill="#ffffff"/><g stroke="#7a4a24" stroke-width="5" stroke-linecap="round" fill="none"><path d="M50 86V36"/><path d="M50 60L31 44M50 52L69 36M50 68L68 56M31 44L25 32M69 36L75 25M50 42L44 26"/></g><g stroke="#ffffff" stroke-width="3" stroke-linecap="round"><path d="M29 43l-5-4M68 35l5-4M45 27l-3-4"/></g><g fill="#ffffff"><circle cx="14" cy="14" r="3"/><circle cx="30" cy="22" r="2.5"/><circle cx="84" cy="14" r="3"/><circle cx="88" cy="40" r="2.5"/><circle cx="12" cy="46" r="2.5"/><circle cx="62" cy="12" r="2.5"/><circle cx="80" cy="60" r="3"/><circle cx="20" cy="64" r="2.5"/></g></svg>` },
-    { id: 'aviv', he: 'אָבִיב', syl: ['אָ', 'בִיב'],
-      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="10" fill="#e3f4ff"/><path d="M0 78Q50 70 100 78V100H0Z" fill="#7ccf6a"/><rect x="46" y="50" width="8" height="34" rx="3" fill="#8b5a2b"/><g fill="#9be07f"><circle cx="50" cy="32" r="20"/><circle cx="32" cy="44" r="14"/><circle cx="68" cy="44" r="14"/></g><g fill="#f48fb1"><circle cx="42" cy="24" r="4"/><circle cx="58" cy="28" r="4"/><circle cx="50" cy="40" r="4"/><circle cx="30" cy="44" r="4"/><circle cx="70" cy="42" r="4"/><circle cx="62" cy="50" r="3.5"/><circle cx="38" cy="52" r="3.5"/></g><g fill="#ffffff"><circle cx="18" cy="88" r="3.5"/><circle cx="82" cy="90" r="3.5"/><circle cx="30" cy="94" r="3"/></g><g fill="#ffd21f"><circle cx="18" cy="88" r="1.5"/><circle cx="82" cy="90" r="1.5"/><circle cx="30" cy="94" r="1.3"/></g></svg>` },
-    { id: 'kayitz', he: 'קַיִץ', syl: ['קַ', 'יִץ'],
-      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="10" fill="#9fd8ff"/><g stroke="#f2b01e" stroke-width="3.5" stroke-linecap="round"><path d="M80 4v6M80 30v6M64 20h-6M102 20h-6M69 9l4 4M91 9l-4 4M69 31l4-4M91 31l-4-4"/></g><circle cx="80" cy="20" r="10" fill="#ffd21f"/><path d="M0 80Q50 72 100 80V100H0Z" fill="#3fa34d"/><rect x="34" y="52" width="8" height="34" rx="3" fill="#7a4a24"/><g fill="#1f7a3a"><circle cx="38" cy="36" r="20"/><circle cx="22" cy="48" r="13"/><circle cx="54" cy="48" r="13"/></g><g fill="#2e9d4a"><circle cx="32" cy="30" r="7"/><circle cx="46" cy="42" r="6"/></g></svg>` },
-    { id: 'stav', he: 'סְתָו', syl: ['סְתָו'],
-      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="10" fill="#fbefdc"/><path d="M0 78Q50 70 100 78V100H0Z" fill="#c98a4b"/><rect x="46" y="50" width="8" height="34" rx="3" fill="#6b3f1d"/><g fill="#e8742a"><circle cx="50" cy="32" r="20"/><circle cx="32" cy="44" r="13"/><circle cx="68" cy="44" r="13"/></g><g fill="#c0392b"><circle cx="42" cy="26" r="6"/><circle cx="60" cy="38" r="6"/><circle cx="34" cy="46" r="5"/></g><g fill="#f2b01e"><circle cx="56" cy="22" r="5"/><circle cx="68" cy="48" r="4"/></g><g fill="#e8742a"><ellipse cx="20" cy="66" rx="5" ry="2.5" transform="rotate(-30 20 66)"/><ellipse cx="80" cy="64" rx="5" ry="2.5" transform="rotate(30 80 64)"/><ellipse cx="70" cy="86" rx="5" ry="2.5" transform="rotate(-20 70 86)"/></g><g fill="#c0392b"><ellipse cx="28" cy="86" rx="5" ry="2.5" transform="rotate(20 28 86)"/><ellipse cx="86" cy="80" rx="4" ry="2" transform="rotate(-10 86 80)"/></g></svg>` },
-    { id: 'shemesh', he: 'שֶׁמֶשׁ', syl: ['שֶׁ', 'מֶשׁ'],
-      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="#f2b01e" stroke-width="6" stroke-linecap="round"><path d="M50 4v14M50 82v14M4 50h14M82 50h14M17 17l10 10M73 73l10 10M83 17l-10 10M27 73l-10 10"/></g><circle cx="50" cy="50" r="25" fill="#ffd21f" stroke="#f2b01e" stroke-width="3"/><circle cx="42" cy="46" r="2.8" fill="#23233a"/><circle cx="58" cy="46" r="2.8" fill="#23233a"/><path d="M40 56q10 9 20 0" fill="none" stroke="#23233a" stroke-width="3" stroke-linecap="round"/><circle cx="35" cy="54" r="3.5" fill="#f48fb1" opacity=".7"/><circle cx="65" cy="54" r="3.5" fill="#f48fb1" opacity=".7"/></svg>` },
-    { id: 'geshem', he: 'גֶּשֶׁם', syl: ['גֶּ', 'שֶׁם'],
-      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M22 54Q8 54 8 42Q8 30 24 30Q26 14 44 14Q58 14 64 26Q70 22 78 24Q92 28 92 42Q92 54 76 54Z" fill="#8e9cad" stroke="#66758a" stroke-width="3" stroke-linejoin="round"/><path d="M24 36Q30 26 40 30" fill="none" stroke="#b7c3d1" stroke-width="3" stroke-linecap="round"/><g fill="#2a8bd0"><path d="M28 62c4 7 4 11 0 12c-4-1-4-5 0-12z"/><path d="M48 66c4 7 4 11 0 12c-4-1-4-5 0-12z"/><path d="M68 62c4 7 4 11 0 12c-4-1-4-5 0-12z"/><path d="M38 80c4 7 4 11 0 12c-4-1-4-5 0-12z"/><path d="M58 82c4 7 4 11 0 12c-4-1-4-5 0-12z"/><path d="M78 78c4 7 4 11 0 12c-4-1-4-5 0-12z"/></g></svg>` },
-    { id: 'sheleg', he: 'שֶׁלֶג', syl: ['שֶׁ', 'לֶג'],
-      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="47" fill="#e3f1fc"/><g stroke="#3d8fd6" stroke-width="5" stroke-linecap="round" fill="none"><g><path d="M50 50V9M50 22l-9-8M50 22l9-8M50 35l-7-6M50 35l7-6"/></g><g transform="rotate(60 50 50)"><path d="M50 50V9M50 22l-9-8M50 22l9-8M50 35l-7-6M50 35l7-6"/></g><g transform="rotate(120 50 50)"><path d="M50 50V9M50 22l-9-8M50 22l9-8M50 35l-7-6M50 35l7-6"/></g><g transform="rotate(180 50 50)"><path d="M50 50V9M50 22l-9-8M50 22l9-8M50 35l-7-6M50 35l7-6"/></g><g transform="rotate(240 50 50)"><path d="M50 50V9M50 22l-9-8M50 22l9-8M50 35l-7-6M50 35l7-6"/></g><g transform="rotate(300 50 50)"><path d="M50 50V9M50 22l-9-8M50 22l9-8M50 35l-7-6M50 35l7-6"/></g></g><circle cx="50" cy="50" r="5" fill="#3d8fd6"/></svg>` },
-    { id: 'anan', he: 'עָנָן', syl: ['עָ', 'נָן'],
-      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M22 74Q8 74 8 60Q8 46 24 46Q26 28 44 28Q58 28 64 40Q70 36 78 38Q92 42 92 58Q92 74 76 74Z" fill="#f4f8fc" stroke="#8aa4bd" stroke-width="3.5" stroke-linejoin="round"/><path d="M22 66Q50 72 84 64" fill="none" stroke="#d3dfeb" stroke-width="4" stroke-linecap="round"/><path d="M28 50Q32 38 44 38" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/></svg>` },
-    { id: 'perach', he: 'פֶּרַח', syl: ['פֶּ', 'רַח'],
-      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 48V94" stroke="#2e9d4a" stroke-width="5" stroke-linecap="round"/><ellipse cx="38" cy="74" rx="11" ry="5" fill="#3fbf5a" transform="rotate(-30 38 74)"/><ellipse cx="62" cy="82" rx="11" ry="5" fill="#3fbf5a" transform="rotate(30 62 82)"/><g fill="#e2506a"><circle cx="50" cy="19" r="11"/><circle cx="64" cy="27.5" r="11"/><circle cx="64" cy="44.5" r="11"/><circle cx="50" cy="53" r="11"/><circle cx="36" cy="44.5" r="11"/><circle cx="36" cy="27.5" r="11"/></g><circle cx="50" cy="36" r="10" fill="#ffd21f" stroke="#f2b01e" stroke-width="2"/></svg>` },
-    { id: 'ale', he: 'עָלֶה', syl: ['עָ', 'לֶה'],
-      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g transform="rotate(25 50 50)"><path d="M50 6C80 22 86 54 50 86C14 54 20 22 50 6Z" fill="#f57c00" stroke="#c2410c" stroke-width="3" stroke-linejoin="round"/><path d="M50 14V96" stroke="#8b4513" stroke-width="3.5" stroke-linecap="round"/><g stroke="#c2410c" stroke-width="2.5" stroke-linecap="round"><path d="M50 34L36 24M50 34L64 24M50 50L32 40M50 50L68 40M50 66L36 58M50 66L64 58"/></g></g></svg>` },
+    { id: 'arye', he: 'אַרְיֵה', syl: ['אַרְ', 'יֵה'],
+      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="#c8641e"/><g fill="#b05414"><circle cx="20" cy="28" r="12"/><circle cx="80" cy="28" r="12"/><circle cx="12" cy="56" r="12"/><circle cx="88" cy="56" r="12"/><circle cx="26" cy="82" r="12"/><circle cx="74" cy="82" r="12"/><circle cx="50" cy="10" r="12"/><circle cx="50" cy="90" r="10"/></g><circle cx="31" cy="31" r="7" fill="#f2b84b"/><circle cx="69" cy="31" r="7" fill="#f2b84b"/><circle cx="50" cy="52" r="27" fill="#f2b84b"/><ellipse cx="50" cy="65" rx="13" ry="9" fill="#fbe2a8"/><circle cx="40" cy="46" r="3.5" fill="#23233a"/><circle cx="60" cy="46" r="3.5" fill="#23233a"/><path d="M44 57h12l-6 7z" fill="#7a3b12"/><path d="M50 64v4M50 68q-6 5-11 1M50 68q6 5 11 1" stroke="#7a3b12" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>` },
+    { id: 'pil', he: 'פִּיל', syl: ['פִּיל'],
+      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M89 50q7 5 4 14" stroke="#7c8595" stroke-width="3" fill="none" stroke-linecap="round"/><g fill="#8a93a3"><rect x="34" y="64" width="11" height="28" rx="4"/><rect x="50" y="66" width="11" height="26" rx="4"/><rect x="66" y="66" width="11" height="26" rx="4"/><rect x="78" y="62" width="10" height="30" rx="4"/></g><ellipse cx="60" cy="54" rx="31" ry="23" fill="#9aa3b2"/><path d="M16 46q-8 18-2 34q2 6 8 3" fill="none" stroke="#9aa3b2" stroke-width="9" stroke-linecap="round"/><circle cx="27" cy="42" r="18" fill="#9aa3b2"/><ellipse cx="40" cy="42" rx="11" ry="15" fill="#b8c0cc" stroke="#8a93a3" stroke-width="2"/><circle cx="21" cy="38" r="3" fill="#23233a"/><path d="M20 56q-5 5-11 4" stroke="#fffaf0" stroke-width="4" fill="none" stroke-linecap="round"/></svg>` },
+    { id: 'kof', he: 'קוֹף', syl: ['קוֹף'],
+      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="17" cy="46" r="12" fill="#8b5a2b"/><circle cx="83" cy="46" r="12" fill="#8b5a2b"/><circle cx="17" cy="46" r="6" fill="#e8b98a"/><circle cx="83" cy="46" r="6" fill="#e8b98a"/><circle cx="50" cy="50" r="34" fill="#8b5a2b"/><path d="M50 32c-8-6-22-4-22 10c0 6 4 9 4 12c-6 4-8 10-8 14c0 12 12 18 26 18s26-6 26-18c0-4-2-10-8-14c0-3 4-6 4-12c0-14-14-16-22-10z" fill="#e8b98a"/><circle cx="40" cy="44" r="4" fill="#23233a"/><circle cx="60" cy="44" r="4" fill="#23233a"/><circle cx="46" cy="60" r="1.8" fill="#5a3825"/><circle cx="54" cy="60" r="1.8" fill="#5a3825"/><path d="M38 70q12 9 24 0" stroke="#5a3825" stroke-width="3" fill="none" stroke-linecap="round"/></svg>` },
+    { id: 'sus', he: 'סוּס', syl: ['סוּס'],
+      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M83 44q12 10 7 32" stroke="#3b2a1a" stroke-width="7" fill="none" stroke-linecap="round"/><g fill="#8b5a2b"><rect x="36" y="58" width="8" height="32" rx="3"/><rect x="47" y="60" width="8" height="30" rx="3"/><rect x="66" y="60" width="8" height="30" rx="3"/><rect x="76" y="58" width="8" height="32" rx="3"/></g><g fill="#3b2a1a"><rect x="35" y="88" width="10" height="5" rx="1"/><rect x="46" y="88" width="10" height="5" rx="1"/><rect x="65" y="88" width="10" height="5" rx="1"/><rect x="75" y="88" width="10" height="5" rx="1"/></g><ellipse cx="60" cy="52" rx="27" ry="15" fill="#a0693a"/><path d="M48 48L30 14L20 18L38 56z" fill="#a0693a"/><path d="M30 10L10 26q-6 7 1 10l9 1q7-2 10-8z" fill="#a0693a"/><path d="M27 12l2-8l5 7z" fill="#a0693a"/><path d="M32 10q10 16 16 34" stroke="#3b2a1a" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="23" cy="20" r="2.5" fill="#23233a"/><circle cx="11" cy="31" r="1.6" fill="#3b2a1a"/></svg>` },
+    { id: 'para', he: 'פָּרָה', syl: ['פָּ', 'רָה'],
+      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M87 50q8 6 4 20" stroke="#23233a" stroke-width="3" fill="none"/><g fill="#fff" stroke="#23233a" stroke-width="3"><rect x="38" y="64" width="8" height="26" rx="3"/><rect x="50" y="66" width="8" height="24" rx="3"/><rect x="66" y="66" width="8" height="24" rx="3"/><rect x="76" y="64" width="8" height="26" rx="3"/></g><ellipse cx="60" cy="54" rx="28" ry="17" fill="#fff" stroke="#23233a" stroke-width="3"/><g fill="#23233a"><ellipse cx="52" cy="48" rx="8" ry="6"/><ellipse cx="72" cy="58" rx="7" ry="5"/><ellipse cx="66" cy="43" rx="5" ry="3"/></g><ellipse cx="62" cy="71" rx="6" ry="4" fill="#f7a1b5"/><path d="M13 27q-5-8 1-11M33 27q5-8-1-11" stroke="#e0a31f" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="23" cy="42" rx="15" ry="17" fill="#fff" stroke="#23233a" stroke-width="3"/><ellipse cx="23" cy="54" rx="12" ry="8" fill="#f7a1b5" stroke="#23233a" stroke-width="2.5"/><circle cx="19" cy="54" r="1.8" fill="#23233a"/><circle cx="27" cy="54" r="1.8" fill="#23233a"/><circle cx="17" cy="38" r="2.5" fill="#23233a"/><circle cx="29" cy="38" r="2.5" fill="#23233a"/></svg>` },
+    { id: 'dag', he: 'דָּג', syl: ['דָּג'],
+      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#62b4f0" stroke-width="2.5"><circle cx="12" cy="24" r="4"/><circle cx="18" cy="12" r="3"/></g><path d="M76 50L96 30V70Z" fill="#f57c00"/><path d="M38 30q10-14 24-4z" fill="#f57c00"/><ellipse cx="46" cy="52" rx="34" ry="23" fill="#ff9f1c"/><path d="M52 32v40M62 35v34" stroke="#f57c00" stroke-width="3"/><circle cx="26" cy="46" r="6" fill="#fff"/><circle cx="25" cy="46" r="3" fill="#23233a"/><path d="M14 58q4 3 8 1" stroke="#a04a00" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>` },
+    { id: 'tzipor', he: 'צִפּוֹר', syl: ['צִ', 'פּוֹר'],
+      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M38 84v10M52 84v10" stroke="#e0a31f" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="48" cy="62" rx="30" ry="24" fill="#2a8bd0"/><ellipse cx="44" cy="70" rx="18" ry="13" fill="#9fd0f5"/><path d="M60 52q22 0 32 18q-20 4-32-4z" fill="#174f7a"/><circle cx="34" cy="36" r="18" fill="#2a8bd0"/><circle cx="28" cy="32" r="4.5" fill="#fff"/><circle cx="27" cy="32" r="2.2" fill="#23233a"/><path d="M17 37L4 41L17 46Z" fill="#f2b01e"/></svg>` },
+    { id: 'arnav', he: 'אַרְנָב', syl: ['אַרְ', 'נָב'],
+      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g fill="#ece7de" stroke="#b9b1a4" stroke-width="2"><ellipse cx="39" cy="22" rx="7" ry="20"/><ellipse cx="59" cy="22" rx="7" ry="20"/><ellipse cx="49" cy="78" rx="25" ry="17"/><ellipse cx="39" cy="93" rx="8" ry="4"/><ellipse cx="59" cy="93" rx="8" ry="4"/><circle cx="49" cy="52" r="20"/></g><ellipse cx="39" cy="22" rx="3.5" ry="14" fill="#f7a1b5"/><ellipse cx="59" cy="22" rx="3.5" ry="14" fill="#f7a1b5"/><circle cx="42" cy="48" r="3" fill="#23233a"/><circle cx="56" cy="48" r="3" fill="#23233a"/><path d="M46 56h6l-3 4z" fill="#e2506a"/><path d="M49 60v3M49 63q-4 3-7 0M49 63q4 3 7 0" stroke="#7c8595" stroke-width="1.8" fill="none"/><g stroke="#9aa3b2" stroke-width="1.5"><path d="M36 58H22M36 61l-13 4M62 58h14M62 61l13 4"/></g></svg>` },
+    { id: 'nachash', he: 'נָחָשׁ', syl: ['נָ', 'חָשׁ'],
+      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M88 82Q76 94 60 84Q48 74 34 84Q20 94 12 82Q6 72 16 64Q30 56 44 64Q58 72 70 62Q82 52 74 42Q66 34 56 38" fill="none" stroke="#2f9d55" stroke-width="12" stroke-linecap="round"/><g fill="#9be0b0"><circle cx="30" cy="60" r="2"/><circle cx="62" cy="68" r="2"/><circle cx="26" cy="88" r="2"/><circle cx="74" cy="86" r="2"/></g><path d="M50 40v8M50 48l-4 4M50 48l4 4" stroke="#e2506a" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="50" cy="32" rx="14" ry="10" fill="#3cb46a"/><circle cx="45" cy="29" r="2.5" fill="#23233a"/><circle cx="55" cy="29" r="2.5" fill="#23233a"/></svg>` },
+    { id: 'tzav', he: 'צָב', syl: ['צָב'],
+      svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g fill="#8fcf6a"><ellipse cx="26" cy="76" rx="8" ry="6"/><ellipse cx="78" cy="76" rx="8" ry="6"/><circle cx="13" cy="58" r="11"/><path d="M88 64l10 4l-10 4z"/></g><path d="M18 72Q18 32 52 32Q86 32 86 72Z" fill="#2f9d55" stroke="#1e6b39" stroke-width="3"/><g fill="none" stroke="#1e6b39" stroke-width="2.5"><path d="M42 42l10-4l10 4l2 12l-12 6l-12-6z"/><path d="M42 42L30 52M62 42l12 10M40 54l-12 12M64 54l12 12M52 60v12"/></g><rect x="14" y="70" width="76" height="6" rx="3" fill="#c9a24a"/><circle cx="9" cy="56" r="2" fill="#23233a"/></svg>` },
   ],
 
   trueFalse: [
-    { pic: 'shemesh', q: 'זֹאת שֶׁמֶשׁ?', a: true },
-    { pic: 'sheleg', q: 'זֶה גֶּשֶׁם?', a: false },
-    { pic: 'perach', q: 'זֶה פֶּרַח?', a: true },
-    { pic: 'anan', q: 'זֶה עָלֶה?', a: false },
-    { pic: 'geshem', q: 'זֶה גֶּשֶׁם?', a: true },
-    { pic: 'choref', q: 'זֶה קַיִץ?', a: false },
-    { pic: 'stav', q: 'זֶה סְתָו?', a: true },
-    { pic: 'ale', q: 'זֶה פֶּרַח?', a: false },
+    { pic: 'pil', q: 'זֶה פִּיל?', a: true },
+    { pic: 'kof', q: 'זֶה אַרְיֵה?', a: false },
+    { pic: 'para', q: 'זֹאת פָּרָה?', a: true },
+    { pic: 'dag', q: 'זֶה נָחָשׁ?', a: false },
+    { pic: 'tzipor', q: 'זֹאת צִפּוֹר?', a: true },
+    { pic: 'sus', q: 'זֶה צָב?', a: false },
+    { pic: 'arnav', q: 'זֶה אַרְנָב?', a: true },
+    { pic: 'tzav', q: 'זֶה קוֹף?', a: false },
   ],
 
   talk: {
-    title: '🗣️ פּוֹנִים וּמְדַבְּרִים: אֵיזוֹ עוֹנָה אַתָּה אוֹהֵב?',
+    title: '🗣️ פּוֹנִים וּמְדַבְּרִים: אֵיזֶה בַּעַל חַיִּים אַתָּה אוֹהֵב?',
     lines: [
-      { a: 'אֵיזוֹ עוֹנָה אַתָּה אוֹהֵב?', b: 'אֲנִי אוֹהֵב ___.' },
-      { a: 'לָמָּה?', b: 'כִּי יֵשׁ ___.' },
-      { a: 'מָה יֵשׁ בַּחֹרֶף?', b: 'בַּחֹרֶף יֵשׁ ___ וְ___.' },
+      { a: 'אֵיזֶה בַּעַל חַיִּים אַתָּה אוֹהֵב?', b: 'אֲנִי אוֹהֵב ___.' },
+      { a: 'אַתָּה אוֹהֵב פִּילִים אוֹ קוֹפִים?', b: 'אֲנִי אוֹהֵב ___.' },
+      { a: 'יֵשׁ לְךָ בַּעַל חַיִּים בַּבַּיִת?', b: 'כֵּן, יֵשׁ לִי ___. / לֹא, אֵין לִי.' },
     ],
-    help: ['choref', 'aviv', 'kayitz', 'stav', 'sheleg', 'shemesh'],
+    help: ['arye', 'pil', 'kof', 'dag', 'arnav', 'tzav'],
     rounds: 3,
     seconds: 120,
   },
 
   exit: [
-    { q: 'אֵיפֹה הַשֶּׁלֶג?', o: [{ pic: 'shemesh' }, { pic: 'sheleg' }, { pic: 'perach' }], a: 1 },
-    { q: 'מָה בַּתְּמוּנָה?', pic: 'kayitz', o: [{ he: 'חֹרֶף' }, { he: 'קַיִץ' }, { he: 'סְתָו' }], a: 1 },
-    { q: 'בַּחֹרֶף יֵשׁ ___.', o: [{ he: 'עָלֶה' }, { he: 'פֶּרַח' }, { he: 'שֶׁלֶג' }], a: 2 },
+    { q: 'אֵיפֹה הַפִּיל?', o: [{ pic: 'kof' }, { pic: 'sus' }, { pic: 'pil' }], a: 2 },
+    { q: 'מָה בַּתְּמוּנָה?', pic: 'arnav', o: [{ he: 'אַרְנָב' }, { he: 'אַרְיֵה' }, { he: 'נָחָשׁ' }], a: 0 },
+    { q: 'מִי שׂוֹחֶה בַּמַּיִם?', o: [{ pic: 'pil' }, { pic: 'dag' }, { pic: 'tzipor' }], a: 1 },
   ],
 
   notes: {
     entry: 'מְחַלְּקִים אֶת הַתַּפְזֹרֶת בַּכְּנִיסָה לַכִּתָּה; כָּל תַּלְמִיד מַקִּיף לְבַד (2–3 דַּקּוֹת). בּוֹדְקִים יַחַד עַל הַלּוּחַ: "🔍 הַצִּיגוּ" מַדְלִיק מִלָּה אַחַת בְּכָל פַּעַם, וְהַכִּתָּה קוֹרֵאת אוֹתָהּ בְּקוֹל. אֶפְשָׁר גַּם לְהַזְמִין תַּלְמִיד לַלּוּחַ: הוּא לוֹחֵץ עַל הָאוֹתִיּוֹת שֶׁל מִלָּה, וְהִיא נִצְבַּעַת בְּיָרֹק.',
-    warmup: 'חִמּוּם קַל — מִסְפָּרִים שֶׁכְּבָר יוֹדְעִים, כְּדֵי שֶׁכֻּלָּם יַצְלִיחוּ. מַרְאִים נְקֻדּוֹת, סוֹפְרִים בְּשֶׁקֶט, לוֹחֲצִים "🕒 3… 2… 1… הָרִימוּ!" — כֻּלָּם מַרִימִים כַּרְטִיס מִסְפָּר שֶׁל הַתְּשׁוּבָה. "הַצִּיגוּ" מַדְלִיק אֶת הַתְּשׁוּבָה, הַכִּתָּה אוֹמֶרֶת אֶת הַמִּסְפָּר בְּקוֹל, וְאָז "הַבָּא ◀".',
+    warmup: 'חִמּוּם קַל — צְבָעִים שֶׁכְּבָר יוֹדְעִים, כְּדֵי שֶׁכֻּלָּם יַצְלִיחוּ. מַרְאִים צֶבַע, לוֹחֲצִים "🕒 3… 2… 1… הָרִימוּ!" — כֻּלָּם מַרִימִים כַּרְטִיס מִסְפָּר. "הַצִּיגוּ" מַדְלִיק אֶת הַתְּשׁוּבָה, הַכִּתָּה אוֹמֶרֶת אֶת הַצֶּבַע בְּקוֹל, וְאָז "הַבָּא ◀".',
     teach: 'הַמּוֹרֶה פּוֹתֵחַ כַּרְטִיס, אוֹמֵר אֶת הַמִּלָּה לְפִי הַהֲבָרוֹת, וְהַכִּתָּה חוֹזֶרֶת פַּעֲמַיִם. "הַבָּא ◀" עוֹבֵר לַמִּלָּה הַבָּאָה. אַחַר כָּךְ מְשַׂחֲקִים "🙈 מָה חָסֵר?": כֻּלָּם עוֹצְמִים עֵינַיִם, הַמּוֹרֶה לוֹחֵץ וְכַרְטִיס אֶחָד נֶעֱלָם; פּוֹתְחִים עֵינַיִם, 3-2-1, וְכֻלָּם אוֹמְרִים מָה חָסֵר. "הַצִּיגוּ" מַחְזִיר אֶת הַכַּרְטִיס.',
     match: 'שָׁלָב 1 (קַל): רוֹאִים מִלָּה וּמַרִימִים אֶת מִסְפַּר הַתְּמוּנָה. שָׁלָב 2 (קָשֶׁה): רוֹאִים תְּמוּנָה וּמַרִימִים אֶת מִסְפַּר הַמִּלָּה. אַחֲרֵי 3-2-1 לוֹחֲצִים עַל הַתְּשׁוּבָה שֶׁרֹב הַכִּתָּה הֵרִימָה, אוֹ "הַצִּיגוּ". נְקֻדָּה רַק בְּנִסָּיוֹן רִאשׁוֹן.',
     tf: 'מַרְאִים תְּמוּנָה וְקוֹרְאִים אֶת הַשְּׁאֵלָה יַחַד. 3-2-1 — כֻּלָּם מַרִימִים ✔ אוֹ ✘. "הַצִּיגוּ" מַרְאֶה אֶת הַתְּשׁוּבָה. כְּשֶׁהַתְּשׁוּבָה ✘, הַכִּתָּה אוֹמֶרֶת מָה כֵּן בַּתְּמוּנָה.',
-    talk: 'קָמִים וּמוֹצְאִים חָבֵר. א שׁוֹאֵל, ב עוֹנֶה — וְאָז מַחֲלִיפִים תַּפְקִידִים. הַתְּמוּנוֹת עוֹזְרוֹת לְהַשְׁלִים "אֲנִי אוֹהֵב ___" וְ"כִּי יֵשׁ ___". בְּסוֹף הַשָּׁעוֹן נִשְׁמָע "מַחֲלִיפִים!" וּמוֹצְאִים חָבֵר חָדָשׁ. שְׁלוֹשָׁה סִבּוּבִים; אִם אֵין זְמַן — שְׁנַיִם.',
+    talk: 'קָמִים וּמוֹצְאִים חָבֵר. א שׁוֹאֵל, ב עוֹנֶה — וְאָז מַחֲלִיפִים תַּפְקִידִים. הַתְּמוּנוֹת עוֹזְרוֹת לְהַשְׁלִים "אֲנִי אוֹהֵב ___". בְּסוֹף הַשָּׁעוֹן נִשְׁמָע "מַחֲלִיפִים!" וּמוֹצְאִים חָבֵר חָדָשׁ. שְׁלוֹשָׁה סִבּוּבִים; אִם אֵין זְמַן — שְׁנַיִם.',
     exit: 'כָּל תַּלְמִיד עוֹנֶה לְבַד עַל הַכַּרְטִיס הַמֻּדְפָּס (3 דַּקּוֹת). אַחַר כָּךְ בּוֹדְקִים יַחַד עַל הַלּוּחַ: לוֹחֲצִים עַל תְּשׁוּבָה וְרוֹאִים מִיָּד אִם הִיא נְכוֹנָה.',
   },
 };
