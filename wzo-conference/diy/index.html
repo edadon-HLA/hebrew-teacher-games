@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>בְּנוּ שִׁעוּר בְּעַצְמְכֶם</title>
+<style>
+:root{--bg:#f7f8fc;--ink:#182235;--muted:#5b667c;--line:#dfe4ec;--brand:#3730a3;--brand-soft:#eef2ff;--ok:#15803d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Noto Sans Hebrew",sans-serif;font-size:18px;line-height:1.55}
+main{max-width:760px;margin:auto;padding:18px 16px 50px}
+.lang{display:flex;justify-content:center;margin:4px 0 14px}
+.seg{display:inline-flex;border:2px solid #c7d2fe;border-radius:14px;overflow:hidden;background:#fff}
+.seg button{appearance:none;border:0;background:#fff;color:var(--brand);font:800 17px Arial,"Noto Sans Hebrew",sans-serif;padding:9px 18px;cursor:pointer}
+.seg button.on{background:var(--brand);color:#fff}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px 18px;box-shadow:0 8px 25px #1b28420d;margin-bottom:16px}
+h1{font-size:clamp(26px,6vw,38px);margin:0 0 6px;text-align:center}
+.sub{color:var(--muted);text-align:center;margin:0}
+.steps{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.steps li{display:flex;gap:12px;align-items:flex-start;background:#fbfcfe;border:2px solid var(--line);border-radius:16px;padding:12px 14px;font-weight:700}
+.steps .n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}
+.steps small{display:block;font-weight:400;color:var(--muted)}
+label{display:block;font-weight:800;margin:12px 0 6px}
+input,select{width:100%;font:700 20px Arial,"Noto Sans Hebrew",sans-serif;border:2px solid #cbd5e1;border-radius:14px;padding:11px 14px;background:#fff;color:var(--ink)}
+input:focus,select:focus{outline:3px solid #a5b4fc;border-color:var(--brand)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pwrap{position:relative;margin-top:8px}
+#prompt{display:block;width:100%;min-height:300px;font:17px/1.6 Arial,"Noto Sans Hebrew",sans-serif;color:#0f172a;background:#f1f5f9;border:2px solid #cbd5e1;border-radius:16px;padding:16px 16px 16px 16px;resize:vertical;white-space:pre-wrap}
+.copy{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:12px;appearance:none;border:0;border-radius:16px;background:var(--brand);color:#fff;font:900 22px Arial,"Noto Sans Hebrew",sans-serif;padding:15px;cursor:pointer;box-shadow:0 6px 16px #3730a333}
+.copy.done{background:var(--ok)}
+#copyMsg{text-align:center;min-height:1.4em;margin-top:6px;font-weight:700;color:var(--ok)}
+.where{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.where div{border:2px solid var(--line);border-radius:16px;padding:12px 14px;background:#fbfcfe}
+.where b{display:block;font-size:19px}
+.where span{color:var(--muted);font-size:16px}
+.small{color:var(--muted);font-size:15px;text-align:center;margin-top:18px}
+@media(max-width:560px){.two,.where{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <div class="lang"><div class="seg" id="langSeg" role="group" aria-label="language">
+    <button type="button" data-lang="he" class="on">עִבְרִית</button><button type="button" data-lang="en">English</button>
+  </div></div>
+
+  <div class="card">
+    <h1 data-he="🛠️ בְּנוּ שִׁעוּר עִבְרִית בְּעַצְמְכֶם" data-en="🛠️ Build a Hebrew lesson yourself"></h1>
+    <p class="sub" data-he="כְּמוֹ בַּהַדְגָּמָה – בְּ-5 דַּקּוֹת, עִם Claude." data-en="Just like the demo: about 5 minutes, with Claude."></p>
+  </div>
+
+  <div class="card">
+    <ol class="steps">
+      <li><span class="n">1</span><div><span data-he="בַּחֲרוּ נוֹשֵׂא וְכִתָּה" data-en="Choose a topic and a grade"></span><small data-he="הַפְּרוֹמְפְּט לְמַטָּה מִשְׁתַּנֶּה לְבַד." data-en="The prompt below updates by itself."></small></div></li>
+      <li><span class="n">2</span><div><span data-he="הַעְתִּיקוּ אֶת הַפְּרוֹמְפְּט" data-en="Copy the prompt"></span><small data-he="כַּפְתּוֹר אֶחָד." data-en="One button."></small></div></li>
+      <li><span class="n">3</span><div><span data-he="הַדְבִּיקוּ בְּ-Claude – וְחַכּוּ כַּמָּה דַּקּוֹת" data-en="Paste it into Claude and wait a few minutes"></span><small data-he="Claude בּוֹנֶה אֶת הַשִּׁעוּר וּפוֹתֵחַ אוֹתוֹ." data-en="Claude builds the lesson and opens it."></small></div></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <label for="topic" data-he="נוֹשֵׂא הַשִּׁעוּר" data-en="Lesson topic"></label>
+    <input id="topic" type="text" maxlength="80" autocomplete="off">
+    <div class="two">
+      <div><label for="grade" data-he="כִּתָּה" data-en="Grade"></label><select id="grade"></select></div>
+      <div><label for="level" data-he="רָמָה" data-en="Level"></label><select id="level"></select></div>
+    </div>
+
+    <label for="prompt" data-he="הַפְּרוֹמְפְּט" data-en="The prompt"></label>
+    <div class="pwrap"><textarea id="prompt" readonly spellcheck="false"></textarea></div>
+    <button class="copy" id="copy" type="button"><span>📋</span><span id="copyLabel"></span></button>
+    <div id="copyMsg" aria-live="polite"></div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin:0 0 10px;font-size:22px" data-he="אֵיפֹה מַדְבִּיקִים?" data-en="Where to paste it?"></h2>
+    <div class="where">
+      <div><b>claude.ai</b><span data-he="פּוֹתְחִים שִׂיחָה חֲדָשָׁה וּמַדְבִּיקִים. הַשִּׁעוּר מוֹפִיעַ בַּחַלּוֹן שֶׁבַּצַּד." data-en="Open a new chat and paste. The lesson shows up in the side panel."></span></div>
+      <div><b>Claude Code</b><span data-he="פּוֹתְחִים שִׂיחָה חֲדָשָׁה בְּתִיקִיָּה רֵיקָה וּמַדְבִּיקִים. הַשִּׁעוּר נִשְׁמָר כְּקֹבֶץ." data-en="Open a new session in an empty folder and paste. The lesson is saved as a file."></span></div>
+    </div>
+  </div>
+
+  <p class="small" data-he="צָרִיךְ חֶשְׁבּוֹן Claude. הַדַּף הַזֶּה לֹא שׁוֹמֵר שׁוּם מֵידָע. · כֶּנֶס WZO · אֶלְדָּר דָּדוֹן" data-en="You need a Claude account. This page saves nothing. · WZO conference · Eldar Dadon"></p>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var q = new URLSearchParams(location.search);
+  var GRADES = ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ז׳', 'ח׳'];
+  var LEVELS = { he: ['מַתְחִילִים', 'בֵּינוֹנִיִּים', 'מִתְקַדְּמִים'], en: ['beginners', 'intermediate', 'advanced'] };
+  var LEVELS_P = { he: ['מתחילים', 'בינוניים', 'מתקדמים'], en: LEVELS.en };   // in the prompt: plain letters
+
+  // The prompt: plain words, no skills, no addresses, no publishing. Eldar approved the content on 2026-11-14.
+  var PROMPT = {
+    he: 'בנה לי שיעור עברית אחד, כקובץ HTML יחיד שאפשר לפתוח בדפדפן ולהקרין בכיתה.\n' +
+        'נושא: {TOPIC}. תלמידים: כיתה {GRADE}, {LEVEL}, לומדים עברית כשפה שנייה.\n\n' +
+        'כללים: כל הטקסט בעברית עם ניקוד מלא, מימין לשמאל, אותיות גדולות למקרן, מחשב אחד של המורה, ' +
+        'התלמידים עונים בהרמת כרטיסים ("3-2-1 הָרִימוּ!"). בלי אנגלית על המסך. הכול בקובץ אחד, בלי שום דבר מהאינטרנט.\n\n' +
+        'לשיעור 5 חלקים, עם כפתור "הבא" ביניהם:\n' +
+        '1. כרטיס כניסה: תפזורת מילים עם 6 מילים מהנושא.\n' +
+        '2. חימום: משחק קל של התאמת תמונה למילה (אימוג\'י בתור תמונות).\n' +
+        '3. הוראה: 8–10 מילים חדשות עם אימוג\'י, ואז משחק אחד (זיכרון או "מה חסר?").\n' +
+        '4. תרגול: 6 שאלות, לכל אחת 3 תשובות ממוספרות; התלמידים מרימים את הכרטיס עם המספר הנכון; כפתור מראה את התשובה.\n' +
+        '5. כרטיס יציאה: 3 שאלות קצרות לענות עליהן על דף.\n\n' +
+        'כשתסיים, פתח לי את הקובץ (או הצג אותו), ובדוק שוב את העברית והניקוד.',
+    en: 'Build me one Hebrew lesson as a single HTML file I can open in a browser and project in class.\n' +
+        'Topic: {TOPIC}. Students: grade {GRADE}, {LEVEL}, learning Hebrew as a second language.\n\n' +
+        'Rules: all text in Hebrew with full nikud, right-to-left, big letters for a projector, one teacher computer, ' +
+        'students answer with raised cards ("3-2-1 הָרִימוּ!"). No English on the screen. Everything in one file, nothing from the internet.\n\n' +
+        'The lesson has 5 parts, with a "next" button between them:\n' +
+        '1. Entry ticket: a word search with 6 topic words.\n' +
+        '2. Warm-up: an easy picture-word matching game (use emoji as pictures).\n' +
+        '3. Teaching: 8–10 new words with emoji, then one game (memory or "which one is missing").\n' +
+        '4. Practice: 6 questions, each with 3 numbered answers; students raise the card with the right number; a button shows the answer.\n' +
+        '5. Exit ticket: 3 short questions to answer on paper.\n\n' +
+        'When you finish, open the file for me (or show it), and check the Hebrew and nikud once more.'
+  };
+  var UI = {
+    he: { copy: 'הַעְתִּיקוּ אֶת הַפְּרוֹמְפְּט', done: '✓ הוּעְתַּק! עַכְשָׁו מַדְבִּיקִים בְּ-Claude.', fail: 'סַמְּנוּ אֶת הַטֶּקְסְט וְהַעְתִּיקוּ (Ctrl+C).', ph: 'לְמָשָׁל: פֵּרוֹת', none: '[הַנּוֹשֵׂא שֶׁלָּכֶם]' },
+    en: { copy: 'Copy the prompt', done: '✓ Copied! Now paste it into Claude.', fail: 'Select the text and copy it (Ctrl+C).', ph: 'e.g. fruit', none: '[your topic]' }
+  };
+
+  var lang = 'he';
+  var topic = $('topic'), grade = $('grade'), level = $('level'), box = $('prompt');
+  topic.value = (q.get('topic') || '').trim().slice(0, 80);
+  var g0 = parseInt(q.get('grade'), 10); if (!(g0 >= 1 && g0 <= 8)) g0 = 5;
+
+  function fillSelects() {
+    var gi = grade.selectedIndex >= 0 ? grade.selectedIndex : g0 - 1, li = level.selectedIndex >= 0 ? level.selectedIndex : 0;
+    grade.innerHTML = ''; level.innerHTML = '';
+    GRADES.forEach(function (h, i) { var o = document.createElement('option'); o.textContent = lang === 'he' ? h : String(i + 1); grade.appendChild(o); });
+    LEVELS[lang].forEach(function (t) { var o = document.createElement('option'); o.textContent = t; level.appendChild(o); });
+    grade.selectedIndex = gi; level.selectedIndex = li;
+  }
+  function render() {
+    var t = topic.value.trim().replace(/\s+/g, ' ') || UI[lang].none;
+    var gTxt = lang === 'he' ? GRADES[grade.selectedIndex].replace('׳', '\'') : String(grade.selectedIndex + 1);
+    box.value = PROMPT[lang].split('{TOPIC}').join(t).split('{GRADE}').join(gTxt).split('{LEVEL}').join(LEVELS_P[lang][level.selectedIndex]);
+    box.style.height = 'auto'; box.style.height = (box.scrollHeight + 6) + 'px';
+  }
+  function setLang(l) {
+    lang = l;
+    document.documentElement.lang = l; document.documentElement.dir = l === 'he' ? 'rtl' : 'ltr';
+    box.dir = l === 'he' ? 'rtl' : 'ltr';
+    [].forEach.call(document.querySelectorAll('[data-he]'), function (el) { el.textContent = el.getAttribute('data-' + l); });
+    [].forEach.call($('langSeg').children, function (b) { b.classList.toggle('on', b.getAttribute('data-lang') === l); });
+    topic.placeholder = UI[l].ph; $('copyLabel').textContent = UI[l].copy; $('copyMsg').textContent = '';
+    fillSelects(); render();
+  }
+  [].forEach.call($('langSeg').children, function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); }); });
+  topic.addEventListener('input', render); grade.addEventListener('change', render); level.addEventListener('change', render);
+  window.addEventListener('resize', render);
+
+  function fallbackCopy(text) {
+    var ok = false, ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta); return ok;
+  }
+  var timer;
+  $('copy').addEventListener('click', function () {
+    var btn = this, text = box.value;
+    var done = function (ok) {
+      clearTimeout(timer);
+      btn.classList.toggle('done', ok);
+      $('copyMsg').style.color = ok ? '' : '#b45309';
+      $('copyMsg').textContent = ok ? UI[lang].done : UI[lang].fail;
+      if (!ok) { box.focus(); box.select(); }
+      timer = setTimeout(function () { btn.classList.remove('done'); $('copyMsg').textContent = ''; }, ok ? 2500 : 6000);
+    };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });
+    else done(fallbackCopy(text));
+  });
+
+  setLang(q.get('lang') === 'en' ? 'en' : 'he');
+})();
+</script>
+</body>
+</html>
