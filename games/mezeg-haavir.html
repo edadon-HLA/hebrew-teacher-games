@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מֶזֶג הָאֲוִויר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+  /* Weather warm-up (design: general-materials/weather-warmup/design.md v4, look = mockup-gpt.html). */
+  :root{--panel:rgba(255,253,245,.88);--ink:#2b2a33;--accent:#24408e}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;font-family:"Noto Sans Hebrew","Segoe UI",Arial,sans-serif;color:var(--ink);background:#000}
+  button,input,select{font-family:inherit}
+  button{cursor:pointer}
+  #stage{position:relative;width:100vw;height:100vh;height:100dvh;overflow:hidden}
+  .layer{position:absolute;inset:0;pointer-events:none}
+  /* ---------- SKY by time of day ---------- */
+  .sky{transition:background 1s}
+  .t-dawn .sky{background:linear-gradient(#6c7fc4,#e7a0b4 45%,#f8c58c 75%,#ffe3a6)}
+  .t-morning .sky{background:linear-gradient(#86c9f2,#cfeaf8 60%,#f3f9fc)}
+  .t-noon .sky{background:linear-gradient(#3a86da,#7fbef0 60%,#c9e6fa)}
+  .t-afternoon .sky{background:linear-gradient(#4f8fd6,#9cc9ee 60%,#ece6d4)}
+  .t-sunset .sky{background:linear-gradient(#4e4a8a,#c86f93 42%,#f2a35e 72%,#ffd47a)}
+  .t-night .sky{background:linear-gradient(#0a1330,#1a2858 60%,#2d3a6a)}
+  .overcast{opacity:0;transition:opacity 1s;background:#9aa3b0}
+  .w-cloudy .overcast{opacity:.55}.w-rain .overcast,.w-drizzle .overcast{opacity:.65}.w-fog .overcast{opacity:.5;background:#d6dbe1}
+  .w-storm .overcast{opacity:.8;background:#59606e}.w-snow .overcast{opacity:.55;background:#c9ced7}
+  .t-night .overcast{background:#262c42}
+  /* sun / moon / stars */
+  .sun{position:absolute;width:13vh;height:13vh;border-radius:50%;background:radial-gradient(#fff7b8,#ffd23f 60%,#ffbf1f);box-shadow:0 0 6vh 2vh rgba(255,215,80,.55);animation:glow 4s ease-in-out infinite;display:none}
+  @keyframes glow{50%{box-shadow:0 0 9vh 3vh rgba(255,215,80,.7)}}
+  .t-dawn .sun{left:74vw;top:40vh;width:15vh;height:15vh;background:radial-gradient(#fff0c0,#ffb45a 65%,#f59a4a);box-shadow:0 0 8vh 3vh rgba(255,170,90,.5)}
+  .t-morning .sun{left:16vw;top:30vh}
+  .t-noon .sun{left:40vw;top:20vh}
+  .t-afternoon .sun{left:12vw;top:27vh}
+  .t-sunset .sun{left:3vw;top:38vh;width:18vh;height:18vh;background:radial-gradient(#ffe2a0,#ff9a3c 65%,#f0703a);box-shadow:0 0 9vh 4vh rgba(255,140,60,.55)}
+  .bg-ta.t-sunset .sun{left:20vw;top:49vh}
+  .w-clear:not(.t-night) .sun,.w-partly:not(.t-night) .sun{display:block}
+  .moon{position:absolute;width:11vh;height:11vh;border-radius:50%;top:20vh;left:24vw;box-shadow:-2.2vh 1.4vh 0 0 #f4f1d8;display:none}
+  #stars{display:none}
+  .t-night.w-clear .moon,.t-night.w-partly .moon,.t-night.w-clear #stars,.t-night.w-partly #stars{display:block}
+  .star{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff;animation:tw 2.5s ease-in-out infinite}
+  @keyframes tw{50%{opacity:.15}}
+  /* clouds (GPT sprites). left:0 is required: in an RTL page an absolute box without left/right starts at the RIGHT edge. */
+  img.cloud{position:absolute;left:0;height:auto;display:none;animation:drift linear infinite;animation-duration:var(--d);filter:drop-shadow(0 .4vh .6vh rgba(60,70,90,.12))}
+  .windy img.cloud{animation-duration:calc(var(--d) * .45)}
+  @keyframes drift{from{transform:translateX(-50vh)}to{transform:translateX(105vw)}}
+  .w-clear img.cloud.n1,.w-partly img.cloud.n1,.w-partly img.cloud.n2,.w-partly img.cloud.n3,.w-partly img.cloud.n4{display:block}
+  .w-cloudy img.cloud,.w-rain img.cloud,.w-drizzle img.cloud,.w-storm img.cloud,.w-snow img.cloud,.w-fog img.cloud{display:block}
+  .t-sunset img.cloud,.t-dawn img.cloud{filter:sepia(.45) saturate(1.4) hue-rotate(-12deg) brightness(.95)}
+  .t-night img.cloud{filter:brightness(.42) saturate(.7) hue-rotate(10deg)}
+  .w-storm img.cloud{filter:brightness(.62)}
+  .t-night.w-storm img.cloud{filter:brightness(.3)}
+  /* cloud deck (cloudy, rain, storm, snow, fog) */
+  .deck{position:absolute;left:0;right:0;top:-6vh;height:62vh;display:none;background:url(mezeg-haavir/cloud-overcast.png) repeat-x 0 0/auto 100%;animation:deck 140s linear infinite}
+  .deck.d2{top:2vh;height:50vh;opacity:.75;animation-duration:95s;animation-direction:reverse}
+  .windy .deck{animation-duration:60s}.windy .deck.d2{animation-duration:42s}
+  @keyframes deck{to{background-position:93vh 0}}
+  .w-cloudy .deck,.w-rain .deck,.w-drizzle .deck,.w-storm .deck,.w-snow .deck,.w-fog .deck{display:block}
+  .w-storm .deck{filter:brightness(.6)}
+  .w-rain .deck,.w-drizzle .deck,.w-snow .deck{filter:brightness(.9)}
+  .t-sunset .deck,.t-dawn .deck{filter:sepia(.4) saturate(1.3) brightness(.85)}
+  .t-night .deck{filter:brightness(.38) saturate(.7)}
+  /* ---------- BACKGROUND (GPT painting: JPEG colour + PNG alpha mask, cross-fade) ---------- */
+  .bgT,.bgW{position:absolute;inset:0;transition:filter 1s,opacity 1s}
+  .t-morning .bgT{filter:brightness(1.03)}
+  .t-dawn .bgT{filter:sepia(.22) saturate(1.15) brightness(.93)}
+  .t-sunset .bgT{filter:sepia(.35) saturate(1.25) brightness(.88)}
+  .w-cloudy .bgW,.w-rain .bgW,.w-drizzle .bgW,.w-fog .bgW{filter:saturate(.75) brightness(.93)}
+  .w-storm .bgW{filter:saturate(.6) brightness(.78)}
+  .w-fog .bgW{opacity:.75}
+  .bgL{position:absolute;inset:0;opacity:0;transition:opacity 1s;background-repeat:no-repeat;background-size:cover;background-position:50% 100%;
+    -webkit-mask-repeat:no-repeat;-webkit-mask-size:cover;-webkit-mask-position:50% 100%;mask-repeat:no-repeat;mask-size:cover;mask-position:50% 100%}
+  .bgL.on{opacity:1}
+  /* ---------- WEATHER overlays ---------- */
+  #rain,#rain2,#snow,#fog,#leaves,.flash,#bolt{display:none}
+  .w-rain #rain,.w-drizzle #rain,.w-storm #rain,.w-storm #rain2,.heavy #rain2,.w-snow #snow,.w-fog #fog,.w-storm .flash,.w-storm #bolt,.windy #leaves{display:block}
+  .w-drizzle #rain .drop:nth-child(n+61){display:none}
+  .drop{position:absolute;top:-10vh;width:2px;height:5vh;background:linear-gradient(transparent,rgba(210,225,255,.85));animation:fall linear infinite}
+  .w-drizzle .drop{animation-duration:1.3s!important;height:3.5vh}
+  @keyframes fall{to{transform:translate(-6vh,115vh)}}
+  #rain2 .drop,.windy #rain .drop{width:2px;height:7vh;animation-name:fall2}
+  @keyframes fall2{to{transform:translate(-16vh,115vh)}}
+  img.flake{position:absolute;top:-3vh;height:auto;opacity:.95;animation:snowspin linear infinite}
+  @keyframes snowspin{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(3vh,55vh) rotate(180deg)}100%{transform:translate(-2vh,110vh) rotate(360deg)}}
+  .band{position:absolute;left:-30vw;width:160vw;height:16vh;border-radius:50%;background:rgba(240,243,247,.75);filter:blur(3vh);animation:fogd 40s ease-in-out infinite alternate}
+  @keyframes fogd{to{transform:translateX(18vw)}}
+  .flash{background:#fff;opacity:0;animation:flash 8s infinite}
+  @keyframes flash{0%,90%,100%{opacity:0}91%{opacity:.6}92%{opacity:0}93.5%{opacity:.4}95%{opacity:0}}
+  #bolt{position:absolute;left:60vw;top:12vh;width:8vw;height:40vh;opacity:0;animation:flash 8s infinite}
+  .leaf{position:absolute;left:0;font-size:3.4vh;animation:blow linear infinite}
+  @keyframes blow{from{transform:translate(105vw,0) rotate(0)}to{transform:translate(-10vw,28vh) rotate(-900deg)}}
+  .motion-off *{animation-play-state:paused!important}
+  /* ---------- UI on top ---------- */
+  .panel{position:absolute;background:var(--panel);border-radius:2vh;box-shadow:0 .6vh 2vh rgba(0,0,0,.18)}
+  .day{top:2.5vh;right:2.5vw;padding:1.2vh 2.5vw;text-align:center}
+  .day .big{font-size:7vh;font-weight:800;line-height:1.15}
+  .day .tod{font-size:4.2vh;font-weight:700}
+  .day .clock{font-size:2.6vh;direction:ltr;opacity:.75}
+  .place{top:2.5vh;left:50%;transform:translateX(-50%);padding:.8vh 1.2vw .8vh 2vw;font-size:4.4vh;font-weight:800;display:flex;align-items:center;gap:1vw;white-space:nowrap;max-width:44vw}
+  #placeHe{overflow:hidden;text-overflow:ellipsis}
+  .place .tag{font-size:2vh;background:var(--accent);color:#fff;border-radius:1vh;padding:.2vh .8vh;direction:ltr}
+  .mapbtn{flex:none;width:7vh;height:7vh;border-radius:50%;border:3px solid var(--accent);background:#fff;font-size:3.6vh;line-height:1;padding:0}
+  .mapbtn:hover{background:#e8eefc}
+  .hlachip{flex:none;font-size:2vh;border:2px solid var(--accent);background:#fff;color:var(--accent);border-radius:2vh;padding:.3vh 1vh}
+  .temp{top:2.5vh;left:2.5vw;padding:1vh 2vw;text-align:center;max-width:26vw;cursor:pointer}
+  .temp .num{font-size:9vh;font-weight:800;direction:ltr;line-height:1}
+  .temp .words{font-size:2.6vh;font-weight:700;display:none}
+  .temp .hint{font-size:1.7vh;opacity:.6;direction:ltr}
+  .temp.show .words{display:block}.temp.show .hint{display:none}
+  .state{top:15vh;left:50%;transform:translateX(-50%);padding:.8vh 2vw;font-size:3.6vh;font-weight:700;white-space:nowrap;text-align:center}
+  .state small{display:block;font:1.6vh "Segoe UI",Arial;direction:ltr;opacity:.7}
+  .state small:empty{display:none}
+  #manualBadge{display:none;position:absolute;top:1vh;left:50%;transform:translateX(-50%);z-index:2;font:700 1.6vh "Segoe UI",Arial;background:#ffd23f;color:#222;border-radius:1vh;padding:.2vh .8vh;direction:ltr;white-space:nowrap}
+  .manual #manualBadge{display:block}
+  /* settings tab (left edge) */
+  #setTab{direction:ltr;position:absolute;top:50%;left:0;transform:translateY(-50%);width:3.2vh;height:10vh;border:0;border-radius:0 2vh 2vh 0;background:rgba(255,255,255,.55);font-size:3vh;color:var(--ink);z-index:6;transition:left .35s;padding:0}
+  #setTab:hover{background:#fff}
+  #settings{position:absolute;top:0;bottom:0;left:-24vw;width:24vw;min-width:280px;background:#fffdf5;box-shadow:.5vh 0 3vh rgba(0,0,0,.3);padding:3vh 1.5vw;direction:ltr;text-align:left;font:2vh "Segoe UI",Arial;transition:left .35s,visibility .35s;z-index:5;overflow:auto;visibility:hidden}
+  #settings{left:calc(-1 * max(24vw,280px))}
+  .set-open #settings{left:0;visibility:visible}.set-open #setTab{left:max(24vw,280px)}
+  #settings h3{margin:0 0 2vh;font-size:2.6vh}
+  #settings .row{margin:0 0 2.2vh}
+  #settings label.t{display:block;font-weight:700;margin-bottom:.6vh}
+  #settings .btn{font-size:1.9vh;padding:.5vh .8vw;border-radius:.8vh;border:1px solid #bbb;background:#fff;color:var(--ink)}
+  #settings .btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+  #settings .small{font-size:1.6vh;color:#666;margin-top:.4vh}
+  #settings select,#settings input[type=text]{font-size:1.9vh;padding:.3vh .4vw;border:1px solid #bbb;border-radius:.6vh;max-width:100%}
+  #settings input[type=text]{width:100%;direction:rtl;font-family:"Noto Sans Hebrew",Arial}
+  #settings input[type=range]{width:100%}
+  #manBox{border:1px dashed #c9bf9f;border-radius:1vh;padding:1vh .8vw;margin-top:.8vh}
+  #manBox .mrow{display:flex;align-items:center;justify-content:space-between;gap:.6vw;margin:.6vh 0}
+  #manBox.off .mbody{display:none}
+  #settings a.back{color:var(--accent);font-weight:700;text-decoration:none}
+  .seg{display:inline-flex;border:2px solid var(--accent);border-radius:1vh;overflow:hidden}
+  .seg button{border:0;background:#fff;padding:.5vh 1.2vw;font-size:2vh;color:var(--accent)}
+  .seg button.on{background:var(--accent);color:#fff}
+  /* help bar (bottom tab) */
+  #helpTab{position:absolute;left:50%;bottom:0;transform:translateX(-50%);border:0;border-radius:2vh 2vh 0 0;background:rgba(255,255,255,.6);padding:.4vh 2.5vw;font-size:2.4vh;font-weight:700;z-index:4;color:var(--ink)}
+  #helpTab:hover{background:#fff}
+  .helpbar{left:2.5vw;right:2.5vw;bottom:-60vh;padding:1.4vh 2vw;transition:bottom .35s;z-index:3}
+  .help-open .helpbar{bottom:4.6vh}
+  .modeSw{position:absolute;top:-2.4vh;right:2vw}
+  .modeSw button{font-size:1.9vh}
+  .starters{display:flex;flex-wrap:wrap;gap:1vh 1.4vw;justify-content:center;font-size:3.6vh;font-weight:700}
+  .starters span{background:#fff;border:2px solid #d9cfae;border-radius:1.4vh;padding:.5vh 1.4vw}
+  .bank{display:flex;flex-wrap:wrap;gap:.8vh .8vw;justify-content:center;margin-top:1.2vh;font-size:2.7vh}
+  .bank span{border-radius:3vh;padding:.3vh 1.1vw;background:#eee;opacity:.5}
+  .bank span.on{background:#ffe27a;opacity:1;font-weight:700;box-shadow:0 0 0 2px #e0b400}
+  .bank .daysBtn{border:1px dashed #b9ad86;background:#fff;border-radius:3vh;padding:.3vh 1.1vw;font-size:2.3vh;color:var(--ink)}
+  .bank.days{display:none;margin-top:.8vh}
+  .days-open .bank.days{display:flex}
+  .nomark .bank span,.nomark .bank span.on{opacity:1;background:#f1efe8;font-weight:400;box-shadow:none}
+  .semi .bank,.semi .bank.days{display:none}
+  .semi .starters{font-size:2.6vh;flex-wrap:nowrap;gap:.8vw}
+  .semi .starters span{padding:.3vh 1vw}
+  /* map panel */
+  #mapWrap{position:absolute;inset:0;background:rgba(10,15,30,.55);display:none;z-index:8;align-items:center;justify-content:center}
+  .map-open #mapWrap{display:flex}
+  #mapPanel{width:76vw;height:80vh;background:#fffdf5;border-radius:2vh;box-shadow:0 1vh 4vh rgba(0,0,0,.4);display:flex;flex-direction:column;padding:2vh 2vw;gap:1.2vh}
+  .presets{display:flex;flex-wrap:wrap;gap:.8vh .8vw;justify-content:center}
+  .presets button{font-size:2.6vh;font-weight:700;border:2px solid var(--accent);background:#fff;color:var(--ink);border-radius:3vh;padding:.4vh 1.4vw}
+  .presets button.saved{border-style:dashed;font-weight:400}
+  .presets button.sel{background:var(--accent);color:#fff}
+  .searchWrap{position:relative;align-self:center;width:46%}
+  #search{width:100%;font-size:2.2vh;padding:.8vh 1vw;border:2px solid #c6cde0;border-radius:1.2vh}
+  #results{position:absolute;top:100%;right:0;left:0;background:#fff;border-radius:1.2vh;box-shadow:0 .6vh 2vh rgba(0,0,0,.25);list-style:none;margin:.4vh 0 0;padding:.4vh 0;z-index:2000;display:none}
+  #results.show{display:block}
+  #results li{padding:.9vh 1.4vw;font-size:2.4vh;cursor:pointer}
+  #results li:hover{background:#e8ecf7}
+  #results li small{opacity:.65}
+  #map{flex:1;border-radius:1.4vh;overflow:hidden;min-height:0;background:#dfe6ee;position:relative}
+  #map .mapMsg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.4vh;color:#555}
+  .leaflet-container{font-family:inherit}
+  .pinIcon{font-size:34px;line-height:1;text-shadow:0 2px 3px rgba(0,0,0,.3)}
+  .mapfoot{display:flex;align-items:center;justify-content:space-between;gap:1vw}
+  .mapfoot .chosen{font-size:3.2vh;font-weight:800;flex:1;min-width:0}
+  .mapfoot .chosen.note{font-weight:400;font-size:2.3vh;color:#8a3b12}
+  .mapfoot button{font-size:2.4vh;border-radius:1vh;padding:.7vh 1.6vw;border:2px solid var(--accent);background:#fff;color:var(--ink)}
+  #chooseBtn{background:var(--accent);color:#fff;font-weight:800}
+  #chooseBtn:disabled{opacity:.45;cursor:default}
+  /* phone / narrow portrait: stack the top panels so nothing overlaps */
+  @media (max-width:760px) and (orientation:portrait){
+    .day{right:3vw;padding:.8vh 3vw}.day .big{font-size:4.2vh}.day .tod{font-size:2.6vh}.day .clock{font-size:1.8vh}
+    .temp{left:3vw;max-width:40vw;padding:.8vh 3vw}.temp .num{font-size:5.4vh}.temp .words{font-size:2vh}
+    .place{top:15vh;font-size:3vh;max-width:94vw;gap:2vw}.mapbtn{width:5vh;height:5vh;font-size:2.6vh}
+    .state{top:23vh;font-size:2.4vh;white-space:normal;max-width:92vw}
+    .starters{font-size:2.2vh}.bank{font-size:1.8vh}.semi .starters{flex-wrap:wrap;font-size:1.9vh}
+    .helpbar{left:2vw;right:2vw;padding:2.6vh 2vw 1vh}.modeSw{right:2vw}
+    #mapPanel{width:96vw;height:90vh}.searchWrap{width:100%}
+    .presets button{font-size:2vh}
+  }
+</style>
+</head>
+<body>
+<div id="stage" class="bg-hla t-morning w-partly">
+  <div class="layer sky"></div>
+  <div class="layer overcast"></div>
+  <div class="layer"><div class="sun"></div><div class="moon"></div><div id="stars"></div><div class="deck"></div><div class="deck d2"></div><div id="clouds"></div></div>
+  <div class="layer"><div class="bgT"><div class="bgW"><div class="bgL" id="bgA"></div><div class="bgL" id="bgB"></div></div></div></div>
+  <div class="layer" id="fog"><div class="band" style="top:48vh"></div><div class="band" style="top:62vh;animation-delay:-15s"></div><div class="band" style="top:36vh;animation-delay:-28s"></div></div>
+  <div class="layer" id="rain"></div><div class="layer" id="rain2"></div><div class="layer" id="snow"></div><div class="layer" id="leaves"></div>
+  <svg id="bolt" viewBox="0 0 80 400"><polyline points="50,0 22,150 46,150 14,400" fill="none" stroke="#fffbe0" stroke-width="7" stroke-linejoin="round"/></svg>
+  <div class="layer flash"></div>
+
+  <!-- top text -->
+  <div id="manualBadge">Manual mode · <span id="manualWhat"></span></div>
+  <div class="panel day"><div class="big" id="dayHe"></div><div class="tod">עַכְשָׁיו: <span id="todHe"></span></div><div class="clock" id="clock"></div></div>
+  <div class="panel place">
+    <button class="mapbtn" id="mapBtn" title="Choose a place (M)" aria-label="מַפָּה">🗺</button>
+    <span id="placeHe" style="cursor:pointer" title="Choose a place (M)"></span><span class="tag" id="hlaTag">HLA</span>
+    <button class="hlachip" id="hlaChip" title="Back to school">🏫 HLA</button>
+  </div>
+  <div class="panel temp" id="temp" title="Click to show / hide the words"><div class="num" id="tempN">—</div><div class="words" id="tempW"></div><div class="hint">👆 click for words</div></div>
+  <div class="panel state"><span id="stateHe"></span><small id="stateNote"></small></div>
+
+  <!-- help bar -->
+  <div class="panel helpbar" id="helpbar">
+    <div class="seg modeSw"><button id="m-full">מָלֵא</button><button id="m-nomark">בְּלִי סִימוּן</button><button id="m-semi">חֶלְקִי</button></div>
+    <div class="starters"><span>הַיּוֹם יוֹם ___.</span><span>עַכְשָׁיו ___.</span><span>בַּחוּץ ___.</span><span>יֵשׁ ___. / אֵין ___.</span><span>יוֹרֵד ___.</span><span>בַּחוּץ ___ מַעֲלוֹת.</span></div>
+    <div class="bank" id="bank"></div>
+    <div class="bank days" id="bankDays"></div>
+  </div>
+  <button id="helpTab"></button>
+
+  <!-- settings (teacher only, English) -->
+  <button id="setTab" title="Settings (S)">›</button>
+  <div id="settings">
+    <h3>Settings</h3>
+    <div class="row"><label class="t">Temperature</label><div class="seg"><button id="uF">°F</button><button id="uC">°C</button></div>
+      <div class="small">°F by default. Remembered on this computer. Key: U</div></div>
+    <div class="row"><button class="btn" id="refreshBtn">⟳ Refresh weather</button><div class="small" id="lastUpd">Not updated yet.</div></div>
+    <div class="row"><label class="t"><input type="checkbox" id="manOn"> Manual mode</label>
+      <div class="small">Pick the weather yourself (practice, or no internet).</div>
+      <div id="manBox" class="off"><div class="mbody">
+        <div class="mrow">Weather <select id="manWx"></select></div>
+        <div class="mrow"><label><input type="checkbox" id="manWind"> Wind (יֵשׁ רוּחַ)</label></div>
+        <div class="mrow">Time of day <select id="manTod"></select></div>
+        <div class="mrow">Day <select id="manDay"></select></div>
+        <div class="mrow">Temperature <b id="manTval"></b></div>
+        <input type="range" id="manTemp">
+        <div class="mrow"><button class="btn pri" id="backLive">↺ Back to live</button></div>
+      </div></div></div>
+    <div class="row"><label class="t">Place name (nikud)</label><input type="text" id="nameEdit" dir="rtl"><div class="small">Type the name with nikud and press Enter. Saved for this place.</div></div>
+    <div class="row"><label class="t"><input type="checkbox" id="motionOff"> Motion off</label></div>
+    <div class="row"><button class="btn" id="fsBtn">⛶ Full screen</button></div>
+    <div class="small">Keys: S settings · H help · M map · R refresh · U unit · F full screen · Esc close</div>
+    <div class="row" style="margin-top:2vh"><a class="back" href="index.html">← All games</a></div>
+  </div>
+
+  <!-- map panel -->
+  <div id="mapWrap">
+    <div id="mapPanel" role="dialog" aria-label="מַפָּה">
+      <div class="presets" id="presets"></div>
+      <div class="searchWrap"><input id="search" type="search" placeholder="חַפְּשׂוּ עִיר… (עִבְרִית אוֹ English)" autocomplete="off"><ul id="results"></ul></div>
+      <div id="map" dir="ltr"><div class="mapMsg" id="mapMsg">…</div></div>
+      <div class="mapfoot"><span class="chosen" id="chosenHe"></span><span><button id="chooseBtn">בְּחַר</button> <button id="closeBtn">✕ סְגוֹר</button></span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+var IMG='mezeg-haavir/';
+function lsGet(k,d){try{var v=localStorage.getItem(k);return v==null?d:v;}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function lsJson(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+
+/* ===== places ===== */
+var PRESETS=[
+  {id:'hla',he:'בְּרוּקְלִין',btn:'🏫 בְּרוּקְלִין (HLA)',lat:40.6125,lon:-73.9235,tz:'America/New_York'},
+  {id:'ny',he:'נְיוּ יוֹרְק (מַנְהֶטֶן)',btn:'נְיוּ יוֹרְק (מַנְהֶטֶן)',lat:40.7829,lon:-73.9654,tz:'America/New_York'},
+  {id:'ta',he:'תֵּל אָבִיב',btn:'תֵּל אָבִיב',lat:32.0809,lon:34.7681,tz:'Asia/Jerusalem'},
+  {id:'jlm',he:'יְרוּשָׁלַיִם',btn:'יְרוּשָׁלַיִם',lat:31.7767,lon:35.2345,tz:'Asia/Jerusalem'}
+];
+/* background rule (design §2): first circle that contains the point, in this order; else the general street */
+var BGS=[{bg:'ny',lat:40.7829,lon:-73.9654,km:8},{bg:'hla',lat:40.6125,lon:-73.9235,km:15},{bg:'ta',lat:32.0809,lon:34.7681,km:12},{bg:'jlm',lat:31.7767,lon:35.2345,km:12}];
+function distKm(a,b,c,d){var R=6371,t=Math.PI/180,dl=(c-a)*t,dn=(d-b)*t,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a*t)*Math.cos(c*t)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x));}
+function bgFor(lat,lon){for(var i=0;i<BGS.length;i++)if(distKm(lat,lon,BGS[i].lat,BGS[i].lon)<=BGS[i].km)return BGS[i].bg;return 'street';}
+var NAMES=lsJson('mezeg-names',{});          // nikud names typed by the teacher, by place key
+var SAVED=lsJson('mezeg-saved',[]);          // places chosen on the map (extra preset buttons)
+function keyOf(p){return p.id||(p.lat.toFixed(3)+','+p.lon.toFixed(3));}
+function nameOf(p){return NAMES[keyOf(p)]||p.he;}
+function preset(id){for(var i=0;i<PRESETS.length;i++)if(PRESETS[i].id===id)return PRESETS[i];return null;}
+
+/* ===== words (כְּתִיב מָלֵא with nikud) ===== */
+var DAYS={Sunday:'יוֹם רִאשׁוֹן',Monday:'יוֹם שֵׁנִי',Tuesday:'יוֹם שְׁלִישִׁי',Wednesday:'יוֹם רְבִיעִי',Thursday:'יוֹם חֲמִישִׁי',Friday:'יוֹם שִׁישִּׁי',Saturday:'שַׁבָּת'};
+var DAY_KEYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var TOD={morning:'בּוֹקֶר',noon:'צָהֳרַיִים',afternoon:'אַחַר הַצָּהֳרַיִים',evening:'עֶרֶב',night:'לַיְלָה'};
+var TOD_SKY={morning:'morning',noon:'noon',afternoon:'afternoon',evening:'sunset',night:'night'};
+var TOD_CLOCK={morning:'9:00',noon:'12:30',afternoon:'15:30',evening:'18:30',night:'21:30'};
+var WX={clear:['בָּהִיר — יֵשׁ שֶׁמֶשׁ','בָּהִיר — יֵשׁ יָרֵחַ וְכוֹכָבִים'],partly:['יֵשׁ קְצָת עֲנָנִים'],cloudy:['מְעוּנָּן'],fog:['יֵשׁ עֲרָפֶל'],drizzle:['יוֹרֵד קְצָת גֶּשֶׁם'],rain:['יוֹרֵד גֶּשֶׁם'],storm:['יֵשׁ סְעָרָה — בְּרָקִים וּרְעָמִים'],snow:['יוֹרֵד שֶׁלֶג']};
+var WX_EN={clear:'clear',partly:'partly cloudy',cloudy:'cloudy',fog:'fog',drizzle:'drizzle',rain:'rain',storm:'storm',snow:'snow'};
+var WON={clear:[['שֶׁמֶשׁ','בָּהִיר'],['יָרֵחַ','כּוֹכָבִים','בָּהִיר']],partly:[['שֶׁמֶשׁ','עֲנָנִים'],['יָרֵחַ','עֲנָנִים']],cloudy:[['עֲנָנִים','מְעוּנָּן']],fog:[['עֲרָפֶל','מְעוּנָּן']],drizzle:[['גֶּשֶׁם','עֲנָנִים','מְעוּנָּן']],rain:[['גֶּשֶׁם','עֲנָנִים','מְעוּנָּן']],storm:[['גֶּשֶׁם','סְעָרָה','בָּרָק','רוּחַ','מְעוּנָּן']],snow:[['שֶׁלֶג','מְעוּנָּן']]};
+/* word bank: [shown text, key used for marking] */
+var WORDS=[['שֶׁמֶשׁ'],['עָנָן / עֲנָנִים','עֲנָנִים'],['מְעוּנָּן'],['בָּהִיר'],['עֲרָפֶל'],['גֶּשֶׁם'],['שֶׁלֶג'],['רוּחַ'],['סְעָרָה'],['בָּרָק'],['יָרֵחַ'],['כּוֹכָבִים'],
+  ['חַם'],['חַם מְאוֹד'],['נָעִים'],['קַר'],['קַר מְאוֹד'],['בּוֹקֶר'],['צָהֳרַיִים'],['אַחַר הַצָּהֳרַיִים'],['עֶרֶב'],['לַיְלָה']];
+var U=['אֶפֶס','אַחַת','שְׁתַּיִים','שָׁלוֹשׁ','אַרְבַּע','חָמֵשׁ','שֵׁשׁ','שֶׁבַע','שְׁמוֹנֶה','תֵּשַׁע','עֶשֶׂר'];
+var TEEN=['','אַחַת עֶשְׂרֵה','שְׁתֵּים עֶשְׂרֵה','שְׁלוֹשׁ עֶשְׂרֵה','אַרְבַּע עֶשְׂרֵה','חֲמֵשׁ עֶשְׂרֵה','שֵׁשׁ עֶשְׂרֵה','שְׁבַע עֶשְׂרֵה','שְׁמוֹנֶה עֶשְׂרֵה','תְּשַׁע עֶשְׂרֵה'];
+var TENS=['','','עֶשְׂרִים','שְׁלוֹשִׁים','אַרְבָּעִים','חֲמִישִּׁים','שִׁישִּׁים','שִׁבְעִים','שְׁמוֹנִים','תִּשְׁעִים'];
+var AND=['','וְאַחַת','וּשְׁתַּיִים','וְשָׁלוֹשׁ','וְאַרְבַּע','וְחָמֵשׁ','וְשֵׁשׁ','וְשֶׁבַע','וּשְׁמוֹנֶה','וְתֵשַׁע'];
+function num(n){if(n<=10)return U[n];if(n<20)return TEEN[n-10];if(n<100)return TENS[Math.floor(n/10)]+(n%10?' '+AND[n%10]:'');if(n===100)return 'מֵאָה';var r=n-100;return 'מֵאָה '+(r<=10?'וְ'+U[r]:r<20?'וְ'+TEEN[r-10]:num(r));}
+function tempWords(t){var a=Math.abs(t),pre=t<0?'מִינוּס ':'';if(a===1)return pre+'מַעֲלָה אַחַת';if(a===2)return pre+'שְׁתֵּי מַעֲלוֹת';return pre+num(a)+' מַעֲלוֹת';}
+function hotCold(c){return c<=5?'קַר מְאוֹד':c<=14?'קַר':c<=24?'נָעִים':c<=29?'חַם':'חַם מְאוֹד';}
+function wmo(c){if(c===0||c===1)return 'clear';if(c===2)return 'partly';if(c===3)return 'cloudy';if(c===45||c===48)return 'fog';
+  if([51,53,55,56,57].indexOf(c)>=0)return 'drizzle';if([61,63,66,80,81,65,67,82].indexOf(c)>=0)return 'rain';
+  if([71,73,75,77,85,86].indexOf(c)>=0)return 'snow';if([95,96,99].indexOf(c)>=0)return 'storm';return 'cloudy';}
+
+/* ===== state ===== */
+var q=new URLSearchParams(location.search);
+var unit=lsGet('mezeg-unit','F'); if(q.get('unit'))unit=q.get('unit').toUpperCase()==='C'?'C':'F';
+var help=lsGet('mezeg-help','full'); if(q.get('help'))help=q.get('help'); if(['full','nomark','semi'].indexOf(help)<0)help='full';
+var helpOpen=lsGet('mezeg-help-open','1')==='1';
+var cur=null;          // {id?, he, lat, lon, tz}
+var W=null;            // live weather {c, wx, wind, heavy, sunrise, sunset, tz, t (ms), offline}
+var M={on:false,wx:'partly',wind:false,tod:'morning',c:15,day:''};
+var fetchSeq=0;
+(function initPlace(){
+  var qp=(q.get('place')||'').toLowerCase(), alias={'tel-aviv':'ta','telaviv':'ta','jerusalem':'jlm','manhattan':'ny','new-york':'ny','brooklyn':'hla','school':'hla'};
+  qp=alias[qp]||qp;
+  var p=preset(qp);
+  if(!p){var last=lsJson('mezeg-place',null);if(last&&typeof last.lat==='number'&&typeof last.lon==='number')p=last;}
+  cur=p?copy(p):copy(PRESETS[0]);
+})();
+function copy(p){return {id:p.id||null,he:p.he,lat:p.lat,lon:p.lon,tz:p.tz||null};}
+if(q.get('wx')||q.get('time')){M.on=true;var qw=q.get('wx'),qt=q.get('time');if(WX[qw])M.wx=qw;if(qt==='sunset')qt='evening';if(TOD[qt])M.tod=qt;if(q.get('temp'))M.c=parseInt(q.get('temp'),10)||15;if(q.has('wind'))M.wind=true;}
+
+/* ===== time helpers (in the place's time zone) ===== */
+function tzOf(){return (W&&W.tz)||cur.tz||undefined;}
+function localParts(){var now=new Date(),tz=tzOf(),wd,hm;
+  try{wd=new Intl.DateTimeFormat('en-US',{weekday:'long',timeZone:tz}).format(now);hm=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz}).format(now);}
+  catch(e){wd=new Intl.DateTimeFormat('en-US',{weekday:'long'}).format(now);hm=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false}).format(now);}
+  var a=hm.split(':'),h=parseInt(a[0],10)%24,m=parseInt(a[1],10);return {wd:wd,h:h,m:m,min:h*60+m,clock:h+':'+(m<10?'0':'')+m};}
+function isoMin(s){var t=(s||'').split('T')[1];if(!t)return null;var a=t.split(':');return parseInt(a[0],10)*60+parseInt(a[1],10);}
+function todFromClock(h){return h>=5&&h<11?'morning':h>=11&&h<14?'noon':h>=14&&h<17?'afternoon':h>=17&&h<21?'evening':'night';}
+function skyFromSun(min){
+  var sr=W?isoMin(W.sunrise):null,ss=W?isoMin(W.sunset):null;
+  if(sr==null||ss==null){sr=6*60+45;ss=17*60;}
+  if(min>=sr-40&&min<sr+60)return 'dawn';
+  if(min>=ss-60&&min<ss+30)return 'sunset';
+  if(min<sr-40||min>=ss+30)return 'night';
+  if(min<11*60)return 'morning';if(min<14*60)return 'noon';return 'afternoon';
+}
+
+/* ===== render ===== */
+var bgCur='',bgFront='bgA';
+function setBackground(bg,ver){
+  var k=bg+'-'+ver;if(k===bgCur)return;bgCur=k;
+  var jpg=IMG+k+'.jpg',mask=IMG+k+'-mask.png',n=0,back=bgFront==='bgA'?'bgB':'bgA';
+  function go(){if(++n<2||bgCur!==k)return;var el=$(back);el.style.backgroundImage='url('+jpg+')';el.style.webkitMaskImage=el.style.maskImage='url('+mask+')';
+    requestAnimationFrame(function(){el.classList.add('on');$(bgFront).classList.remove('on');bgFront=back;});}
+  [jpg,mask].forEach(function(s){var im=new Image();im.onload=go;im.onerror=go;im.src=s;});
+}
+function render(){
+  var st=$('stage'),lp=localParts(),live=!M.on&&W;
+  var wx,wind,heavy,c,sky,tod,clock,wd;
+  if(live){wx=W.wx;wind=W.wind;heavy=W.heavy;c=W.c;sky=skyFromSun(lp.min);tod=todFromClock(lp.h);clock=lp.clock;wd=lp.wd;}
+  else{wx=M.wx;wind=M.wind;heavy=false;c=M.c;tod=M.tod;sky=TOD_SKY[tod];clock=M.on?TOD_CLOCK[tod]:lp.clock;wd=M.day||lp.wd;if(!M.on){sky=skyFromSun(lp.min);tod=todFromClock(lp.h);c=null;}}
+  var night=sky==='night',bg=bgFor(cur.lat,cur.lon);
+  st.className=st.className.replace(/\b(bg|t|w)-\S+/g,'').replace(/\b(windy|heavy|manual)\b/g,'').replace(/\s+/g,' ').trim()+' bg-'+bg+' t-'+sky+' w-'+wx+(wind?' windy':'')+(heavy?' heavy':'')+(M.on?' manual':'');
+  setBackground(bg,night?'night':(wx==='snow'?'snow':'day'));
+  var grey=['cloudy','rain','drizzle','storm','snow','fog'].indexOf(wx)>=0;
+  document.querySelectorAll('img.cloud').forEach(function(e){var s=grey?e.dataset.g:e.dataset.w;if(e.getAttribute('src')!==s)e.setAttribute('src',s);});
+  $('dayHe').textContent=DAYS[wd]||wd;$('todHe').textContent=TOD[tod];$('clock').textContent=clock;
+  $('placeHe').textContent=nameOf(cur);
+  var atHla=cur.id==='hla';$('hlaTag').style.display=atHla?'':'none';$('hlaChip').style.display=atHla?'none':'';
+  if(c==null||isNaN(c)){$('tempN').textContent='—';$('tempW').textContent='';}
+  else{var shown=unit==='F'?Math.round(c*9/5+32):Math.round(c);$('tempN').textContent=shown+'°'+unit;$('tempW').textContent=tempWords(shown);}
+  $('stateHe').textContent=(WX[wx][night?1:0]||WX[wx][0])+(wind?' · יֵשׁ רוּחַ':'');
+  var note='';if(!M.on&&W&&W.offline)note='offline, weather from '+hhmm(W.t);if(!M.on&&!W)note='loading weather…';$('stateNote').textContent=note;
+  var on=(WON[wx][night?1:0]||WON[wx][0]).concat([TOD[tod]]);if(c!=null&&!isNaN(c))on.push(hotCold(c));if(wind)on.push('רוּחַ');on.push(DAYS[wd]);
+  document.querySelectorAll('.bank span[data-k]').forEach(function(e){e.classList.toggle('on',on.indexOf(e.dataset.k)>=0);});
+  $('uC').classList.toggle('on',unit==='C');$('uF').classList.toggle('on',unit==='F');
+  $('manualWhat').textContent=WX_EN[wx]+(wind?' + wind':'')+', '+tod;
+  if(document.activeElement!==$('nameEdit'))$('nameEdit').value=nameOf(cur);
+}
+function hhmm(t){var d=new Date(t);return d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();}
+
+/* ===== weather (Open-Meteo, no key) ===== */
+function cacheKey(){return 'mezeg-wx-'+cur.lat.toFixed(2)+','+cur.lon.toFixed(2);}
+function loadWeather(){
+  var seq=++fetchSeq,p=cur;
+  var url='https://api.open-meteo.com/v1/forecast?latitude='+p.lat.toFixed(4)+'&longitude='+p.lon.toFixed(4)+
+    '&current=temperature_2m,weather_code,is_day,wind_speed_10m,wind_gusts_10m,cloud_cover,precipitation&daily=sunrise,sunset&timezone=auto&forecast_days=1';
+  return fetch(url).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(j){
+    if(seq!==fetchSeq)return;
+    var cu=j.current||{},code=cu.weather_code;
+    W={c:cu.temperature_2m,wx:wmo(code),heavy:[65,67,82].indexOf(code)>=0,wind:(cu.wind_speed_10m>=30||cu.wind_gusts_10m>=45),
+       sunrise:j.daily&&j.daily.sunrise&&j.daily.sunrise[0],sunset:j.daily&&j.daily.sunset&&j.daily.sunset[0],tz:j.timezone||p.tz,t:Date.now(),offline:false};
+    if(!cur.tz&&j.timezone)cur.tz=j.timezone;
+    lsSet(cacheKey(),JSON.stringify(W));
+    $('lastUpd').textContent='Last update: '+hhmm(W.t)+' (Open-Meteo)';
+    render();
+  }).catch(function(){
+    if(seq!==fetchSeq)return;
+    var old=lsJson(cacheKey(),null);
+    if(old){old.offline=true;W=old;$('lastUpd').textContent='Offline. Weather from '+hhmm(old.t)+'.';}
+    else{W=null;if(!M.on)setManual(true);$('lastUpd').textContent='Offline and nothing saved for this place: manual mode.';}
+    render();
+  });
+}
+
+/* ===== place change ===== */
+function setPlace(p,save){
+  cur=copy(p);$('temp').classList.remove('show');
+  W=lsJson(cacheKey(),null);if(W)W.offline=false;  // show the saved weather at once, then refresh
+  lsSet('mezeg-place',JSON.stringify(cur));
+  if(save&&!cur.id){var k=keyOf(cur);SAVED=SAVED.filter(function(s){return keyOf(s)!==k;});SAVED.unshift(copy(cur));SAVED=SAVED.slice(0,6);lsSet('mezeg-saved',JSON.stringify(SAVED));}
+  render();loadWeather();
+}
+
+/* ===== settings ===== */
+function setUnit(u){unit=u;lsSet('mezeg-unit',u);syncManTemp();render();}
+function toggleSet(force){var o=$('stage').classList.toggle('set-open',force);$('setTab').textContent=o?'‹':'›';}
+function toggleHelp(){helpOpen=$('stage').classList.toggle('help-open');lsSet('mezeg-help-open',helpOpen?'1':'0');$('helpTab').textContent=helpOpen?'﹀ עֶזְרָה':'︿ עֶזְרָה';}
+function setHelp(m){help=m;lsSet('mezeg-help',m);var b=$('helpbar');b.classList.remove('full','nomark','semi');b.classList.add(m);['full','nomark','semi'].forEach(function(k){$('m-'+k).classList.toggle('on',k===m);});}
+function setManual(on){
+  if(on&&!M.on){ // start from what is on screen now
+    var lp=localParts();if(W){M.wx=W.wx;M.wind=W.wind;M.c=Math.round(W.c);}M.tod=todFromClock(lp.h);M.day='';
+  }
+  M.on=on;$('manOn').checked=on;$('manBox').classList.toggle('off',!on);syncMan();render();
+}
+function syncMan(){$('manWx').value=M.wx;$('manWind').checked=M.wind;$('manTod').value=M.tod;$('manDay').value=M.day;syncManTemp();}
+function syncManTemp(){var r=$('manTemp');if(unit==='F'){r.min=-4;r.max=104;r.value=Math.round(M.c*9/5+32);}else{r.min=-20;r.max=40;r.value=Math.round(M.c);}$('manTval').textContent=r.value+'°'+unit;}
+function fullScreen(){if(document.fullscreenElement){document.exitFullscreen&&document.exitFullscreen();}else{var d=document.documentElement;d.requestFullscreen&&d.requestFullscreen().catch(function(){});}}
+
+/* ===== map (Leaflet + OpenStreetMap, loaded on first open) ===== */
+var map=null,pin=null,pick=null,leafletState=0,tileFails=0;
+function loadLeaflet(cb){
+  if(leafletState===2)return cb(true);
+  if(leafletState===3)return cb(false);
+  if(leafletState===1){loadLeaflet.q.push(cb);return;}
+  leafletState=1;loadLeaflet.q=[cb];
+  var css=document.createElement('link');css.rel='stylesheet';css.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';document.head.appendChild(css);
+  var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+  s.onload=function(){leafletState=2;loadLeaflet.q.forEach(function(f){f(true);});};
+  s.onerror=function(){leafletState=3;loadLeaflet.q.forEach(function(f){f(false);});};
+  document.head.appendChild(s);
+}
+var MSG_NET='הַמַּפָּה צְרִיכָה אִינְטֶרְנֶט. הַכַּפְתּוֹרִים שֶׁל הַמְּקוֹמוֹת עֲדַיִין עוֹבְדִים.';
+function setPick(p,note){pick=p;var el=$('chosenHe');el.classList.toggle('note',!!note);el.textContent=note||(p?'📍 '+nameOf(p):'');$('chooseBtn').disabled=!p;drawPresets();}
+function pinIcon(){return L.divIcon({className:'',html:'<div class="pinIcon">📍</div>',iconSize:[34,34],iconAnchor:[17,32]});}
+function dropPin(lat,lon){if(!map)return;if(pin)pin.setLatLng([lat,lon]);else pin=L.marker([lat,lon],{icon:pinIcon(),interactive:false}).addTo(map);}
+function initMap(){
+  if(map)return;
+  $('mapMsg').style.display='none';
+  map=L.map('map',{zoomControl:true}).setView([cur.lat,cur.lon],11);
+  var tl=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
+  tl.on('tileerror',function(){tileFails++;if(tileFails===3)setPick(pick,MSG_NET);});
+  map.on('click',function(e){onMapClick(e.latlng.lat,e.latlng.lng);});
+  PRESETS.forEach(function(p){L.circleMarker([p.lat,p.lon],{radius:7,color:'#24408e',weight:2,fillColor:'#fff',fillOpacity:1}).addTo(map).bindTooltip(nameOf(p));});
+}
+function openMap(){
+  $('stage').classList.add('map-open');toggleSet(false);
+  setPick(copy(cur));
+  loadLeaflet(function(ok){
+    if(!$('stage').classList.contains('map-open'))return;
+    if(!ok||typeof L==='undefined'){$('mapMsg').textContent=MSG_NET;$('mapMsg').style.display='flex';return;}
+    initMap();map.invalidateSize();map.setView([cur.lat,cur.lon],map.getZoom()<5?11:map.getZoom());dropPin(cur.lat,cur.lon);
+  });
+  setTimeout(function(){$('search').focus();},50);
+}
+function closeMap(){$('stage').classList.remove('map-open');$('results').classList.remove('show');}
+function drawPresets(){
+  var box=$('presets');box.innerHTML='';
+  PRESETS.concat(SAVED).forEach(function(p){
+    var b=document.createElement('button');b.type='button';b.textContent=p.id?p.btn:nameOf(p);
+    if(!p.id)b.className='saved';
+    if(pick&&keyOf(pick)===keyOf(p))b.classList.add('sel');
+    b.onclick=function(){if(map){map.flyTo([p.lat,p.lon],p.id?12:11,{duration:1.2});dropPin(p.lat,p.lon);}setPick(copy(p));};
+    box.appendChild(b);
+  });
+}
+/* reverse geocoding: only on click, at most 1 request per second */
+var lastRev=0,revTimer=null,revSeq=0;
+function onMapClick(lat,lon){
+  dropPin(lat,lon);var seq=++revSeq;
+  setPick(null);$('chosenHe').textContent='🔎 מְחַפֵּשׂ אֶת שֵׁם הַמָּקוֹם…';
+  clearTimeout(revTimer);
+  revTimer=setTimeout(function(){
+    lastRev=Date.now();
+    fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat.toFixed(5)+'&lon='+lon.toFixed(5)+'&accept-language=he&zoom=10')
+      .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(j){
+        if(seq!==revSeq)return;
+        var a=j.address||{},city=a.city||a.town||a.village||a.municipality||a.hamlet||a.county||a.state||'',country=a.country||'';
+        var name=city&&country?city+', '+country:(city||country||j.name||'מָקוֹם בַּמַּפָּה');
+        setPick({id:null,he:name,lat:lat,lon:lon,tz:null});
+      }).catch(function(){
+        if(seq!==revSeq)return;
+        setPick({id:null,he:'מָקוֹם בַּמַּפָּה',lat:lat,lon:lon,tz:null},'לֹא הִצְלַחְנוּ לִמְצוֹא אֶת הַשֵּׁם (צָרִיךְ אִינְטֶרְנֶט). אֶפְשָׁר לִבְחוֹר בְּכָל זֹאת.');
+        pick={id:null,he:'מָקוֹם בַּמַּפָּה',lat:lat,lon:lon,tz:null};$('chooseBtn').disabled=false;
+      });
+  },Math.max(0,1000-(Date.now()-lastRev)));
+}
+/* search (Open-Meteo geocoding, Hebrew names) */
+var sTimer=null,sSeq=0;
+function runSearch(text){
+  var ul=$('results'),seq=++sSeq;
+  if(text.length<2){ul.classList.remove('show');return;}
+  fetch('https://geocoding-api.open-meteo.com/v1/search?name='+encodeURIComponent(text)+'&count=5&language=he')
+    .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(j){
+      if(seq!==sSeq)return;ul.innerHTML='';var list=j.results||[];
+      if(!list.length){var li=document.createElement('li');li.textContent='לֹא מָצָאנוּ. נַסּוּ שֵׁם אַחֵר.';ul.appendChild(li);}
+      list.forEach(function(r){
+        var li=document.createElement('li'),nm=document.createElement('span'),sm=document.createElement('small');
+        nm.textContent=r.name;sm.textContent=' · '+[r.admin1,r.country].filter(Boolean).join(', ');li.appendChild(nm);li.appendChild(sm);
+        li.onclick=function(){
+          var p={id:null,he:r.country?r.name+', '+r.country:r.name,lat:r.latitude,lon:r.longitude,tz:r.timezone||null};
+          ul.classList.remove('show');$('search').value='';
+          if(map){map.flyTo([p.lat,p.lon],11,{duration:1.2});dropPin(p.lat,p.lon);}
+          setPick(p);
+        };
+        ul.appendChild(li);
+      });
+      ul.classList.add('show');
+    }).catch(function(){
+      if(seq!==sSeq)return;ul.innerHTML='';var li=document.createElement('li');li.textContent='הַחִיפּוּשׂ צָרִיךְ אִינְטֶרְנֶט.';ul.appendChild(li);ul.classList.add('show');
+    });
+}
+function choose(){if(!pick)return;closeMap();
+  var p=pick;if(!p.id){var pr=null;PRESETS.forEach(function(x){if(distKm(p.lat,p.lon,x.lat,x.lon)<0.5)pr=x;});if(pr)p=pr;}
+  setPlace(p,true);}
+
+/* ===== wiring ===== */
+$('mapBtn').onclick=openMap;$('placeHe').onclick=openMap;
+$('hlaChip').onclick=function(){setPlace(PRESETS[0]);};
+$('temp').onclick=function(){this.classList.toggle('show');};
+['full','nomark','semi'].forEach(function(k){$('m-'+k).onclick=function(){setHelp(k);};});
+$('helpTab').onclick=toggleHelp;
+$('setTab').onclick=function(){toggleSet();};
+$('uF').onclick=function(){setUnit('F');};$('uC').onclick=function(){setUnit('C');};
+$('refreshBtn').onclick=function(){$('lastUpd').textContent='Updating…';loadWeather();};
+$('manOn').onchange=function(){setManual(this.checked);};
+$('manWx').innerHTML=Object.keys(WX).map(function(k){return '<option value="'+k+'">'+WX_EN[k]+'</option>';}).join('');
+$('manTod').innerHTML=Object.keys(TOD).map(function(k){return '<option value="'+k+'">'+k+' · '+TOD[k]+'</option>';}).join('');
+$('manDay').innerHTML='<option value="">today (live)</option>'+DAY_KEYS.map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join('');
+$('manWx').onchange=function(){M.wx=this.value;render();};
+$('manWind').onchange=function(){M.wind=this.checked;render();};
+$('manTod').onchange=function(){M.tod=this.value;render();};
+$('manDay').onchange=function(){M.day=this.value;render();};
+$('manTemp').oninput=function(){var v=parseInt(this.value,10);M.c=unit==='F'?(v-32)*5/9:v;$('manTval').textContent=v+'°'+unit;render();};
+$('backLive').onclick=function(){setManual(false);if(!W)loadWeather();};
+$('nameEdit').onkeydown=function(e){if(e.key==='Enter'){var v=this.value.trim(),k=keyOf(cur);if(v&&v!==cur.he)NAMES[k]=v;else delete NAMES[k];lsSet('mezeg-names',JSON.stringify(NAMES));this.blur();render();}};
+$('motionOff').onchange=function(){$('stage').classList.toggle('motion-off',this.checked);lsSet('mezeg-motion',this.checked?'off':'on');};
+$('fsBtn').onclick=fullScreen;
+$('chooseBtn').onclick=choose;$('closeBtn').onclick=closeMap;
+$('mapWrap').addEventListener('click',function(e){if(e.target===this)closeMap();});
+$('search').addEventListener('input',function(){var t=this.value.trim();clearTimeout(sTimer);sTimer=setTimeout(function(){runSearch(t);},350);});
+$('search').addEventListener('keydown',function(e){if(e.key==='Enter'){clearTimeout(sTimer);runSearch(this.value.trim());}});
+document.querySelector('.layer.sky').parentNode.addEventListener('click',function(e){ // a click on the scene closes settings
+  if($('stage').classList.contains('set-open')&&!e.target.closest('#settings,#setTab'))toggleSet(false);});
+document.addEventListener('keydown',function(e){
+  var tag=e.target.tagName;
+  if(e.key==='Escape'){closeMap();toggleSet(false);if(tag==='INPUT')e.target.blur();return;}
+  if(tag==='INPUT'||tag==='SELECT'||e.ctrlKey||e.metaKey||e.altKey)return;
+  var k=e.key.toLowerCase();
+  if(k==='s'||k==='ד')toggleSet();else if(k==='h'||k==='י')toggleHelp();else if(k==='m'||k==='צ'){$('stage').classList.contains('map-open')?closeMap():openMap();}
+  else if(k==='r'||k==='ר')loadWeather();else if(k==='u'||k==='ו')setUnit(unit==='C'?'F':'C');else if(k==='f'||k==='כ')fullScreen();
+});
+
+/* ===== build bank, stars, clouds, rain, snow, leaves ===== */
+$('bank').innerHTML=WORDS.map(function(w){return '<span data-k="'+(w[1]||w[0])+'">'+w[0]+'</span>';}).join('')+'<button class="daysBtn" type="button" id="daysBtn">📅 יָמִים</button>';
+$('bankDays').innerHTML=DAY_KEYS.map(function(k){return '<span data-k="'+DAYS[k]+'">'+DAYS[k]+'</span>';}).join('');
+$('daysBtn').onclick=function(){$('helpbar').classList.toggle('days-open');};
+var h='',i;
+for(i=0;i<70;i++)h+='<div class="star" style="left:'+(Math.random()*100)+'vw;top:'+(Math.random()*50)+'vh;animation-delay:'+(-Math.random()*2.5)+'s"></div>';$('stars').innerHTML=h;
+h='';[[9,90,.18],[19,120,.47],[13,105,.72],[24,140,.93],[5,110,.33],[16,130,.6],[22,100,.05]].forEach(function(a,i){var n=i%3+1;
+  h+='<img class="cloud n'+(i+1)+'" alt="" data-w="'+IMG+'cloud-white-'+n+'.png" data-g="'+IMG+'cloud-grey-'+n+'.png" src="'+IMG+'cloud-white-'+n+'.png" style="top:'+a[0]+'vh;width:'+([46,30,16][i%3]*(1-(i>2?.15:0)))+'vh;--d:'+a[1]+'s;animation-delay:'+(-a[1]*a[2])+'s">';});$('clouds').innerHTML=h;
+h='';for(i=0;i<140;i++)h+='<div class="drop" style="left:'+(Math.random()*115)+'vw;animation-duration:'+(.5+Math.random()*.4)+'s;animation-delay:'+(-Math.random())+'s"></div>';$('rain').innerHTML=h;
+h='';for(i=0;i<110;i++)h+='<div class="drop" style="left:'+(Math.random()*130)+'vw;animation-duration:'+(.35+Math.random()*.25)+'s;animation-delay:'+(-Math.random())+'s"></div>';$('rain2').innerHTML=h;
+h='';for(i=0;i<110;i++)h+='<img class="flake" alt="" src="'+IMG+'flake-'+(1+(i%6))+'.png" style="left:'+(Math.random()*100)+'vw;width:'+((i%6<2?18:10)+Math.random()*16)+'px;animation-duration:'+(7+Math.random()*7)+'s;animation-delay:'+(-Math.random()*14)+'s">';$('snow').innerHTML=h;
+h='';for(i=0;i<14;i++)h+='<span class="leaf" style="top:'+(30+Math.random()*45)+'vh;animation-duration:'+(4+Math.random()*4)+'s;animation-delay:'+(-Math.random()*8)+'s">'+(i%3?'🍂':'🍃')+'</span>';$('leaves').innerHTML=h;
+
+/* ===== start ===== */
+setHelp(help);
+$('stage').classList.toggle('help-open',helpOpen);$('helpTab').textContent=helpOpen?'﹀ עֶזְרָה':'︿ עֶזְרָה';
+if(lsGet('mezeg-motion','on')==='off'){$('motionOff').checked=true;$('stage').classList.add('motion-off');}
+W=lsJson(cacheKey(),null);if(W)W.offline=false;
+if(M.on){$('manOn').checked=true;$('manBox').classList.remove('off');}
+syncMan();
+if(q.has('settings'))toggleSet(true);
+if(q.has('words'))$('temp').classList.add('show');
+render();loadWeather();
+if(q.has('map'))openMap();
+setInterval(render,10000);                         // clock, day and sky
+setInterval(function(){if(!document.hidden)loadWeather();},15*60*1000);  // weather every 15 minutes
+})();
+</script>
+</body>
+</html>
