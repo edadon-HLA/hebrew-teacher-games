@@ -314,7 +314,7 @@ function wmo(c){if(c===0||c===1)return 'clear';if(c===2)return 'partly';if(c===3
 var q=new URLSearchParams(location.search);
 var unit=lsGet('mezeg-unit','F'); if(q.get('unit'))unit=q.get('unit').toUpperCase()==='C'?'C':'F';
 var help=lsGet('mezeg-help','full'); if(q.get('help'))help=q.get('help'); if(['full','nomark','semi'].indexOf(help)<0)help='full';
-var helpOpen=lsGet('mezeg-help-open','1')==='1';
+var helpOpen=false; // teacher 11/17: help bar closed by default (always starts closed)
 var cur=null;          // {id?, he, lat, lon, tz}
 var W=null;            // live weather {c, wx, wind, heavy, sunrise, sunset, tz, t (ms), offline}
 var M={on:false,wx:'partly',wind:false,tod:'morning',c:15,day:'',sky:null};
