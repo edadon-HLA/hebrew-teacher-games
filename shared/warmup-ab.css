@@ -1,0 +1,49 @@
+/* shared/warmup-ab.css — styles for shared/warmup-ab.js (prefix wab-). Works on Niflaot, bayit-shelanu and lomdim-likro pages. */
+.wab{--wab-ink:#23233a;--wab-line:#e6e1d6;--wab-muted:#6b6880;--wab-sky:#2a8bd8;--wab-coral:#e2506a;--wab-green:#2f9d55;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.wab-lab{display:inline-block;font:800 15px 'Noto Sans Hebrew',Arial,sans-serif;background:#23233a;color:#fff;border-radius:999px;padding:2px 12px;margin:4px 0}
+.wab .wab-title{margin-top:4px}
+.wab-strip{display:grid;grid-template-columns:repeat(var(--c,4),minmax(0,1fr));gap:12px;margin:8px 0 12px}
+.wab-strip figure{margin:0;text-align:center;font:800 clamp(20px,2.6vw,28px)/1.4 'Noto Sans Hebrew',Arial,sans-serif}
+.wab-strip .ph{position:relative;aspect-ratio:4/3;border:3px solid var(--wab-line);border-radius:16px;overflow:hidden;background:#f3f1ec;display:grid;place-items:center;color:var(--wab-muted)}
+.wab-strip .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.wab .ph.none{background:#f3f1ec;border-style:dashed;font:800 clamp(22px,3vw,34px) 'Noto Sans Hebrew',Arial,sans-serif;color:#8a8577}
+.wab-talk{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(220px,1fr);gap:16px;align-items:center}
+.wab-talk.one{grid-template-columns:minmax(220px,420px);justify-content:center;margin-top:10px}
+.wab-prompts{display:grid;gap:10px}
+.wab-pr{background:#fff;border:3px solid var(--wab-line);border-radius:18px;padding:10px 14px;font:700 clamp(20px,2.8vw,28px)/1.5 'Noto Sans Hebrew',Arial,sans-serif}
+.wab-pr b{color:#7a4cc2}
+.wab-pr .ar{color:var(--wab-coral);margin:0 10px}
+.wab-timer{background:#fff;border:3px solid var(--wab-ink);border-radius:24px;padding:12px;text-align:center}
+.wab-timer .t{font:800 clamp(56px,10vw,90px)/1 'Rubik','Noto Sans Hebrew',Arial,sans-serif;direction:ltr}
+.wab-timer .t.end{color:var(--wab-coral)}
+.wab-timer .rd{font:800 20px 'Noto Sans Hebrew',Arial,sans-serif;color:var(--wab-muted)}
+.wab-rounds{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.wab-rounds button.on{background:var(--wab-sky);color:#fff}
+.wab-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:10px 0}
+.wab-bank{margin-top:10px;text-align:center;background:#fff;border:3px dashed var(--wab-sky);border-radius:22px;padding:10px 14px;font:800 clamp(18px,2.4vw,26px)/1.6 'Noto Sans Hebrew',Arial,sans-serif;color:var(--wab-muted)}
+.wab-write{margin-top:10px;font:800 clamp(24px,3.6vw,36px)/1.5 'Noto Sans Hebrew',Arial,sans-serif;text-align:center;background:#fff;border:3px dashed var(--wab-sky);border-radius:22px;padding:14px}
+.wab-write small{display:block;font-size:.62em;color:var(--wab-muted)}
+.wab-ex{text-align:center;margin-top:6px}.wab-ex summary{cursor:pointer;font-size:.6em;color:var(--wab-muted)}
+.wab-cr{text-align:left;font-size:13px}
+/* carousel */
+.wab-boxes{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+.wab-boxes div{min-width:110px;text-align:center;font:800 clamp(44px,7vw,72px)/1.3 'Noto Sans Hebrew',Arial,sans-serif;background:#fff;border:4px solid var(--wab-line);border-radius:20px;padding:4px 16px}
+.wab-boxes div.ok{border-color:var(--wab-green);background:#dcf2e3}
+.wab-stage{display:grid;justify-items:center;gap:8px}
+.wab-stage .ph{position:relative;width:min(420px,80vw);aspect-ratio:4/3;border:3px solid var(--wab-line);border-radius:18px;overflow:hidden;background:#f3f1ec;display:grid;place-items:center}
+.wab-stage .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.wab-ans{font:800 clamp(30px,4.6vw,48px)/1.3 'Noto Sans Hebrew',Arial,sans-serif;min-height:1.3em}
+.wab-ans b{color:var(--wab-green)}
+.wab-cnt{font:800 18px 'Noto Sans Hebrew',Arial,sans-serif;color:var(--wab-muted)}
+/* board */
+.wab-board{background:#fff;border:3px solid var(--wab-line);border-radius:22px;padding:12px}
+.wab-row{display:flex;justify-content:center;gap:clamp(20px,6vw,70px);font:800 clamp(48px,8vw,84px)/1.35 'Noto Sans Hebrew',Arial,sans-serif;border-bottom:2px dashed var(--wab-line)}
+.wab-board .wab-strip{margin-top:12px}
+/* own 3-2-1 overlay */
+.wab-cd{position:fixed;inset:0;z-index:10050;background:rgba(20,20,35,.82);display:none;align-items:center;justify-content:center;cursor:pointer}
+.wab-cd.on{display:flex}
+.wab-cd div{font:800 clamp(90px,22vw,240px)/1 'Rubik','Noto Sans Hebrew',Arial,sans-serif;color:#fff}
+@media(max-width:760px){.wab-talk{grid-template-columns:1fr}.wab-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* the old warm-up box (same look as the Niflaot pages), for pages that do not have it yet */
+details.q-opt{background:#fff8e6;border:2px dashed #e5c05a;border-radius:16px;padding:8px 14px;margin:8px 0}
+details.q-opt>summary{cursor:pointer;font:800 20px 'Noto Sans Hebrew',Arial,sans-serif}
