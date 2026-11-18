@@ -97,11 +97,7 @@
   .zap .bgW{filter:brightness(1.35) saturate(.8)!important}
   /* wind: GPT gusts + leaves (mockup-gpt.html) */
   .w-wind #leaves,.w-storm #leaves{display:block}
-  .gust{position:absolute;left:0;height:auto;opacity:0;animation:gust linear infinite}
-  /* gusts swirl along a curved path (rotate + curl), translucent */
-  @keyframes gust{0%{transform:translate(-60vw,0) rotate(-12deg) scale(.9,1);opacity:0}15%{opacity:.5}25%{transform:translate(-15vw,-6vh) rotate(10deg) scale(1.05,.85)}50%{transform:translate(28vw,4vh) rotate(-14deg) scale(.95,1.15)}75%{transform:translate(70vw,-5vh) rotate(12deg) scale(1.08,.9)}85%{opacity:.5}100%{transform:translate(110vw,3vh) rotate(-8deg) scale(1,1);opacity:0}}
-  .leaf{position:absolute;left:0;height:auto;animation:leafy linear infinite}
-  @keyframes leafy{0%{transform:translate(-10vw,0) rotate(0)}25%{transform:translate(25vw,-6vh) rotate(160deg)}50%{transform:translate(55vw,4vh) rotate(320deg)}75%{transform:translate(85vw,-4vh) rotate(500deg)}100%{transform:translate(115vw,6vh) rotate(700deg)}}
+  /* wind motion = canvas in #leaves (Wind engine in the script): streaks that draw themselves and curl, leaves riding them */
   .w-wind img.cloud.n1,.w-wind img.cloud.n2,.w-wind img.cloud.n3{display:block}
   .w-wind img.cloud{animation-duration:calc(var(--d) * .3)}
   .w-wind:not(.t-night) .sun{display:block}
@@ -610,10 +606,67 @@ h='';[[9,90,.18],[19,120,.47],[13,105,.72],[24,140,.93],[5,110,.33],[16,130,.6],
 h='';for(i=0;i<140;i++)h+='<div class="drop" style="left:'+(Math.random()*115)+'vw;animation-duration:'+(.5+Math.random()*.4)+'s;animation-delay:'+(-Math.random())+'s"></div>';$('rain').innerHTML=h;
 h='';for(i=0;i<110;i++)h+='<div class="drop" style="left:'+(Math.random()*130)+'vw;animation-duration:'+(.35+Math.random()*.25)+'s;animation-delay:'+(-Math.random())+'s"></div>';$('rain2').innerHTML=h;
 h='';for(i=0;i<110;i++)h+='<img class="flake" alt="" src="'+IMG+'flake-'+(1+(i%6))+'.png" style="left:'+(Math.random()*100)+'vw;width:'+((i%6<2?18:10)+Math.random()*16)+'px;animation-duration:'+(7+Math.random()*7)+'s;animation-delay:'+(-Math.random()*14)+'s">';$('snow').innerHTML=h;
-// wind: 3 GPT gusts + blowing GPT leaves (as in mockup-gpt.html)
-h='';[[30,14,0],[48,10,.4],[62,12,.75]].forEach(function(a,i){h+='<img class="gust" alt="" src="'+IMG+'wind-'+(i+1)+'.png" style="top:'+a[0]+'vh;width:'+[44,36,40][i]+'vw;animation-duration:'+a[1]+'s;animation-delay:'+(-a[1]*a[2])+'s">';});
-for(i=0;i<12;i++){var ld=6+Math.random()*6;h+='<img class="leaf" alt="" src="'+IMG+'leaf-'+(1+(i%5))+'.png" style="top:'+(35+Math.random()*45)+'vh;width:'+(3+Math.random()*2.5)+'vh;animation-duration:'+ld+'s;animation-delay:'+(-Math.random()*ld)+'s">';}
-$('leaves').innerHTML=h;
+// wind (teacher: "I want it to swirl like in a movie"): canvas streaks that draw themselves along a wavy path and curl into a
+// spiral, in gusts every few seconds; GPT leaves ride the streaks (loop-the-loop, tumbling, flipping) and drift down after.
+var Wind=(function(){
+  var cv=document.createElement('canvas'),cx=cv.getContext('2d'),W0=0,H0=0,dpr=1;
+  cv.style.cssText='position:absolute;inset:0;width:100%;height:100%';$('leaves').appendChild(cv);
+  var LEAF=[1,2,3,4,5].map(function(n){var im=new Image();im.src=IMG+'leaf-'+n+'.png';return im;});
+  var streaks=[],leaves=[],nextGust=0,nextSmall=0,last=0,lastFrame=0;
+  function size(){dpr=Math.min(window.devicePixelRatio||1,1.5);W0=cv.clientWidth;H0=cv.clientHeight;cv.width=Math.round(W0*dpr);cv.height=Math.round(H0*dpr);}
+  window.addEventListener('resize',size);
+  function rnd(a,b){return a+Math.random()*(b-a);}
+  /* path: s in [0,.68] = wave to the right; s in [.68,1] = spiral loop (continues right, curls up and back, radius shrinking) */
+  function mk(big){var h=H0||innerHeight,w=W0||innerWidth,sc=big?rnd(.8,1.3):rnd(.45,.75);
+    return {x0:rnd(-.25,.45)*w,y0:rnd(.28,.78)*h,L:rnd(.35,.6)*w*sc,A:rnd(.02,.05)*h*(Math.random()<.5?-1:1),ph:rnd(0,6.28),R:rnd(.05,.09)*h*sc,
+      turns:rnd(1.1,1.6),dur:rnd(1.6,2.6)/(big?1.2:1),len:rnd(.32,.45),t:0,wd:big?5:3,al:big?.85:.6};}
+  function pt(k,s){var a=.68;
+    if(s<=a){var u=s/a;return [k.x0+k.L*u,k.y0+k.A*Math.sin(6.28*u*1.1+k.ph)];}
+    var e=pt(k,a),cxp=e[0],cyp=e[1]-k.R,u2=(s-a)/(1-a),th=Math.PI/2-6.2832*k.turns*u2,r=k.R*(1-.55*u2);
+    return [cxp+r*Math.cos(th),cyp+r*Math.sin(th)];}
+  function gust(n,big){for(var i=0;i<n;i++){var k=mk(big);k.t=-i*rnd(.12,.3);streaks.push(k);
+    if(big&&leaves.length<9&&Math.random()<.75)leaves.push({k:k,lag:rnd(.02,.08),im:LEAF[(Math.random()*5)|0],sz:rnd(.035,.055),rot:rnd(0,6.28),spin:rnd(5,10)*(Math.random()<.5?-1:1),flip:rnd(0,6.28),fs:rnd(6,11),free:false,x:0,y:0,vx:0,vy:0,a:1});}}
+  function step(now){
+    var st=$('stage'),on=/\b(w-wind|w-storm|windy)\b/.test(st.className)&&!st.classList.contains('motion-off')&&!document.hidden;
+    var dt=Math.min(.05,(now-(last||now))/1000);last=now;lastFrame=now;
+    if(!W0||cv.clientWidth!==W0)size();
+    cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W0,H0);
+    if(!on){streaks=[];leaves=[];return;}
+    var tS=now/1000;
+    if(tS>nextGust){gust(((Math.random()*3)|0)+3,true);nextGust=tS+rnd(3.5,6);}          // strong gust every few seconds
+    if(tS>nextSmall){gust(1,false);nextSmall=tS+rnd(1,2);}                               // calmer wisps in between
+    var night=st.classList.contains('t-night');
+    cx.lineCap='round';cx.lineJoin='round';
+    streaks=streaks.filter(function(k){
+      k.t+=dt/k.dur;if(k.t<=0)return true;
+      var head=Math.min(1,k.t),tail=Math.max(0,k.t-k.len),fade=k.t>1?Math.max(0,1-(k.t-1)/k.len):1;
+      if(tail>=1||fade<=0)return false;
+      var N=40,prev=pt(k,tail);
+      for(var i=1;i<=N;i++){var s=tail+(head-tail)*i/N,p=pt(k,s),f=i/N;   // f: 0 at the tail, 1 at the head -> tapering, brighter head
+        cx.strokeStyle='rgba(255,255,255,'+(k.al*f*fade*(night?.55:1)*.35).toFixed(3)+')';cx.lineWidth=k.wd*3.2*(.3+f);cx.beginPath();cx.moveTo(prev[0],prev[1]);cx.lineTo(p[0],p[1]);cx.stroke();
+        cx.strokeStyle='rgba(255,255,255,'+(k.al*f*fade*(night?.55:1)).toFixed(3)+')';cx.lineWidth=k.wd*(.3+f);cx.beginPath();cx.moveTo(prev[0],prev[1]);cx.lineTo(p[0],p[1]);cx.stroke();
+        prev=p;}
+      return true;});
+    leaves=leaves.filter(function(l){
+      var k=l.k,s=k.t-l.lag;
+      if(!l.free){
+        if(s>=1||k.t>1.05){var a=pt(k,.999),b=pt(k,.985);l.free=true;l.x=a[0];l.y=a[1];l.vx=(a[0]-b[0])/(dt||.016)*.15+rnd(20,60);l.vy=(a[1]-b[1])/(dt||.016)*.15;}
+        else if(s>0){var p=pt(k,s);l.x=p[0];l.y=p[1];l.spinNow=l.spin*1.6;}
+        else return true;
+      }
+      if(l.free){l.vx*=Math.pow(.6,dt);l.vx+=8*dt;l.vy+=(40-l.vy)*dt*.8;l.x+=l.vx*dt;l.y+=l.vy*dt+Math.sin(now/300+l.flip)*.6;l.a-=dt*.18;l.spinNow=l.spin*.5;}
+      l.rot+=(l.spinNow||l.spin)*dt*.3;l.flip+=l.fs*dt;
+      if(l.a<=0||l.y>H0+40||l.x>W0+60)return false;
+      var szp=l.sz*H0;if(!l.im.complete||!l.im.naturalWidth)return true;
+      cx.save();cx.globalAlpha=Math.max(0,Math.min(1,l.a));cx.translate(l.x,l.y);cx.rotate(l.rot);cx.scale(Math.cos(l.flip),1);   // tumble + flip
+      cx.drawImage(l.im,-szp/2,-szp/2*(l.im.naturalHeight/l.im.naturalWidth),szp,szp*(l.im.naturalHeight/l.im.naturalWidth));cx.restore();
+      return true;});
+  }
+  function loop(now){step(now);requestAnimationFrame(loop);}
+  requestAnimationFrame(loop);
+  setInterval(function(){var n=performance.now();if(n-lastFrame>200)step(n);},60);   // fallback when rAF is throttled
+  return {step:step};
+})();
 // lightning: the bolt shape and place change at every flash cycle
 var bi=0;function zap(ms){var st=$('stage');st.classList.add('zap');setTimeout(function(){st.classList.remove('zap');},ms);}
 function storm(){
