@@ -55,5 +55,16 @@ function house(cb){
     cb((k, [x, y, w, h], p = 6) => `<svg viewBox="${x - p} ${y - p} ${w + 2 * p} ${h + 2 * p}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">${defs}${G[k] || ''}</svg>`);
   });
 }
-return { house, src, pic, top, ins, bank, page, halves, shuffle, cards, dominoes, connect, ready };
+/* colour-by-sound: regions [{ t: 'rect'|'circle'|'ellipse'|'poly', a: [...], s: syllable, c: colour key, l: [x, y], fs }]
+ * deco [{ t, a, fill }] = outlines without a syllable (filled with `fill` in the answer); viewBox 0 0 600 440 */
+function colorSvg(regions, deco, cols, ex){
+  const sh = (t, a, st) => t === 'rect' ? `<rect x="${a[0]}" y="${a[1]}" width="${a[2]}" height="${a[3]}" ${st}/>` : t === 'circle' ? `<circle cx="${a[0]}" cy="${a[1]}" r="${a[2]}" ${st}/>`
+    : t === 'ellipse' ? `<ellipse cx="${a[0]}" cy="${a[1]}" rx="${a[2]}" ry="${a[3]}" ${st}/>` : `<polygon points="${a.join(' ')}" ${st}/>`;
+  const st = f => `fill="${f}" stroke="#1f2433" stroke-width="2.6" stroke-linejoin="round"`;
+  return `<svg viewBox="0 0 600 440" xmlns="http://www.w3.org/2000/svg">
+    ${deco.map(d => sh(d.t, d.a, st(ex && d.fill ? d.fill : '#fff'))).join('')}
+    ${regions.map(r => sh(r.t, r.a, st(ex ? cols[r.c] : '#fff'))).join('')}
+    ${regions.map(r => `<text x="${r.l[0]}" y="${r.l[1]}" text-anchor="middle" dominant-baseline="middle" font-family="Noto Sans Hebrew, Arial" font-weight="800" font-size="${r.fs || 22}" fill="#1f2433" direction="rtl">${r.s}</text>`).join('')}</svg>`;
+}
+return { colorSvg, house, src, pic, top, ins, bank, page, halves, shuffle, cards, dominoes, connect, ready };
 })();
