@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>צוֹבְעִים לְפִי צְלִיל — ק · ר</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R7 #1 colour-by-sound: a train under the sky, 20 areas with a syllable; p2 = the coloured answer */
+.ckey{display:flex;gap:9mm;justify-content:center;align-items:center;border:.5mm solid #1f2433;border-radius:3mm;padding:2mm 4mm;font-size:18pt;font-weight:800}
+.ckey span{display:inline-flex;align-items:center;gap:2.5mm}
+.ckey i{display:inline-block;width:9mm;height:9mm;border:.5mm solid #1f2433;border-radius:2mm}
+.cpic{width:186mm;height:136mm;margin:0 auto;flex-shrink:0}
+.cpic svg{width:100%;height:100%}
+.fb{font-size:13pt;font-weight:700;text-align:center;border:.4mm dashed #9aa1ad;border-radius:2mm;padding:1.5mm}
+</style>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const COL = { r: "#f07a7a", y: "#ffd84a", b: "#6aa8f0" };
+const KEY = [["ר", "אָדֹם", "r"], ["ק", "צָהֹב", "y"], ["בּ / ת / שׁ", "כָּחֹל", "b"]];
+const R = [
+  /* sky (בּ ת שׁ, blue) */
+  { t: "rect", a: [0, 0, 200, 85], s: "בָּ", c: "b", l: [100, 45] }, { t: "rect", a: [200, 0, 200, 85], s: "תַ", c: "b", l: [300, 45] }, { t: "rect", a: [400, 0, 200, 85], s: "שָׁ", c: "b", l: [500, 45] },
+  { t: "rect", a: [0, 85, 200, 85], s: "תְ", c: "b", l: [100, 130] }, { t: "rect", a: [200, 85, 200, 85], s: "שַׁ", c: "b", l: [300, 130] }, { t: "rect", a: [400, 85, 200, 85], s: "בַּ", c: "b", l: [500, 130] },
+  /* train body (ר, red) */
+  { t: "rect", a: [20, 200, 150, 95], s: "רָ", c: "r", l: [95, 278] }, { t: "rect", a: [180, 200, 140, 95], s: "רַ", c: "r", l: [250, 278] },
+  { t: "rect", a: [330, 225, 90, 70], s: "רְ", c: "r", l: [375, 275] }, { t: "rect", a: [345, 178, 30, 47], s: "רָ", c: "r", l: [360, 203], fs: 17 },
+  { t: "rect", a: [420, 170, 140, 125], s: "רַ", c: "r", l: [490, 270] },
+  /* windows + wheels (ק, yellow) */
+  { t: "rect", a: [35, 212, 55, 40], s: "קָ", c: "y", l: [62, 233] }, { t: "rect", a: [102, 212, 55, 40], s: "קַ", c: "y", l: [129, 233] },
+  { t: "rect", a: [192, 212, 52, 40], s: "קְ", c: "y", l: [218, 233] }, { t: "rect", a: [256, 212, 52, 40], s: "קָ", c: "y", l: [282, 233] },
+  { t: "rect", a: [442, 186, 96, 50], s: "קַ", c: "y", l: [490, 212] },
+  { t: "circle", a: [60, 312, 22], s: "קְ", c: "y", l: [60, 313], fs: 18 }, { t: "circle", a: [135, 312, 22], s: "קָ", c: "y", l: [135, 313], fs: 18 },
+  { t: "circle", a: [250, 312, 22], s: "קַ", c: "y", l: [250, 313], fs: 18 }, { t: "circle", a: [490, 312, 22], s: "קָ", c: "y", l: [490, 313], fs: 18 } ];
+const DECO = [{ t: "rect", a: [0, 334, 600, 10], fill: "#8a8a8a" }, { t: "rect", a: [165, 250, 20, 10], fill: "#8a8a8a" }, { t: "rect", a: [315, 250, 20, 10], fill: "#8a8a8a" }];
+const page = ex => PI.page(`${PI.top('צוֹבְעִים לְפִי צְלִיל', { tag: ex ? 'Answer' : '' })}
+  <div class="ckey">${KEY.map(([l, w, c]) => `<span><i style="background:${COL[c]}"></i>${l} = ${w}</span>`).join('')}</div>
+  ${PI.ins(0, 'צִבְעוּ כָּל חֵלֶק לְפִי הָאוֹת. הַתְּנוּעָה לֹא מְשַׁנָּה.')}
+  <div class="cpic">${PI.colorSvg(R, DECO, COL, ex)}</div>
+  <div class="fb">אֵין צְבָעִים? כִּתְבוּ בְּכָל חֵלֶק: 1 = ר, 2 = ק, 3 = בּ / ת / שׁ.</div>`);
+document.getElementById('pages').innerHTML = page(false) + page(true);
+</script>
+</body>
+</html>
