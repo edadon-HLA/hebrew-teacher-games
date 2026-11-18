@@ -1,11 +1,18 @@
 /* shared/warmup-ab-data.js — the approved A/B warm-ups (11/19 model + Niflaot R1-R9, teacher 11/18: "Approve as is").
  * Used by shared/warmup-ab.js. Photo sources: 'bayit:<key>' = games/bayit-photos.js, '@/...' = path from the site root.
- * NOT DOWNLOADED YET (teacher's OK pending): every '@/shared/warmup-photos/*.jpg' — until the file exists the box shows the word. */
+ * shared/warmup-photos/*.jpg: downloaded 2026-11-18 (teacher: "Yes, download"); credits = NEWCR below. A missing file shows its word in a neutral box. */
 (() => {
 const WM = 'https://thumb.wikimedia.org/wikipedia/commons/thumb/';
 const H = '@/niflaot-lessons/hacheder-sheli/';
 const NEW = '@/shared/warmup-photos/';
-const PENDING = n => `${n}: photo not downloaded yet (teacher's OK pending)`;
+const NEWCR = {
+  shirt: '"Clean-blank-shirt-hanger" – Pajju12, CC BY-SA 4.0', coat: '"Grey duffle coat in Muji" – Peachyeung316, CC BY-SA 4.0 (cropped)',
+  school: '"PikiWiki Israel 8287 school building in bnei-atarot" – Avishai Teicher (PikiWiki), CC BY 2.5',
+  akko: '"Acre - Akko 6 - the fishing port" – israeltourism, CC BY 2.0', newyork: '"Lower Manhattan from Jersey City November 2014 panorama 3" – King of Hearts, CC BY-SA 3.0',
+  black: '"Black cat sitting on gravel" – Negative Mortality, CC BY 4.0', pasta: '"Spaghetti-prepared" – public domain', cheese: '"Emmental slices" – Tiia Monto, CC BY-SA 4.0',
+  broccoli: '"Brassica oleracea var. italica Calabrese (broccoli) (SaatPilot)" – Steffen Bauer, CC BY 4.0', soup: '"Bowl of lentil soup with green and red lentils" – Whoisjohngalt, CC BY-SA 4.0',
+  tomatoes: '"Tomatoes plain and sliced" – FoeNyx, CC BY-SA 3.0' };
+const PENDING = n => NEWCR[n];
 const ar = s => s.replace(' ⬅ ', '<span class="ar">⬅</span>');
 const P = { /* reused photos */
   apples: WM + '1/1f/Three_apples%2C_red_and_green%2C_rest_near_an_open_book_on_a_wooden_table.jpg/500px-Three_apples%2C_red_and_green%2C_rest_near_an_open_book_on_a_wooden_table.jpg',
@@ -41,7 +48,7 @@ const A2 = { type: 'carousel', label: 'חִמּוּם A', title: 'שׁ: כּוֹ
 /* ---------- R4 / R6: B2 "מָה אַתָּה מְבַשֵּׁל?" ---------- */
 const FOOD = [['pasta', 'פַּסְטָה'], ['cheese', 'גְּבִינָה'], ['broccoli', 'בְּרוֹקוֹלִי'], ['soup', 'מָרָק'], ['tomatoes', 'עַגְבָנִיּוֹת']];
 const B2 = { label: 'חִמּוּם B', title: 'מָה אַתָּה מְבַשֵּׁל?', sub: 'מְדַבְּרִים בְּזוּגוֹת, וְאָז כּוֹתְבִים.',
-  photos: FOOD.map(([k, w]) => ({ src: NEW + k + '.jpg', word: w })),
+  photos: FOOD.map(([k, w]) => ({ src: NEW + k + '.jpg', word: w, pos: k === 'tomatoes' ? '50% 6%' : '' })),
   rounds: ['<b>מָה אַתָּה מְבַשֵּׁל?</b> ⬅ אֲנִי מְבַשֵּׁל ___.', '<b>עִם מָה?</b> ⬅ ___ עִם ___.', '<b>מִי מְבַשֵּׁל בַּבַּיִת שֶׁלְּךָ?</b> ⬅ אַבָּא מְבַשֵּׁל. / אִמָּא מְבַשֶּׁלֶת.'].map(ar),
   bank: FOOD.map(f => f[1]).join(' · '),
   write: { prompt: '✏️ כִּתְבוּ עַל הַלּוּחַ הַקָּטָן: אֲנִי מְבַשֵּׁל ___ עִם ___.', hint: '(מַעְתִּיקִים מִלִּים מֵהַתְּמוּנוֹת)', example: 'אֲנִי מְבַשֵּׁל פַּסְטָה עִם גְּבִינָה.' },
@@ -69,12 +76,12 @@ window.WAB_SETS = {
 
   /* R1 Tue 11/24 bayit-shelanu-1: B1 הַבֹּקֶר שֶׁלִּי */
   B1: { label: 'חִמּוּם B', title: 'הַבֹּקֶר שֶׁלִּי', sub: 'כּוֹתְבִים, וְאָז מְדַבְּרִים בְּזוּגוֹת.',
-    photos: [{ src: 'bayit:alarm', word: 'שָׁעוֹן מְעוֹרֵר' }, { src: NEW + 'shirt.jpg', word: 'חֻלְצָה' }, { src: NEW + 'coat.jpg', word: 'מְעִיל' }, { src: NEW + 'school.jpg', word: 'בֵּית סֵפֶר' }],
+    photos: [{ src: 'bayit:alarm', word: 'שָׁעוֹן מְעוֹרֵר' }, { src: NEW + 'shirt.jpg', word: 'חֻלְצָה', pos: '50% 30%' }, { src: NEW + 'coat.jpg', word: 'מְעִיל', pos: '50% 12%' }, { src: NEW + 'school.jpg', word: 'בֵּית סֵפֶר' }],
     rounds: ['<b>בְּאֵיזוֹ שָׁעָה אַתָּה קָם?</b> ⬅ אֲנִי קָם בְּשָׁעָה ___.', '<b>מָה אַתָּה לוֹבֵשׁ?</b> ⬅ אֲנִי לוֹבֵשׁ ___.', '<b>לְאָן אַתָּה הוֹלֵךְ?</b> ⬅ אֲנִי הוֹלֵךְ לְבֵית הַסֵּפֶר.'].map(ar),
     bank: 'חֻלְצָה · מְעִיל · 6 שֵׁשׁ · 7 שֶׁבַע · 8 שְׁמוֹנֶה',
     write: { first: true, prompt: '✏️ כִּתְבוּ עַל הַלּוּחַ הַקָּטָן: אֲנִי קָם בְּשָׁעָה ___.', hint: '(כּוֹתְבִים מִסְפָּר)', example: 'אֲנִי קָם בְּשָׁעָה שֶׁבַע.' },
     note: 'חִמּוּם B: חֲזָרָה עַל עַמּוּדִים 18-19 (הַבֹּקֶר). 1. כָּל תַּלְמִיד כּוֹתֵב עַל לוּחַ קָטָן בְּאֵיזוֹ שָׁעָה הוּא קָם, 3-2-1 הָרִימוּ! 2. סִבּוּב 1 (דַּקָּה): בְּזוּגוֹת, שׁוֹאֲלִים וְעוֹנִים, וּמַחְלִיפִים. 3. סִבּוּב 2 (דַּקָּה): בֶּן זוּג חָדָשׁ. 4. שְׁנַיִם-שְׁלוֹשָׁה תַּלְמִידִים מְסַפְּרִים: "הוּא קָם בְּשָׁעָה ___."',
-    credits: CR + 'alarm clock – Santeri Viinamäki, CC BY-SA 4.0 · ' + PENDING('shirt') + ' · ' + PENDING('coat') + ' · ' + PENDING('school building') + '.' },
+    credits: CR + 'alarm clock – Santeri Viinamäki, CC BY-SA 4.0 · ' + PENDING('shirt') + ' · ' + PENDING('coat') + ' · ' + PENDING('school') + '.' },
 
   /* R2 Wed 11/25 bayit-shelanu-2: A1 מֵאֵיפֹה אַתָּה? */
   A1: { label: 'חִמּוּם A', title: 'מֵאֵיפֹה אַתָּה?', sub: 'מְדַבְּרִים בְּזוּגוֹת. בְּכָל סִבּוּב — בֶּן זוּג חָדָשׁ.',
@@ -84,7 +91,7 @@ window.WAB_SETS = {
     bank: 'תֵּל אָבִיב · פָּרִיז · לוֹנְדוֹן · חֵיפָה · אֵילַת · עַכּוֹ · נְיוּ יוֹרְק',
     write: { prompt: '✏️ כִּתְבוּ: מֵאֵיפֹה בֶּן הַזּוּג שֶׁלָּכֶם?', hint: '(מַעְתִּיקִים אֶת שֵׁם הָעִיר מֵהַתְּמוּנוֹת)', example: 'הוּא מִנְּיוּ יוֹרְק.' },
     note: 'חִמּוּם A: חֲזָרָה עַל "מֵאֵיפֹה אַתָּה?" (עַמּוּדִים 22-24). 1. קוֹרְאִים יַחַד אֶת שְׁמוֹת הֶעָרִים. 2. סִבּוּב 1 + סִבּוּב 2 (דַּקָּה כָּל אֶחָד), בֶּן זוּג חָדָשׁ. 3. כּוֹתְבִים עַל לוּחַ קָטָן מֵאֵיפֹה בֶּן הַזּוּג, 3-2-1 הָרִימוּ! 4. שְׁנַיִם-שְׁלוֹשָׁה תַּלְמִידִים אוֹמְרִים: "הוּא מִ___."',
-    credits: CR + 'Azrieli towers – Eurovaran, CC BY-SA 4.0 · Eiffel Tower – Benh LIEU SONG, public domain · Big Ben – Julian Herzog, CC BY 4.0 · Haifa Carmelit station – Deinocheirus, CC BY-SA 4.0 · Eilat coral reef – Yoav95179, CC BY-SA 4.0 · ' + PENDING('Akko') + ' · ' + PENDING('New York skyline') + '.' },
+    credits: CR + 'Azrieli towers – Eurovaran, CC BY-SA 4.0 · Eiffel Tower – Benh LIEU SONG, public domain · Big Ben – Julian Herzog, CC BY 4.0 · Haifa Carmelit station – Deinocheirus, CC BY-SA 4.0 · Eilat coral reef – Yoav95179, CC BY-SA 4.0 · ' + PENDING('akko') + ' · ' + PENDING('newyork') + '.' },
 
   A2, B2, A3,
 
