@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מִלּוֹת שְׁאֵלָה: זִכָּרוֹן לְבַד · הַבַּיִת שֶׁלָּנוּ 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R5 #2: 12 memory cards (6 question words + 6 answers), 9 per page, mirrored backs with the pair number, answer key */
+.qw{font-size:36pt;font-weight:800}
+.aw{font-size:19pt;font-weight:800;line-height:1.35}
+.key h2{margin:0 0 2mm;font-size:16pt;direction:ltr;text-align:left}
+.key p{margin:0 0 4mm;font-size:11pt;direction:ltr;text-align:left;color:#374151}
+.kr{display:grid;grid-template-columns:12mm 40mm 1fr;align-items:center;gap:4mm;border:.3mm solid #d1d5db;border-radius:2mm;padding:3mm;margin-bottom:3mm;font-size:18pt;font-weight:800}
+.kr .n{font:800 18pt 'Rubik',Arial;text-align:center}
+</style>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const PAIRS = [['מֵאֵיפֹה?', 'אֲנִי מִבּוֹסְטוֹן.'], ['אֵיפֹה?', 'אֲנִי גָּר בְּדִירָה.'], ['בְּאֵיזוֹ?', 'בְּקוֹמָה שֵׁשׁ.'],
+  ['כַּמָּה?', 'יֵשׁ אַרְבָּעָה חֲדָרִים.'], ['מִי?', 'אַבָּא מְבַשֵּׁל.'], ['מָה?', 'בַּמִּטְבָּח אֲנִי שׁוֹטֵף כֵּלִים.']];
+const ITEMS = [];
+PAIRS.forEach(([q, a], i) => { ITEMS.push({ html: `<span class="qw">${q}</span>`, num: i + 1 }); ITEMS.push({ html: `<span class="aw">${a}</span>`, num: i + 1 }); });
+/* mixed order; a pair is never next to each other in the same row */
+const ORDER = [0, 5, 8, 3, 10, 1, 6, 11, 4, 9, 2, 7];
+const KEY = `<div class="key"><h2>Answer key – question-word memory <bdi dir="rtl">"שְׁאֵלוֹת"</bdi></h2><p>A question word and its answer have the same number on the back.</p>
+  ${PAIRS.map(([q, a], i) => `<div class="kr"><span class="n">${i + 1}</span><span>${q}</span><span>${a}</span></div>`).join('')}</div>`;
+document.getElementById('pages').innerHTML = PI.cards({ items: ORDER.map(i => ITEMS[i]), label: 'שְׁאֵלוֹת', title: 'מִלּוֹת שְׁאֵלָה: זִכָּרוֹן', key: KEY });
+</script>
+</body>
+</html>

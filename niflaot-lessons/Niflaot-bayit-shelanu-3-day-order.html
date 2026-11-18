@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>הַיּוֹם שֶׁל יוֹנָתָן · הַבַּיִת שֶׁלָּנוּ 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R4 #2: 6 frames of "יוֹם בַּבַּיִת" (lesson 3) in mixed order -> draw a line to the time of day + number 1-6; p2 = answer key */
+.wrap{display:grid;grid-template-columns:1fr 46mm;gap:22mm;flex:1;min-height:0}
+.fr{display:grid;grid-template-rows:repeat(6,minmax(0,1fr));gap:2.4mm}
+.f{position:relative;display:grid;grid-template-columns:12mm 36mm 1fr;gap:2.5mm;align-items:center;border:.35mm solid #c9ccd3;border-radius:3mm;padding:1.5mm 2mm}
+.f .pi-ph{width:36mm;height:26mm;border:.3mm solid #e1e3e8;border-radius:1.5mm}
+.f .s{font-size:13.5pt;font-weight:700;line-height:1.3}
+.box{width:11mm;height:11mm;border:.6mm solid #1f2433;border-radius:2mm;font:800 18pt/10mm 'Rubik';text-align:center;color:#2456a6}
+.dot{position:absolute;top:50%;width:3.6mm;height:3.6mm;margin-top:-1.8mm;border-radius:50%;background:#1f2433}
+.f .dot{left:-1.8mm}
+.tm{display:grid;grid-template-rows:repeat(4,minmax(0,1fr));gap:10mm;padding:10mm 0}
+.t{position:relative;border:.5mm solid #1f2433;border-radius:3mm;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1mm;font-size:16pt;font-weight:800}
+.t svg{width:22mm;height:14mm}
+.t .dot{right:-1.8mm}
+</style>
+<script src="../games/house-outside-art.js?v=1"></script>
+<script src="../games/hide-seek-ext.js?v=1"></script>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const K = (x, y, s, g, c) => HouseOut.kid(x, y, s, g, c);
+const LIE = (x, y, s, g, c) => `<g transform="translate(${x} ${y}) rotate(-80)">${HouseOut.kid(0, 0, s, g, c)}</g>`;
+const ZZ = (x, y) => `<path d="M${x} ${y}h9l-9 11h9M${x + 14} ${y - 14}h7l-7 8h7" stroke="#7a4cc2" stroke-width="2.5" fill="none"/>`;
+const BUB = (x, y) => `<g fill="#fff" stroke="#81d4fa" stroke-width="1.2"><circle cx="${x}" cy="${y}" r="4"/><circle cx="${x + 9}" cy="${y - 5}" r="3"/></g>`;
+/* frames of lesson-3.js (3b), mixed order: [room, box, extra, sentence, time index, number] */
+const F = [
+  ['living', [20, 266, 320, 214], K(70, 478, .95, 'f', '#ab47bc') + K(110, 478, .95, 'm', '#00897b') + K(150, 478, .85, 'f') + K(186, 478, .8, 'm'), 'כֻּלָּם רוֹאִים טֶלֶוִיזְיָה בַּסָּלוֹן.', 2, 5],
+  ['bath', [340, 44, 260, 195], K(468, 230, 1, 'm') + BUB(486, 150), 'יוֹנָתָן קָם. הוּא מְצַחְצֵחַ שִׁנַּיִם.', 0, 1],
+  ['living', [20, 266, 320, 214], LIE(118, 418, 1.05, 'f', '#8d6e63') + ZZ(150, 360), 'סַבְתָּא נָחָה עַל הַסַּפָּה.', 1, 4],
+  ['bedroom', [20, 44, 320, 240], LIE(118, 160, 1, 'm') + ZZ(150, 112), 'יוֹנָתָן יָשֵׁן בַּחֶדֶר שֶׁלּוֹ.', 3, 6],
+  ['kitchen', [340, 282, 260, 195], K(515, 474, 1.05, 'm'), 'יוֹנָתָן אוֹכֵל וְשׁוֹתֶה בַּמִּטְבָּח.', 0, 2],
+  ['bedroom', [20, 44, 320, 240], K(248, 244, 1, 'm'), 'יוֹנָתָן עוֹשֶׂה שִׁעוּרֵי בַּיִת בַּחֶדֶר שֶׁלּוֹ.', 1, 3] ];
+const SUN = (cy, c) => `<line x1="0" y1="62" x2="100" y2="62" stroke="#1f2433" stroke-width="3"/><circle cx="50" cy="${cy}" r="16" fill="${c}" stroke="#1f2433" stroke-width="3"/>`;
+const T = [
+  ['בַּבֹּקֶר', `<svg viewBox="0 0 100 64">${SUN(60, '#ffd84a')}<rect x="0" y="63" width="100" height="10" fill="#fff"/></svg>`],
+  ['בַּצָּהֳרַיִם', `<svg viewBox="0 0 100 64">${SUN(22, '#ffd84a')}</svg>`],
+  ['בָּעֶרֶב', `<svg viewBox="0 0 100 64">${SUN(58, '#f28c28')}<rect x="0" y="63" width="100" height="10" fill="#fff"/><path d="M20 52h60" stroke="#f28c28" stroke-width="3"/></svg>`],
+  ['בַּלַּיְלָה', `<svg viewBox="0 0 100 64"><path d="M58 8a24 24 0 1 0 14 40a20 20 0 1 1 -14 -40z" fill="#c9d6ff" stroke="#1f2433" stroke-width="3"/><circle cx="20" cy="18" r="3" fill="#1f2433"/><circle cx="84" cy="14" r="2.5" fill="#1f2433"/></svg>`] ];
+PI.house(crop => {
+  const page = ex => PI.page(`${PI.top('הַיּוֹם שֶׁל יוֹנָתָן', { tag: ex ? 'Answer key' : '' })}
+    ${PI.ins(0, 'חַבְּרוּ בְּקַו לַזְּמַן, וְכִתְבוּ 1-6: מָה קוֹדֶם?')}
+    <div class="wrap"><div class="fr">${F.map(([r, b, x, s, t, n], i) => `<div class="f" data-t="${t}"><span class="box">${ex ? n : ''}</span>${PI.pic(crop(r, b, 2, x))}<span class="s">${s}</span><span class="dot"></span></div>`).join('')}</div>
+    <div class="tm">${T.map(([w, svg], i) => `<div class="t" data-i="${i}">${svg}<span>${w}</span><span class="dot"></span></div>`).join('')}</div></div>
+    ${ex ? '<div class="pi-key" dir="ltr"><p>Within the same time of day either order is accepted: 1/2 and 3/4.</p></div>' : ''}`, ex ? 'ex' : '');
+  document.getElementById('pages').innerHTML = page(false) + page(true);
+  PI.ready(() => { const pg = document.querySelector('.pg.ex');
+    PI.connect(pg, [...pg.querySelectorAll('.f')].map(f => [f.querySelector('.dot'), pg.querySelector(`.t[data-i="${f.dataset.t}"] .dot`)])); });
+});
+</script>
+</body>
+</html>

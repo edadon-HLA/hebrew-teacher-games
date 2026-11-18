@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>תַּשְׁבֵּץ הַבַּיִת · הַבַּיִת שֶׁלָּנוּ 5</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R6 #2 picture crossword: 8 words, letters without nikud, across = right to left, down = top to bottom; clues = numbered pictures; p2 = answer key */
+.cw{display:grid;gap:0;margin:0 auto;direction:rtl}
+.cw i{display:block;width:var(--s);height:var(--s)}
+.cw b{position:relative;display:flex;align-items:center;justify-content:center;width:var(--s);height:var(--s);outline:.45mm solid #1f2433;outline-offset:-.22mm;background:#fff;font:800 17pt 'Noto Sans Hebrew';color:#2456a6}
+.cw b small{position:absolute;top:.4mm;right:.8mm;font:800 7.5pt 'Rubik';color:#1f2433}
+.clues{display:grid;grid-template-columns:1fr 1fr;gap:3mm 6mm}
+.clues h3{grid-column:span 1;margin:0 0 1mm;font-size:13pt}
+.cl{display:flex;flex-wrap:wrap;gap:2.5mm}
+.c{position:relative;width:26mm;height:21mm;border:.35mm solid #c9ccd3;border-radius:2mm;overflow:hidden}
+.c .pi-ph{width:100%;height:100%}
+.c span{position:absolute;top:.8mm;right:.8mm;background:#1f2433;color:#fff;border-radius:50%;width:5.5mm;height:5.5mm;font:800 9pt/5.5mm 'Rubik';text-align:center}
+</style>
+<script src="../games/bayit-photos.js?v=1"></script>
+<script src="../games/house-outside-art.js?v=1"></script>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const W = [['מטבח', 'מִטְבָּח', 'bayit:kitchen'], ['סלון', 'סָלוֹן', 'bayit:livingroom'], ['מרפסת', 'מִרְפֶּסֶת', 'bayit:balcony'], ['מקלחת', 'מִקְלַחַת', 'bayit:bathroom'],
+  ['גג', 'גַּג', 'ho:roof'], ['חצר', 'חָצֵר', 'ho:yard'], ['מעלית', 'מַעֲלִית', 'ho:elevator'], ['ספה', 'סַפָּה', 'bayit:wu_sofa']];
+/* ---- generator: backtracking, every word that can cross does (גג has no shared letter with the others, so it stands alone) ---- */
+function build(){
+  const words = W.map(w => Array.from(w[0])), order = [2, 3, 6, 0, 1, 5, 7, 4];
+  let best = null;
+  const key = (r, c) => r + ',' + c;
+  function fits(g, w, r, c, d){ let cross = 0;
+    for (let i = 0; i < w.length; i++){ const rr = r + (d ? i : 0), cc = c + (d ? 0 : i), k = g.get(key(rr, cc));
+      if (k){ if (k.ch !== w[i] || k[d ? 'd' : 'a']) return -1; cross++; }
+      else { const n1 = d ? key(rr, cc - 1) : key(rr - 1, cc), n2 = d ? key(rr, cc + 1) : key(rr + 1, cc); if (g.has(n1) || g.has(n2)) return -1; } }
+    const b = d ? key(r - 1, c) : key(r, c - 1), a = d ? key(r + w.length, c) : key(r, c + w.length); if (g.has(b) || g.has(a)) return -1;
+    return cross; }
+  function put(g, w, r, c, d, id){ const g2 = new Map(g); for (let i = 0; i < w.length; i++){ const k = key(r + (d ? i : 0), c + (d ? 0 : i)), o = g2.get(k);
+    g2.set(k, Object.assign({}, o || { ch: w[i] }, { [d ? 'd' : 'a']: id })); } return g2; }
+  const size = g => { let r0 = 1e9, r1 = -1e9, c0 = 1e9, c1 = -1e9; g.forEach((_, k) => { const [r, c] = k.split(',').map(Number); r0 = Math.min(r0, r); r1 = Math.max(r1, r); c0 = Math.min(c0, c); c1 = Math.max(c1, c); }); return [r0, r1, c0, c1]; };
+  function go(g, idx, pl){
+    if (idx === order.length - 1){ const [r0, r1, c0, c1] = size(g), area = (r1 - r0 + 1) * (c1 - c0 + 1); if (r1 - r0 < 11 && c1 - c0 < 11 && (!best || area < best.area)) best = { g, pl, area }; return; }
+    const id = order[idx], w = words[id]; let any = false;
+    g.forEach((cell, k) => { const [r, c] = k.split(',').map(Number);
+      w.forEach((ch, i) => { if (ch !== cell.ch) return; for (const d of [0, 1]){ const rr = d ? r - i : r, cc = d ? c : c - i;
+        if (fits(g, w, rr, cc, d) > 0){ any = true; go(put(g, w, rr, cc, d, id), idx + 1, pl.concat([[id, rr, cc, d]])); } } }); });
+  }
+  go(put(new Map(), words[order[0]], 0, 0, 0, order[0]), 1, [[order[0], 0, 0, 0]]);
+  /* גג alone: below the grid, across, one empty row between */
+  const [r0, r1, c0, c1] = size(best.g); const gid = 4, gr = r1 + 2, gc = c0;
+  const g = put(best.g, words[gid], gr, gc, 0, gid); return { g, pl: best.pl.concat([[gid, gr, gc, 0]]) };
+}
+const { g, pl } = build();
+let r0 = 1e9, r1 = -1e9, c0 = 1e9, c1 = -1e9; g.forEach((_, k) => { const [r, c] = k.split(',').map(Number); r0 = Math.min(r0, r); r1 = Math.max(r1, r); c0 = Math.min(c0, c); c1 = Math.max(c1, c); });
+/* numbers in reading order (rows top-down, right to left = column 0 first, the grid is RTL) */
+const starts = pl.map(([id, r, c, d]) => ({ id, r, c, d })).sort((a, b) => a.r - b.r || a.c - b.c);
+const num = {}; let n = 0; starts.forEach(s => { const k = s.r + ',' + s.c; if (!num[k]) num[k] = ++n; s.n = num[k]; });
+const S = Math.min(13, Math.floor(150 / (c1 - c0 + 1)), Math.floor(120 / (r1 - r0 + 1)));
+const grid = ex => { let h = ''; for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++){ const cell = g.get(r + ',' + c), k = r + ',' + c;
+  h += cell ? `<b>${num[k] ? `<small>${num[k]}</small>` : ''}${ex ? cell.ch : ''}</b>` : '<i></i>'; }
+  return `<div class="cw" style="--s:${S}mm;grid-template-columns:repeat(${c1 - c0 + 1},${S}mm)">${h}</div>`; };
+const picOf = p => p.startsWith('ho:') ? HouseOut.svg({ vb: HouseOut.box(p.slice(3), p === 'ho:elevator' ? 6 : 30) }) : p;
+const clues = (d, t) => `<div><h3>${t}</h3><div class="cl">${starts.filter(s => s.d === d).map(s => `<div class="c">${PI.pic(picOf(W[s.id][2]))}<span>${s.n}</span></div>`).join('')}</div></div>`;
+const page = ex => PI.page(`${PI.top('תַּשְׁבֵּץ הַבַּיִת', { tag: ex ? 'Answer key' : '' })}
+  ${PI.ins(0, 'מָה בַּתְּמוּנָה? כִּתְבוּ אוֹת אַחַת בְּכָל מִשְׁבֶּצֶת.')}
+  <div class="clues">${clues(0, '⬅ מְאֻזָּן')}${clues(1, '⬇ מְאֻנָּךְ')}</div>
+  ${grid(ex)}
+  ${PI.bank(W.map(w => w[1]))}`);
+document.getElementById('pages').innerHTML = page(false) + page(true);
+</script>
+</body>
+</html>

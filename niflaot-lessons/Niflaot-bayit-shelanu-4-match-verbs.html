@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מָה הֵם עוֹשִׂים? מְחַבְּרִים · הַבַּיִת שֶׁלָּנוּ 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R5 #1: 6 verb pictures (lesson 4, VerbArt) — 6 sentences in mixed order; draw lines; 2 per page; p2 = answer key */
+.mt{display:grid;grid-template-columns:34mm 1fr 78mm;flex:1;min-height:0;padding:0 4mm}
+.col{display:grid;grid-template-rows:repeat(6,minmax(0,1fr));gap:1.6mm}
+.p,.q{position:relative;display:flex;align-items:center}
+.p .pi-ph{width:24mm;height:14mm;border:.3mm solid #c9ccd3;border-radius:1.5mm}
+.q{border:.4mm solid #1f2433;border-radius:2.5mm;padding:0 3mm;font-size:14pt;font-weight:700}
+.dot{position:absolute;top:50%;width:3.2mm;height:3.2mm;margin-top:-1.6mm;border-radius:50%;background:#1f2433}
+.p .dot{left:5mm}
+.q .dot{right:-1.6mm}
+</style>
+<script src="../games/house-outside-art.js?v=1"></script>
+<script src="../games/verb-art.js?v=1"></script>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const PICS = [['fold', 'm', 'אַבָּא מְקַפֵּל בְּגָדִים.'], ['open', 'f', 'שִׁיר פּוֹתַחַת חַלּוֹן.'], ['lightoff', 'f', 'שִׁיר מְכַבָּה אוֹר.'],
+  ['hang', 'f', 'אִמָּא תּוֹלָה כְּבִיסָה.'], ['lighton', 'm', 'יוֹנָתָן מַדְלִיק אוֹר.'], ['close', 'm', 'נוֹעַם סוֹגֵר דֶּלֶת.']];
+const SENT = ['נוֹעַם סוֹגֵר דֶּלֶת.', 'אִמָּא תּוֹלָה כְּבִיסָה.', 'שִׁיר פּוֹתַחַת חַלּוֹן.', 'שִׁיר מְכַבָּה אוֹר.', 'אַבָּא מְקַפֵּל בְּגָדִים.', 'יוֹנָתָן מַדְלִיק אוֹר.'];
+const half = ex => `${PI.top('מָה הֵם עוֹשִׂים?', { tag: ex ? 'Answer key' : '' })}
+  ${PI.ins(0, 'חַבְּרוּ בְּקַו: תְּמוּנָה — מִשְׁפָּט.')}
+  <div class="mt${ex ? ' ex' : ''}"><div class="col">${PICS.map(([k, g, s]) => `<div class="p" data-s="${s}">${PI.pic(VerbArt.svg(k, g))}<span class="dot"></span></div>`).join('')}</div><div></div>
+  <div class="col">${SENT.map(s => `<div class="q" data-s="${s}">${s}<span class="dot"></span></div>`).join('')}</div></div>`;
+document.getElementById('pages').innerHTML = PI.halves(half(false)) + PI.halves(half(true), '');
+PI.ready(() => document.querySelectorAll('.mt.ex').forEach(m => { const pg = m.closest('.pg');
+  PI.connect(pg, [...m.querySelectorAll('.p')].map(p => [p.querySelector('.dot'), m.querySelector(`.q[data-s="${p.dataset.s}"] .dot`)])); }));
+</script>
+</body>
+</html>

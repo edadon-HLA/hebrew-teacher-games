@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מְצַיְּרִים לְפִי הַהוֹרָאוֹת — קָרוֹב אוֹ רָחוֹק</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R9 #2: read 4 sentences and draw (frame with a horizon line, רָחוֹק top / קָרוֹב bottom); 2 per page; p2 = a teacher example drawing */
+.fr{position:relative;width:172mm;height:80mm;margin:0 auto;border:.5mm solid #1f2433;border-radius:3mm;flex-shrink:0;overflow:hidden}
+.fr svg{position:absolute;inset:0;width:100%;height:100%}
+.fr .t{position:absolute;right:2mm;font-size:11pt;font-weight:800;color:#6b7280;background:#fff;padding:0 1.5mm}
+.sl{display:grid;grid-template-columns:1fr 1fr;gap:1mm 6mm;font-size:14pt;font-weight:700}
+.sl span::before{content:'☐';font-size:15pt;margin-left:2mm}
+</style>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+/* example: far things small near the horizon, near things big at the bottom (viewBox 172 x 80, horizon y = 30) */
+const EX = `<rect x="0" y="0" width="172" height="30" fill="#e8f3ff"/><rect x="0" y="30" width="172" height="50" fill="#eef7e6"/>
+  <g stroke="#1f2433" stroke-width=".8" stroke-linejoin="round">
+  <rect x="30" y="22" width="16" height="8" fill="#f2c48d"/><rect x="33" y="24" width="3" height="3" fill="#fff"/><rect x="40" y="24" width="3" height="3" fill="#fff"/>
+  <rect x="104" y="24" width="16" height="6" rx="1" fill="#ffd84a"/><circle cx="107.5" cy="30.4" r="1.4" fill="#555"/><circle cx="116.5" cy="30.4" r="1.4" fill="#555"/><rect x="106" y="25.2" width="3" height="2" fill="#cfe8ff"/><rect x="110.5" y="25.2" width="3" height="2" fill="#cfe8ff"/><rect x="115" y="25.2" width="3" height="2" fill="#cfe8ff"/>
+  <rect x="138" y="44" width="5" height="32" fill="#a0703f"/><circle cx="140.5" cy="36" r="13" fill="#6cc070"/><circle cx="133" cy="44" r="8" fill="#6cc070"/><circle cx="148" cy="44" r="8" fill="#6cc070"/>
+  <circle cx="74" cy="44" r="5" fill="#f7d7b5"/><rect x="69" y="49.5" width="10" height="14" rx="2" fill="#2a6fd0"/><path d="M71 63.5 L70 76 M77 63.5 L78 76 M69 52 L64 60 M79 52 L84 60" stroke-width="1.6" fill="none"/></g>
+  <g font-family="Rubik,Arial" font-weight="800" font-size="6" fill="#2456a6"><text x="38" y="19" text-anchor="middle">2</text><text x="112" y="21" text-anchor="middle">4</text><text x="140" y="21" text-anchor="middle">1</text><text x="74" y="37" text-anchor="middle">3</text></g>`;
+const half = ex => `${PI.top('מְצַיְּרִים לְפִי הַהוֹרָאוֹת', { tag: ex ? 'לַמּוֹרֶה · דֻּגְמָה' : '' })}
+  ${PI.ins(0, 'קִרְאוּ וְצַיְּרוּ.')}
+  <div class="fr"><svg viewBox="0 0 172 80" preserveAspectRatio="none">${ex ? EX : ''}<line x1="0" y1="30" x2="172" y2="30" stroke="#1f2433" stroke-width=".6" stroke-dasharray="2 1.5"/></svg>
+    <span class="t" style="top:1.5mm">רָחוֹק</span><span class="t" style="bottom:1.5mm">קָרוֹב</span></div>
+  <div class="sl"><span>1. עֵץ גָּבוֹהַּ קָרוֹב.</span><span>2. בִּנְיָן נָמוּךְ רָחוֹק.</span><span>3. יֶלֶד קָרוֹב.</span><span>4. אוֹטוֹבּוּס רָחוֹק.</span></div>`;
+document.getElementById('pages').innerHTML = PI.halves(half(false)) + PI.halves(half(true), '');
+</script>
+</body>
+</html>

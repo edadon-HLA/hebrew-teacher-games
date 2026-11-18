@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מַקְשִׁיבִים לַחֲבֵרִים · הַבַּיִת שֶׁלָּנוּ 5</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R6 #1 listening table (A5 landscape = half an A4 page, 2 per page, dashed cut line); no answer key (depends on the presenters) */
+table{width:100%;border-collapse:collapse;flex:1;min-height:0}
+th,td{border:.45mm solid #1f2433;text-align:center;vertical-align:middle}
+th{font-size:12.5pt;font-weight:800;background:#eef0f4;height:9mm;padding:0 1mm}
+td{height:20mm;font-size:13pt;font-weight:700}
+td.n{width:7mm;font:800 12pt 'Rubik';background:#eef0f4}
+td .bd{display:inline-flex;gap:3mm}
+td .bd span{border:.35mm solid #9aa1ad;border-radius:999px;padding:0 2.5mm}
+.half .pi-bank{font-size:12pt}
+</style>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const half = `${PI.top('מַקְשִׁיבִים לַחֲבֵרִים')}
+  ${PI.ins(0, 'כְּשֶׁחָבֵר מַצִּיג — כִּתְבוּ אוֹ הַקִּיפוּ.')}
+  <table><tr><th></th><th>שֵׁם הֶחָבֵר</th><th>מֵאֵיפֹה?</th><th>בַּיִת / דִּירָה</th><th>בְּאֵיזוֹ קוֹמָה?</th><th>מָה יֵשׁ בַּחֶדֶר?</th></tr>
+  ${[1, 2, 3].map(n => `<tr><td class="n">${n}</td><td></td><td></td><td><span class="bd"><span>בַּיִת</span><span>דִּירָה</span></span></td><td></td><td></td></tr>`).join('')}</table>
+  ${PI.bank(['בַּיִת', 'דִּירָה', 'מִטָּה', 'שֻׁלְחָן', 'אָרוֹן', 'מַדָּף', 'שֻׁלְחַן כְּתִיבָה', '0-10'])}`;
+document.getElementById('pages').innerHTML = PI.halves(half);
+</script>
+</body>
+</html>

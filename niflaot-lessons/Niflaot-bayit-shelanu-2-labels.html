@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>הַבִּנְיָן וְהַבַּיִת — תָּוִיּוֹת · הַבַּיִת שֶׁלָּנוּ 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R2 #1: the building from outside (HouseOut, as in habinyan-shelanu ext) with 7 numbered arrows; write the words; p2 = answer key */
+.pic{width:172mm;height:124mm;margin:0 auto;flex-shrink:0}
+.pic svg{width:100%;height:100%}
+.ls{display:grid;grid-template-columns:1fr 1fr;gap:1mm 10mm}
+.ls .pi-wr{font-family:'Rubik','Noto Sans Hebrew',sans-serif}
+.ls .pi-wr b{width:8mm;font-size:15pt}
+</style>
+<script src="../games/house-outside-art.js?v=1"></script>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+/* [number, word, target x, y, label x, y] in the drawing's coordinates (1000 x 620) */
+const L = [
+  [1, 'גַּג', 240, 236, 240, 140], [2, 'חָצֵר', 90, 512, 40, 420], [3, 'חֲנָיָה', 472, 522, 472, 430], [4, 'שַׁעַר', 330, 568, 330, 660],
+  [5, 'תֵּבַת דֹּאַר', 744, 517, 700, 660], [6, 'מִסְדְּרוֹן', 900, 117, 1010, 40], [7, 'פַּעֲמוֹן', 284, 429, 480, 300] ];
+const arrows = ex => L.map(([n, w, x, y, lx, ly]) => {
+  const a = Math.atan2(y - ly, x - lx), ex2 = x - Math.cos(a) * 8, ey2 = y - Math.sin(a) * 8, sx = lx + Math.cos(a) * 24, sy = ly + Math.sin(a) * 24;
+  return `<line x1="${sx}" y1="${sy}" x2="${ex2}" y2="${ey2}" stroke="#1f2433" stroke-width="5" marker-end="url(#ah)"/>
+    <circle cx="${lx}" cy="${ly}" r="24" fill="#fff" stroke="#1f2433" stroke-width="5"/><text x="${lx}" y="${ly + 12}" text-anchor="middle" font-family="Rubik,Arial" font-weight="800" font-size="34" fill="#1f2433">${n}</text>
+    `; }).join('');
+const pic = ex => HouseOut.svg({ vb: [-50, 90 - 200, 1100, 800] }).replace('</svg>', `<defs><marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#1f2433"/></marker></defs>${arrows(ex)}</svg>`);
+const page = ex => PI.page(`${PI.top('הַבִּנְיָן וְהַבַּיִת', { tag: ex ? 'Answer key' : '' })}
+  ${PI.ins(0, 'כִּתְבוּ אֶת הַמִּלָּה הַנְּכוֹנָה לְיַד כָּל מִסְפָּר.')}
+  <div class="pic">${pic(ex)}</div>
+  <div class="ls">${L.map(([n, w]) => `<div class="pi-wr"><b>${n}.</b><span class="ln">${ex ? w : ''}</span></div>`).join('')}</div>
+  ${PI.bank(['גַּג', 'חָצֵר', 'חֲנָיָה', 'שַׁעַר', 'תֵּבַת דֹּאַר', 'מִסְדְּרוֹן', 'פַּעֲמוֹן'])}`);
+document.getElementById('pages').innerHTML = page(false) + page(true);
+</script>
+</body>
+</html>

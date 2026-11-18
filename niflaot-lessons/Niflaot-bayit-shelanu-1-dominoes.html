@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>דּוֹמִינוֹ הַבַּיִת — הַבַּיִת שֶׁלָּנוּ 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R1 #2: 13 domino tiles (picture | word), 8 per page, cut in advance; p3 = answer key (the chain) */
+.chain{display:flex;flex-wrap:wrap;gap:3mm 0;justify-content:flex-start;direction:rtl}
+.chain .dm{width:60mm;height:28mm}
+.chain .dm .w{font-size:13pt}
+.chain .dm .r .pi-ph{width:24mm;height:22mm}
+.chain .dm .star{font-size:12pt}
+.chain .set{display:none}
+.kh{font-size:16pt;margin:0 0 2mm;direction:ltr;text-align:left}
+.kp{font-size:11pt;margin:0 0 4mm;direction:ltr;text-align:left;color:#374151}
+</style>
+<script src="../games/bayit-photos.js?v=1"></script>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const CHAIN = [
+  { right: '★ הַתְחָלָה', word: 'מִיקְרוֹגַל' }, { pic: 'bayit:microwave', word: 'סַפָּה' }, { pic: 'bayit:wu_sofa', word: 'מַרְאָה' }, { pic: 'bayit:mirror', word: 'קֻמְקוּם' },
+  { pic: 'bayit:kettle', word: 'מַגֶּבֶת' }, { pic: 'bayit:towel', word: 'שָׁטִיחַ' }, { pic: 'bayit:wu_rug', word: 'תַּנּוּר' }, { pic: 'bayit:oven', word: 'אַמְבַּטְיָה' },
+  { pic: 'bayit:bathtub', word: 'כֻּרְסָה' }, { pic: 'bayit:armchair', word: 'סִיר' }, { pic: 'bayit:pot', word: 'שַׁלָּט' }, { pic: 'bayit:remote', word: 'מִבְרֶשֶׁת שִׁנַּיִם' },
+  { pic: 'bayit:toothbrush', word: '🏁 סוֹף' } ];
+const MIX = PI.shuffle(CHAIN, 13);
+const tile = t => `<div class="dm"><div class="w">${t.word}</div><div class="r">${t.pic ? PI.pic(t.pic) : `<span class="star">${t.right}</span>`}</div><span class="set">בַּיִת 1</span></div>`;
+document.getElementById('pages').innerHTML = PI.dominoes({ tiles: MIX, label: 'בַּיִת 1', title: 'דּוֹמִינוֹ הַבַּיִת' })
+  + PI.page(`<h2 class="kh">Answer key – <bdi dir="rtl">דּוֹמִינוֹ הַבַּיִת</bdi> (13 tiles)</h2>
+    <p class="kp">Start at ★ and lay the tiles right to left: each picture touches its word on the tile before it. Cut on the solid lines (the dashed line is the middle of a tile).</p>
+    <div class="chain">${CHAIN.map(tile).join('')}</div>`);
+</script>
+</body>
+</html>

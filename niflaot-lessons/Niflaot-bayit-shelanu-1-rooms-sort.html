@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מָה בְּאֵיזֶה חֶדֶר? — הַבַּיִת שֶׁלָּנוּ 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* Independent worksheet R1 #1: 18 pictures (6 x 3), draw the room's shape around each one; p2 = answer key */
+.key{display:flex;gap:8mm;justify-content:center;align-items:center;border:.5mm solid #1f2433;border-radius:3mm;padding:1.6mm 4mm;font-size:15pt;font-weight:800}
+.key span{display:inline-flex;align-items:center;gap:2mm}
+.key svg{width:9mm;height:9mm}
+.g18{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));height:146mm;flex-shrink:0;gap:0 1mm}
+.it{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1mm}
+.it .pi-ph{width:22mm;height:20mm}
+.it .w{font-size:12.5pt;font-weight:800;line-height:1.1;text-align:center;min-height:2.3em;display:flex;align-items:flex-start;justify-content:center}
+.it .shape{position:absolute;inset:-1mm 0;width:100%;height:calc(100% + 2mm);overflow:visible}
+.pi-wr{min-height:12mm}
+</style>
+<script src="../games/bayit-photos.js?v=1"></script>
+<script src="../games/hide-seek-ext.js?v=1"></script>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const SH = {
+  c: '<circle cx="50" cy="50" r="44"/>',
+  s: '<rect x="7" y="7" width="86" height="86"/>',
+  t: '<polygon points="50,5 95,93 5,93"/>' };
+const sv = (k, attrs = '') => `<svg viewBox="0 0 100 100" ${attrs}><g fill="none" stroke="#1f2433" stroke-width="7" stroke-linejoin="round">${SH[k]}</g></svg>`;
+const ITEMS = [
+  ['מְקָרֵר', 'bayit:wu_fridge', 'c'], ['תַּנּוּר', 'bayit:oven', 'c'], ['מַחֲבַת', 'bayit:pan', 'c'], ['סִיר', 'bayit:pot', 'c'], ['מִיקְרוֹגַל', 'bayit:microwave', 'c'], ['קֻמְקוּם', 'bayit:kettle', 'c'],
+  ['אַמְבַּטְיָה', 'bayit:bathtub', 's'], ['מִקְלַחַת', ['bath', [426, 46, 54, 108]], 's'], ['מַרְאָה', 'bayit:mirror', 's'], ['מַגֶּבֶת', 'bayit:towel', 's'], ['מִבְרֶשֶׁת שִׁנַּיִם', 'bayit:toothbrush', 's'], ['שַׁמְפּוֹ', 'bayit:shampoo', 's'],
+  ['סַפָּה', 'bayit:wu_sofa', 't'], ['שָׁטִיחַ', 'bayit:wu_rug', 't'], ['טֶלֶוִיזְיָה', ['living', [196, 362, 78, 54]], 't'], ['כֻּרְסָה', 'bayit:armchair', 't'], ['שַׁלָּט', 'bayit:remote', 't'], ['כּוֹנָנִית', 'bayit:shelf', 't'] ];
+const MIX = PI.shuffle(ITEMS, 24);
+PI.house(crop => {
+  const cell = ([w, p, k], ex) => `<div class="it">${ex ? `<svg class="shape" viewBox="0 0 100 100" preserveAspectRatio="none"><g fill="none" stroke="#2456a6" stroke-width="2.4" vector-effect="non-scaling-stroke">${SH[k]}</g></svg>` : ''}${PI.pic(Array.isArray(p) ? crop(p[0], p[1]) : p)}<span class="w">${w}</span></div>`;
+  const page = ex => PI.page(`${PI.top('מָה בְּאֵיזֶה חֶדֶר?', { tag: ex ? 'Answer key' : '', nameVal: ex ? '<span class="ans" style="border:0;width:auto">דֻּגְמָה</span>' : '' })}
+    <div class="key"><span>מִטְבָּח = ${sv('c')}</span><span>חֶדֶר רַחֲצָה = ${sv('s')}</span><span>סָלוֹן = ${sv('t')}</span></div>
+    ${PI.ins(1, 'צַיְּרוּ סְבִיב כָּל תְּמוּנָה אֶת הַצּוּרָה שֶׁל הַחֶדֶר.')}
+    <div class="g18 gs">${MIX.map(it => cell(it, ex)).join('')}</div>
+    ${PI.ins(2, 'כִּתְבוּ:')}
+    <div class="pi-wr"><span>בַּמִּטְבָּח יֵשׁ</span><span class="ln">${ex ? 'מְקָרֵר' : ''}</span><span>.</span></div>
+    <div class="pi-wr"><span>בְּחֶדֶר הָרַחֲצָה יֵשׁ</span><span class="ln">${ex ? 'מַרְאָה' : ''}</span><span>.</span></div>
+    <div class="pi-wr"><span>בַּסָּלוֹן יֵשׁ</span><span class="ln">${ex ? 'סַפָּה' : ''}</span><span>.</span></div>
+    ${ex ? '<div class="pi-key" dir="ltr"><p><b>Sentences:</b> any word that fits the room is right.</p></div>' : ''}`);
+  document.getElementById('pages').innerHTML = page(false) + page(true);
+});
+</script>
+</body>
+</html>

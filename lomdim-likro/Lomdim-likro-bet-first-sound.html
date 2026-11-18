@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>ב, ת אוֹ שׁ? מַקִּיפִים וְכוֹתְבִים</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R3 #2: 12 workbook pictures, circle the first sound (בּ ת שׁ) and write the syllable; p2 = answer key */
+.g12{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:3mm;flex:1;min-height:0}
+.c{border:.35mm solid #c9ccd3;border-radius:3mm;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2mm}
+.c .pi-ph{width:36mm;height:30mm}
+.ch{display:flex;gap:5mm;font-size:22pt;font-weight:800;direction:rtl}
+.ch span{position:relative;padding:0 1.5mm}
+.ch span.ok::after{content:'';position:absolute;inset:-1mm -1.2mm;border:.6mm solid #2456a6;border-radius:50%}
+.wl{width:24mm;border-bottom:.4mm solid #333;height:10mm;text-align:center;font:800 20pt/10mm 'Noto Sans Hebrew';color:#2456a6}
+.c .nm{font-size:10pt;color:#2456a6;height:4mm}
+</style>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const IT = [['banana', 'בָּנָנָה', 'בּ', 'בָּ'], ['duck', 'בַּרְוָז', 'בּ', 'בַּ'], ['bottle', 'בַּקְבּוּק', 'בּ', 'בַּ'], ['house', 'בַּיִת', 'בּ', 'בַּ'],
+  ['balloon', 'בָּלוֹן', 'בּ', 'בָּ'], ['broccoli', 'בְּרוֹקוֹלִי', 'בּ', 'בְּ'], ['apple', 'תַּפּוּחַ', 'ת', 'תַ'], ['orange', 'תַּפּוּז', 'ת', 'תַ'],
+  ['hen', 'תַּרְנְגוֹלֶת', 'ת', 'תַ'], ['frame', 'תְּמוּנָה', 'ת', 'תְ'], ['three', 'שָׁלוֹשׁ', 'שׁ', 'שָׁ'], ['carpet', 'שָׁטִיחַ', 'שׁ', 'שָׁ']];
+const MIX = PI.shuffle(IT, 30);
+const page = ex => PI.page(`${PI.top('ב, ת אוֹ שׁ?', { tag: ex ? 'Answer key' : '' })}
+  ${PI.ins(0, 'הַקִּיפוּ אֶת הַצְּלִיל הָרִאשׁוֹן, וְכִתְבוּ אֶת הַהֲבָרָה.')}
+  <div class="g12">${MIX.map(([p, w, l, s]) => `<div class="c">${PI.pic('tzlil:' + p)}<span class="nm">${ex ? w : ''}</span>
+    <div class="ch">${['בּ', 'ת', 'שׁ'].map(x => `<span class="${ex && x === l ? 'ok' : ''}">${x}</span>`).join('')}</div><div class="wl">${ex ? s : ''}</div></div>`).join('')}</div>
+  ${ex ? '<div class="pi-key" dir="ltr"><p>Accept בָּ / בַּ and שָׁ / שַׁ either way (kamatz = patach).</p></div>' : ''}`);
+document.getElementById('pages').innerHTML = page(false) + page(true);
+</script>
+</body>
+</html>
