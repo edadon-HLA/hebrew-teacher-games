@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>בָּרְחוֹב, בַּסִּפְרִיָּה, בַּמִּסְעָדָה — מְמַיְּנִים</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R8 #2: write each word in the right place (3 boxes with the lesson's place photos); 2 per page; p2 = answer key */
+.bx{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4mm;flex:1;min-height:0}
+.b{border:.5mm solid #1f2433;border-radius:3mm;display:flex;flex-direction:column;overflow:hidden}
+.b .pi-ph{height:20mm;background:#eee}
+.b .pi-ph img{width:100%;height:100%;object-fit:cover;max-width:none;max-height:none}
+.b h3{margin:0;text-align:center;font-size:16pt;background:#eef0f4;border-top:.4mm solid #1f2433;border-bottom:.4mm solid #1f2433}
+.b .wl{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;padding:0 3mm}
+.b .wl span{border-bottom:.35mm solid #555;height:8.5mm;text-align:center;font:700 14pt/8.5mm 'Noto Sans Hebrew';color:#2456a6}
+.half .pi-bank{font-size:13pt}
+</style>
+<script src="ma-yesh-barechov/data.js?v=1"></script>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const P = BARECHOV.PH;
+const BOX = [['בָּרְחוֹב', P.street, ['בִּנְיָנִים', 'עֵצִים', 'כְּבִישׁ', 'אוֹטוֹבּוּס']], ['בַּסִּפְרִיָּה', P.library, ['שֶׁקֶט', 'מְנוֹרָה', 'סְפָרִים', 'מַחְשְׁבִים']],
+  ['בַּמִּסְעָדָה', P.restaurant, ['צַלַּחַת', 'שֵׁף', 'כּוֹס', 'שׁוּלְחָן *']]];
+const BANK = ['בִּנְיָנִים', 'עֵצִים', 'כְּבִישׁ', 'אוֹטוֹבּוּס', 'שֶׁקֶט', 'מְנוֹרָה', 'סְפָרִים', 'מַחְשְׁבִים', 'צַלַּחַת', 'שֵׁף', 'כּוֹס', 'שׁוּלְחָן'];
+const half = ex => `${PI.top('בָּרְחוֹב, בַּסִּפְרִיָּה, בַּמִּסְעָדָה', { tag: ex ? 'Answer key' : '' })}
+  ${PI.ins(0, 'כִּתְבוּ כָּל מִלָּה בַּמָּקוֹם הַנָּכוֹן.')}
+  <div class="bx gs">${BOX.map(([t, ph, ws]) => `<div class="b">${PI.pic(ph)}<h3>${t}</h3><div class="wl">${ws.map(w => `<span>${ex ? w : ''}</span>`).join('')}</div></div>`).join('')}</div>
+  ${ex ? '<div class="pi-key" dir="ltr"><p>* <bdi dir="rtl">שׁוּלְחָן</bdi> = in the library or in the restaurant (both right).</p></div>' : PI.bank(BANK)}`;
+document.getElementById('pages').innerHTML = PI.halves(half(false)) + PI.halves(half(true), '');
+</script>
+</body>
+</html>
