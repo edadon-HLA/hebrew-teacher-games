@@ -526,7 +526,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 
   <nav class="steps" aria-label="שלבי השיעור">
     <ol>
-      <li><a href="#s0" data-c="sky"><b>0</b>טָעִים אוֹ לֹא טָעִים?</a></li>
+      <li><a href="#s0" data-c="sky"><b>0</b>כּוֹתְבִים שִׂיחָה</a></li>
       <li><a href="#s1" data-c="coral"><b>1</b>2.19 סָלָט יִשְׂרְאֵלִי</a></li>
       <li><a href="#s2" data-c="green"><b>2</b>נָכוֹן / לֹא נָכוֹן</a></li>
       <li><a href="#s3" data-c="sky"><b>3</b>מָה בַּסָּלָט?</a></li>
@@ -538,13 +538,23 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 
   <!-- ===== 0 warm-up: tasty or not (personal opinion) ===== -->
   <section class="step" id="s0">
-    <div class="step-head"><span class="tag sky">מְחַמְּמִים · טָעִים אוֹ לֹא טָעִים?</span></div>
+    <div class="step-head"><span class="tag sky">מְחַמְּמִים · כּוֹתְבִים שִׂיחָה</span></div>
+    <div class="sf-part">
+    <p class="lead">כּוֹתְבִים בִּכְתַב יָד, מַעֲבִירִים לְבֶן הַזּוּג וְעוֹנִים.</p>
+    <div id="chatWU"></div>
+    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-warmup-chat-slip.pdf" target="_blank" rel="noopener">📄 דַּף שִׂיחָה (4 בְּדַף)</a></div>
+    <details class="tnote"><summary>📝 מהלך קצר</summary><p>חִמּוּם מִשִּׁעוּרִים 2.8 וְ-2.11 (לֹא מֵהַשִּׁעוּר הַקּוֹדֵם). כּוֹתְבִים רַק אוֹתִיּוֹת שֶׁלָּמַדְנוּ: מ ה ש ל ו ך · ב ס ד ר ט. 2 סִבּוּבִים, בֶּן זוּג חָדָשׁ בְּכָל סִבּוּב.</p></details>
+    </div>
+    <div class="sf-part">
+    <details class="q-opt" style="background:#fff8e6;border:2px dashed #e5c05a;border-radius:16px;padding:8px 14px;margin:8px 0"><summary style="cursor:pointer;font:800 20px var(--f-he)">⭐ לְפִי שִׁקּוּל הַמּוֹרֶה — טָעִים אוֹ לֹא טָעִים?</summary>
     <p class="lead">מָה אַתֶּם חוֹשְׁבִים? מַרִימִים כַּרְטִיס לְפִי הַטַּעַם שֶׁלָּכֶם — אֵין תְּשׁוּבָה נְכוֹנָה!</p>
     <div class="rounds" id="roundsW"></div>
     <div class="s9-stage" id="wStage"></div>
     <div class="s9-yn"><span>😋 טָעִים</span><span>😖 לֹא טָעִים</span></div>
     <div class="bar2" style="justify-content:center"><button class="cdbtn" id="cdW" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn" id="earW" type="button">🔊 שׁוֹמְעִים</button><button class="btn" id="prevW" type="button">▶ הַקּוֹדֵם</button><button class="btn primary big" id="nextW" type="button">הַבָּא ◀</button><a class="rc" href="Olam-street-2.15-and-2.16-response-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי טָעִים / לֹא טָעִים (2.15–2.16)</a></div>
     <details class="tnote" open><summary>📝 מהלך קצר</summary><p>שִׁשָּׁה מַאֲכָלִים מֻכָּרִים: פִּיצָה, שׁוֹקוֹלָד, טוּנָה, פָלָאפֶל, מַנְגּוֹ — וּבַסּוֹף סָלָט. סוֹפְרִים "3… 2… 1… הָרִימוּ!" וְכָל אֶחָד מַרִים טָעִים אוֹ לֹא טָעִים לְפִי הַטַּעַם שֶׁלּוֹ. אֵין חִשּׂוּף — שׁוֹאֲלִים תַּלְמִיד אוֹ שְׁנַיִם: "___ טָעִים לְךָ?" וְעוֹבְרִים לַבָּא. הַסָּלָט בַּסּוֹף פּוֹתֵחַ אֶת הַנּוֹשֵׂא שֶׁל הַיּוֹם.</p></details>
+    </details>
+    </div>
   </section>
 
   <!-- ===== 1 culture 2.19 + salad words ===== -->
@@ -591,6 +601,8 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
     <div class="fbF" id="mFb" aria-live="polite"></div>
     <div class="bar2"><button class="cdbtn" id="mCd" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn ghost" id="mReveal" type="button">👁 הַצִּיגוּ אֶת הַתְּשׁוּבָה</button><button class="btn" id="mNext" type="button" hidden>הַבָּא ◀</button><button class="btn ghost" id="mAgain" type="button">↺ שׁוּב</button><a class="rc" href="Olam-street-2.19-and-2.20-salad-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי סָלָט לְהַדְפָּסָה</a></div>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>רָמָה 1: עַל הַלּוּחַ מוֹפִיעָה הַמִּלָּה — סוֹפְרִים 3-2-1, כֻּלָּם מַרִימִים אֶת כַּרְטִיס הַתְּמוּנָה, וְרַק אָז לוֹחֲצִים "הַצִּיגוּ". רָמָה 2: עַל הַלּוּחַ הַתְּמוּנָה — כֻּלָּם מַרִימִים אֶת כַּרְטִיס הַמִּלָּה. כָּל מִלָּה פַּעַם אַחַת בְּכָל סִבּוּב, בְּסֵדֶר אַקְרָאִי. הַכַּרְטִיסִים דּוּ־צְדָדִיִּים: תְּמוּנָה מִצַּד אֶחָד וּמִלָּה מֵהַצַּד הַשֵּׁנִי. אִם חָסֵר זְמַן — רַק רָמָה 1.</p></details>
+    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.19-and-2.20-my-salad.pdf" target="_blank" rel="noopener">📄 הַסָּלָט שֶׁלִּי (דַּף לְבַד)</a></div>
+    <details class="tnote"><summary>📝 עֲבוֹדָה עַצְמִית</summary><p>"הַסָּלָט שֶׁלִּי" — מְצַיְּרִים וְכוֹתְבִים מִמַּחְסַן הַמִּלִּים. "קוֹרְאִים וְצוֹבְעִים" — צוֹבְעִים לְפִי הַנִּקּוּד, וְאַחַר כָּךְ קוֹרְאִים לְבֶן הַזּוּג.</p></details>
   </section>
 
   <!-- ===== 4 pair talk ===== -->
@@ -650,6 +662,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
     <p class="sub" style="margin:16px 0 0;font-weight:800">סִימָנֵי הַנִּקּוּד</p>
     <div class="ntable" id="ntable" aria-label="סימני הניקוד" style="margin-top:6px"></div>
     <details class="tnote" open><summary>📝 מהלך קצר</summary><p>1. קוֹדֶם כָּל תַּלְמִיד קוֹרֵא לְבַד בַּחוֹבֶרֶת, בְּלַחַשׁ. 2. אַחַר כָּךְ קוֹרְאִים יַחַד עַל הַלּוּחַ, כְּמוֹ בְּ־2.4: "לְפִי הַסֵּפֶר" — הֲבָרָה אַחַת בְּכָל פַּעַם, בַּסֵּדֶר שֶׁל הַחוֹבֶרֶת; שׁוֹמְעִים ("🔊 שׁוּב") וְכָל הַכִּתָּה חוֹזֶרֶת בְּקוֹל. אַחַר כָּךְ "אוֹת אַחַת", "תְּנוּעָה אַחַת" אוֹ "עִרְבּוּב". חִצִּים בַּמִּקְלֶדֶת עוֹבְדִים גַּם. שִׂימוּ לֵב: פַּעֲמַיִם יֵשׁ ט בְּלִי נִקּוּד, כְּמוֹ בַּחוֹבֶרֶת. 3. "אֵיזוֹ הֲבָרָה אָמַרְתִּי?" — הַמּוֹרֶה מַחֲזִיק אֶת "👁 לַמּוֹרֶה" כְּדֵי לִרְאוֹת מָה לוֹמַר, אוֹמֵר אֶת הַהֲבָרָה, סוֹפְרִים, וְלוֹחֲצִים עַל הַתֵּבָה. אִם אֵין זְמַן — קוֹרְאִים יַחַד רַק אֶת שְׁתֵּי הַשּׁוּרוֹת הָרִאשׁוֹנוֹת.</p></details>
+    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.19-and-2.20-read-colour.pdf" target="_blank" rel="noopener">📄 קוֹרְאִים וְצוֹבְעִים (דַּף לְבַד)</a></div>
     <div class="cw" role="note"><span class="ic">📝</span><div><b>עֲבוֹדַת כִּתָּה בַּחוֹבֶרֶת — עַמּוּד 15</b> · קְרִיאַת הַשְּׁבִיל. אֶפְשָׁר לָתֵת צִיּוּן (לֹא חוֹבָה).</div></div>
     </div>
   </section>
@@ -672,6 +685,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 </div>
 
 <script src="../games/food-art.js"></script>
+<script src="../shared/warmup-talk.js"></script>
 <script>
 (() => {
 'use strict';
@@ -695,7 +709,10 @@ const rounds = (id, n, cur) => { $(id).innerHTML = Array.from({ length: n }, (_,
 const byId = Object.fromEntries([...FoodArt.foods, ...FoodArt.foods2, ...FoodArt.foods3].map(f => [f.id, f])), pic = f => FoodArt.html(f.pic);
 const S8 = FoodArt.saladItems, X = FoodArt.extra, S = Object.fromEntries(S8.map(f => [f.id, f]));
 
-/* ---------- 0. warm-up: tasty or not (opinion, no reveal) ---------- */
+/* ---------- 0. warm-up B: כּוֹתְבִים שִׂיחָה (model in nikud + workbook cursive, 2 x 2:00 timer; shared/warmup-talk.js) ---------- */
+WT.chat($('chatWU'));
+
+/* ---------- 0 (optional extra). warm-up: tasty or not (opinion, no reveal) ---------- */
 const W = [byId.pizza, byId.chocolate, byId.tuna, byId.falafel, byId.mango, { he: 'סָלָט', pic: X.salad }];
 let wi = 0;
 function showW(){ const f = W[wi]; rounds('roundsW', W.length, wi); $('wStage').innerHTML = `<div class="pic">${pic(f)}</div><div class="nm">${f.he}</div>`; }

@@ -63,5 +63,38 @@
         q('m').textContent = last ? 'כָּל הַכָּבוֹד! 🎉' : 'מַחֲלִיפִים! בֶּן זוּג חָדָשׁ · סִבּוּב ' + (rd + 1) + ' מִתּוֹךְ ' + N;
         q('go').textContent = last ? '↺ מֵהַהַתְחָלָה' : goTxt; }, 1000); };
   }
-  window.WT = { talk, tone };
+  /* WT.cursive(text, h) -> inline <svg> of the words in the workbook cursive shapes (the same paths as the 2.8 / 2.11 writing pads).
+     Letters: מ ה ש ל ו ך (2.8) · ב ס ד ר ט (2.11); space and "?" supported. h = height in px (default 70). */
+  const CUR = {
+    'מ': ['M28 18 L28 82', 'M28 18 L72 82', 'M72 82 L72 18'],
+    'ה': ['M26 24 Q60 10 78 30 Q80 56 72 82', 'M30 46 Q50 40 56 58 Q58 72 54 82'],
+    'ש': ['M62 20 C40 18 30 42 38 62 C46 80 74 78 76 60 C78 44 54 44 36 56'],
+    'ל': ['M82 8 Q58 6 55 26 L53 72 Q52 92 37 90 Q24 88 29 74 Q34 63 53 70'],
+    'ו': ['M50 18 L50 82'],
+    'ך': ['M26 24 Q60 12 72 28 L72 96'],
+    'ב': ['M30 26 Q62 14 74 34 Q80 56 70 82 L28 82'],
+    'ס': ['M50 22 A28 28 0 1 0 50.1 22'],
+    'ד': ['M28 24 L72 24 Q74 52 62 82'],
+    'ר': ['M26 30 Q60 14 74 40 Q78 62 70 82'],
+    'ט': ['M66 22 C44 20 30 44 38 64 C46 84 76 76 72 56 C70 44 54 44 46 56'],
+  };
+  const WID = { 'ו': 34, ' ': 34, '?': 40 };
+  function cursive(text, h){
+    const chars = [...text]; let x = 0; const parts = [];
+    const total = chars.reduce((s, c) => s + (WID[c] || 66), 0);
+    chars.forEach(c => { const w = WID[c] || 66; const left = total - x - w;   /* RTL: first letter on the right */
+      if (c === '?') parts.push(`<text x="${left + 30}" y="82" font-size="70" font-family="Arial" text-anchor="middle" fill="currentColor" stroke="none">?</text>`);
+      else if (CUR[c]) parts.push(`<g transform="translate(${left - (100 - w) / 2} 0)">${CUR[c].map(d => `<path d="${d}"/>`).join('')}</g>`);
+      x += w; });
+    return `<svg class="wt-cur" viewBox="0 0 ${total} 100" style="height:${h || 70}px;width:auto;overflow:visible" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" aria-label="${esc(text)}">${parts.join('')}</svg>`;
+  }
+  /* WT.chat(root) -> warm-up B "כּוֹתְבִים שִׂיחָה" (Olam 2.19-2.20 and 2.23-2.24): big model rows (nikud text + cursive under it) + 2 x 2:00 timer */
+  function chat(root){
+    const rows = [['א', 'מָה שְׁלוֹמְךָ?', 'מה שלומך?'], ['ב', 'טוֹב / בְּסֵדֶר', ['טוב', 'בסדר']], ['ב', 'מָה שְׁלוֹמְךָ?', 'מה שלומך?']];
+    root.innerHTML = `<div class="wt-frame">${rows.map(([w, t, c]) => `<div class="${w === 'ב' ? 'b' : 'a'}" style="align-items:flex-start"><span class="w">${w}</span>
+      <span style="display:flex;flex-direction:column;gap:4px"><span>${t}</span><span style="color:#1f4fbf;display:flex;gap:18px;align-items:center">${(Array.isArray(c) ? c : [c]).map(x => cursive(x, 64)).join('<span style="font-size:30px">/</span>')}</span></span></div>`).join('')}</div>
+      <div data-a="tm"></div>`;
+    talk(root.querySelector('[data-a="tm"]'), [], { n: 2 });
+  }
+  window.WT = { talk, tone, cursive, chat };
 })();
