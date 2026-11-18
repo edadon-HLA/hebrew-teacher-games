@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>קָרוֹב אוֹ רָחוֹק? גָּבוֹהַּ אוֹ נָמוּךְ? — מַקִּיפִים</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R9 #1: 8 boxes (the lesson's pictures, the item ringed) + 2 sentences, circle the right one; p2 = answer key */
+.g8{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,minmax(0,1fr));gap:3mm;flex:1;min-height:0}
+.bx{border:.4mm solid #9aa1ad;border-radius:3mm;display:grid;grid-template-columns:7mm 1fr;grid-template-rows:auto auto;gap:1mm 2mm;padding:2mm;align-content:center}
+.bx .n{grid-row:span 2;width:6.5mm;height:6.5mm;border-radius:50%;background:#1f2433;color:#fff;font:800 11pt/6.5mm 'Rubik';text-align:center}
+.pw{position:relative;justify-self:center;height:29mm}
+.pw img{height:100%;width:auto;display:block;border-radius:1.5mm}
+.pw i{position:absolute;border:.7mm dashed #e2506a;border-radius:50%;box-sizing:border-box}
+.ss{display:flex;gap:2.5mm;justify-content:center;font-size:12.5pt;font-weight:700;white-space:nowrap}
+.pi-top h1{font-size:18pt}
+.ss span{position:relative;padding:0 1.5mm}
+.ss span.ok::after{content:'';position:absolute;inset:-.8mm -1mm;border:.6mm solid #2456a6;border-radius:50%}
+</style>
+<script src="karov-rachok/data.js?v=1"></script>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const box = (x1, x2, y1, y2) => [x1, y1, x2 - x1, y2 - y1];
+const B = [
+  ['s1-street.png', box(59, 89, 18, 56), ['הָאוֹטוֹבּוּס רָחוֹק.', 'הָאוֹטוֹבּוּס קָרוֹב.'], 0],
+  ['s1-street.png', box(82, 98, 62, 93), ['הַיַּלְדָּה קְרוֹבָה.', 'הַיַּלְדָּה רְחוֹקָה.'], 0],
+  ['s2-buildings.png', box(20, 48, 12, 94), ['הַבִּנְיָן גָּבוֹהַּ.', 'הַבִּנְיָן נָמוּךְ.'], 0],
+  ['s2-kids.png', box(34, 47, 28, 82), ['הַיֶּלֶד גָּבוֹהַּ.', 'הַיֶּלֶד נָמוּךְ.'], 1],
+  ['s2-kids.png', box(53, 71, 18, 80), ['הַיַּלְדָּה גְּבוֹהָה.', 'הַיַּלְדָּה נְמוּכָה.'], 0],
+  [KAROV.PH.cat, null, ['הֶחָתוּל רָחוֹק.', 'הֶחָתוּל קָרוֹב.'], 1],
+  ['s1-street.png', box(43, 53, 9, 23), ['הַשֶּׁלֶט רָחוֹק.', 'הַשֶּׁלֶט קָרוֹב.'], 0],
+  [KAROV.PH.bush, null, ['הַשִּׂיחַ גָּבוֹהַּ.', 'הַשִּׂיחַ נָמוּךְ.'], 1] ];
+const page = ex => PI.page(`${PI.top('קָרוֹב אוֹ רָחוֹק? גָּבוֹהַּ אוֹ נָמוּךְ?', { tag: ex ? 'Answer key' : '' })}
+  ${PI.ins(0, 'הַקִּיפוּ אֶת הַמִּשְׁפָּט הַנָּכוֹן.')}
+  <div class="g8">${B.map(([p, r, s, k], i) => `<div class="bx"><span class="n">${i + 1}</span>
+    <div class="pw"><img src="${p.startsWith('http') ? p : 'karov-rachok/' + p}" alt="">${r ? `<i style="left:${r[0] - 2}%;top:${r[1] - 3}%;width:${r[2] + 4}%;height:${r[3] + 6}%"></i>` : ''}</div>
+    <div class="ss">${s.map((t, j) => `<span class="${ex && j === k ? 'ok' : ''}">${t}</span>`).join('<b>/</b>')}</div></div>`).join('')}</div>`);
+document.getElementById('pages').innerHTML = page(false) + page(true);
+</script>
+</body>
+</html>
