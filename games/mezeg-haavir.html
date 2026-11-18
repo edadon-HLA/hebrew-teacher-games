@@ -37,6 +37,8 @@
   .t-afternoon .sun{left:12vw;top:27vh}
   .t-sunset .sun{left:3vw;top:38vh;width:18vh;height:18vh;background:radial-gradient(#ffe2a0,#ff9a3c 65%,#f0703a);box-shadow:0 0 9vh 4vh rgba(255,140,60,.55)}
   .bg-ta.t-sunset .sun{left:20vw;top:49vh}
+  /* HLA: the building fills the lower half, so the sun sits in the upper right corner, under the day panel (teacher 11/18) */
+  .bg-hla .sun{left:auto!important;right:3vw;top:17vh!important}
   .w-clear:not(.t-night) .sun,.w-partly:not(.t-night) .sun{display:block}
   /* moon high in the sky (5-17vh, 25vw): above the skyline of every background, incl. the Jerusalem hills, and clear of the panels */
   .moon{position:absolute;width:11vh;height:11vh;border-radius:50%;top:5vh;left:25vw;box-shadow:-2.2vh 1.4vh 0 0 #f4f1d8;display:none}
