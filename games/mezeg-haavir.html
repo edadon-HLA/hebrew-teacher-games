@@ -266,6 +266,7 @@
       <div id="manBox" class="off"><div class="mbody">
         <div class="mrow">Weather <select id="manWx"></select></div>
         <div class="mrow"><label><input type="checkbox" id="manWind"> Wind (יֵשׁ רוּחַ)</label></div>
+        <div class="mrow"><label><input type="checkbox" id="manGround"> Snow on the ground (יֵשׁ שֶׁלֶג)</label></div>
         <div class="mrow">Time of day <select id="manTod"></select></div>
         <div class="mrow">Day <select id="manDay"></select></div>
         <div class="mrow">Temperature <b id="manTval"></b></div>
@@ -346,7 +347,7 @@ var help=lsGet('mezeg-help','full'); if(q.get('help'))help=q.get('help'); if(['f
 var helpOpen=false; // teacher 11/17: help bar closed by default (always starts closed)
 var cur=null;          // {id?, he, lat, lon, tz}
 var W=null;            // live weather {c, wx, wind, heavy, sunrise, sunset, tz, t (ms), offline}
-var M={on:false,wx:'partly',wind:false,tod:'morning',c:15,day:'',sky:null};
+var M={on:false,wx:'partly',wind:false,ground:false,tod:'morning',c:15,day:'',sky:null};
 var fetchSeq=0;
 (function initPlace(){
   var qp=(q.get('place')||'').toLowerCase(), alias={'tel-aviv':'ta','telaviv':'ta','jerusalem':'jlm','manhattan':'ny','new-york':'ny','brooklyn':'hla','school':'hla'};
@@ -356,7 +357,7 @@ var fetchSeq=0;
   cur=p?copy(p):copy(PRESETS[0]);
 })();
 function copy(p){return {id:p.id||null,he:p.he,lat:p.lat,lon:p.lon,tz:p.tz||null};}
-if(q.get('wx')||q.get('time')){M.on=true;var qw=q.get('wx'),qt=q.get('time');if(WX[qw])M.wx=qw;if(qt==='sunset')qt='evening';if(TOD[qt])M.tod=qt;M.c=M.wx==='snow'?-1:15;if(q.get('temp'))M.c=parseInt(q.get('temp'),10)||0;if(q.has('wind'))M.wind=true;}
+if(q.get('wx')||q.get('time')){M.on=true;var qw=q.get('wx'),qt=q.get('time');if(WX[qw])M.wx=qw;if(qt==='sunset')qt='evening';if(TOD[qt])M.tod=qt;M.c=M.wx==='snow'?-1:15;if(q.get('temp'))M.c=parseInt(q.get('temp'),10)||0;if(q.has('wind'))M.wind=true;if(q.has('ground'))M.ground=true;}
 
 /* ===== time helpers (in the place's time zone) ===== */
 function tzOf(){return (W&&W.tz)||cur.tz||undefined;}
@@ -387,12 +388,13 @@ function setBackground(bg,ver){
 }
 function render(){
   var st=$('stage'),lp=localParts(),live=!M.on&&W;
-  var wx,wind,heavy,c,sky,tod,clock,wd;
-  if(live){wx=W.wx;wind=W.wind;heavy=W.heavy;c=W.c;sky=skyFromSun(lp.min);tod=todFromClock(lp.h);clock=lp.clock;wd=lp.wd;}
-  else{wx=M.on?M.wx:'clear';wind=M.on&&M.wind;heavy=false;c=M.c;tod=M.tod;sky=M.sky||TOD_SKY[tod];clock=M.on&&!M.sky?TOD_CLOCK[tod]:lp.clock;wd=M.day||lp.wd;if(!M.on){sky=skyFromSun(lp.min);tod=todFromClock(lp.h);c=null;}}
+  var wx,wind,heavy,c,sky,tod,clock,wd,ground=false;
+  if(live){wx=W.wx;wind=W.wind;heavy=W.heavy;c=W.c;ground=!!W.ground;sky=skyFromSun(lp.min);tod=todFromClock(lp.h);clock=lp.clock;wd=lp.wd;}
+  else{wx=M.on?M.wx:'clear';wind=M.on&&M.wind;heavy=false;c=M.c;tod=M.tod;sky=M.sky||TOD_SKY[tod];clock=M.on&&!M.sky?TOD_CLOCK[tod]:lp.clock;wd=M.day||lp.wd;if(!M.on){sky=skyFromSun(lp.min);tod=todFromClock(lp.h);c=null;}else ground=M.ground;}
+  if(wx==='snow')ground=false; // snow falling: "יוֹרֵד שֶׁלֶג" already says it
   var night=sky==='night',bg=bgFor(cur.lat,cur.lon);
   st.className=st.className.replace(/\b(bg|t|w)-\S+/g,'').replace(/\b(windy|heavy|manual|loading)\b/g,'').replace(/\s+/g,' ').trim()+' bg-'+bg+' t-'+sky+' w-'+wx+(wind?' windy':'')+(heavy?' heavy':'')+(M.on?' manual':'')+(!M.on&&!W?' loading':'');
-  setBackground(bg,night?'night':(wx==='snow'?'snow':'day'));
+  setBackground(bg,night?'night':(wx==='snow'||ground?'snow':'day'));
   var grey=['cloudy','rain','drizzle','storm','snow','fog'].indexOf(wx)>=0;
   document.querySelectorAll('img.cloud').forEach(function(e){var s=grey?e.dataset.g:e.dataset.w;if(e.getAttribute('src')!==s)e.setAttribute('src',s);});
   $('dayHe').textContent=DAYS[wd]||wd;$('todHe').textContent=TOD[tod];$('clock').textContent=clock;
@@ -400,12 +402,12 @@ function render(){
   var atHla=cur.id==='hla';$('hlaTag').style.display=atHla?'':'none';$('hlaChip').style.display=atHla?'none':'';
   if(c==null||isNaN(c)){$('tempN').textContent='—';$('tempW').textContent='';}
   else{var shown=unit==='F'?Math.round(c*9/5+32):Math.round(c);$('tempN').textContent=shown+'°'+unit;$('tempW').textContent=tempWords(shown);}
-  $('stateHe').textContent=(!M.on&&!W)?'…':(WX[wx][night?1:0]||WX[wx][0])+(wind&&wx!=='wind'&&wx!=='storm'?' · יֵשׁ רוּחַ':'');
+  $('stateHe').textContent=(!M.on&&!W)?'…':(WX[wx][night?1:0]||WX[wx][0])+(wind&&wx!=='wind'&&wx!=='storm'?' · יֵשׁ רוּחַ':'')+(ground?' · יֵשׁ שֶׁלֶג':'');
   var note='';if(!M.on&&W&&W.offline)note='offline, weather from '+hhmm(W.t);if(!M.on&&!W)note='loading weather…';$('stateNote').textContent=note;
-  var on=((!M.on&&!W)?[]:(WON[wx][night?1:0]||WON[wx][0])).concat([TOD[tod]]);if(c!=null&&!isNaN(c))on.push(hotCold(c));if(wind)on.push('רוּחַ');on.push(DAYS[wd]);
+  var on=((!M.on&&!W)?[]:(WON[wx][night?1:0]||WON[wx][0])).concat([TOD[tod]]);if(c!=null&&!isNaN(c))on.push(hotCold(c));if(wind)on.push('רוּחַ');if(ground)on.push('שֶׁלֶג');on.push(DAYS[wd]);
   document.querySelectorAll('.bank span[data-k]').forEach(function(e){e.classList.toggle('on',on.indexOf(e.dataset.k)>=0);});
   $('uC').classList.toggle('on',unit==='C');$('uF').classList.toggle('on',unit==='F');
-  $('manualWhat').textContent=WX_EN[wx]+(wind?' + wind':'')+', '+tod;
+  $('manualWhat').textContent=WX_EN[wx]+(wind?' + wind':'')+(ground?' + snow on the ground':'')+', '+tod;
   if(document.activeElement!==$('nameEdit'))$('nameEdit').value=nameOf(cur);
 }
 function hhmm(t){var d=new Date(t);return d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();}
@@ -415,13 +417,14 @@ function cacheKey(){return 'mezeg-wx-'+cur.lat.toFixed(2)+','+cur.lon.toFixed(2)
 function loadWeather(){
   var seq=++fetchSeq,p=cur;
   var url='https://api.open-meteo.com/v1/forecast?latitude='+p.lat.toFixed(4)+'&longitude='+p.lon.toFixed(4)+
-    '&current=temperature_2m,weather_code,is_day,wind_speed_10m,wind_gusts_10m,cloud_cover,precipitation&daily=sunrise,sunset&timezone=auto&forecast_days=1';
+    '&current=temperature_2m,weather_code,is_day,wind_speed_10m,wind_gusts_10m,cloud_cover,precipitation,snow_depth&daily=sunrise,sunset&timezone=auto&forecast_days=1';
   return fetch(url).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(j){
     if(seq!==fetchSeq)return;
     var cu=j.current||{},code=cu.weather_code;
     var wx0=wmo(code),strong=cu.wind_speed_10m>=25||cu.wind_gusts_10m>=45;
     if(strong&&['clear','partly','cloudy'].indexOf(wx0)>=0)wx0='wind';   // wind state: windy and no rain/snow/fog/storm
     W={c:cu.temperature_2m,wx:wx0,heavy:[65,67,82].indexOf(code)>=0,wind:strong&&['fog','drizzle','rain','snow'].indexOf(wx0)>=0,
+       ground:cu.snow_depth>=0.02,   // snow_depth is in metres: 2 cm or more of old snow on the ground
        sunrise:j.daily&&j.daily.sunrise&&j.daily.sunrise[0],sunset:j.daily&&j.daily.sunset&&j.daily.sunset[0],tz:j.timezone||p.tz,t:Date.now(),offline:false};
     if(!cur.tz&&j.timezone)cur.tz=j.timezone;
     lsSet(cacheKey(),JSON.stringify(W));
@@ -452,11 +455,11 @@ function toggleHelp(){helpOpen=$('stage').classList.toggle('help-open');lsSet('m
 function setHelp(m){help=m;lsSet('mezeg-help',m);var b=$('helpbar');b.classList.remove('full','nomark','semi');b.classList.add(m);['full','nomark','semi'].forEach(function(k){$('m-'+k).classList.toggle('on',k===m);});}
 function setManual(on){
   if(on&&!M.on){ // start from what is on screen now
-    var lp=localParts();if(W){M.wx=W.wx;M.wind=W.wind;M.c=Math.round(W.c);}M.tod=todFromClock(lp.h);M.day='';M.sky=skyFromSun(lp.min);
+    var lp=localParts();if(W){M.wx=W.wx;M.wind=W.wind;M.ground=!!W.ground;M.c=Math.round(W.c);}M.tod=todFromClock(lp.h);M.day='';M.sky=skyFromSun(lp.min);
   }
   M.on=on;$('manOn').checked=on;$('manBox').classList.toggle('off',!on);syncMan();render();
 }
-function syncMan(){$('manWx').value=M.wx;$('manWind').checked=M.wind;$('manTod').value=M.tod;$('manDay').value=M.day;syncManTemp();}
+function syncMan(){$('manWx').value=M.wx;$('manWind').checked=M.wind;$('manGround').checked=M.ground;$('manTod').value=M.tod;$('manDay').value=M.day;syncManTemp();}
 function syncManTemp(){var r=$('manTemp');if(unit==='F'){r.min=-4;r.max=104;r.value=Math.round(M.c*9/5+32);}else{r.min=-20;r.max=40;r.value=Math.round(M.c);}$('manTval').textContent=r.value+'°'+unit;}
 function fullScreen(){if(document.fullscreenElement){document.exitFullscreen&&document.exitFullscreen();}else{var d=document.documentElement;d.requestFullscreen&&d.requestFullscreen().catch(function(){});}}
 
@@ -573,6 +576,7 @@ $('manTod').innerHTML=Object.keys(TOD).map(function(k){return '<option value="'+
 $('manDay').innerHTML='<option value="">today (live)</option>'+DAY_KEYS.map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join('');
 $('manWx').onchange=function(){M.wx=this.value;render();};
 $('manWind').onchange=function(){M.wind=this.checked;render();};
+$('manGround').onchange=function(){M.ground=this.checked;render();};
 $('manTod').onchange=function(){M.tod=this.value;M.sky=null;render();};
 $('manDay').onchange=function(){M.day=this.value;render();};
 $('manTemp').oninput=function(){var v=parseInt(this.value,10);M.c=unit==='F'?(v-32)*5/9:v;$('manTval').textContent=v+'°'+unit;render();};
