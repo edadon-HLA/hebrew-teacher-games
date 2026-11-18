@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>סֶקֶר כִּתָּתִי · רחוב העולם 2.15–2.16 (להדפסה)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* Warm-up B survey slip: 4 per A4 (2 x 2, cut lines). 6 foods of workbook p.7 with the warm-up photos + a tally box.
+   Photos: falafel / hummus / shawarma = site photos; pizza, sabich, shakshuka = Wikimedia (credits on the lesson page). Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#111;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.sheet{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-columns:95mm 95mm;grid-template-rows:127.5mm 127.5mm}
+.s{border:1.2px dashed #777;padding:3mm 4mm;display:flex;flex-direction:column;gap:1.5mm;overflow:hidden;height:127.5mm}
+.s h2{margin:0;font-size:17pt;font-weight:800;text-align:center;line-height:1.2}
+.nm{font-size:11pt;font-weight:700;display:flex;gap:2mm;align-items:flex-end}.nm i{flex:1;border-bottom:1.2px solid #111;height:5mm}
+.q{font-size:13pt;font-weight:800;text-align:center}
+.g{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(0,1fr));gap:2mm}
+.f{display:grid;grid-template-columns:24mm 1fr;grid-template-rows:auto 1fr;gap:0 2mm;border:1.2px solid #444;border-radius:2mm;padding:1.5mm;min-height:0}
+.f img{grid-row:1/3;width:24mm;height:18mm;object-fit:cover;border-radius:1.5mm;filter:contrast(1.1);align-self:center}
+.f b{font-size:11.5pt;line-height:1.2}
+.f .t{border:1px solid #999;border-radius:1.5mm;min-height:8mm}
+.tag{font-size:7.5pt;color:#999;text-align:left;margin-top:-1mm}
+@media screen{body{background:#eee;padding:10px}.sheet{background:#fff;box-shadow:0 2px 12px #0003}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script>
+const wm = p => 'https://thumb.wikimedia.org/wikipedia/commons/thumb/' + p + '/500px-' + p.split('/').pop();
+const F = [['פִּיצָה', wm('a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg')], ['פָלָאפֶל', 'olam-2.2-falafel.jpg'], ['סַבִּיח', wm('f/f8/Sabich.jpg')],
+  ['שַׁקְשׁוּקָה', wm('0/0d/Liat_Portal_for_Foodie_Disorder_-_Classic_Red_Shakshuka_with_Egg.jpg')], ['חוּמוּס', 'olam-2.2-hummus.jpg'], ['שָׁוַארְמָה', 'olam-2.2-shawarma.jpg']];
+const slip = `<div class="s"><h2>סֶקֶר כִּתָּתִי</h2><div class="nm">שֵׁם: <i></i></div><div class="q">אַתָּה אוֹהֵב לֶאֱכוֹל ___?</div>
+  <div class="g">${F.map(([he, img]) => `<div class="f"><img src="${img}" alt=""><b>${he}</b><div class="t"></div></div>`).join('')}</div><div class="tag"><bdi dir="ltr">2.15</bdi></div></div>`;
+document.getElementById('out').innerHTML = `<div class="sheet">${slip.repeat(4)}</div>`;
+</script>
+</body>
+</html>

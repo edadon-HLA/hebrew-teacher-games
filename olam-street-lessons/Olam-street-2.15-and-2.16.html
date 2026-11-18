@@ -400,7 +400,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 
   <nav class="steps" aria-label="שלבי השיעור">
     <ol>
-      <li><a href="#s0" data-c="sky"><b>0</b>זֶה אֲנִי?</a></li>
+      <li><a href="#s0" data-c="sky"><b>0</b>סֶקֶר כִּתָּתִי</a></li>
       <li><a href="#s1" data-c="gold"><b>1</b>מִלִּים חֲדָשׁוֹת</a></li>
       <li><a href="#s2" data-c="green"><b>2</b>2.16 שִׂיחָה</a></li>
       <li><a href="#s3" data-c="sky"><b>3</b>רָעֵב · טָעִים?</a></li>
@@ -412,13 +412,26 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 
   <!-- ===== 0 warm-up: is it me? ===== -->
   <section class="step" id="s0">
-    <div class="step-head"><span class="tag sky">מְחַמְּמִים · זֶה אֲנִי?</span></div>
+    <div class="step-head"><span class="tag sky">מְחַמְּמִים · סֶקֶר כִּתָּתִי</span></div>
+    <div class="sf-part">
+    <p class="lead">שׁוֹאֲלִים 4 חֲבֵרִים וּמְסַמְּנִים בְּקַוִּים.</p>
+    <div id="talkSV"></div>
+    <div class="tgrid" id="svGrid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))"></div>
+    <div class="bar2" style="justify-content:center"><button class="btn primary big" id="svFav" type="button">מָה יָצָא?</button><button class="btn ghost" id="svClr" type="button">↺</button><a class="rc" href="Olam-street-2.15-and-2.16-survey-slip.pdf" target="_blank" rel="noopener">📄 דַּף סֶקֶר (4 בְּדַף)</a></div>
+    <div class="sumF" id="svOut" style="max-width:640px;margin-inline:auto;text-align:center;font:800 24px var(--f-he)"></div>
+    <details class="tnote"><summary>📝 מהלך קצר</summary><p>חִמּוּם מִשִּׁעוּר 2.5–2.6 (לֹא מֵהַשִּׁעוּר הַקּוֹדֵם). מְחַלְּקִים דַּף סֶקֶר. כָּל תַּלְמִיד שׁוֹאֵל 4 חֲבֵרִים. "כֵּן" = קַו אֶחָד. בַּסּוֹף סוֹפְרִים יַחַד עַל הַלּוּחַ.</p>
+      <p dir="ltr" style="text-align:left;font-size:13px">Photos: falafel, hummus, shawarma – the site's Olam Street 2.5–2.6 photos · Wikimedia Commons: Classic red shakshuka with egg – HaJunkiyada (Liat Portal for Foodie Disorder), CC BY-SA 4.0 · Sabich – Gilabrand, CC BY-SA 3.0 · Pizza Margherita – Valerio Capello, CC BY-SA 3.0</p></details>
+    </div>
+    <div class="sf-part">
+    <details class="q-opt" style="background:#fff8e6;border:2px dashed #e5c05a;border-radius:16px;padding:8px 14px;margin:8px 0"><summary style="cursor:pointer;font:800 20px var(--f-he)">⭐ לְפִי שִׁקּוּל הַמּוֹרֶה — זֶה אֲנִי?</summary>
     <div class="rule15">אִם הַמִּשְׁפָּט מַתְאִים לָכֶם – הָרִימוּ <span class="dot g"></span> (אוֹהֵב/ת) אוֹ <span class="dot r"></span> (לֹא אוֹהֵב/ת).<br><b>אִם לֹא – לֹא מְרִימִים!</b></div>
     <div class="rounds" id="roundsZ"></div>
     <div class="zstage" id="zstage"></div>
     <div class="bar2" style="justify-content:center"><button class="cdbtn" id="cdZ" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn primary big" id="revZ" type="button">👁 מִי הָיָה צָרִיךְ לְהָרִים?</button><button class="btn" id="earZ" type="button">🔊 שׁוֹמְעִים</button><button class="btn" id="prevZ" type="button">▶ הַקּוֹדֵם</button><button class="btn primary" id="nextZ" type="button">הַבָּא ◀</button><button class="btn ghost" id="shufZ" type="button">🔀 עִרְבּוּב</button><a class="rc" href="Olam-street-2.15-and-2.16-response-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי תְּשׁוּבָה 🟢 🔴</a></div>
     <div id="outZ" aria-live="polite"></div>
     <details class="tnote" open><summary>📝 מהלך קצר</summary><p>הַמּוֹרֶה מַצִּיג תְּמוּנַת אֹכֶל עִם מִשְׁפָּט אֶחָד: "אֲנִי אוֹהֵב ___" אוֹ "אֲנִי אוֹהֶבֶת ___". אֵין תְּמוּנָה שֶׁל בֵּן אוֹ בַּת — רַק צוּרַת הַפֹּעַל מְגַלָּה. סוֹפְרִים "3… 2… 1… הָרִימוּ!" — רַק מִי שֶׁהַמִּשְׁפָּט מַתְאִים לוֹ מַרִים 🟢 (אוֹהֵב/ת) אוֹ 🔴 (לֹא אוֹהֵב/ת); כָּל הַשְּׁאָר לֹא מַרִימִים. אַחַר כָּךְ "מִי הָיָה צָרִיךְ לְהָרִים?" מַצִּיג 👦 אוֹ 👧 וּמַדְגִּישׁ אֶת סוֹף הַפֹּעַל.</p></details>
+    </details>
+    </div>
   </section>
 
   <!-- ===== 1 new words ===== -->
@@ -454,6 +467,8 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
       <div class="bar2" style="justify-content:center"><button class="cdbtn" id="cdB" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn primary big" id="revB" type="button">👁 הַצִּיגוּ</button><button class="btn" id="prevB" type="button">▶ הַקּוֹדֵם</button><button class="btn primary" id="nextB" type="button">הַבָּא ◀</button></div>
       <div id="outB" aria-live="polite"></div>
     </div>
+    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.15-and-2.16-sort.pdf" target="_blank" rel="noopener">📄 רָעֵב? טָעִים? (2 בְּדַף)</a></div>
+    <details class="tnote"><summary>📝 עֲבוֹדָה עַצְמִית</summary><p>הַמּוֹרֶה גּוֹזֵר אֶת הָאוֹתִיּוֹת מֵרֹאשׁ וְשׁוֹמְרִים בְּמַעֲטָפָה. כָּל תַּלְמִיד בּוֹנֶה מִלָּה וְכוֹתֵב אוֹתָהּ. דַּף "רָעֵב? טָעִים?" — כּוֹתְבִים כָּל מִסְפָּר בַּמָּקוֹם הַנָּכוֹן.</p></details>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>הַמּוֹרֶה מַצִּיג תְּמוּנָה, סוֹפֵר "3… 2… 1… הָרִימוּ!" וְכֻלָּם מַרִימִים כַּרְטִיס. "הַצִּיגוּ" מְגַלֶּה אֶת הַתְּשׁוּבָה. אַחֲרֵי כָּל גִּלּוּי קוֹרְאִים אֶת הַמִּשְׁפָּט כֻּלּוֹ: "הוּא רָעֵב!", "זֶה טָעִים!".</p></details>
   </section>
 
@@ -502,7 +517,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
       <div class="msg27" id="fillMsg"></div>
       <div class="bar2"><button class="btn" id="fillAgain" type="button">↺ מֵהַהַתְחָלָה</button></div>
     </div>
-    <div class="bar2"><a class="rc" href="Olam-street-2.15-and-2.16-find-letters.pdf" target="_blank" rel="noopener">🖨️ דַּף הַקָּפָה לְהַדְפָּסָה (PDF) — כָּל תַּלְמִיד מַקִּיף אֶת הָאוֹת שֶׁהַמּוֹרֶה מְבַקֵּשׁ</a></div>
+    <div class="bar2"><a class="rc" href="Olam-street-2.15-and-2.16-find-letters.pdf" target="_blank" rel="noopener">🖨️ דַּף הַקָּפָה לְהַדְפָּסָה (PDF) — כָּל תַּלְמִיד מַקִּיף אֶת הָאוֹת שֶׁהַמּוֹרֶה מְבַקֵּשׁ</a><a class="rc" href="Olam-street-2.15-and-2.16-letter-tiles.pdf" target="_blank" rel="noopener">📄 אוֹתִיּוֹת לִגְזִירָה + דַּף</a></div>
     <div class="cw" role="note"><span class="ic">📝</span><div><b>עֲבוֹדַת כִּתָּה בַּחוֹבֶרֶת — עַמּוּד 12</b><br>כּוֹתְבִים אֶת הָאוֹתִיּוֹת ר, ע, ב, ט, י, ם בִּכְתַב יָד (תַּרְגִּיל 2.15). אֶפְשָׁר לָתֵת עָלֶיהָ צִיּוּן (לֹא חוֹבָה).</div><a class="wb" href="https://online.fliphtml5.com/rechovhaolam/Rechov-HaOlam---Unit-2_03/#p=12" target="_blank" rel="noopener">📖 לַחוֹבֶרֶת (עַמּוּד 12)</a></div>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>עוֹבְרִים עַל אַרְבַּעַת הַשְּׁלָבִים עַל הַלּוּחַ (הַכִּתָּה אוֹמֶרֶת אֶת שֵׁם הָאוֹת). בְּשָׁלָב 1 מְחַלְּקִים אֶת דַּף הַהַקָּפָה: הַמּוֹרֶה קוֹרֵא אוֹת וְכֻלָּם מַקִּיפִים. לְבַסּוֹף כּוֹתְבִים בַּחוֹבֶרֶת. אִם חֲסַר זְמַן — מְדַלְּגִים עַל שְׁלָבִים 3–4.</p></details>
   </section>
@@ -526,6 +541,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 
 <script src="../games/food-art.js"></script>
 <script src="../games/hungry-art.js"></script>
+<script src="../shared/warmup-talk.js"></script>
 <script>
 (() => {
 'use strict';
@@ -551,7 +567,23 @@ function burst(el, emojis){ const r = el.getBoundingClientRect(); for (let i = 0
   s.style.left = (r.x + r.width / 2) + 'px'; s.style.top = (r.y + r.height / 2) + 'px'; s.style.setProperty('--dx', (Math.random() * 360 - 180) + 'px'); s.style.setProperty('--dy', (Math.random() * -260 - 40) + 'px'); document.body.appendChild(s); setTimeout(() => s.remove(), 1500); } }
 const rounds = (id, n, cur) => { $(id).innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < cur ? 'done' : i === cur ? 'on' : ''}">${i + 1}</i>`).join(''); };
 
-/* ---------- 0. is it me? ---------- */
+/* ---------- 0. warm-up B: סֶקֶר כִּתָּתִי (WT.talk 1 x 3:00 + tally board with 6 real photos) ---------- */
+const wmSV = p => 'https://thumb.wikimedia.org/wikipedia/commons/thumb/' + p + '/500px-' + p.split('/').pop();
+const SV = [['pizza', 'פִּיצָה', wmSV('a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg')], ['falafel', 'פָלָאפֶל', 'olam-2.2-falafel.jpg'], ['sabich', 'סַבִּיח', wmSV('f/f8/Sabich.jpg')],
+  ['shakshuka', 'שַׁקְשׁוּקָה', wmSV('0/0d/Liat_Portal_for_Foodie_Disorder_-_Classic_Red_Shakshuka_with_Egg.jpg')], ['hummus', 'חוּמוּס', 'olam-2.2-hummus.jpg'], ['shawarma', 'שָׁוַארְמָה', 'olam-2.2-shawarma.jpg']];
+WT.talk($('talkSV'), [['א', 'אַתָּה אוֹהֵב לֶאֱכוֹל ___?'], ['ב', 'כֵּן, אֲנִי אוֹהֵב לֶאֱכוֹל ___.'], ['ב', 'לֹא, אֲנִי לֹא אוֹהֵב לֶאֱכוֹל ___.']], { n: 1, sec: 180 });
+const svT = Object.fromEntries(SV.map(([id]) => [id, 0]));
+function svDraw(win){
+  $('svGrid').innerHTML = SV.map(([id, he, img]) => `<div class="tg" data-id="${id}" style="${win && win.includes(id) ? 'border-color:#7a4cc2;background:#f6f0ff' : ''}"><button class="pp" type="button" aria-label="${he} +1" style="height:96px"><img src="${img}" alt="${he}" style="width:100%;height:92px;object-fit:cover;border-radius:12px" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:this.alt}))"></button><b>${he}</b><div class="num">${svT[id]}</div><div class="row"><button class="btn" type="button" data-m aria-label="פחות אחד">−1</button><button class="btn" type="button" data-p aria-label="ועוד אחד">+1</button></div></div>`).join('');
+  $('svGrid').querySelectorAll('.tg').forEach(c => { const id = c.dataset.id; const add = () => { svT[id]++; svDraw(); };
+    c.querySelector('.pp').onclick = add; c.querySelector('[data-p]').onclick = add; c.querySelector('[data-m]').onclick = () => { if (svT[id] > 0){ svT[id]--; svDraw(); } }; });
+}
+svDraw();
+$('svFav').onclick = () => { const mx = Math.max(...Object.values(svT)); if (!mx){ $('svOut').textContent = 'כַּמָּה? — סוֹפְרִים קֹדֶם 🙂'; return; }
+  const win = SV.filter(([id]) => svT[id] === mx); svDraw(win.map(w => w[0])); $('svOut').innerHTML = `מָה יָצָא? <span style="color:#7a4cc2">${win.map(w => w[1]).join(' וְ')}</span> 🎉`; WT.tone(true); };
+$('svClr').onclick = () => { Object.keys(svT).forEach(k => svT[k] = 0); $('svOut').textContent = ''; svDraw(); };
+
+/* ---------- 0 (optional extra). is it me? ---------- */
 const ALLF = [...FoodArt.foods, ...FoodArt.foods2].filter((f, i, a) => f.id !== 'salad2' && a.findIndex(x => x.id === f.id) === i);
 let Z = [], zi = 0;
 function newZ(){ const foods = shuffle(ALLF).slice(0, 12), gs = shuffle(['m', 'm', 'm', 'm', 'm', 'm', 'f', 'f', 'f', 'f', 'f', 'f']); Z = foods.map((f, i) => ({ f, g: gs[i] })); zi = 0; showZ(); }
