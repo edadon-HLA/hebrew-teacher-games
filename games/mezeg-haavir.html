@@ -93,8 +93,28 @@
   .flash{background:#fff;opacity:0;animation:flash 8s infinite}
   @keyframes flash{0%,90%,100%{opacity:0}91%{opacity:.6}92%{opacity:0}93.5%{opacity:.4}95%{opacity:0}}
   #bolt{position:absolute;left:60vw;top:12vh;width:8vw;height:40vh;opacity:0;animation:flash 8s infinite}
-  .leaf{position:absolute;left:0;font-size:3.4vh;animation:blow linear infinite}
-  @keyframes blow{from{transform:translate(105vw,0) rotate(0)}to{transform:translate(-10vw,28vh) rotate(-900deg)}}
+  /* wind: GPT gusts + leaves (mockup-gpt.html) */
+  .w-wind #leaves,.w-storm #leaves{display:block}
+  .gust{position:absolute;left:0;height:auto;opacity:0;animation:gust linear infinite}
+  @keyframes gust{0%{transform:translateX(-60vw);opacity:0}15%{opacity:.6}70%{opacity:.6}100%{transform:translateX(110vw);opacity:0}}
+  .leaf{position:absolute;left:0;height:auto;animation:leafy linear infinite}
+  @keyframes leafy{0%{transform:translate(-10vw,0) rotate(0)}25%{transform:translate(25vw,-6vh) rotate(160deg)}50%{transform:translate(55vw,4vh) rotate(320deg)}75%{transform:translate(85vw,-4vh) rotate(500deg)}100%{transform:translate(115vw,6vh) rotate(700deg)}}
+  .w-wind img.cloud.n1,.w-wind img.cloud.n2,.w-wind img.cloud.n3{display:block}
+  .w-wind img.cloud{animation-duration:calc(var(--d) * .3)}
+  .w-wind:not(.t-night) .sun{display:block}
+  .t-night.w-wind .moon,.t-night.w-wind #stars{display:block}
+  /* GPT sun, moon, stars, fog, lightning (teacher: "Approve, add them") */
+  .sun{background:url(mezeg-haavir/sun-1.png) center/contain no-repeat!important;border-radius:0!important;box-shadow:none!important;width:22vh!important;height:22vh!important;animation:sunglow 5s ease-in-out infinite!important}
+  @keyframes sunglow{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.05);filter:brightness(1.08)}}
+  .t-dawn .sun{filter:sepia(.35) saturate(1.5) hue-rotate(-10deg);animation:none!important}
+  .t-sunset .sun{filter:sepia(.5) saturate(1.8) hue-rotate(-18deg);width:26vh!important;height:26vh!important;animation:none!important}
+  .moon{background:url(mezeg-haavir/moon-crescent.png) center/contain no-repeat;box-shadow:none!important;border-radius:0!important;width:12vh;height:12vh;filter:drop-shadow(0 0 2vh rgba(255,244,210,.45))}
+  img.star{width:auto;height:auto;background:none;border-radius:0;animation:twk 3s ease-in-out infinite}
+  @keyframes twk{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.7)}}
+  .band{border-radius:0!important;filter:none!important;background:url(mezeg-haavir/fog-1.png) repeat-x center/auto 100%!important;left:-50vw!important;width:200vw!important;height:34vh!important}
+  .band:nth-child(2){background-image:url(mezeg-haavir/fog-2.png)!important;opacity:.85}
+  .band:nth-child(3){opacity:.6}
+  #bolt{width:auto!important;height:58vh!important;top:6vh!important;filter:drop-shadow(0 0 2.5vh rgba(200,220,255,.9))}
   .motion-off *{animation-play-state:paused!important}
   /* ---------- UI on top ---------- */
   .panel{position:absolute;background:var(--panel);border-radius:2vh;box-shadow:0 .6vh 2vh rgba(0,0,0,.18)}
@@ -206,7 +226,7 @@
   <div class="layer"><div class="bgT"><div class="bgW"><div class="bgL" id="bgA"></div><div class="bgL" id="bgB"></div></div></div></div>
   <div class="layer" id="fog"><div class="band" style="top:48vh"></div><div class="band" style="top:62vh;animation-delay:-15s"></div><div class="band" style="top:36vh;animation-delay:-28s"></div></div>
   <div class="layer" id="rain"></div><div class="layer" id="rain2"></div><div class="layer" id="snow"></div><div class="layer" id="leaves"></div>
-  <svg id="bolt" viewBox="0 0 80 400"><polyline points="50,0 22,150 46,150 14,400" fill="none" stroke="#fffbe0" stroke-width="7" stroke-linejoin="round"/></svg>
+  <img id="bolt" src="mezeg-haavir/bolt-1.png" alt="">
   <div class="layer flash"></div>
 
   <!-- top text -->
@@ -297,9 +317,9 @@ var DAY_KEYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Satur
 var TOD={morning:'בּוֹקֶר',noon:'צָהֳרַיִים',afternoon:'אַחַר הַצָּהֳרַיִים',evening:'עֶרֶב',night:'לַיְלָה'};
 var TOD_SKY={morning:'morning',noon:'noon',afternoon:'afternoon',evening:'sunset',night:'night'};
 var TOD_CLOCK={morning:'9:00',noon:'12:30',afternoon:'15:30',evening:'18:30',night:'21:30'};
-var WX={clear:['בָּהִיר — יֵשׁ שֶׁמֶשׁ','בָּהִיר — יֵשׁ יָרֵחַ וְכוֹכָבִים'],partly:['יֵשׁ קְצָת עֲנָנִים'],cloudy:['מְעוּנָּן'],fog:['יֵשׁ עֲרָפֶל'],drizzle:['יוֹרֵד קְצָת גֶּשֶׁם'],rain:['יוֹרֵד גֶּשֶׁם'],storm:['יֵשׁ סְעָרָה — בְּרָקִים וּרְעָמִים'],snow:['יוֹרֵד שֶׁלֶג']};
-var WX_EN={clear:'clear',partly:'partly cloudy',cloudy:'cloudy',fog:'fog',drizzle:'drizzle',rain:'rain',storm:'storm',snow:'snow'};
-var WON={clear:[['שֶׁמֶשׁ','בָּהִיר'],['יָרֵחַ','כּוֹכָבִים','בָּהִיר']],partly:[['שֶׁמֶשׁ','עֲנָנִים'],['יָרֵחַ','עֲנָנִים']],cloudy:[['עֲנָנִים','מְעוּנָּן']],fog:[['עֲרָפֶל','מְעוּנָּן']],drizzle:[['גֶּשֶׁם','עֲנָנִים','מְעוּנָּן']],rain:[['גֶּשֶׁם','עֲנָנִים','מְעוּנָּן']],storm:[['גֶּשֶׁם','סְעָרָה','בָּרָק','רוּחַ','מְעוּנָּן']],snow:[['שֶׁלֶג','מְעוּנָּן']]};
+var WX={clear:['בָּהִיר — יֵשׁ שֶׁמֶשׁ','בָּהִיר — יֵשׁ יָרֵחַ וְכוֹכָבִים'],partly:['יֵשׁ קְצָת עֲנָנִים'],cloudy:['מְעוּנָּן'],fog:['יֵשׁ עֲרָפֶל'],drizzle:['יוֹרֵד קְצָת גֶּשֶׁם'],rain:['יוֹרֵד גֶּשֶׁם'],storm:['יֵשׁ סְעָרָה — בְּרָקִים וּרְעָמִים'],wind:['יֵשׁ רוּחַ'],snow:['יוֹרֵד שֶׁלֶג']};
+var WX_EN={clear:'clear',partly:'partly cloudy',cloudy:'cloudy',fog:'fog',drizzle:'drizzle',rain:'rain',storm:'storm',wind:'wind',snow:'snow'};
+var WON={clear:[['שֶׁמֶשׁ','בָּהִיר'],['יָרֵחַ','כּוֹכָבִים','בָּהִיר']],partly:[['שֶׁמֶשׁ','עֲנָנִים'],['יָרֵחַ','עֲנָנִים']],cloudy:[['עֲנָנִים','מְעוּנָּן']],fog:[['עֲרָפֶל','מְעוּנָּן']],drizzle:[['גֶּשֶׁם','עֲנָנִים','מְעוּנָּן']],rain:[['גֶּשֶׁם','עֲנָנִים','מְעוּנָּן']],storm:[['גֶּשֶׁם','סְעָרָה','בָּרָק','רוּחַ','מְעוּנָּן']],wind:[['רוּחַ','עֲנָנִים','שֶׁמֶשׁ'],['רוּחַ','עֲנָנִים','יָרֵחַ']],snow:[['שֶׁלֶג','מְעוּנָּן']]};
 /* word bank: [shown text, key used for marking] */
 var WORDS=[['שֶׁמֶשׁ'],['עָנָן / עֲנָנִים','עֲנָנִים'],['מְעוּנָּן'],['בָּהִיר'],['עֲרָפֶל'],['גֶּשֶׁם'],['שֶׁלֶג'],['רוּחַ'],['סְעָרָה'],['בָּרָק'],['יָרֵחַ'],['כּוֹכָבִים'],
   ['חַם'],['חַם מְאוֹד'],['נָעִים'],['קַר'],['קַר מְאוֹד'],['בּוֹקֶר'],['צָהֳרַיִים'],['אַחַר הַצָּהֳרַיִים'],['עֶרֶב'],['לַיְלָה']];
@@ -375,7 +395,7 @@ function render(){
   var atHla=cur.id==='hla';$('hlaTag').style.display=atHla?'':'none';$('hlaChip').style.display=atHla?'none':'';
   if(c==null||isNaN(c)){$('tempN').textContent='—';$('tempW').textContent='';}
   else{var shown=unit==='F'?Math.round(c*9/5+32):Math.round(c);$('tempN').textContent=shown+'°'+unit;$('tempW').textContent=tempWords(shown);}
-  $('stateHe').textContent=(!M.on&&!W)?'…':(WX[wx][night?1:0]||WX[wx][0])+(wind?' · יֵשׁ רוּחַ':'');
+  $('stateHe').textContent=(!M.on&&!W)?'…':(WX[wx][night?1:0]||WX[wx][0])+(wind&&wx!=='wind'&&wx!=='storm'?' · יֵשׁ רוּחַ':'');
   var note='';if(!M.on&&W&&W.offline)note='offline, weather from '+hhmm(W.t);if(!M.on&&!W)note='loading weather…';$('stateNote').textContent=note;
   var on=((!M.on&&!W)?[]:(WON[wx][night?1:0]||WON[wx][0])).concat([TOD[tod]]);if(c!=null&&!isNaN(c))on.push(hotCold(c));if(wind)on.push('רוּחַ');on.push(DAYS[wd]);
   document.querySelectorAll('.bank span[data-k]').forEach(function(e){e.classList.toggle('on',on.indexOf(e.dataset.k)>=0);});
@@ -394,7 +414,9 @@ function loadWeather(){
   return fetch(url).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(j){
     if(seq!==fetchSeq)return;
     var cu=j.current||{},code=cu.weather_code;
-    W={c:cu.temperature_2m,wx:wmo(code),heavy:[65,67,82].indexOf(code)>=0,wind:(cu.wind_speed_10m>=30||cu.wind_gusts_10m>=45),
+    var wx0=wmo(code),strong=cu.wind_speed_10m>=25||cu.wind_gusts_10m>=45;
+    if(strong&&['clear','partly','cloudy'].indexOf(wx0)>=0)wx0='wind';   // wind state: windy and no rain/snow/fog/storm
+    W={c:cu.temperature_2m,wx:wx0,heavy:[65,67,82].indexOf(code)>=0,wind:strong&&['fog','drizzle','rain','snow'].indexOf(wx0)>=0,
        sunrise:j.daily&&j.daily.sunrise&&j.daily.sunrise[0],sunset:j.daily&&j.daily.sunset&&j.daily.sunset[0],tz:j.timezone||p.tz,t:Date.now(),offline:false};
     if(!cur.tz&&j.timezone)cur.tz=j.timezone;
     lsSet(cacheKey(),JSON.stringify(W));
@@ -573,13 +595,18 @@ $('bank').innerHTML=WORDS.map(function(w){return '<span data-k="'+(w[1]||w[0])+'
 $('bankDays').innerHTML=DAY_KEYS.map(function(k){return '<span data-k="'+DAYS[k]+'">'+DAYS[k]+'</span>';}).join('');
 $('daysBtn').onclick=function(){$('helpbar').classList.toggle('days-open');};
 var h='',i;
-for(i=0;i<70;i++)h+='<div class="star" style="left:'+(Math.random()*100)+'vw;top:'+(Math.random()*50)+'vh;animation-delay:'+(-Math.random()*2.5)+'s"></div>';$('stars').innerHTML=h;
+for(i=0;i<70;i++)h+='<img class="star" alt="" src="'+IMG+'star-'+(1+(i%4))+'.png" style="left:'+(Math.random()*100)+'vw;top:'+(Math.random()*50)+'vh;width:'+([22,15,10,7][i%4]+Math.random()*5)+'px;animation-delay:'+(-Math.random()*3)+'s;animation-duration:'+(2+Math.random()*3)+'s">';$('stars').innerHTML=h;
 h='';[[9,90,.18],[19,120,.47],[13,105,.72],[24,140,.93],[5,110,.33],[16,130,.6],[22,100,.05]].forEach(function(a,i){var n=i%3+1;
   h+='<img class="cloud n'+(i+1)+'" alt="" data-w="'+IMG+'cloud-white-'+n+'.png" data-g="'+IMG+'cloud-grey-'+n+'.png" src="'+IMG+'cloud-white-'+n+'.png" style="top:'+a[0]+'vh;width:'+([46,30,16][i%3]*(1-(i>2?.15:0)))+'vh;--d:'+a[1]+'s;animation-delay:'+(-a[1]*a[2])+'s">';});$('clouds').innerHTML=h;
 h='';for(i=0;i<140;i++)h+='<div class="drop" style="left:'+(Math.random()*115)+'vw;animation-duration:'+(.5+Math.random()*.4)+'s;animation-delay:'+(-Math.random())+'s"></div>';$('rain').innerHTML=h;
 h='';for(i=0;i<110;i++)h+='<div class="drop" style="left:'+(Math.random()*130)+'vw;animation-duration:'+(.35+Math.random()*.25)+'s;animation-delay:'+(-Math.random())+'s"></div>';$('rain2').innerHTML=h;
 h='';for(i=0;i<110;i++)h+='<img class="flake" alt="" src="'+IMG+'flake-'+(1+(i%6))+'.png" style="left:'+(Math.random()*100)+'vw;width:'+((i%6<2?18:10)+Math.random()*16)+'px;animation-duration:'+(7+Math.random()*7)+'s;animation-delay:'+(-Math.random()*14)+'s">';$('snow').innerHTML=h;
-h='';for(i=0;i<14;i++)h+='<span class="leaf" style="top:'+(30+Math.random()*45)+'vh;animation-duration:'+(4+Math.random()*4)+'s;animation-delay:'+(-Math.random()*8)+'s">'+(i%3?'🍂':'🍃')+'</span>';$('leaves').innerHTML=h;
+// wind: 3 GPT gusts + blowing GPT leaves (as in mockup-gpt.html)
+h='';[[30,14,0],[48,10,.4],[62,12,.75]].forEach(function(a,i){h+='<img class="gust" alt="" src="'+IMG+'wind-'+(i+1)+'.png" style="top:'+a[0]+'vh;width:'+[44,36,40][i]+'vw;animation-duration:'+a[1]+'s;animation-delay:'+(-a[1]*a[2])+'s">';});
+for(i=0;i<12;i++){var ld=6+Math.random()*6;h+='<img class="leaf" alt="" src="'+IMG+'leaf-'+(1+(i%5))+'.png" style="top:'+(35+Math.random()*45)+'vh;width:'+(3+Math.random()*2.5)+'vh;animation-duration:'+ld+'s;animation-delay:'+(-Math.random()*ld)+'s">';}
+$('leaves').innerHTML=h;
+// lightning: the bolt shape and place change at every flash cycle
+var bi=0;$('bolt').addEventListener('animationiteration',function(){bi=(bi+1)%3;this.src=IMG+'bolt-'+(bi+1)+'.png';this.style.left=(35+Math.random()*40)+'vw';});
 
 /* ===== start ===== */
 ['white','grey'].forEach(function(c){[1,2,3].forEach(function(n){new Image().src=IMG+'cloud-'+c+'-'+n+'.png';});});  // preload: no stale cloud while a swap loads
