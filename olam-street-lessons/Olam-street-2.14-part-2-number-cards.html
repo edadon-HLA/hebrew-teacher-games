@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כרטיסי מספרים 1–3 · רחוב העולם 2.14 חלק 2 (להדפסה)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@800&display=swap">
+<style>
+/* Number cards 1–3 for the "מָה שְׁלוֹמְךָ?" warm-up (1 טוֹב, 2 כָּכָה כָּכָה, 3 לֹא טוֹב): one set of 3 per A4 page. Same colours as the 2.19 number cards. */
+@page{size:A4;margin:12mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#23233a;font-family:Arial,sans-serif}
+.page{width:186mm;height:272mm;margin:0 auto;display:grid;grid-template-rows:repeat(3,minmax(0,1fr))}
+.c{border:1.5px dashed #6b6880;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.b{width:74mm;height:74mm;border-radius:50%;display:grid;place-items:center;color:#fff;font:800 170pt/1 'Rubik',Arial,sans-serif;padding-bottom:4mm}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003}}
+</style>
+</head>
+<body>
+<div class="page" id="pg"></div>
+<script>
+const COL = ['#2a8bd0', '#2f9d55', '#e0a31f'];
+document.getElementById('pg').innerHTML = [1, 2, 3].map(n => `<div class="c"><div class="b" style="background:${COL[n - 1]}">${n}</div></div>`).join('');
+</script>
+</body>
+</html>

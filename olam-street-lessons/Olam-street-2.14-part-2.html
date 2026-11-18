@@ -416,6 +416,8 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
 /* words without English */
 .wcard{padding:16px 8px}.wcard svg{height:110px}
 .spot .big svg{max-height:100%}
+/* warm-up mood number badges (1-3, match the printed number cards) */
+.wu-num{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;color:#fff;font:800 .8em/1 Rubik,Arial,sans-serif;margin-inline-end:.3em;vertical-align:middle}
 /* equal-size food cards in the warm-up and the helper rows */
 #fgrid0 .fcard,#foodRef .fcard{min-height:176px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px}
 #fgrid0 .fcard>svg,#foodRef .fcard>svg{height:116px;width:auto;max-width:100%;flex:none}
@@ -475,9 +477,9 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
   <!-- ===== 1 warm-up ===== -->
   <section class="step" id="s1">
     <div class="step-head"><span class="tag gold">מְחַמְּמִים · מָה שְׁלוֹמְךָ?</span></div>
-    <p class="lead">מִסְתַּכְּלִים עַל הַפָּנִים ⬅ 3-2-1 ⬅ כֻּלָּם מַרִימִים: טוֹב / כָּכָה כָּכָה / לֹא טוֹב.</p>
+    <p class="lead">מִסְתַּכְּלִים עַל הַפָּנִים ⬅ 3-2-1 ⬅ כֻּלָּם מַרִימִים מִסְפָּר: 1 טוֹב / 2 כָּכָה כָּכָה / 3 לֹא טוֹב.</p>
     <div id="qWU"></div>
-    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.7-2.9-response-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי תְּשׁוּבָה (2.7–2.9)</a></div>
+    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.14-part-2-number-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי מִסְפָּרִים 1–3</a><a class="rc" href="Olam-street-2.7-2.9-response-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי תְּשׁוּבָה (2.7–2.9)</a></div>
     <div class="bar2" style="justify-content:center"><a class="btn" style="text-decoration:none" href="../games/mezeg-haavir.html" target="_blank" rel="noopener">☀️ חִימּוּם נוֹסָף: מֶזֶג הָאֲוִויר</a></div>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>חִמּוּם קַל מִשִּׁעוּר 2.7–2.9 (לֹא מֵהַשִּׁעוּר הַקּוֹדֵם). אַחֲרֵי הַגִּלּוּי: "הוּא / הִיא — טוֹב".</p>
       <p dir="ltr" style="text-align:left;font-size:13px">Photos (Wikimedia Commons): Smiling little boy of Laos – Basile Morin, CC BY-SA 4.0 · Young girl smiling with teeth in sunshine – Basile Morin, CC BY-SA 4.0 · Kid boy – Muhammad Mahdi Karim, CC BY-SA 2.5 · Bored girl – greg westfall, CC BY 2.0 · Crying girl – Crimfants, CC BY-SA 2.0 · Sad Boy – Jon C (Jonvia), CC BY-SA 2.0</p></details>
@@ -559,7 +561,8 @@ U.wordSearch(2, 'wsGrid', 'wsWords', 'wsNext', 'wsAll', 'wsClr');
 const WMF = 'https://upload.wikimedia.org/wikipedia/commons/thumb/';
 const FACES = [['d/d8/Smiling_little_boy_of_Laos.jpg', 'm', 'good'], ['6/6c/Kid_boy.jpg', 'm', 'soso'], ['c/c0/Crying-girl.jpg', 'f', 'bad'],
   ['e/e6/Young_girl_smiling_with_teeth_in_sunshine.jpg', 'f', 'good'], ['d/d3/Sad_Boy.jpg', 'm', 'bad'], ['6/6e/Bored_girl.jpg', 'f', 'soso']];
-const MOOD = [{ id: 'good', html: '🙂<small>טוֹב</small>' }, { id: 'soso', html: '😐<small>כָּכָה כָּכָה</small>' }, { id: 'bad', html: '🙁<small>לֹא טוֹב</small>' }];
+const NUMB = (n, c) => `<b class="wu-num" style="background:${c}">${n}</b>`;
+const MOOD = [{ id: 'good', html: NUMB(1, '#2a8bd0') + '🙂<small>טוֹב</small>' }, { id: 'soso', html: NUMB(2, '#2f9d55') + '😐<small>כָּכָה כָּכָה</small>' }, { id: 'bad', html: NUMB(3, '#e0a31f') + '🙁<small>לֹא טוֹב</small>' }];
 const MHE = { good: 'טוֹב', soso: 'כָּכָה כָּכָה', bad: 'לֹא טוֹב' };
 U.quiz($('qWU'), FACES.map(([p, g, ok]) => { const q = g === 'm' ? 'מָה שְׁלוֹמְךָ?' : 'מָה שְׁלוֹמֵךְ?';
   return { q, img: WMF + p + '/500px-' + p.split('/').pop(), say: q, ch: MOOD, ok, full: (g === 'm' ? 'הוּא: ' : 'הִיא: ') + MHE[ok] }; }));
