@@ -37,8 +37,6 @@
   .t-afternoon .sun{left:12vw;top:27vh}
   .t-sunset .sun{left:3vw;top:38vh;width:18vh;height:18vh;background:radial-gradient(#ffe2a0,#ff9a3c 65%,#f0703a);box-shadow:0 0 9vh 4vh rgba(255,140,60,.55)}
   .bg-ta.t-sunset .sun{left:20vw;top:49vh}
-  /* HLA: the building fills the lower half, so the sun sits in the upper right corner, under the day panel (teacher 11/18) */
-  .bg-hla .sun{left:auto!important;right:3vw;top:17vh!important}
   .w-clear:not(.t-night) .sun,.w-partly:not(.t-night) .sun{display:block}
   /* moon high in the sky (5-17vh, 25vw): above the skyline of every background, incl. the Jerusalem hills, and clear of the panels */
   .moon{position:absolute;width:11vh;height:11vh;border-radius:50%;top:5vh;left:25vw;box-shadow:-2.2vh 1.4vh 0 0 #f4f1d8;display:none}
@@ -399,6 +397,16 @@ function setBackground(bg,ver){
     requestAnimationFrame(function(){el.classList.add('on');$(bgFront).classList.remove('on');bgFront=back;if(first)setTimeout(function(){el.style.transition='';},50);});}
   [jpg,mask].forEach(function(s){var im=new Image();im.onload=go;im.onerror=go;im.src=s;});
 }
+/* sun path (teacher 11/18 "Yes, build it"): the sun rises after the real sunrise, is highest at midday and sinks toward sunset.
+   f = 0 at sunrise, 1 at sunset. HLA: up and down the right side above the building (under the day panel); elsewhere a wide arc. */
+var SKY_F={dawn:.03,morning:.25,noon:.5,afternoon:.72,sunset:.96};
+function sunFrac(live,lp,sky){
+  if(live){var sr=isoMin(W.sunrise),ss=isoMin(W.sunset);if(sr!=null&&ss!=null&&ss>sr)return Math.max(0,Math.min(1,(lp.min-sr)/(ss-sr)));}
+  return SKY_F[sky]!=null?SKY_F[sky]:.5;}
+function placeSun(bg,f){var el=document.querySelector('.sun'),h=Math.sin(Math.PI*f);
+  if(bg==='hla'){el.style.setProperty('left','auto','important');el.style.setProperty('right','3vw','important');el.style.setProperty('top',(36-19*h).toFixed(1)+'vh','important');return;}
+  var base=bg==='ta'?46:bg==='jlm'?32:36;   // horizon line per background (Jerusalem hills are high)
+  el.style.setProperty('right','auto','important');el.style.setProperty('left',(74-71*f).toFixed(1)+'vw','important');el.style.setProperty('top',(base-22*h).toFixed(1)+'vh','important');}
 function render(){
   var st=$('stage'),lp=localParts(),live=!M.on&&W;
   var wx,wind,heavy,c,sky,tod,clock,wd,ground=false;
@@ -406,6 +414,7 @@ function render(){
   else{wx=M.on?M.wx:'clear';wind=M.on&&M.wind;heavy=false;c=M.c;tod=M.tod;sky=M.sky||TOD_SKY[tod];clock=M.on&&!M.sky?TOD_CLOCK[tod]:lp.clock;wd=M.day||lp.wd;if(!M.on){sky=skyFromSun(lp.min);tod=todFromClock(lp.h);c=null;}else ground=M.ground;}
   if(wx==='snow')ground=false; // snow falling: "יוֹרֵד שֶׁלֶג" already says it
   var night=sky==='night',bg=bgFor(cur.lat,cur.lon);
+  if(!night)placeSun(bg,sunFrac(live,lp,sky));
   st.className=st.className.replace(/\b(bg|t|w)-\S+/g,'').replace(/\b(windy|heavy|manual|loading|ground)\b/g,'').replace(/\s+/g,' ').trim()+' bg-'+bg+' t-'+sky+' w-'+wx+(wind?' windy':'')+(heavy?' heavy':'')+(ground?' ground':'')+(M.on?' manual':'')+(!M.on&&!W?' loading':'');
   var snowy=wx==='snow'||ground;
   setBackground(bg,night?(snowy?'snow-night':'night'):(snowy?'snow':'day'));
