@@ -90,13 +90,16 @@
   @keyframes snowspin{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(3vh,55vh) rotate(180deg)}100%{transform:translate(-2vh,110vh) rotate(360deg)}}
   .band{position:absolute;left:-30vw;width:160vw;height:16vh;border-radius:50%;background:rgba(240,243,247,.75);filter:blur(3vh);animation:fogd 40s ease-in-out infinite alternate}
   @keyframes fogd{to{transform:translateX(18vw)}}
-  .flash{background:#fff;opacity:0;animation:flash 8s infinite}
-  @keyframes flash{0%,90%,100%{opacity:0}91%{opacity:.6}92%{opacity:0}93.5%{opacity:.4}95%{opacity:0}}
-  #bolt{position:absolute;left:60vw;top:12vh;width:8vw;height:40vh;opacity:0;animation:flash 8s infinite}
+  /* lightning: JS adds .zap to the stage for ~0.3 s every 3-6 s in a storm (sometimes twice) */
+  .flash{background:#eef3ff;opacity:0}
+  #bolt{position:absolute;left:60vw;top:12vh;width:8vw;height:40vh;opacity:0}
+  .zap .flash{opacity:.7}.zap #bolt{opacity:1}
+  .zap .bgW{filter:brightness(1.35) saturate(.8)!important}
   /* wind: GPT gusts + leaves (mockup-gpt.html) */
   .w-wind #leaves,.w-storm #leaves{display:block}
   .gust{position:absolute;left:0;height:auto;opacity:0;animation:gust linear infinite}
-  @keyframes gust{0%{transform:translateX(-60vw);opacity:0}15%{opacity:.6}70%{opacity:.6}100%{transform:translateX(110vw);opacity:0}}
+  /* gusts swirl along a curved path (rotate + curl), translucent */
+  @keyframes gust{0%{transform:translate(-60vw,0) rotate(-12deg) scale(.9,1);opacity:0}15%{opacity:.5}25%{transform:translate(-15vw,-6vh) rotate(10deg) scale(1.05,.85)}50%{transform:translate(28vw,4vh) rotate(-14deg) scale(.95,1.15)}75%{transform:translate(70vw,-5vh) rotate(12deg) scale(1.08,.9)}85%{opacity:.5}100%{transform:translate(110vw,3vh) rotate(-8deg) scale(1,1);opacity:0}}
   .leaf{position:absolute;left:0;height:auto;animation:leafy linear infinite}
   @keyframes leafy{0%{transform:translate(-10vw,0) rotate(0)}25%{transform:translate(25vw,-6vh) rotate(160deg)}50%{transform:translate(55vw,4vh) rotate(320deg)}75%{transform:translate(85vw,-4vh) rotate(500deg)}100%{transform:translate(115vw,6vh) rotate(700deg)}}
   .w-wind img.cloud.n1,.w-wind img.cloud.n2,.w-wind img.cloud.n3{display:block}
@@ -111,9 +114,15 @@
   .moon{background:url(mezeg-haavir/moon-crescent.png) center/contain no-repeat;box-shadow:none!important;border-radius:0!important;width:12vh;height:12vh;filter:drop-shadow(0 0 2vh rgba(255,244,210,.45))}
   img.star{width:auto;height:auto;background:none;border-radius:0;animation:twk 3s ease-in-out infinite}
   @keyframes twk{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.7)}}
-  .band{border-radius:0!important;filter:none!important;background:url(mezeg-haavir/fog-1.png) repeat-x center/auto 100%!important;left:-50vw!important;width:200vw!important;height:34vh!important}
-  .band:nth-child(2){background-image:url(mezeg-haavir/fog-2.png)!important;opacity:.85}
-  .band:nth-child(3){opacity:.6}
+  /* fog: 5 thick GPT fog banks drifting at different speeds + a soft white haze over the lower scene */
+  .band{border-radius:0!important;filter:none!important;background:url(mezeg-haavir/fog-1.png) repeat-x center/auto 100%!important;left:-50vw!important;width:200vw!important;height:48vh!important;opacity:.95;animation:fogd 30s ease-in-out infinite alternate}
+  .band:nth-child(even){background-image:url(mezeg-haavir/fog-2.png)!important}
+  .band:nth-child(2){animation-duration:22s;animation-direction:alternate-reverse}.band:nth-child(3){animation-duration:38s;opacity:.85}
+  .band:nth-child(4){animation-duration:26s;animation-direction:alternate-reverse;opacity:.9}.band:nth-child(5){animation-duration:45s;opacity:.8}
+  @keyframes fogd{from{transform:translateX(-12vw)}to{transform:translateX(18vw)}}
+  .haze{position:absolute;inset:0;background:linear-gradient(rgba(235,239,244,0) 15%,rgba(235,239,244,.45) 45%,rgba(235,239,244,.6) 75%,rgba(235,239,244,.4))}
+  .t-night .haze{background:linear-gradient(rgba(120,130,150,0) 15%,rgba(120,130,150,.35) 50%,rgba(120,130,150,.45))}
+  .t-night .band{filter:brightness(.55)!important}
   #bolt{width:auto!important;height:58vh!important;top:6vh!important;filter:drop-shadow(0 0 2.5vh rgba(200,220,255,.9))}
   .motion-off *{animation-play-state:paused!important}
   /* ---------- UI on top ---------- */
@@ -224,7 +233,7 @@
   <div class="layer overcast"></div>
   <div class="layer"><div class="sun"></div><div class="moon"></div><div id="stars"></div><div class="deck"></div><div class="deck d2"></div><div id="clouds"></div></div>
   <div class="layer"><div class="bgT"><div class="bgW"><div class="bgL" id="bgA"></div><div class="bgL" id="bgB"></div></div></div></div>
-  <div class="layer" id="fog"><div class="band" style="top:48vh"></div><div class="band" style="top:62vh;animation-delay:-15s"></div><div class="band" style="top:36vh;animation-delay:-28s"></div></div>
+  <div class="layer" id="fog"><div class="haze"></div><div class="band" style="top:44vh"></div><div class="band" style="top:60vh;animation-delay:-9s"></div><div class="band" style="top:30vh;animation-delay:-20s"></div><div class="band" style="top:68vh;animation-delay:-5s"></div><div class="band" style="top:52vh;animation-delay:-31s"></div></div>
   <div class="layer" id="rain"></div><div class="layer" id="rain2"></div><div class="layer" id="snow"></div><div class="layer" id="leaves"></div>
   <img id="bolt" src="mezeg-haavir/bolt-1.png" alt="">
   <div class="layer flash"></div>
@@ -606,7 +615,16 @@ h='';[[30,14,0],[48,10,.4],[62,12,.75]].forEach(function(a,i){h+='<img class="gu
 for(i=0;i<12;i++){var ld=6+Math.random()*6;h+='<img class="leaf" alt="" src="'+IMG+'leaf-'+(1+(i%5))+'.png" style="top:'+(35+Math.random()*45)+'vh;width:'+(3+Math.random()*2.5)+'vh;animation-duration:'+ld+'s;animation-delay:'+(-Math.random()*ld)+'s">';}
 $('leaves').innerHTML=h;
 // lightning: the bolt shape and place change at every flash cycle
-var bi=0;$('bolt').addEventListener('animationiteration',function(){bi=(bi+1)%3;this.src=IMG+'bolt-'+(bi+1)+'.png';this.style.left=(35+Math.random()*40)+'vw';});
+var bi=0;function zap(ms){var st=$('stage');st.classList.add('zap');setTimeout(function(){st.classList.remove('zap');},ms);}
+function storm(){
+  var st=$('stage');
+  if(st.classList.contains('w-storm')&&!st.classList.contains('motion-off')&&!document.hidden){
+    bi=(bi+1)%3;var b=$('bolt');b.src=IMG+'bolt-'+(bi+1)+'.png';b.style.left=(30+Math.random()*45)+'vw';
+    zap(300);if(Math.random()<.4)setTimeout(function(){zap(180);},450);   // sometimes a double flash
+  }
+  setTimeout(storm,3000+Math.random()*3000);   // every 3-6 s
+}
+for(var bk=1;bk<=3;bk++)new Image().src=IMG+'bolt-'+bk+'.png';setTimeout(storm,1500);
 
 /* ===== start ===== */
 ['white','grey'].forEach(function(c){[1,2,3].forEach(function(n){new Image().src=IMG+'cloud-'+c+'-'+n+'.png';});});  // preload: no stale cloud while a swap loads
