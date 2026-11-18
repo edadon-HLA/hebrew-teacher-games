@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>הוּא אוֹ הִיא? מַקִּיפִים · הַבַּיִת שֶׁלָּנוּ 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* R4 #1: 8 lines (picture + sentence with 2 verb forms to circle); 2 per page; p2 = answer key */
+.rows{display:grid;grid-template-rows:repeat(8,minmax(0,1fr));flex:1;min-height:0;gap:.6mm}
+.row{display:grid;grid-template-columns:7mm 21mm 1fr;align-items:center;gap:3mm}
+.row .n{width:6mm;height:6mm;border-radius:50%;background:#1f2433;color:#fff;font:800 10pt/6mm 'Rubik';text-align:center}
+.row .pi-ph{width:21mm;height:12.5mm}
+.row .s{direction:rtl;text-align:right;font-size:14.5pt;font-weight:700}
+.opt{display:inline-flex;gap:0;border:.4mm solid #1f2433;border-radius:2mm;padding:0 1mm;margin:0 1mm;vertical-align:middle}
+.opt span{position:relative;padding:0 2mm}
+.opt span+span{border-right:.4mm solid #9aa1ad}
+.opt span.ok::after{content:'';position:absolute;inset:-.6mm -.4mm;border:.55mm solid #2456a6;border-radius:50%}
+</style>
+<script src="../games/verb-art.js?v=1"></script>
+<script src="../games/house-outside-art.js?v=1"></script>
+<script src="../games/hide-seek-ext.js?v=1"></script>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+/* [before, [option 1, option 2], after, answer index, picture] — pictures: VerbArt (lesson 3) / the lesson's kitchen frame */
+const L = [
+  ['אַבָּא', ['שׁוֹטֵף', 'שׁוֹטֶפֶת'], 'כֵּלִים.', 0, ['va', 'dishes', 'm']],
+  ['שִׁיר', ['מְנַקֶּה', 'מְנַקָּה'], 'בַּחֶדֶר.', 1, ['va', 'clean', 'f']],
+  ['סַבְתָּא', ['נָח', 'נָחָה'], 'עַל הַסַּפָּה.', 1, ['va', 'rest', 'f']],
+  ['יוֹנָתָן', ['עוֹשֶׂה', 'עוֹשָׂה'], 'שִׁעוּרֵי בַּיִת.', 0, ['va', 'homework', 'm']],
+  ['אִמָּא', ['מְבַשֵּׁל', 'מְבַשֶּׁלֶת'], 'בַּמִּטְבָּח.', 1, ['cook']],
+  ['נוֹעַם', ['מְנַקֶּה', 'מְנַקָּה'], 'חַלּוֹן.', 0, ['va', 'clean', 'm']],
+  ['דָּנָה', ['שׁוֹטֵף', 'שׁוֹטֶפֶת'], 'כֵּלִים.', 1, ['va', 'dishes', 'f']],
+  ['אַבָּא', ['נָח', 'נָחָה'], 'בַּחֶדֶר.', 0, ['va', 'rest', 'm']] ];
+PI.house(crop => {
+  const COOK = crop('kitchen', [380, 330, 200, 150], 4, HouseOut.kid(436, 476, 1.2, 'f', '#ab47bc'));
+  const picOf = p => p[0] === 'va' ? VerbArt.svg(p[1], p[2]) : COOK;
+  const half = ex => `${PI.top('הוּא אוֹ הִיא?', { tag: ex ? 'Answer key' : '' })}
+    ${PI.ins(0, 'הַקִּיפוּ אֶת הַמִּלָּה הַנְּכוֹנָה.')}
+    <div class="rows">${L.map(([a, o, b, k, p], i) => `<div class="row"><span class="n">${i + 1}</span>${PI.pic(picOf(p))}
+      <span class="s">${a} <span class="opt">${o.map((w, j) => `<span class="${ex && j === k ? 'ok' : ''}">${w}</span>`).join('')}</span> ${b}</span></div>`).join('')}</div>`;
+  document.getElementById('pages').innerHTML = PI.halves(half(false)) + PI.halves(half(true), '');
+});
+</script>
+</body>
+</html>

@@ -45,14 +45,15 @@ function connect(pgEl, pairs, o = {}){
 }
 /* run fn after images + fonts (the PDF is printed after this) */
 function ready(fn){ let done = false; const go = () => { document.querySelectorAll('.pi-ov').forEach(e => e.remove()); fn(); };
-  window.addEventListener('load', () => { go(); done = true; }); if (document.fonts) document.fonts.ready.then(() => { if (done) go(); }); }
+  if (document.readyState === 'complete'){ setTimeout(go, 50); done = true; } else window.addEventListener('load', () => { go(); done = true; });
+  if (document.fonts) document.fonts.ready.then(() => { if (done) go(); }); }
 /* the hide-and-seek house drawing (as bayit-shelanu/lesson.js): cb(crop(room, [x, y, w, h], pad)) -> svg markup */
 function house(cb){
   fetch(ROOT + 'games/hebrew-hide-and-seek.html').then(r => r.text()).then(t => {
     const doc = new DOMParser().parseFromString(t, 'text/html'), defs = doc.querySelector('#house defs').outerHTML, G = {};
     ['living', 'kitchen', 'bedroom', 'bath', 'garden'].forEach(k => { const g = doc.getElementById('a-' + k); if (!g) return;
       if (window.HIDE_EXT && HIDE_EXT.art[k]) g.insertAdjacentHTML('beforeend', HIDE_EXT.art[k]); G[k] = g.outerHTML; });
-    cb((k, [x, y, w, h], p = 6) => `<svg viewBox="${x - p} ${y - p} ${w + 2 * p} ${h + 2 * p}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">${defs}${G[k] || ''}</svg>`);
+    cb((k, [x, y, w, h], p = 6, extra = '') => `<svg viewBox="${x - p} ${y - p} ${w + 2 * p} ${h + 2 * p}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">${defs}${G[k] || ''}${extra}</svg>`);
   });
 }
 /* colour-by-sound: regions [{ t: 'rect'|'circle'|'ellipse'|'poly', a: [...], s: syllable, c: colour key, l: [x, y], fs }]
