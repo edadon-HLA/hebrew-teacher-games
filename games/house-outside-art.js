@@ -118,5 +118,22 @@ function svg(o){
     '<circle cx="' + x + '" cy="' + y + '" r="19" fill="#fff" stroke="' + INK + '" stroke-width="4"/><text x="' + x + '" y="' + (y + 8) + '" font-family="Arial" font-size="23" font-weight="800" text-anchor="middle" fill="' + INK + '">' + n + '</text>').join('');
   return '<svg class="' + (o.cls || 'ho-svg') + '" viewBox="' + vb + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="בַּיִת וּבִנְיָן">' + DEFS + ART + kids + nums + (o.extra || '') + '</svg>';
 }
-window.HouseOut = { svg, PARTS, box, kid, shapeBox };
+/* extra small drawings for crops (Niflaot 11/25 exit ticket): a car (same style as the parked car) and a sitting cat.
+   HouseOut.car(x, y, s, color) -> <g> (top-left at x,y; 108 x 54 at s = 1) · HouseOut.cat(x, y, s) -> <g> (feet at y) */
+function car(x, y, s, color){
+  color = color || '#e53935';
+  return '<g transform="translate(' + x + ' ' + y + ') scale(' + (s || 1) + ')"><rect x="4" y="18" width="104" height="26" rx="10" fill="' + color + '"/><path d="M22 18 L34 2 H78 L92 18Z" fill="' + color + '"/><path d="M28 18 L37 6 H54 V18Z M58 18 V6 H75 L86 18Z" fill="#bbdefb"/>' +
+    '<circle cx="28" cy="44" r="10" fill="#263238"/><circle cx="28" cy="44" r="4" fill="#cfd8dc"/><circle cx="86" cy="44" r="10" fill="#263238"/><circle cx="86" cy="44" r="4" fill="#cfd8dc"/><rect x="100" y="24" width="8" height="6" rx="2" fill="#ffee58"/></g>';
+}
+function cat(x, y, s){
+  return '<g transform="translate(' + x + ' ' + y + ') scale(' + (s || 1) + ')" stroke="' + INK + '" stroke-width="2.5" stroke-linejoin="round">' +
+    '<path d="M14 -6 Q34 -10 30 -30 Q28 -40 36 -44" fill="none" stroke="#e08a2e" stroke-width="6" stroke-linecap="round"/>' +
+    '<ellipse cx="0" cy="-18" rx="17" ry="18" fill="#f4a340"/>' +
+    '<path d="M-14 -44 L-12 -62 L-2 -50 Z M14 -44 L12 -62 L2 -50 Z" fill="#f4a340"/>' +
+    '<circle cx="0" cy="-44" r="14" fill="#f4a340"/>' +
+    '<circle cx="-5" cy="-46" r="2" fill="' + INK + '" stroke="none"/><circle cx="5" cy="-46" r="2" fill="' + INK + '" stroke="none"/>' +
+    '<path d="M-2 -40 L2 -40 L0 -38Z" fill="#e2506a" stroke="none"/><path d="M-8 -39 H-20 M8 -39 H20" stroke-width="1.2"/>' +
+    '<ellipse cx="-7" cy="0" rx="6" ry="3" fill="#f4a340"/><ellipse cx="7" cy="0" rx="6" ry="3" fill="#f4a340"/></g>';
+}
+window.HouseOut = { svg, PARTS, box, kid, shapeBox, car, cat };
 })();

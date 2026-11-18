@@ -65,12 +65,10 @@ BS.talk($('talk'), [
   { he: 'חָצֵר', pic: HO('yard') }, { he: 'חֲנָיָה', pic: HO('parking') }, { he: 'שַׁעַר', pic: HO('gate') }, { he: 'פַּעֲמוֹן', pic: HO('bell') }, { he: 'קוֹמָה', pic: HO('corridor') }], 2);
 
 /* 5 exit ticket */
+/* new Part A (teacher 11/18): A1 sentence -> circle the picture (HouseOut crops), A2 circle the right word; click = ✔ / ✘ (cardQuiz, as on the 11/24 ticket) */
 const EX = BSD.EXIT[2];
-$('exPic').innerHTML = HouseOut.svg({ vb: EX.vb, nums: EX.marks });
-$('exBank').innerHTML = EX.bank.map(w => `<span>${w}</span>`).join('');
-const lines = () => { $('exLines').innerHTML = EX.nums.map(([n]) => `<div style="cursor:pointer" data-n="${n}">${n}. <i>&nbsp;</i></div>`).join('');
-  $('exLines').querySelectorAll('div').forEach(d => d.onclick = () => { const r = EX.nums.find(x => x[0] === +d.dataset.n); d.querySelector('i').textContent = r[2]; say(r[2]); beep(880, .15); }); };
-lines();
-$('exShow').onclick = () => { $('exLines').querySelectorAll('i').forEach((el, k) => el.textContent = EX.nums[k][2]); $('exBank').querySelectorAll('span').forEach(s => s.className = EX.nums.some(r => r[2] === s.textContent) ? 'ok' : 'no'); beep(880, .25); };
-$('exHide').onclick = () => { lines(); $('exBank').querySelectorAll('span').forEach(s => s.className = ''); };
+cardQuiz($('qA1'), EX.a1.map((r, i) => ({ num: (i + 1) + '', q: r.s, full: r.s + '<br><span class="fill">✔</span>',
+  ch: r.opts.map((o, j) => ({ id: '' + j, html: `<span style="display:block;width:200px;height:130px;overflow:hidden" class="s-optpic">${BSD.exitPic(o)}</span><small>${o.en}</small>` })), ok: '' + r.ok })));
+cardQuiz($('qA2'), EX.a2.map((r, i) => ({ num: (i + 4) + '', pre: r.pre + ' ', post: ' ' + r.post, full: `${r.pre} <span class="fill">${r.ch[r.ok]}</span> ${r.post}`,
+  ch: r.ch.map((w, j) => ({ id: '' + j, html: w })), ok: '' + r.ok })));
 })();

@@ -70,9 +70,9 @@ td.w{width:40mm}
 @media screen{body{background:#eee;padding:10px}.sheet,.sheet2{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
 </style>
 <script src="../../games/bayit-photos.js?v=1"></script>
-<script src="../../games/house-outside-art.js?v=1"></script>
+<script src="../../games/house-outside-art.js?v=2"></script>
 <script src="../../games/verb-art.js?v=1"></script>
-<script src="data.js?v=1"></script>
+<script src="data.js?v=3"></script>
 </head>
 <body>
 <script>
@@ -95,10 +95,13 @@ if (T === 'exit'){
   if (L === 1) body = `<div class="q">A. Each row is one room. Circle the thing that does NOT belong in this room.</div>` +
     E.rows.map((r, i) => `<div class="ln"><span class="n">${i + 1}</span><div><div class="rm">${r.room}:</div><div class="opts">${r.opts.map(([he, k]) => `<span>${img(k)}${he}</span>`).join('')}</div></div></div>`).join('') +
     `<div class="q">B. Complete the sentence about YOUR home in Hebrew.</div><div class="he">בַּמִּטְבָּח שֶׁלִּי יֵשׁ <i></i> וְ<i></i>.</div>` + self('Today I can name things in each room:');
-  if (L === 2) body = `<div class="q">A. Look at the picture. Write the correct word next to each number. Use the word bank.</div>
-    <div class="pic">${HouseOut.svg({ vb: E.vb, nums: E.marks })}</div><div class="bank">${E.bank.map(w => `<span>${w}</span>`).join('')}</div>
-    <div class="two">${E.nums.map(([n]) => `<div>${n}. <i></i></div>`).join('')}</div>
-    <div class="q">B. Answer in Hebrew about YOUR home.</div><div class="he" style="font-size:11pt;line-height:1.6">אַתָּה גָּר בְּבַיִת פְּרָטִי אוֹ בְּדִירָה? <i></i><br>בְּאֵיזוֹ קוֹמָה? <i></i></div>`;
+  /* lesson 2: new Part A (teacher 11/18, "Approve"): A1 circle the picture (HouseOut crops), A2 circle the word; B unchanged; reflection */
+  if (L === 2) body = `<div class="q" style="font-size:8.8pt">A1. Read the sentence. Circle the matching picture.</div>
+    <div class="qq">${E.a1.map((r, i) => `<div class="r" style="grid-template-columns:5mm 1fr auto"><span class="n">${i + 1}</span><span style="font-size:10pt">${r.s}</span><div class="ch">${r.opts.map(o => `<span style="width:21mm;height:12.5mm">${BSD.exitPic(o)}</span>`).join('')}</div></div>`).join('')}</div>
+    <div class="q">A2. Circle the right word.</div>
+    ${E.a2.map((r, i) => `<div class="ln"><span class="n">${i + 4}</span><div class="he" style="font-size:10pt;line-height:1.35">${r.pre} ( <b style="border:1px solid #9aa3b2;border-radius:2mm;padding:0 1mm">${r.ch[0]}</b> / <b style="border:1px solid #9aa3b2;border-radius:2mm;padding:0 1mm">${r.ch[1]}</b> ) ${r.post}</div></div>`).join('')}
+    <div class="q">B. Answer in Hebrew about YOUR home.</div><div class="he" style="font-size:10pt;line-height:1.45">אַתָּה גָּר בְּבַיִת פְּרָטִי אוֹ בְּדִירָה? <i></i><br>בְּאֵיזוֹ קוֹמָה? <i></i></div>` +
+    self('Reflection: Today I can name parts of a building and say who comes in / goes out:').replace('class="self"', 'class="self" style="font-size:7.6pt;gap:1.2mm"');
   if (L === 3) body = `<div class="q">A. Complete each sentence with the right word from the box. Be careful: he or she?</div><div class="bank">${E.bank.map(w => `<span>${w}</span>`).join('')}</div>` +
     E.items.map(([who, rest], i) => `<div class="ln"><span class="n">${i + 1}</span><div class="he">${who} <i></i> ${rest}</div></div>`).join('') +
     `<div class="q">B. Write in Hebrew one thing YOU do in your kitchen.</div><div class="he">בַּמִּטְבָּח אֲנִי <i style="width:45mm"></i>.</div>` + self('Today I can say what people do at home:');
