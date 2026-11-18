@@ -168,6 +168,8 @@
   /* help bar (bottom tab) */
   #helpTab{position:absolute;left:50%;bottom:0;transform:translateX(-50%);border:0;border-radius:2vh 2vh 0 0;background:rgba(255,255,255,.6);padding:.4vh 2.5vw;font-size:2.4vh;font-weight:700;z-index:4;color:var(--ink)}
   #helpTab:hover{background:#fff}
+  #fsTab{position:absolute;left:1.2vh;bottom:1.2vh;width:6vh;height:6vh;border:0;border-radius:1.5vh;background:rgba(255,255,255,.6);font-size:3.4vh;line-height:1;color:var(--ink);z-index:4;padding:0;cursor:pointer}
+  #fsTab:hover{background:#fff}.help-open #fsTab{display:none}
   .helpbar{left:2.5vw;right:2.5vw;bottom:-60vh;padding:1.4vh 2vw;transition:bottom .35s;z-index:3}
   .help-open .helpbar{bottom:4.6vh}
   .modeSw{position:absolute;top:-2.4vh;right:2vw}
@@ -253,6 +255,7 @@
     <div class="bank days" id="bankDays"></div>
   </div>
   <button id="helpTab"></button>
+  <button id="fsTab" title="Full screen (F)" aria-label="Full screen">⛶</button>
 
   <!-- settings (teacher only, English) -->
   <button id="setTab" title="Settings (S)">›</button>
@@ -394,7 +397,8 @@ function render(){
   if(wx==='snow')ground=false; // snow falling: "יוֹרֵד שֶׁלֶג" already says it
   var night=sky==='night',bg=bgFor(cur.lat,cur.lon);
   st.className=st.className.replace(/\b(bg|t|w)-\S+/g,'').replace(/\b(windy|heavy|manual|loading)\b/g,'').replace(/\s+/g,' ').trim()+' bg-'+bg+' t-'+sky+' w-'+wx+(wind?' windy':'')+(heavy?' heavy':'')+(M.on?' manual':'')+(!M.on&&!W?' loading':'');
-  setBackground(bg,night?'night':(wx==='snow'||ground?'snow':'day'));
+  var snowy=wx==='snow'||ground;
+  setBackground(bg,night?(snowy?'snow-night':'night'):(snowy?'snow':'day'));
   var grey=['cloudy','rain','drizzle','storm','snow','fog'].indexOf(wx)>=0;
   document.querySelectorAll('img.cloud').forEach(function(e){var s=grey?e.dataset.g:e.dataset.w;if(e.getAttribute('src')!==s)e.setAttribute('src',s);});
   $('dayHe').textContent=DAYS[wd]||wd;$('todHe').textContent=TOD[tod];$('clock').textContent=clock;
@@ -583,7 +587,8 @@ $('manTemp').oninput=function(){var v=parseInt(this.value,10);M.c=unit==='F'?(v-
 $('backLive').onclick=function(){setManual(false);if(!W)loadWeather();};
 $('nameEdit').onkeydown=function(e){if(e.key==='Enter'){var v=this.value.trim(),k=keyOf(cur);if(v&&v!==cur.he)NAMES[k]=v;else delete NAMES[k];lsSet('mezeg-names',JSON.stringify(NAMES));this.blur();render();}};
 $('motionOff').onchange=function(){$('stage').classList.toggle('motion-off',this.checked);lsSet('mezeg-motion',this.checked?'off':'on');};
-$('fsBtn').onclick=fullScreen;
+$('fsBtn').onclick=fullScreen;$('fsTab').onclick=fullScreen;
+document.addEventListener('fullscreenchange',function(){var on=!!document.fullscreenElement;$('fsTab').textContent=on?'✕':'⛶';$('fsTab').title=on?'Exit full screen (F / Esc)':'Full screen (F)';});
 $('chooseBtn').onclick=choose;$('closeBtn').onclick=closeMap;
 $('mapWrap').addEventListener('click',function(e){if(e.target===this)closeMap();});
 $('search').addEventListener('input',function(){var t=this.value.trim();clearTimeout(sTimer);sTimer=setTimeout(function(){runSearch(t);},350);});
