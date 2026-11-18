@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>זִכָּרוֹן לְבַד: תְּמוּנָה וּמִלָּה — הַחֶדֶר שֶׁלִּי</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<style>
+/* 16 memory cards (8 photos + 8 words), 60 x 60 mm, 3 x 3 per page, solid cut lines.
+   p1-p2 fronts · p3 = back of p1 · p4 = back of p2 (mirrored for a long-edge flip) · p5 answer key. Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#1f2433;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.pg{position:relative;width:190mm;height:255mm;margin:0 auto;overflow:hidden;page-break-after:always}
+.pg:last-child{page-break-after:auto}
+/* the grid sits in the same place on every page (centred left-right), so fronts and backs line up */
+.grid{position:absolute;top:0;left:5mm;width:180mm;height:180mm;display:grid;grid-template-columns:repeat(3,60mm);grid-template-rows:repeat(3,60mm);direction:ltr}
+.cd{position:relative;outline:.35mm solid #6b7280;outline-offset:-.175mm;display:flex;align-items:center;justify-content:center;overflow:hidden;direction:rtl}
+.cd img{max-width:50mm;max-height:48mm;object-fit:contain;border-radius:2mm}
+.cd .w{font-size:32pt;font-weight:800;line-height:1.2}
+.cd .set{position:absolute;top:2mm;right:2.5mm;font-size:9pt;font-weight:700;color:#9aa1ad}
+.cd.bk .n{display:flex;align-items:center;justify-content:center;width:16mm;height:16mm;border:.5mm solid #9aa1ad;border-radius:50%;font:800 22pt 'Rubik',Arial,sans-serif;color:#4b5563}
+.cd.bk .set{right:auto;left:2.5mm}
+.note{position:absolute;top:186mm;left:5mm;width:180mm;font-size:11pt;line-height:1.4;direction:ltr;text-align:left;color:#374151}
+.note b{color:#1f2433}
+.lab{position:absolute;top:186mm;right:5mm;font-size:10pt;color:#9aa1ad}
+.key h2{margin:0 0 2mm;font-size:16pt;direction:ltr;text-align:left}
+.key p{margin:0 0 4mm;font-size:11pt;direction:ltr;text-align:left;color:#374151}
+.kt{display:grid;grid-template-columns:1fr 1fr;gap:3mm 8mm}
+.kr{display:grid;grid-template-columns:10mm 26mm 1fr;align-items:center;gap:3mm;border:.3mm solid #d1d5db;border-radius:2mm;padding:2mm;direction:ltr}
+.kr .n{font:800 16pt 'Rubik',Arial,sans-serif;text-align:center}
+.kr img{width:26mm;height:20mm;object-fit:contain}
+.kr .w{font-size:18pt;font-weight:800;direction:rtl;text-align:right}
+@media screen{body{background:#eee;padding:10px}.pg{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+<script src="hacheder-sheli/data.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+// number = the pair number on the back (bed 1 ... wardrobe 8)
+const R = { bed: [1, 'מִיטָּה'], table: [2, 'שׁוּלְחָן'], door: [3, 'דֶּלֶת'], window: [4, 'חַלּוֹן'], lamp: [5, 'מְנוֹרָה'], chair: [6, 'כִּסֵּא'], curtain: [7, 'וִילוֹן'], wardrobe: [8, 'אָרוֹן'] };
+// mixed order (p = picture, w = word); a pair is never side by side
+const ORDER = [['p', 'bed'], ['w', 'chair'], ['p', 'window'], ['w', 'table'], ['p', 'lamp'], ['w', 'wardrobe'], ['p', 'door'], ['w', 'curtain'], ['p', 'table'],
+               ['w', 'bed'], ['p', 'curtain'], ['w', 'lamp'], ['p', 'wardrobe'], ['w', 'window'], ['p', 'chair'], ['w', 'door']];
+const pos = (i, back) => `grid-row:${Math.floor(i / 3) + 1};grid-column:${back ? 3 - (i % 3) : (i % 3) + 1}`;
+const front = ([t, k], i) => `<div class="cd" style="${pos(i)}">${t === 'p' ? `<img src="${HACHEDER.PHOTOS[k]}" alt="">` : `<span class="w">${R[k][1]}</span>`}<span class="set">חֶדֶר</span></div>`;
+const back = ([, k], i) => `<div class="cd bk" style="${pos(i, true)}"><span class="n">${R[k][0]}</span><span class="set">חֶדֶר</span></div>`;
+const P1 = ORDER.slice(0, 9), P2 = ORDER.slice(9);
+const NOTE = '<b>Printing:</b> Print pages 1-2. Then print page 3 on the back of page 1 and page 4 on the back of page 2 (flip on the long edge). Cut on the solid lines. Same number on the back = a pair. No double-sided printer? Use the answer key on page 5.';
+let h = '';
+h += `<div class="pg"><div class="grid">${P1.map(front).join('')}</div><span class="lab">1 · זִכָּרוֹן: תְּמוּנָה וּמִלָּה</span></div>`;
+h += `<div class="pg"><div class="grid">${P2.map(front).join('')}</div><span class="lab">2 · זִכָּרוֹן: תְּמוּנָה וּמִלָּה</span></div>`;
+h += `<div class="pg"><div class="grid">${P1.map(back).join('')}</div><div class="note">${NOTE}<br><b>Page 3 = back of page 1.</b></div></div>`;
+h += `<div class="pg"><div class="grid">${P2.map(back).join('')}</div><div class="note"><b>Page 4 = back of page 2</b> (flip on the long edge).</div></div>`;
+h += `<div class="pg key"><h2>Answer key – memory cards <bdi dir="rtl">"הַחֶדֶר"</bdi></h2><p>A picture card and its word card have the same number on the back.</p><div class="kt">${Object.entries(R).map(([k, [n, he]]) => `<div class="kr"><span class="n">${n}</span><img src="${HACHEDER.PHOTOS[k]}" alt=""><span class="w">${he}</span></div>`).join('')}</div></div>`;
+document.getElementById('pages').innerHTML = h;
+</script>
+</body>
+</html>

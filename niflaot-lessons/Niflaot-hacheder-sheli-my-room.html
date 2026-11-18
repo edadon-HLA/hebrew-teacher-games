@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>הַחֶדֶר שֶׁלִּי — דַּף עֲבוֹדָה עַצְמִית</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* Independent worksheet "הַחֶדֶר שֶׁלִּי": p1 = student sheet, p2 = teacher example. Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#1f2433;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.pg{position:relative;width:190mm;height:255mm;margin:0 auto;overflow:hidden;display:flex;flex-direction:column;gap:2.6mm;page-break-after:always}
+.pg:last-child{page-break-after:auto}
+.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;border-bottom:.5mm solid #1f2433;padding-bottom:2mm}
+.top .nm{font-size:15pt;font-weight:700}
+.top .nm span{display:inline-block;width:42mm;border-bottom:.4mm solid #333;height:7mm;vertical-align:bottom;font:600 15pt 'Noto Sans Hebrew';color:#2456a6;text-align:center}
+.top h1{margin:0;font-size:28pt;font-weight:800;line-height:1.1}
+.top .tch{justify-self:end;font-size:12pt;font-weight:800;border:.4mm solid #1f2433;border-radius:2mm;padding:.5mm 3mm}
+.ins{font-size:15pt;font-weight:700;line-height:1.35;margin:0;display:flex;gap:2mm;align-items:baseline}
+.ins b{display:inline-flex;align-items:center;justify-content:center;width:7mm;height:7mm;border-radius:50%;background:#1f2433;color:#fff;font-size:12pt;flex-shrink:0}
+.mid{display:grid;grid-template-columns:40mm 1fr 40mm;gap:3mm;height:142mm;flex-shrink:0}
+.col{display:grid;grid-template-rows:repeat(4,minmax(0,1fr));gap:2mm}
+.it{position:relative;border:.35mm solid #9aa1ad;border-radius:2.5mm;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6mm;padding:1.2mm}
+.it img{width:30mm;height:24mm;object-fit:contain;filter:grayscale(1) contrast(1.15)}
+.it .w{font-size:17pt;font-weight:800;line-height:1.05}
+.it .dot{position:absolute;top:50%;width:3.6mm;height:3.6mm;margin-top:-1.8mm;border-radius:50%;background:#1f2433}
+.col.r .dot{left:-1.8mm}.col.l .dot{right:-1.8mm}
+.room{display:flex;align-items:center;justify-content:center}
+.room svg{width:100%;height:110mm}
+.wr{display:flex;align-items:flex-end;gap:2mm;font-size:17pt;font-weight:700;height:14mm;padding-inline-start:9mm}
+.wr .ln{flex:1;border-bottom:.4mm solid #333;height:12mm;text-align:center;font:600 18pt/12mm 'Noto Sans Hebrew';color:#2456a6}
+.bank{margin-top:auto;border:.5mm solid #1f2433;border-radius:3mm;padding:1.6mm 3mm;display:flex;flex-wrap:wrap;gap:1.5mm 2.6mm;justify-content:center;align-items:center;font-size:15pt;font-weight:700}
+.bank .h{font-size:12pt;font-weight:800;background:#1f2433;color:#fff;border-radius:2mm;padding:0 2.5mm}
+.chk{margin-top:auto;border:.5mm dashed #1f2433;border-radius:3mm;padding:1.6mm 3mm;font-size:11.5pt;line-height:1.45}
+.chk p{margin:0}
+.ov{position:absolute;inset:0;pointer-events:none}
+@media screen{body{background:#eee;padding:10px}.pg{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px;padding:0}}
+</style>
+<script src="hacheder-sheli/data.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const RIGHT = [['bed', 'מִיטָּה'], ['table', 'שׁוּלְחָן'], ['chair', 'כִּסֵּא'], ['wardrobe', 'אָרוֹן']];
+const LEFT = [['window', 'חַלּוֹן'], ['door', 'דֶּלֶת'], ['lamp', 'מְנוֹרָה'], ['curtain', 'וִילוֹן']];
+const BANK = ['מִיטָּה', 'שׁוּלְחָן', 'כִּסֵּא', 'אָרוֹן', 'חַלּוֹן', 'דֶּלֶת', 'מְנוֹרָה', 'וִילוֹן'];
+const box = ([k, he]) => `<div class="it" data-k="${k}"><img src="${HACHEDER.PHOTOS[k]}" alt=""><span class="w">${he}</span><span class="dot"></span></div>`;
+// empty room in perspective: outer frame 200 x 200, back wall 110 x 100
+const ROOM = `<svg viewBox="0 0 200 210" preserveAspectRatio="xMidYMid meet" fill="none" stroke="#1f2433" stroke-width="1.6" stroke-linejoin="round">
+  <rect x="4" y="4" width="192" height="202" rx="3" stroke="#9aa1ad" stroke-width="1"/>
+  <rect x="45" y="40" width="110" height="100"/>
+  <line x1="4" y1="4" x2="45" y2="40"/><line x1="196" y1="4" x2="155" y2="40"/>
+  <line x1="4" y1="206" x2="45" y2="140"/><line x1="196" y1="206" x2="155" y2="140"/>
+</svg>`;
+function page(ex) {
+  return `<div class="pg${ex ? ' ex' : ''}">
+  <div class="top"><div class="nm">שֵׁם: <span>${ex ? 'דֻּגְמָה' : ''}</span></div><h1>הַחֶדֶר שֶׁלִּי</h1>${ex ? '<span class="tch">לַמּוֹרֶה</span>' : '<span></span>'}</div>
+  <p class="ins"><b>1</b>מָה יֵשׁ בַּחֶדֶר שֶׁלְּךָ? חַבְּרוּ בְּקַו אֶל הַחֶדֶר, אוֹ צַיְּרוּ בַּחֶדֶר.</p>
+  <div class="mid"><div class="col r">${RIGHT.map(box).join('')}</div><div class="room">${ROOM}</div><div class="col l">${LEFT.map(box).join('')}</div></div>
+  <p class="ins"><b>2</b>מָה אֵין בַּחֶדֶר שֶׁלְּךָ? הַקִּיפוּ דָּבָר אֶחָד.</p>
+  <p class="ins"><b>3</b>כִּתְבוּ שְׁנֵי מִשְׁפָּטִים:</p>
+  <div class="wr"><span>בַּחֶדֶר שֶׁלִּי יֵשׁ</span><span class="ln">${ex ? 'מִיטָּה' : ''}</span><span>וְ</span><span class="ln">${ex ? 'מְנוֹרָה' : ''}</span><span>.</span></div>
+  <div class="wr"><span>בַּחֶדֶר שֶׁלִּי אֵין</span><span class="ln" style="flex:0 0 70mm">${ex ? 'וִילוֹן' : ''}</span><span>.</span></div>
+  ${ex ? `<div class="chk"><p><b>אֵין תְּשׁוּבָה אַחַת נְכוֹנָה:</b> כָּל תַּלְמִיד כּוֹתֵב עַל הַחֶדֶר שֶׁלּוֹ. בַּדֻּגְמָה: קַוִּים מִ־מִיטָּה, שׁוּלְחָן, מְנוֹרָה · עִגּוּל עַל וִילוֹן.</p>
+    <p><b>בּוֹדְקִים:</b> ① הַמִּלִּים בַּמִּשְׁפָּטִים מַתְאִימוֹת לַקַּוִּים וְלָעִגּוּל. ② הַמִּלִּים מֻעְתָּקוֹת נָכוֹן מִבַּנְק הַמִּלִּים. ③ וְ לִפְנֵי הַמִּלָּה הַשְּׁנִיָּה (וּ לִפְנֵי מ / ב / פ — אֶפְשָׁר, לֹא חוֹבָה).</p></div>`
+      : `<div class="bank"><span class="h">בַּנְק מִלִּים</span>${BANK.map(w => `<span>${w}</span>`).join('<span>·</span>')}</div>`}
+</div>`;
+}
+document.getElementById('pages').innerHTML = page(false) + page(true);
+// teacher example: lines from bed / table / lamp into the room, circle around curtain
+function drawExample() {
+  const pg = document.querySelector('.pg.ex'), P = pg.getBoundingClientRect();
+  const room = pg.querySelector('.room svg').getBoundingClientRect();
+  const at = (fx, fy) => [room.left - P.left + room.width * fx, room.top - P.top + room.height * fy];
+  const dot = k => { const r = pg.querySelector(`.it[data-k="${k}"] .dot`).getBoundingClientRect(); return [r.left - P.left + r.width / 2, r.top - P.top + r.height / 2]; };
+  const lines = [['bed', at(.62, .45)], ['table', at(.55, .82)], ['lamp', at(.30, .56)]];
+  const c = pg.querySelector('.it[data-k="curtain"]').getBoundingClientRect();
+  let s = `<svg class="ov" width="${P.width}" height="${P.height}" viewBox="0 0 ${P.width} ${P.height}" stroke="#2456a6" fill="none" stroke-width="2.6" stroke-linecap="round">`;
+  for (const [k, [x2, y2]] of lines) { const [x1, y1] = dot(k); s += `<path d="M${x1} ${y1} Q${(x1 + x2) / 2} ${(y1 + y2) / 2 - 18} ${x2} ${y2}"/><circle cx="${x2}" cy="${y2}" r="4" fill="#2456a6"/>`; }
+  s += `<ellipse cx="${c.left - P.left + c.width / 2}" cy="${c.top - P.top + c.height / 2}" rx="${c.width / 2 + 1}" ry="${c.height / 2 + 5}" transform="rotate(-4 ${c.left - P.left + c.width / 2} ${c.top - P.top + c.height / 2})"/></svg>`;
+  pg.insertAdjacentHTML('beforeend', s);
+}
+function redraw() { document.querySelectorAll('.pg.ex .ov').forEach(o => o.remove()); drawExample(); }
+redraw();
+window.addEventListener('load', redraw);
+if (document.fonts) document.fonts.ready.then(redraw);
+</script>
+</body>
+</html>
