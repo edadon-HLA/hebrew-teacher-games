@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מָה טָעִים לִי? · רחוב העולם 2.17–2.18 (להדפסה)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* Independent sheet (personal opinion, no key): 8 foods NOT on the workbook's 2.18 scale, circle 3 / 2 / 1, two sentences.
+   Pictures: site food art (FoodArt), dark chocolate = the Malagos photo of 2.14 part 3. 1 per A4. Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#111;font-family:'Noto Sans Hebrew','Segoe UI Emoji',Arial,sans-serif}
+.page{width:190mm;height:255mm;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;padding:2mm 3mm}
+.hd{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:4mm}
+.hd .nm{font-size:13pt;font-weight:700;display:flex;gap:2mm;align-items:flex-end}.hd .nm i{flex:1;border-bottom:1.2px solid #111;height:6mm}
+.hd b{font-size:22pt;font-weight:800}.hd .tag{font-size:9pt;color:#888;text-align:left}
+.scale{display:flex;justify-content:center;gap:6mm;margin:3mm 0;font-size:13pt;font-weight:800}
+.scale span{border:1.5px solid #111;border-radius:99px;padding:.5mm 4mm}
+.grid{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,minmax(0,1fr));gap:3mm}
+.f{display:grid;grid-template-columns:30mm 1fr;align-items:center;gap:3mm;border:1.5px solid #444;border-radius:3mm;padding:2mm 3mm;min-height:0}
+.f .pic{height:30mm;display:grid;place-items:center}.f .pic svg{max-height:28mm;max-width:30mm;width:auto;height:auto}.f .pic .emo{font-size:58pt;line-height:1}
+.f .pic img{width:30mm;height:24mm;object-fit:cover;border-radius:2mm;filter:contrast(1.1)}
+.f b{display:block;font-size:16pt;font-weight:800;margin-bottom:2mm}
+.f .c{display:flex;gap:3mm}.f .c span{width:11mm;height:11mm;border:2px solid #111;border-radius:50%;display:grid;place-items:center;font-size:15pt;font-weight:800}
+.sent{margin-top:4mm;display:grid;gap:4mm}
+.sent div{display:grid;grid-template-columns:1fr auto;align-items:end;gap:2mm;font-size:17pt;font-weight:800}
+.sent i{border-bottom:1.5px solid #111;height:10mm}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="../games/food-art.js"></script>
+<script>
+const A = [...FoodArt.foods, ...FoodArt.foods2, ...FoodArt.foods4];
+const art = id => FoodArt.html(A.find(f => f.id === id).pic);
+const DARK = 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d8/Malagos_Chocolate_white_bg.jpg/500px-Malagos_Chocolate_white_bg.jpg';
+const F = [['סוּשִׁי', art('sushi')], ['שָׁוַארְמָה', art('shawarma')], ['הַמְבּוּרְגֶּר', art('burger')], ['אָבוֹקָדוֹ', art('avocado')],
+  ['שַׁקְשׁוּקָה', art('shakshuka')], ['סַבִּיח', art('sabich')], ['גְּבִינָה', art('cheese')], ['שׁוֹקוֹלָד מָרִיר', `<img src="${DARK}" alt="">`]];
+document.getElementById('out').innerHTML = `<div class="page">
+  <div class="hd"><div class="nm">שֵׁם: <i></i></div><b>מָה טָעִים לִי?</b><div class="tag"><bdi dir="ltr">2.18</bdi></div></div>
+  <div class="scale"><span>3 טָעִים מְאוֹד</span><span>2 טָעִים</span><span>1 לֹא טָעִים</span></div>
+  <div class="grid">${F.map(([he, pic]) => `<div class="f"><div class="pic">${pic}</div><div><b>${he}</b><div class="c"><span>3</span><span>2</span><span>1</span></div></div></div>`).join('')}</div>
+  <div class="sent"><div><i></i><span>טָעִים מְאוֹד!</span></div><div><i></i><span>לֹא טָעִים.</span></div></div></div>`;
+</script>
+</body>
+</html>
