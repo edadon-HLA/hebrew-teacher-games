@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>דּוֹמִינוֹ צְלִילִים · רחוב העולם 2.23–2.24 (להדפסה)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* First-sound dominoes (same tile style as Olam-street-2.14-part-3-dominoes.html): 9 tiles 90 x 42 mm, RIGHT half = picture
+   (the photos of the "אֵיזוֹ תְּמוּנָה מַתְחִילָה בַּצְּלִיל?" game, games/tzlil-rishon.html set 2.23, without words), LEFT half = sound.
+   Page 1 = tiles in mixed order, page 2 = the chain (key). Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#111;font-family:'Noto Sans Hebrew','Segoe UI Emoji',Arial,sans-serif}
+.page{width:190mm;height:255mm;margin:0 auto;position:relative;page-break-after:always;break-after:page;overflow:hidden;padding-top:6mm}
+.page:last-child{page-break-after:auto;break-after:auto}
+.lab{position:absolute;top:0;left:0;right:0;text-align:center;font-size:8.5pt;color:#888;line-height:5mm}
+.grid{display:grid;grid-template-columns:repeat(2,90mm);grid-auto-rows:42mm;justify-content:center;direction:rtl}
+.t{position:relative;display:grid;grid-template-columns:1fr 1fr;border:1.5px solid #111;margin:-.75px;direction:ltr;overflow:hidden;background:#fff}
+.t>div{display:flex;align-items:center;justify-content:center;text-align:center;direction:rtl;min-width:0;padding:2mm}
+.t .wd{border-right:1.5px dashed #777;font-size:40pt;font-weight:800;line-height:1.1}
+.t .pc img{max-width:40mm;max-height:36mm;object-fit:contain;filter:contrast(1.1)}.t .pc svg{max-width:41mm;max-height:36mm;width:auto;height:auto}
+.t .pc.st,.t .wd.end{font-size:20pt;font-weight:800;color:#333}
+.t .set{position:absolute;bottom:.8mm;left:1.5mm;font-size:7pt;color:#aaa;direction:ltr}
+.howto{font-size:11pt;color:#444;text-align:center;margin:0 0 4mm}
+.chain{display:grid;grid-template-columns:repeat(3,58mm);grid-auto-rows:27mm;gap:5mm 2mm;justify-content:center;direction:rtl}
+.chain .t{margin:0}
+.chain .t .wd{font-size:24pt}.chain .t .pc img{max-width:26mm;max-height:22mm}.chain .t .pc svg{max-width:26mm;max-height:22mm}.chain .t .pc.st,.chain .t .wd.end{font-size:12pt}
+.chain .n{position:absolute;top:.5mm;right:1mm;font-size:7pt;color:#888}
+.chain .t .set{display:none}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="../games/hungry-art.js?v=3"></script>
+<script>
+const wm = p => 'https://thumb.wikimedia.org/wikipedia/commons/thumb/' + p + '/500px-' + p.split('/').pop();
+/* same pictures as games/tzlil-rishon.html (P) */
+const PIC = { tuna: wm('1/19/Tuna_can.jpg'), hungry: null, cheese: wm('8/89/Swiss_cheese_cubes.jpg'), salad: 'olam-2.2-salad.jpg',
+  milk: wm('7/77/Milk_and_straw.jpg'), lemon: wm('6/6f/Lemon_with_white_background.jpg'), hummus: 'olam-2.2-hummus.jpg', sushi: wm('4/48/Sushi_Plate_in_Organic_Sushi_Prague_4.jpg') };
+/* chain (spec): ★ | טוּ → [טוּנָה] | רָ → [רָעֵב] | גְּ → [גְּבִינָה] | סָ → [סָלָט] | חָ → [חָלָב] | לִי → [לִימוֹן] | חוּ → [חוּמוּס] | סוּ → [סוּשִׁי] | 🏁 */
+const SND = ['טוּ', 'רָ', 'גְּ', 'סָ', 'חָ', 'לִי', 'חוּ', 'סוּ'], KEYS = ['tuna', 'hungry', 'cheese', 'salad', 'milk', 'lemon', 'hummus', 'sushi'];
+const pic = k => k === 'hungry' ? HungryArt.hungry() : `<img src="${PIC[k]}" alt="">`;
+const tile = i => {   /* i = 0..8 */
+  const right = i === 0 ? '<div class="pc st">★ הַתְחָלָה</div>' : `<div class="pc">${pic(KEYS[i - 1])}</div>`;
+  const left = i === 8 ? '<div class="wd end">🏁 סוֹף</div>' : `<div class="wd">${SND[i]}</div>`;
+  return `<div class="t">${left}${right}<span class="set">2.23</span></div>`;
+};
+const MIX = [5, 2, 8, 0, 6, 3, 1, 7, 4];
+document.getElementById('out').innerHTML =
+  `<div class="page"><div class="lab">דּוֹמִינוֹ צְלִילִים · רְחוֹב הָעוֹלָם <bdi dir="ltr">2.23</bdi> · הַמּוֹרֶה גּוֹזֵר מֵרֹאשׁ לְאֹרֶךְ הַקַּוִּים הַשְּׁלֵמִים</div><div class="grid">${MIX.map(tile).join('')}</div></div>` +
+  `<div class="page"><div class="lab">מַפְתֵּחַ · Answer key</div><p class="howto">מַתְחִילִים מִ־★ הַתְחָלָה ⬅ הַתְּמוּנָה שֶׁל הַקְּלָף הַבָּא מַתְחִילָה בַּצְּלִיל ⬅ עַד 🏁 סוֹף.</p>
+   <div class="chain">${Array.from({ length: 9 }, (_, i) => tile(i).replace('<div class="t">', `<div class="t"><span class="n">${i + 1}</span>`)).join('')}</div></div>`;
+</script>
+</body>
+</html>

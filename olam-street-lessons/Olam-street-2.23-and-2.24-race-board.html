@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מֵרוֹץ הֲבָרוֹת · רחוב העולם 2.23–2.24 (להדפסה)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* Syllable race board (no die): snake track ★ + the 27 syllables of the workbook p.17 path in book order (PATH in
+   Olam-street-2.23-and-2.24.html, ב without dagesh) + 🏁. Players draw a number card 1-3 (2.19-2.20 cards), move, read.
+   1 board per A4, 1 per pair, reusable. Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#111;font-family:'Noto Sans Hebrew','Segoe UI Emoji',Arial,sans-serif}
+.page{width:190mm;height:255mm;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;padding:1mm 3mm}
+.hd{display:flex;justify-content:space-between;align-items:baseline}.hd b{font-size:22pt;font-weight:800}.hd span{font-size:9pt;color:#888}
+.board{display:grid;grid-template-columns:repeat(5,34mm);grid-template-rows:repeat(6,32mm);gap:2.5mm;justify-content:center;margin:2mm 0 3mm;direction:ltr}
+.sq{position:relative;border:2px solid #111;border-radius:4mm;display:grid;place-items:center;font-size:40pt;font-weight:800;line-height:1;direction:rtl;background:#fff}
+.sq:nth-child(even){background:#f2f2f2}
+.sq .n{position:absolute;top:1mm;right:1.5mm;font-size:8pt;color:#777;font-weight:700}
+.sq .ar{position:absolute;font-size:12pt;color:#555;font-weight:800}
+.sq.end,.sq.st{font-size:17pt;background:#fff;border-width:3px}
+.empty{border:0;background:none!important}
+.rules{border:2px solid #111;border-radius:4mm;padding:2.5mm 4mm;font-size:13pt;font-weight:700;line-height:1.6}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script>
+const PATH = ['גַ', 'בַ', 'נַ', 'טַ', 'גֹ', 'בֹ', 'נֹ', 'רֹ', 'גָ', 'בָ', 'נָ', 'טָ', 'גוּ', 'בוּ', 'נוּ', 'רוּ', 'גִי', 'גִ', 'בִי', 'בִ', 'נִי', 'נִ', 'טִי', 'גֹ', 'בֹ', 'נֹ', 'רֹ'];
+const TRACK = ['★ הַתְחָלָה', ...PATH, '🏁 סוֹף'];   /* 29 squares */
+const COLS = 5, ROWS = 6;
+/* snake: row 0 runs right -> left (RTL), row 1 left -> right, ... ; grid is laid out LTR, so compute the column */
+const cells = Array(COLS * ROWS).fill(null);
+TRACK.forEach((t, i) => { const r = Math.floor(i / COLS), k = i % COLS, c = r % 2 === 0 ? COLS - 1 - k : k; cells[r * COLS + c] = i; });
+const html = cells.map(i => {
+  if (i === null) return '<div class="sq empty"></div>';
+  const t = TRACK[i], cls = i === 0 ? ' st' : i === TRACK.length - 1 ? ' end' : '';
+  const r = Math.floor(i / COLS), k = i % COLS, lastInRow = k === COLS - 1 && i < TRACK.length - 1;
+  const ar = lastInRow ? '<span class="ar" style="bottom:.5mm;left:50%;transform:translateX(-50%)">⬇</span>' : '';
+  return `<div class="sq${cls}">${i > 0 && i < TRACK.length - 1 ? `<span class="n">${i}</span>` : ''}${t}${ar}</div>`;
+}).join('');
+document.getElementById('out').innerHTML = `<div class="page">
+  <div class="hd"><b>מֵרוֹץ הֲבָרוֹת</b><span><bdi dir="ltr">2.23 · p.17</bdi></span></div>
+  <div class="board">${html}</div>
+  <div class="rules">מְרִימִים כַּרְטִיס מִסְפָּר (1, 2, 3) בְּלִי לְהִסְתַּכֵּל, הוֹלְכִים, וְקוֹרְאִים אֶת הַהֲבָרָה. טָעִיתָ? חוֹזְרִים לַמָּקוֹם הַקּוֹדֵם.</div></div>`;
+</script>
+</body>
+</html>
