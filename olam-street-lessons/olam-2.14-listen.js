@@ -5,7 +5,7 @@
  *   U.spotlight(root, keys)     the 5 core words, one at a time (big picture, word, voice, prev / again / next)
  *   U.quiz(root, items, o)      one engine for every "3-2-1 הָרִימוּ!" activity: prompt + picture/clip + clickable answer cards
  *   U.wordSearch(part, ids)     the entry ticket on screen
- *   U.talk(root, rounds, bank)  pair talk: frame, picture bank, 3 rounds x 2 minutes, "מַחֲלִיפִים!" chime          */
+ *   U.talk(root, rounds, bank, opts)  pair talk: frame, picture bank, 3 rounds x 2 minutes (optional opts.n = rounds, opts.photos = [[label, img]]), "מַחֲלִיפִים!" chime          */
 window.U214 = (() => {
 'use strict';
 const L = window.L214, $ = id => document.getElementById(id);
@@ -150,23 +150,25 @@ function wordSearch(part, gridId, wordsId, nextId, allId, clrId){
 }
 
 /* ---------- pair talk ---------- */
-function talk(root, frames, bank){
-  root.innerHTML = `<div class="L-frame">${frames.map(([w, t]) => `<div class="${w === 'א' ? 'a' : 'b'}"><span class="w">${w}</span><span>${t}</span></div>`).join('')}</div>
-    <div class="L-bank">${bank.map(k => `<div>${art(k)}${L.HE[k] || ''}</div>`).join('')}</div>
+function talk(root, frames, bank, opts){
+  opts = opts || {}; const N = opts.n || 3;
+  const pb = opts.photos ? opts.photos.map(([he, img]) => `<div><img src="${img}" alt="${he}" style="height:90px;width:120px;object-fit:cover;display:block;margin:0 auto 2px;border-radius:10px">${he}</div>`).join('') : '';
+  root.innerHTML = `<div class="L-frame">${frames.map(([w, t]) => `<div class="${w === 'א' || w === 'א + ב' ? 'a' : 'b'}"><span class="w"${w.length > 1 ? ' style="width:auto;padding:0 12px;border-radius:21px"' : ''}>${w}</span><span>${t}</span></div>`).join('')}</div>
+    <div class="L-bank">${pb}${bank.map(k => `<div>${art(k)}${L.HE[k] || ''}</div>`).join('')}</div>
     <div class="rounds" data-a="r"></div><div class="bigtimer" data-a="t">2:00</div>
     <div class="bar2" style="justify-content:center"><button class="cdbtn" data-a="go" type="button">⏱ מַתְחִילִים — 2 דַּקּוֹת</button></div>
-    <div class="sumF" data-a="m" style="max-width:560px;margin-inline:auto">סִבּוּב 1 מִתּוֹךְ 3</div>`;
-  const q = s => root.querySelector(`[data-a="${s}"]`), N = 3, T = 120; let tt = null, rd = 0;
+    <div class="sumF" data-a="m" style="max-width:560px;margin-inline:auto">סִבּוּב 1 מִתּוֹךְ ${N}</div>`;
+  const q = s => root.querySelector(`[data-a="${s}"]`), T = 120; let tt = null, rd = 0;
   const dots = () => { q('r').innerHTML = Array.from({ length: N }, (_, k) => `<i class="${k < rd ? 'done' : k === rd ? 'on' : ''}">${k + 1}</i>`).join(''); };
   const sh = s => { q('t').textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
   dots();
   q('go').onclick = () => {
     if (tt){ clearInterval(tt); tt = null; sh(T); q('t').classList.remove('end'); q('go').textContent = '⏱ מַתְחִילִים — 2 דַּקּוֹת'; return; }
-    if (rd >= N){ rd = 0; dots(); q('m').textContent = 'סִבּוּב 1 מִתּוֹךְ 3'; }
+    if (rd >= N){ rd = 0; dots(); q('m').textContent = 'סִבּוּב 1 מִתּוֹךְ ' + N; }
     let s = T; q('go').textContent = '⏹ עוֹצְרִים'; q('t').classList.remove('end'); sh(s);
     tt = setInterval(() => { s--; sh(s); if (s > 0) return; clearInterval(tt); tt = null; rd++; dots(); q('t').classList.add('end'); const last = rd >= N;
       q('t').textContent = last ? 'סוֹף!' : '🔔'; tone(false); setTimeout(() => tone(true), 300);
-      q('m').textContent = last ? 'כָּל הַכָּבוֹד! 🎉' : 'מַחֲלִיפִים! בֶּן זוּג חָדָשׁ · סִבּוּב ' + (rd + 1) + ' מִתּוֹךְ 3'; say(last ? 'סוֹף! כָּל הַכָּבוֹד' : 'מַחֲלִיפִים!');
+      q('m').textContent = last ? 'כָּל הַכָּבוֹד! 🎉' : 'מַחֲלִיפִים! בֶּן זוּג חָדָשׁ · סִבּוּב ' + (rd + 1) + ' מִתּוֹךְ ' + N; say(last ? 'סוֹף! כָּל הַכָּבוֹד' : 'מַחֲלִיפִים!');
       q('go').textContent = last ? '↺ מֵהַהַתְחָלָה' : '⏱ מַתְחִילִים — 2 דַּקּוֹת'; }, 1000); };
 }
 
