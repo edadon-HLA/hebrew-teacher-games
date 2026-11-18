@@ -120,6 +120,14 @@
   .t-night .haze{background:linear-gradient(rgba(120,130,150,0) 15%,rgba(120,130,150,.35) 50%,rgba(120,130,150,.45))}
   .t-night .band{filter:brightness(.55)!important}
   #bolt{width:auto!important;height:58vh!important;top:6vh!important;filter:drop-shadow(0 0 2.5vh rgba(200,220,255,.9))}
+  /* calm days (teacher 11/18: "for days like today the scene is very still"): turning sun rays, more and faster clouds */
+  .sun::before{content:"";position:absolute;inset:-75%;border-radius:50%;background:repeating-conic-gradient(rgba(255,244,190,0) 0deg 7deg,rgba(255,244,190,.35) 9deg 11deg,rgba(255,244,190,0) 13deg 22deg);-webkit-mask:radial-gradient(circle,transparent 24%,#000 34%,transparent 68%);mask:radial-gradient(circle,transparent 24%,#000 34%,transparent 68%);animation:rays 70s linear infinite,raysp 6s ease-in-out infinite}
+  @keyframes rays{to{transform:rotate(360deg)}}
+  .motion-off .sun::before{animation-play-state:paused}
+  @keyframes raysp{0%,100%{opacity:.75}50%{opacity:1}}
+  .t-dawn .sun::before,.t-sunset .sun::before{opacity:.5}
+  .w-partly img.cloud.n5,.w-partly img.cloud.n6,.w-clear img.cloud.n7{display:block}
+  .w-partly img.cloud,.w-clear img.cloud{animation-duration:calc(var(--d) * .6)}
   .motion-off *{animation-play-state:paused!important}
   /* ---------- UI on top ---------- */
   .panel{position:absolute;background:var(--panel);border-radius:2vh;box-shadow:0 .6vh 2vh rgba(0,0,0,.18)}
@@ -229,10 +237,10 @@
 <div id="stage" class="bg-hla t-morning w-partly">
   <div class="layer sky"></div>
   <div class="layer overcast"></div>
-  <div class="layer"><div class="sun"></div><div class="moon"></div><div id="stars"></div><div class="deck"></div><div class="deck d2"></div><div id="clouds"></div></div>
+  <div class="layer"><div class="sun"></div><div class="moon"></div><div id="stars"></div><div class="deck"></div><div class="deck d2"></div><div id="clouds"></div><div id="calmSky" class="layer"></div></div>
   <div class="layer"><div class="bgT"><div class="bgW"><div class="bgL" id="bgA"></div><div class="bgL" id="bgB"></div></div></div></div>
   <div class="layer" id="fog"><div class="haze"></div><div class="band" style="top:44vh"></div><div class="band" style="top:60vh;animation-delay:-9s"></div><div class="band" style="top:30vh;animation-delay:-20s"></div><div class="band" style="top:68vh;animation-delay:-5s"></div><div class="band" style="top:52vh;animation-delay:-31s"></div></div>
-  <div class="layer" id="rain"></div><div class="layer" id="rain2"></div><div class="layer" id="snow"></div><div class="layer" id="leaves"></div>
+  <div class="layer" id="rain"></div><div class="layer" id="rain2"></div><div class="layer" id="snow"></div><div class="layer" id="leaves"></div><div class="layer" id="calmFront"></div>
   <img id="bolt" src="mezeg-haavir/bolt-1.png" alt="">
   <div class="layer flash"></div>
 
@@ -396,7 +404,7 @@ function render(){
   else{wx=M.on?M.wx:'clear';wind=M.on&&M.wind;heavy=false;c=M.c;tod=M.tod;sky=M.sky||TOD_SKY[tod];clock=M.on&&!M.sky?TOD_CLOCK[tod]:lp.clock;wd=M.day||lp.wd;if(!M.on){sky=skyFromSun(lp.min);tod=todFromClock(lp.h);c=null;}else ground=M.ground;}
   if(wx==='snow')ground=false; // snow falling: "יוֹרֵד שֶׁלֶג" already says it
   var night=sky==='night',bg=bgFor(cur.lat,cur.lon);
-  st.className=st.className.replace(/\b(bg|t|w)-\S+/g,'').replace(/\b(windy|heavy|manual|loading)\b/g,'').replace(/\s+/g,' ').trim()+' bg-'+bg+' t-'+sky+' w-'+wx+(wind?' windy':'')+(heavy?' heavy':'')+(M.on?' manual':'')+(!M.on&&!W?' loading':'');
+  st.className=st.className.replace(/\b(bg|t|w)-\S+/g,'').replace(/\b(windy|heavy|manual|loading|ground)\b/g,'').replace(/\s+/g,' ').trim()+' bg-'+bg+' t-'+sky+' w-'+wx+(wind?' windy':'')+(heavy?' heavy':'')+(ground?' ground':'')+(M.on?' manual':'')+(!M.on&&!W?' loading':'');
   var snowy=wx==='snow'||ground;
   setBackground(bg,night?(snowy?'snow-night':'night'):(snowy?'snow':'day'));
   var grey=['cloudy','rain','drizzle','storm','snow','fog'].indexOf(wx)>=0;
@@ -674,6 +682,60 @@ var Wind=(function(){
   function loop(now){step(now);requestAnimationFrame(loop);}
   requestAnimationFrame(loop);
   setInterval(function(){var n=performance.now();if(n-lastFrame>200)step(n);},60);   // fallback when rAF is throttled
+  return {step:step};
+})();
+// calm days (teacher 11/18, picked all 4): birds (GPT bird-1..3, day), a breeze with a few falling leaves (day/evening),
+// and at night a shooting star now and then plus an airplane with blinking lights. Two canvases: sky (behind the buildings)
+// and front (leaves, over the scene). Only on clear / partly cloudy, paused with "motion off" or a hidden tab.
+var Calm=(function(){
+  function mkCv(host){var c=document.createElement('canvas');c.style.cssText='position:absolute;inset:0;width:100%;height:100%';$(host).appendChild(c);return c;}
+  var sky=mkCv('calmSky'),fr=mkCv('calmFront'),sx=sky.getContext('2d'),fx=fr.getContext('2d'),W0=0,H0=0,dpr=1;
+  var BIRD=[1,2,3].map(function(n){var im=new Image();im.src=IMG+'bird-'+n+'.png';return im;});
+  var LEAF=[1,2,3,4,5].map(function(n){var im=new Image();im.src=IMG+'leaf-'+n+'.png';return im;});
+  var flocks=[],leaves=[],meteors=[],planes=[],tB=2,tL=1,tM=3,tP=6,last=0,lastFrame=0;
+  function rnd(a,b){return a+Math.random()*(b-a);}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,1.5);W0=sky.clientWidth;H0=sky.clientHeight;[sky,fr].forEach(function(c){c.width=Math.round(W0*dpr);c.height=Math.round(H0*dpr);});}
+  window.addEventListener('resize',size);
+  function flock(){var dir=Math.random()<.5?1:-1,n=((Math.random()*5)|0)+3,y=rnd(.08,.3)*H0,sp=rnd(.05,.08)*W0,sz=rnd(.025,.04)*H0,b=[];
+    for(var i=0;i<n;i++){var row=Math.ceil(i/2),side=i%2?1:-1;   // loose V
+      b.push({dx:-dir*row*sz*rnd(1.4,2),dy:side*row*sz*rnd(.7,1.1)+rnd(-.3,.3)*sz,ph:rnd(0,6.28),fs:rnd(7,10),s:sz*rnd(.85,1.1),bob:rnd(0,6.28)});}
+    flocks.push({x:dir>0?-.1*W0:1.1*W0,y:y,dir:dir,sp:sp,b:b,t:0});}
+  function drawBird(x,y,s,frame,dir){var im=BIRD[frame];
+    if(im.complete&&im.naturalWidth){var h=s*im.naturalHeight/im.naturalWidth;sx.save();sx.translate(x,y);if(dir<0)sx.scale(-1,1);sx.drawImage(im,-s/2,-h/2,s,h);sx.restore();return;}
+    var w=[-.5,0,.45][frame]*s;sx.strokeStyle='rgba(40,45,60,.85)';sx.lineWidth=Math.max(1.5,s*.08);sx.beginPath();   // fallback: drawn gull "v"
+    sx.moveTo(x-s/2,y-w*.6);sx.quadraticCurveTo(x-s/4,y-w,x,y);sx.quadraticCurveTo(x+s/4,y-w,x+s/2,y-w*.6);sx.stroke();}
+  function step(now){
+    var st=$('stage'),c=st.className,calm=/\bw-(clear|partly)\b/.test(c)&&!/\bloading\b/.test(c),night=/\bt-night\b/.test(c),
+        on=calm&&!st.classList.contains('motion-off')&&!document.hidden;
+    var dt=Math.min(.05,(now-(last||now))/1000);last=now;lastFrame=now;
+    if(!W0||sky.clientWidth!==W0)size();
+    [sx,fx].forEach(function(x){x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W0,H0);});
+    if(!on){flocks=[];leaves=[];meteors=[];planes=[];return;}
+    var t=now/1000;
+    if(!night&&t>tB){flock();tB=t+rnd(9,16);}
+    if(!night&&!/\bground\b/.test(c)&&t>tL){var k=Math.random()<.35?2:1;while(k--)leaves.push({x:rnd(-.05,.7)*W0,y:-20,vx:rnd(25,55),vy:rnd(28,45),rot:rnd(0,6.28),spin:rnd(-2,2),flip:rnd(0,6.28),fs:rnd(2,4),sw:rnd(0,6.28),s:rnd(.03,.045)*H0,im:LEAF[(Math.random()*5)|0]});tL=t+rnd(2.5,5);}
+    if(night&&t>tM){meteors.push({x:rnd(.15,.85)*W0,y:rnd(.03,.2)*H0,a:rnd(.45,.7)*(Math.random()<.5?1:-1),L:rnd(.12,.2)*W0,t:0,d:rnd(.7,1)});tM=t+rnd(6,12);}
+    if(night&&t>tP&&!planes.length){var pd=Math.random()<.5?1:-1;planes.push({x:pd>0?-20:W0+20,y:rnd(.06,.22)*H0,dir:pd,sp:rnd(.025,.035)*W0});tP=t+rnd(20,35);}
+    if(!night){meteors=[];planes=[];}
+    flocks=flocks.filter(function(f){f.x+=f.dir*f.sp*dt;f.t+=dt;var out=f.dir>0?f.x>1.25*W0:f.x<-.25*W0;if(out)return false;
+      f.b.forEach(function(b){b.ph+=b.fs*dt;var cyc=[0,1,2,1][((b.ph/1.57)|0)%4];drawBird(f.x+b.dx,f.y+b.dy+Math.sin(f.t*1.5+b.bob)*b.s*.25,b.s,cyc,f.dir);});return true;});
+    meteors=meteors.filter(function(m){m.t+=dt/m.d;if(m.t>=1)return false;var ca=Math.cos(m.a),sa=Math.abs(Math.sin(m.a)),dir=m.a>0?1:-1,
+        hx=m.x+dir*ca*m.L*m.t*1.6,hy=m.y+sa*m.L*m.t*1.6,len=m.L*.5*Math.sin(Math.PI*Math.min(1,m.t*1.3)),tx=hx-dir*ca*len,ty=hy-sa*len,al=Math.sin(Math.PI*m.t);
+      var g=sx.createLinearGradient(tx,ty,hx,hy);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(255,255,240,'+(.95*al).toFixed(3)+')');
+      sx.strokeStyle=g;sx.lineWidth=2.2;sx.lineCap='round';sx.beginPath();sx.moveTo(tx,ty);sx.lineTo(hx,hy);sx.stroke();
+      sx.fillStyle='rgba(255,255,240,'+al.toFixed(3)+')';sx.beginPath();sx.arc(hx,hy,2.2,0,6.28);sx.fill();return true;});
+    planes=planes.filter(function(p){p.x+=p.dir*p.sp*dt;if(p.dir>0?p.x>W0+30:p.x<-30)return false;
+      sx.fillStyle='rgba(255,255,255,.85)';sx.beginPath();sx.arc(p.x,p.y,1.6,0,6.28);sx.fill();                        // steady white light
+      if((t%1.2)<.5){sx.fillStyle='rgba(255,60,60,.95)';sx.beginPath();sx.arc(p.x-p.dir*7,p.y+1,2.2,0,6.28);sx.fill();}   // red blink
+      if((t%1.6)<.08){sx.fillStyle='rgba(255,255,255,1)';sx.beginPath();sx.arc(p.x+p.dir*5,p.y,3,0,6.28);sx.fill();}       // white strobe
+      return true;});
+    leaves=leaves.filter(function(l){l.sw+=dt*1.6;l.x+=(l.vx+Math.sin(l.sw)*30)*dt;l.y+=(l.vy+Math.cos(l.sw*1.3)*12)*dt;l.rot+=l.spin*dt;l.flip+=l.fs*dt;
+      if(l.y>H0+30||l.x>W0+40)return false;if(!l.im.complete||!l.im.naturalWidth)return true;var h=l.s*l.im.naturalHeight/l.im.naturalWidth;
+      fx.save();fx.globalAlpha=night?.6:1;fx.translate(l.x,l.y);fx.rotate(l.rot);fx.scale(Math.cos(l.flip),1);fx.drawImage(l.im,-l.s/2,-h/2,l.s,h);fx.restore();return true;});
+  }
+  function loop(now){step(now);requestAnimationFrame(loop);}
+  requestAnimationFrame(loop);
+  setInterval(function(){var n=performance.now();if(n-lastFrame>200)step(n);},60);
   return {step:step};
 })();
 // lightning: the bolt shape and place change at every flash cycle
