@@ -488,7 +488,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
     <div class="rstage" id="rstage"></div>
     <div class="scale3" id="scale3"></div>
     <div class="bar2" style="justify-content:center"><button class="cdbtn" id="cdR" type="button">🕒 3… 2… 1… הַרְאוּ אֶצְבָּעוֹת!</button><button class="btn" id="prevR" type="button">▶ הַקּוֹדֵם</button><button class="btn primary big" id="nextR" type="button">הַמַּאֲכָל הַבָּא ◀</button><button class="btn ghost" id="rClr" type="button">↺ מַתְחִילִים מֵחָדָשׁ</button></div>
-    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.17-and-2.18-taste-scale.pdf" target="_blank" rel="noopener">📄 מָה טָעִים לִי? (דַּף לְבַד)</a></div>
+    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.17-and-2.18-taste-scale.pdf" data-board="Olam-street-2.17-and-2.18-taste-scale.html" target="_blank" rel="noopener">📄 מָה טָעִים לִי? (דַּף לְבַד)</a></div>
     <details class="tnote" open><summary>📝 מהלך קצר</summary><p>קוֹדֶם כֹּל הַתַּלְמִידִים מְמַלְּאִים לְבַד אֶת הַסַּרְגֵּל בַּחוֹבֶרֶת (עַמּוּד 13, הַתָּיבָה הַצְּהֻבָּה לְמַעְלָה). אַחַר כָּךְ סֶקֶר הַכִּתָּה — מַאֲכָל אֶחָד בְּכָל פַּעַם. סוֹפְרִים "3… 2… 1… הַרְאוּ אֶצְבָּעוֹת!" — כָּל תַּלְמִיד מַרְאֶה 1, 2 אוֹ 3 אֶצְבָּעוֹת (3 = טָעִים מְאוֹד, 2 = טָעִים, 1 = לֹא טָעִים). הַמּוֹרֶה סוֹפֵר בְּעֵרֶךְ וְלוֹחֵץ + / − (אוֹ לוֹחֵץ עַל הַיָּד). הַתּוֹצָאוֹת נִשְׁמָרוֹת בַּמַּחְשֵׁב הַזֶּה. אֵין הַדְפָּסָה בַּחֵלֶק הַזֶּה. אִם חֲסַר זְמַן — מְדַרְגִּים רַק 5 מַאֲכָלִים.</p></details>
   </section>
 
@@ -499,7 +499,7 @@ td.ans .cell .who{opacity:.85; outline:2px dashed #fff; outline-offset:-4px}
     <div class="podium" id="podium"></div>
     <div class="sumF" id="rankMsg" style="max-width:700px">בַּכִּתָּה שֶׁלָּנוּ ___ הֲכִי טָעִים!</div>
     <div class="rlist" id="rlist"></div>
-    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.17-and-2.18-memory-cards.pdf" target="_blank" rel="noopener">📄 מִשְׂחַק זִכָּרוֹן לִגְזִירָה</a></div>
+    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.17-and-2.18-memory-cards.pdf" data-board="Olam-street-2.17-and-2.18-memory-cards.html" target="_blank" rel="noopener">📄 מִשְׂחַק זִכָּרוֹן לִגְזִירָה</a></div>
     <details class="tnote"><summary>📝 עֲבוֹדָה עַצְמִית</summary><p>"מָה טָעִים לִי?" — כָּל תַּלְמִיד מַקִּיף 1, 2 אוֹ 3 וְכוֹתֵב 2 מִשְׁפָּטִים. מִשְׂחַק זִכָּרוֹן — גּוֹזְרִים מֵרֹאשׁ, סֶט לְכָל זוּג.</p></details>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>אַחֲרֵי שֶׁדֵּרַגְנוּ אֶת הַמַּאֲכָלִים, לוֹחֲצִים "מָה הֲכִי טָעִים בַּכִּתָּה?" — הַמַּאֲכָלִים מְדֻרָּגִים לְפִי הַמְּמֻצָּע וְשְׁלוֹשֶׁת הָרִאשׁוֹנִים עוֹלִים לַפּוֹדְיוּם. הַכִּתָּה אוֹמֶרֶת יַחַד: "בַּכִּתָּה שֶׁלָּנוּ ___ הֲכִי טָעִים!"</p></details>
   </section>
@@ -685,6 +685,7 @@ $('tClr').onclick = () => { ta.value = ''; $('tShow').hidden = true; };
 })();
 </script>
 <script>function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}setNavH();window.addEventListener('resize',setNavH);</script>
+<script src="../shared/board-view.js?v=1"></script>
 <script src="../shared/section-focus.js?v=5"></script>
 <script src="../shared/warmup-link.js"></script>
 </body>

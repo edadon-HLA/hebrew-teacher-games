@@ -789,7 +789,7 @@ button.t2-it:hover{border-color:var(--sky)}
     <div class="s27-sent hid" id="gSent"></div>
     <div class="s9-four" id="gFour"></div>
     <div class="bar2" style="justify-content:center;margin-top:12px"><button class="btn primary big" id="gEar" type="button">🔊 שׁוֹמְעִים</button><button class="cdbtn" id="gCd" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn primary" id="gRev" type="button">👁 הַצִּיגוּ</button><button class="btn" id="gNext" type="button">הַבָּא ◀</button><button class="btn ghost" id="gMix" type="button">🔀 עִרְבּוּב</button><a class="rc" href="Olam-street-2.19-and-2.20-number-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי מִסְפָּרִים</a></div>
-    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.27-where-sheet.pdf" target="_blank" rel="noopener">📄 לְאָן הֵם הוֹלְכִים? (2 בְּדַף)</a></div>
+    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.27-where-sheet.pdf" data-board="Olam-street-2.27-where-sheet.html" target="_blank" rel="noopener">📄 לְאָן הֵם הוֹלְכִים? (2 בְּדַף)</a></div>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>הַמַּחְשֵׁב אוֹמֵר מִשְׁפָּט (קוֹל שֶׁל בֵּן לְדָן, קוֹל שֶׁל בַּת לְקֶרֶן; אִם אֵין קוֹל בַּמַּחְשֵׁב — הַמּוֹרֶה קוֹרֵא אֶת הַמִּשְׁפָּט מִ"👁 הַצִּיגוּ"). כֻּלָּם מַרִימִים מִסְפָּר. אִם אֵין זְמַן — 5 סִבּוּבִים. דַּף "לְאָן הֵם הוֹלְכִים?" — עֲבוֹדָה עַצְמִית אַחֲרֵי הַמִּשְׂחָק.</p></details>
   </section>
 
@@ -798,7 +798,7 @@ button.t2-it:hover{border-color:var(--sky)}
     <div class="step-head"><span class="tag coral">פּוֹנִים וּמְדַבְּרִים 🗣️</span></div>
     <p class="lead">לְאָן אַתָּה הוֹלֵךְ? — בֶּן זוּג חָדָשׁ בְּכָל סִבּוּב.</p>
     <div id="talkP"></div>
-    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.27-memory-cards.pdf" target="_blank" rel="noopener">📄 מִשְׂחַק זִכָּרוֹן — מְקוֹמוֹת (לִגְזִירָה)</a></div>
+    <div class="bar2" style="justify-content:center"><a class="rc" href="Olam-street-2.27-memory-cards.pdf" data-board="Olam-street-2.27-memory-cards.html" target="_blank" rel="noopener">📄 מִשְׂחַק זִכָּרוֹן — מְקוֹמוֹת (לִגְזִירָה)</a></div>
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>בֶּן זוּג חָדָשׁ בְּכָל סִבּוּב. אֶפְשָׁר לְהוֹסִיף: "לָמָּה?" – "אֲנִי רָעֵב!"</p></details>
     <details class="tnote"><summary>📝 עֲבוֹדָה עַצְמִית</summary><p>דַּף "לְאָן הֵם הוֹלְכִים?" — מְחַבְּרִים בְּקַו. מִשְׂחַק זִכָּרוֹן — הַמּוֹרֶה גּוֹזֵר מֵרֹאשׁ, סֶט לְכָל זוּג.</p></details>
   </section>
@@ -908,6 +908,7 @@ WT.talk($('talkP'), [['א', 'לְאָן אַתָּה הוֹלֵךְ?'], ['ב', '
 })();
 </script>
 <script>function setNavH(){const n=document.querySelector('.site-nav');if(n)document.documentElement.style.setProperty('--navh',n.offsetHeight+'px');}setNavH();window.addEventListener('resize',setNavH);</script>
+<script src="../shared/board-view.js?v=1"></script>
 <script src="../shared/section-focus.js?v=5"></script>
 <script src="../shared/warmup-link.js"></script>
 </body>
