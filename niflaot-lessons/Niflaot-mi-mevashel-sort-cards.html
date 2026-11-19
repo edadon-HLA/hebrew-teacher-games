@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>הוּא אוֹ הִיא? — קְלָפִים לְמִיּוּן</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* Niflaot "מִי מְבַשֵּׁל" (Tue 11/24) independent game #2: 14 cards 60 x 40 mm, cut by the teacher in advance (no glue).
+   2 header cards הוּא / הִיא (small drawn boy / girl) + 12 verb cards in mixed order. Pages 1-2 = fronts, pages 3-4 = backs (print on the
+   back, flip on the long edge: a small boy or girl icon behind each verb card, for self-checking), page 5 = answer key. */
+.sc{position:absolute;top:8mm;left:5mm;width:180mm;display:grid;grid-template-columns:repeat(3,60mm);grid-template-rows:repeat(4,40mm);direction:ltr}
+.k{position:relative;outline:.35mm solid #6b7280;outline-offset:-.175mm;display:flex;align-items:center;justify-content:center;gap:3mm;direction:rtl;font-size:26pt;font-weight:800}
+.k .set{position:absolute;top:1.5mm;right:2.5mm;font-size:8pt;font-weight:700;color:#9aa1ad}
+.k.bk .set{right:auto;left:2.5mm}
+.k svg{width:16mm;height:16mm}.k.bk svg{width:20mm;height:20mm;opacity:.75}
+.k.hd{background:#f3f4f6}
+.lab{position:absolute;top:0;left:0;right:0;text-align:center;font-size:8.5pt;color:#888}
+.key{display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin-top:6mm}
+.key div{border:.5mm solid #1f2433;border-radius:3mm;padding:3mm 5mm}
+.key h2{margin:0 0 2mm;display:flex;align-items:center;gap:3mm;font-size:22pt}.key h2 svg{width:14mm;height:14mm}
+.key p{margin:1.5mm 0;font-size:20pt;font-weight:800}
+</style>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+/* small drawn boy / girl (no text) */
+const BOY = '<svg viewBox="0 0 40 40"><rect x="10" y="26" width="20" height="14" rx="5" fill="#3b82f6"/><circle cx="20" cy="17" r="10" fill="#f2c4a0" stroke="#2b2a3a" stroke-width="1.2"/><path d="M10 15 Q20 3 30 15 Q25 10 20 11 Q15 10 10 15Z" fill="#5a3416"/><circle cx="16.5" cy="17" r="1.3" fill="#2b2a3a"/><circle cx="23.5" cy="17" r="1.3" fill="#2b2a3a"/><path d="M16.5 21.5 Q20 24 23.5 21.5" stroke="#c0392b" stroke-width="1.2" fill="none"/></svg>';
+const GIRL = '<svg viewBox="0 0 40 40"><rect x="10" y="26" width="20" height="14" rx="5" fill="#ec4899"/><circle cx="8.5" cy="18" r="4.5" fill="#8a4b1c"/><circle cx="31.5" cy="18" r="4.5" fill="#8a4b1c"/><circle cx="20" cy="17" r="10" fill="#f2c4a0" stroke="#2b2a3a" stroke-width="1.2"/><path d="M10 16 Q20 1 30 16 Q24 9 20 10 Q16 9 10 16Z" fill="#8a4b1c"/><circle cx="16.5" cy="17" r="1.3" fill="#2b2a3a"/><circle cx="23.5" cy="17" r="1.3" fill="#2b2a3a"/><path d="M16.5 21.5 Q20 24 23.5 21.5" stroke="#c0392b" stroke-width="1.2" fill="none"/></svg>';
+const VERBS = [['מְבַשֵּׁל', 'm'], ['מְבַשֶּׁלֶת', 'f'], ['מְסַדֵּר', 'm'], ['מְסַדֶּרֶת', 'f'], ['מְבַקֵּשׁ', 'm'], ['מְבַקֶּשֶׁת', 'f'],
+  ['מְצַלֵּם', 'm'], ['מְצַלֶּמֶת', 'f'], ['מְצַיֵּר', 'm'], ['מְצַיֶּרֶת', 'f'], ['מְדַבֵּר', 'm'], ['מְדַבֶּרֶת', 'f']];
+const MIX = [6, 3, 10, 1, 8, 5, 0, 11, 4, 9, 2, 7].map(i => VERBS[i]);   /* fixed mixed order */
+const CARDS = [{ t: 'הוּא', g: 'm', hd: 1 }, { t: 'הִיא', g: 'f', hd: 1 }, ...MIX.map(([t, g]) => ({ t, g }))];
+const SET = 'מְבַשֵּׁל';
+const pos = (i, back) => `grid-row:${Math.floor(i / 3) + 1};grid-column:${back ? 3 - (i % 3) : (i % 3) + 1}`;
+const front = cs => `<div class="sc">${cs.map((c, i) => `<div class="k${c.hd ? ' hd' : ''}" style="${pos(i)}">${c.hd ? (c.g === 'm' ? BOY : GIRL) : ''}<span>${c.t}</span><span class="set">${SET}</span></div>`).join('')}</div>`;
+const back = cs => `<div class="sc">${cs.map((c, i) => `<div class="k bk" style="${pos(i, true)}">${c.hd ? '' : (c.g === 'm' ? BOY : GIRL)}<span class="set">${SET}</span></div>`).join('')}</div>`;
+const p1 = CARDS.slice(0, 12), p2 = CARDS.slice(12);
+const L = t => `<div class="lab">${t}</div>`;
+document.getElementById('pages').innerHTML =
+  PI.page(L('הוּא אוֹ הִיא? · 1 · גּוֹזְרִים לְאֹרֶךְ הַקַּוִּים · Cut on the lines') + front(p1), 'abs') +
+  PI.page(L('הוּא אוֹ הִיא? · 2') + front(p2), 'abs') +
+  PI.page(L('Back of page 1 — print on the back, flip on the long edge') + back(p1), 'abs') +
+  PI.page(L('Back of page 2') + back(p2), 'abs') +
+  PI.page(`${PI.top('הוּא אוֹ הִיא?', { tag: 'Answer key', name: false })}
+    <div class="key"><div><h2>${BOY} הוּא</h2>${VERBS.filter(v => v[1] === 'm').map(v => `<p>${v[0]}</p>`).join('')}</div>
+    <div><h2>${GIRL} הִיא</h2>${VERBS.filter(v => v[1] === 'f').map(v => `<p>${v[0]}</p>`).join('')}</div></div>`);
+</script>
+</body>
+</html>

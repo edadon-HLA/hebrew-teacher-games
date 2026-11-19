@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מִי עוֹשֶׂה מָה? — מְחַבְּרִים</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/print-ind.css?v=1">
+<style>
+/* Niflaot "מִי מְבַשֵּׁל" (Tue 11/24) independent worksheet #1: draw lines person -> what he / she does (הוּא / הִיא form), then one line
+   about home. 2 per page (no glue); p2 = answer key (example lines: any line where הוּא / הִיא fits is correct). */
+.mt{display:grid;grid-template-columns:28mm 1fr 62mm;flex:1;min-height:0;padding:0 6mm}
+.col{display:grid;grid-template-rows:repeat(6,minmax(0,1fr));gap:1.4mm}
+.p,.q{position:relative;display:flex;align-items:center;border:.5mm solid #1f2433;border-radius:2.5mm;font-weight:800}
+.p{justify-content:center;font-size:17pt}
+.q{justify-content:center;font-size:15pt;padding:0 2mm}
+.dot{position:absolute;top:50%;width:3.2mm;height:3.2mm;margin-top:-1.6mm;border-radius:50%;background:#1f2433}
+.p .dot{left:-5mm}.q .dot{right:-5mm}
+.home{font-size:14pt;font-weight:800;margin-top:2mm;display:flex;gap:2mm;align-items:flex-end;flex-wrap:wrap}
+.home i{display:inline-block;width:38mm;border-bottom:.4mm solid #1f2433;height:7mm}
+.home span.c{border:.4mm solid #9aa1ad;border-radius:2mm;padding:0 1.5mm}
+.ex .home i{border-bottom-color:#2456a6}
+</style>
+<script src="../shared/print-ind.js?v=1"></script>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+const PEOPLE = ['אַבָּא', 'שִׁיר', 'נוֹעַם', 'אִמָּא', 'יוֹנָתָן', 'מִיָּה'];
+const DOES = ['מְבַקֶּשֶׁת עַגְבָנִיּוֹת.', 'מְבַשֵּׁל פַּסְטָה.', 'מְסַדֶּרֶת כּוֹסוֹת.', 'מְבַקֵּשׁ עַגְבָנִיּוֹת.', 'מְבַשֶּׁלֶת מָרָק.', 'מְסַדֵּר צַלָּחוֹת.'];
+/* example key (spec): אַבָּא–מְבַשֵּׁל פַּסְטָה · שִׁיר–מְסַדֶּרֶת כּוֹסוֹת · נוֹעַם–מְבַקֵּשׁ עַגְבָנִיּוֹת · אִמָּא–מְבַשֶּׁלֶת מָרָק · יוֹנָתָן–מְסַדֵּר צַלָּחוֹת · מִיָּה–מְבַקֶּשֶׁת עַגְבָנִיּוֹת */
+const KEY = [1, 2, 3, 4, 5, 0];
+const half = ex => `${PI.top('מִי עוֹשֶׂה מָה?', { tag: ex ? 'Answer key' : '' })}
+  ${PI.ins(0, 'חַבְּרוּ בְּקַו: מִי — מָה הוּא עוֹשֶׂה / מָה הִיא עוֹשָׂה.')}
+  <div class="mt${ex ? ' ex' : ''}"><div class="col">${PEOPLE.map((w, i) => `<div class="p" data-k="${KEY[i]}">${w}<span class="dot"></span></div>`).join('')}</div><div></div>
+  <div class="col">${DOES.map((w, i) => `<div class="q" data-i="${i}">${w}<span class="dot"></span></div>`).join('')}</div></div>
+  <div class="home">מִי מְבַשֵּׁל בַּבַּיִת שֶׁלְּךָ? <i></i> <span class="c">מְבַשֵּׁל</span> / <span class="c">מְבַשֶּׁלֶת</span>.</div>
+  ${ex ? '<div class="pi-key" dir="ltr"><p>Any line where he / she fits is correct: boys (אַבָּא, נוֹעַם, יוֹנָתָן) → מְבַשֵּׁל / מְבַקֵּשׁ / מְסַדֵּר; girls (שִׁיר, אִמָּא, מִיָּה) → מְבַשֶּׁלֶת / מְבַקֶּשֶׁת / מְסַדֶּרֶת.</p></div>' : ''}`;
+document.getElementById('pages').innerHTML = PI.halves(half(false)) + PI.halves(half(true), '');
+PI.ready(() => document.querySelectorAll('.mt.ex').forEach(m => { const pg = m.closest('.pg');
+  PI.connect(pg, [...m.querySelectorAll('.p')].map(p => [p.querySelector('.dot'), m.querySelector(`.q[data-i="${p.dataset.k}"] .dot`)])); }));
+</script>
+</body>
+</html>
