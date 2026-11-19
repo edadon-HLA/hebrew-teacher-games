@@ -727,7 +727,7 @@ button.t2-it:hover{border-color:var(--sky)}
   <nav class="steps" aria-label="שלבי השיעור">
     <ol>
       <li><a href="#s0" data-c="coral"><b>0</b>תַּפְזֹרֶת</a></li>
-      <li><a href="#s1" data-c="sky"><b>1</b>מְסַפְּרִים אֶת הַסִּפּוּר</a></li>
+      <li><a href="#s1" data-c="sky"><b>1</b>מָה אַתָּה אוֹהֵב?</a></li>
       <li><a href="#s2" data-c="gold"><b>2</b>מִלִּים חֲדָשׁוֹת</a></li>
       <li><a href="#s3" data-c="gold"><b>3</b>2.27 הַאֲזָנָה</a></li>
       <li><a href="#s4" data-c="green"><b>4</b>מִי הוֹלֵךְ לְאָן?</a></li>
@@ -746,13 +746,13 @@ button.t2-it:hover{border-color:var(--sky)}
     <details class="tnote"><summary>📝 מהלך קצר</summary><p>מְחַלְּקִים אֶת הַתַּפְזֹרֶת בַּכְּנִיסָה לַכִּתָּה; כָּל תַּלְמִיד מַקִּיף לְבַד (2–3 דַּקּוֹת). בּוֹדְקִים יַחַד: "🔍 הַצִּיגוּ" מַדְלִיק מִלָּה אַחַת בְּכָל פַּעַם. הַמִּלִּים כְּתוּבוֹת מִיָּמִין לִשְׂמֹאל ⬅ אוֹ מִלְמַעְלָה לְמַטָּה ⬇.</p></details>
   </section>
 
-  <!-- ===== 1 warm-up B: retell the comic (2.14 part 4) ===== -->
+  <!-- ===== 1 warm-up B: talk about ourselves (teacher 11/19: not on the comics) ===== -->
   <section class="step" id="s1">
-    <div class="step-head"><span class="tag sky">מְחַמְּמִים · מְסַפְּרִים אֶת הַסִּפּוּר</span></div>
-    <p class="lead">בְּזוּגוֹת: שׁוֹאֲלִים וְעוֹנִים עַל הַקּוֹמִיקְס.</p>
+    <div class="step-head"><span class="tag sky">מְחַמְּמִים · מָה אַתָּה אוֹהֵב?</span></div>
+    <p class="lead">בְּזוּגוֹת: מְדַבְּרִים עַל עַצְמֵנוּ.</p>
     <div id="talkWU"></div>
-    <div class="s27-chars" id="wuChars"></div>
-    <details class="tnote"><summary>📝 מהלך קצר</summary><p>חִמּוּם B מִשִּׁעוּר 2.14 חֵלֶק 4 (לֹא מֵהַשִּׁעוּר הַקּוֹדֵם). בְּזוּגוֹת: א שׁוֹאֵל עַל דְּמוּת, ב עוֹנֶה לְפִי הַתְּמוּנוֹת, וּמַחֲלִיפִים. בַּסּוֹף כָּל אֶחָד אוֹמֵר מָה מִתְחַשֵּׁק לוֹ.</p></details>
+    <details class="tnote"><summary>📝 מהלך קצר</summary><p>חִמּוּם B מִשִּׁעוּרִים 2.5–2.6 וְ-2.14 (לֹא מֵהַשִּׁעוּר הַקּוֹדֵם). בְּזוּגוֹת מְדַבְּרִים עַל עַצְמֵנוּ: מָה אֲנִי אוֹהֵב לֶאֱכוֹל, וּמָה בֶּן הַזּוּג אוֹהֵב. 2 סִבּוּבִים שֶׁל 2 דַּקּוֹת, בֶּן זוּג חָדָשׁ בְּכָל סִבּוּב.</p>
+      <p dir="ltr" style="text-align:left;font-size:13px">Photos: salad, pasta – the site's photos (pasta: Wikimedia Commons "Spaghetti prepared", public domain) · Wikimedia Commons: Pizza Margherita – Valerio Capello, CC BY-SA 3.0 · Tuna can – Wikimedia Commons user, CC BY-SA 3.0 · dark chocolate (Malagos) – Hariboneagle927, CC BY-SA 4.0 · cheese cubes – Christian Bauer, CC BY 2.0 · Mango on white – Rhododendrites, CC BY-SA 4.0 · Avocado halves – HaJunkiyada (Liat Portal for Foodie Disorder), CC BY-SA 4.0</p></details>
   </section>
 
   <!-- ===== 2 new words: the 8 places ===== -->
@@ -817,6 +817,7 @@ button.t2-it:hover{border-color:var(--sky)}
 <script src="../games/comic-art.js"></script>
 <script src="olam-2.14-data.js?v=1"></script>
 <script src="olam-2.27-data.js?v=1"></script>
+<script src="olam-2.25-data.js?v=1"></script>
 <script src="../shared/warmup-talk.js"></script>
 <script>
 (() => {
@@ -852,11 +853,9 @@ $('wsNext').onclick = () => { if (wsI >= D.WORDS.length) return; wsShow(wsI); ws
 $('wsAll').onclick = () => { D.WORDS.forEach((w, i) => { D.cellsOf(w).forEach(([r, c]) => { wsAt(r, c).classList.remove('on'); wsAt(r, c).classList.add('was'); }); $('wsWords').children[i].classList.add('found'); }); wsI = D.WORDS.length; $('wsNext').disabled = true; tone(true); };
 $('wsClr').onclick = () => { wsCells.forEach(d => d.className = ''); [...$('wsWords').children].forEach(s => s.classList.remove('found')); wsI = 0; $('wsNext').disabled = false; };
 
-/* ---------- 1. warm-up B: retell the comic (WT.talk 2 x 2:00) + the 3 characters with their foods (2.14 art) ---------- */
-WT.talk($('talkWU'), [['א', 'מָה קֶרֶן אוֹהֶבֶת?'], ['ב', 'קֶרֶן אוֹהֶבֶת ___.'], ['א', 'מָה דָּן מַעֲדִיף?'], ['ב', 'דָּן מַעֲדִיף ___.'], ['א', 'וְאַתָּה? מָה מִתְחַשֵּׁק לְךָ?'], ['ב', 'מִתְחַשֵּׁק לִי ___.']], { n: 2, sec: 120 });
-const CH = [['keren', 'קֶרֶן', [['pasta', 'פַּסְטָה'], ['lavan', 'שׁוֹקוֹלָד לָבָן'], ['mango', 'מַנְגּוֹ']]], ['dan', 'דָּן', [['pizza', 'פִּיצָה'], ['cheese', 'גְּבִינָה'], ['marir', 'שׁוֹקוֹלָד מָרִיר']]],
-  ['roni', 'רוֹנִי', [['pizza', 'פִּיצָה'], ['tuna', 'טוּנָה'], ['chocolate', 'שׁוֹקוֹלָד']]]];
-$('wuChars').innerHTML = CH.map(([k, he, fs]) => `<div><div class="fc">${face(k)}</div><b>${he}</b><div class="foods">${fs.map(([a, w]) => `<span>${(L && L.ART[a]) || ''}${w}</span>`).join('')}</div></div>`).join('');
+/* ---------- 1. warm-up B: מָה אַתָּה אוֹהֵב? (teacher 11/19: talk about ourselves, not the comics; WT.talk 2 x 2:00, the 8 food photos of the 2.25 survey) ---------- */
+WT.talk($('talkWU'), [['א', 'מָה אַתָּה אוֹהֵב לֶאֱכוֹל?'], ['ב', 'אֲנִי אוֹהֵב לֶאֱכוֹל ___. וְאַתָּה?'], ['א', 'אֲנִי אוֹהֵב לֶאֱכוֹל ___.'], ['א + ב', 'גַּם וְגַם: ___!']],
+  { photos: (window.OLAM225 ? OLAM225.FOODS : []).map(f => [f.he, f.img]), n: 2, sec: 120 });
 
 /* ---------- 2. new words: the 8 places (workbook p.21 pictures) ---------- */
 let ni = 0;
