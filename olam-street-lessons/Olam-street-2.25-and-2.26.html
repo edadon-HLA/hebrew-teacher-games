@@ -645,6 +645,14 @@ button.t2-it:hover{border-color:var(--sky)}
 .s25-food .cnt b{font:800 56px var(--f-display);min-width:80px}
 .s25-food .cnt button{font:800 30px var(--f-display);width:56px;height:56px;border-radius:50%;border:3px solid var(--line);background:#fff;cursor:pointer}
 .s25-food small{display:block;font:700 16px var(--f-he);color:var(--muted)}
+.s25-cnt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:980px;margin:0 auto}
+.s25-cnt>div{background:var(--surface);border:3px solid var(--line);border-radius:18px;padding:6px;text-align:center}
+.s25-cnt img{width:100%;height:84px;object-fit:cover;border-radius:12px;display:block}
+.s25-cnt b{display:block;font:800 22px var(--f-he)}
+.s25-cnt .row{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:4px}
+.s25-cnt .row button{font:800 24px var(--f-display);width:42px;height:42px;border-radius:50%;border:3px solid var(--line);background:#fff;cursor:pointer}
+.s25-cnt .row input{width:64px;font:800 28px var(--f-display);text-align:center;border:3px solid var(--line);border-radius:10px;padding:2px}
+@media(max-width:700px){.s25-cnt{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .s25-chart{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;align-items:end;height:clamp(300px,46vh,440px);max-width:980px;margin:14px auto 0;padding:10px;background:var(--surface);border:3px solid var(--line);border-radius:22px}
 .s25-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px;min-width:0}
 .s25-col .bar{width:70%;background:var(--sky);border-radius:10px 10px 0 0;min-height:4px;transition:height .5s}
@@ -727,15 +735,13 @@ button.t2-it:hover{border-color:var(--sky)}
       <div id="talkSV"></div>
     </div>
     <div class="sf-part">
-      <p class="lead">סוֹפְרִים יַחַד: כָּל אֶחָד מַרִים ✔ (כֵּן) אוֹ ✘ (לֹא) — עַל עַצְמוֹ.</p>
-      <div class="s25-n"><label for="svN">כַּמָּה תַּלְמִידִים בַּכִּתָּה?</label><input id="svN" type="number" min="1" max="40" value="20"></div>
-      <div class="rounds" id="roundsC"></div>
-      <div class="s25-food" id="svFood"></div>
-      <div class="bar2" style="justify-content:center"><button class="cdbtn" id="svCd" type="button">🕒 3… 2… 1… הָרִימוּ!</button><button class="btn" id="svPrev" type="button">▶ הַקּוֹדֵם</button><button class="btn primary" id="svNext" type="button">הַבָּא ◀</button><a class="rc" href="Olam-street-2.14-response-cards.pdf" target="_blank" rel="noopener">📄 כַּרְטִיסֵי ✔ / ✘</a></div>
+      <p class="lead">כַּמָּה תַּלְמִידִים אָמְרוּ "כֵּן"? הַמּוֹרֶה מַקְלִיד לְכָל מַאֲכָל.</p>
+      <div class="s25-n"><label for="svN">כַּמָּה תַּלְמִידִים בַּכִּתָּה?</label><input id="svN" type="number" min="1" max="20" value="20"></div>
+      <div class="s25-cnt" id="svCount"></div>
       <div class="s25-chart" id="svChart"></div>
       <div class="bar2" style="justify-content:center"><button class="btn primary big" id="svFav" type="button">מָה יָצָא?</button><button class="btn ghost" id="svReset" type="button">↺ סֶקֶר חָדָשׁ</button></div>
       <div class="s25-out" id="svOut"></div>
-      <details class="tnote"><summary>📝 מהלך קצר</summary><p>קֹדֶם עֲבוֹדָה בַּחוֹבֶרֶת (4 חֲבֵרִים), אַחַר כָּךְ סוֹפְרִים יַחַד: כָּל אֶחָד מַרִים ✔ (כֵּן) אוֹ ✘ (לֹא) עַל עַצְמוֹ, וְהַמּוֹרֶה סוֹפֵר אֶת ה-✔.</p>
+      <details class="tnote"><summary>📝 מהלך קצר</summary><p>קֹדֶם עֲבוֹדָה בַּחוֹבֶרֶת (4 חֲבֵרִים), אַחַר כָּךְ הַמּוֹרֶה מַקְלִיד כַּמָּה תַּלְמִידִים אָמְרוּ "כֵּן" עַל כָּל מַאֲכָל.</p>
         <p dir="ltr" style="text-align:left;font-size:13px">Photos: salad, pasta – the site's photos (pasta: Wikimedia Commons "Spaghetti prepared", public domain) · Wikimedia Commons: Pizza Margherita – Valerio Capello, CC BY-SA 3.0 · Tuna can – Wikimedia Commons user, CC BY-SA 3.0 · dark chocolate (Malagos) – Hariboneagle927, CC BY-SA 4.0 · cheese cubes – Christian Bauer, CC BY 2.0 · Mango on white – Rhododendrites, CC BY-SA 4.0 · Avocado halves – HaJunkiyada (Liat Portal for Foodie Disorder), CC BY-SA 4.0</p></details>
     </div>
   </section>
@@ -871,22 +877,24 @@ const KEY = 'olam-2.25-survey';
 let SV = { n: 20, c: FOODS.map(() => 0) };
 try { const s = JSON.parse(sessionStorage.getItem(KEY) || 'null'); if (s && s.c && s.c.length === FOODS.length) SV = s; } catch (e) {}
 const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(SV)); } catch (e) {} };
+/* teacher's count screen (teacher 11/19: no card raising): all 8 foods, +/− or typing, 0-20 each, class size up to 20 (default 20) */
+const MAXN = 20, clampN = v => Math.max(1, Math.min(MAXN, Math.round(+v) || MAXN));
+SV.n = clampN(SV.n); SV.c = SV.c.map(v => Math.max(0, Math.min(SV.n, +v || 0)));
 $('svN').value = SV.n;
-$('svN').oninput = () => { SV.n = Math.max(1, Math.min(40, +$('svN').value || 1)); SV.c = SV.c.map(v => Math.min(v, SV.n)); save(); showFood(); drawChart(); };
-let fiC = 0;
-function showFood(){ const f = FOODS[fiC]; rounds('roundsC', FOODS.length, fiC);
-  $('svFood').innerHTML = `<img src="${f.img}" alt="${f.he}"><div class="side"><div class="w">${f.he}</div><small>כַּמָּה ✔ (כֵּן)?</small><div class="cnt"><button type="button" data-d="-1" aria-label="פחות אחד">−</button><b>${SV.c[fiC]}</b><button type="button" data-d="1" aria-label="ועוד אחד">+</button></div><small>מִתּוֹךְ ${SV.n}</small></div>`;
-  $('svFood').querySelectorAll('[data-d]').forEach(b => b.onclick = () => { SV.c[fiC] = Math.max(0, Math.min(SV.n, SV.c[fiC] + +b.dataset.d)); save(); tone(true, 600 + SV.c[fiC] * 10); showFood(); drawChart(); }); }
-function drawChart(win){ const mx = Math.max(SV.n, 1);
-  $('svChart').innerHTML = FOODS.map((f, i) => `<div class="s25-col${win && win.includes(i) ? ' top' : ''}${i === fiC ? ' hit' : ''}"><span class="v">${SV.c[i]}</span><div class="bar" style="height:${Math.round(SV.c[i] / mx * 62)}%"></div><img src="${f.img}" alt=""><b>${f.he}</b></div>`).join(''); }
-$('svCd').onclick = () => countdown(null, 'הָרִימוּ ✔ אוֹ ✘!');
-$('svNext').onclick = () => { fiC = (fiC + 1) % FOODS.length; showFood(); drawChart(); };
-$('svPrev').onclick = () => { fiC = (fiC + FOODS.length - 1) % FOODS.length; showFood(); drawChart(); };
+$('svN').onchange = () => { SV.n = clampN($('svN').value); $('svN').value = SV.n; SV.c = SV.c.map(v => Math.min(v, SV.n)); save(); drawCount(); drawChart(); };
+const setC = (i, v) => { SV.c[i] = Math.max(0, Math.min(SV.n, Math.round(+v) || 0)); save(); };
+function drawCount(){
+  $('svCount').innerHTML = FOODS.map((f, i) => `<div><img src="${f.img}" alt="${f.he}"><b>${f.he}</b><div class="row"><button type="button" data-i="${i}" data-d="-1" aria-label="פחות אחד">−</button><input type="number" min="0" max="${SV.n}" data-i="${i}" value="${SV.c[i]}"><button type="button" data-i="${i}" data-d="1" aria-label="ועוד אחד">+</button></div></div>`).join('');
+  $('svCount').querySelectorAll('[data-d]').forEach(b => b.onclick = () => { const i = +b.dataset.i; setC(i, SV.c[i] + +b.dataset.d); $('svCount').querySelector(`input[data-i="${i}"]`).value = SV.c[i]; tone(true, 600 + SV.c[i] * 10); drawChart(); });
+  $('svCount').querySelectorAll('input').forEach(inp => inp.onchange = () => { const i = +inp.dataset.i; setC(i, inp.value); inp.value = SV.c[i]; drawChart(); });
+}
+function drawChart(win){   /* y-axis scaled to 20 */
+  $('svChart').innerHTML = FOODS.map((f, i) => `<div class="s25-col${win && win.includes(i) ? ' top' : ''}"><span class="v">${SV.c[i]}</span><div class="bar" style="height:${Math.round(SV.c[i] / MAXN * 62)}%"></div><img src="${f.img}" alt=""><b>${f.he}</b></div>`).join(''); }
 const tops = () => { const mx = Math.max(...SV.c); return mx ? SV.c.map((v, i) => v === mx ? i : -1).filter(i => i >= 0) : []; };
 $('svFav').onclick = () => { const w = tops(); if (!w.length){ $('svOut').textContent = 'כַּמָּה? — סוֹפְרִים קֹדֶם 🙂'; return; }
-  drawChart(w); $('svOut').innerHTML = `מָה יָצָא? <span style="color:#7a4cc2">${w.map(i => FOODS[i].he).join(' וְ')}</span> 🎉`; tone(true); burst($('svOut'), ['🎉', '⭐']); };
-$('svReset').onclick = () => { SV.c = FOODS.map(() => 0); save(); fiC = 0; $('svOut').textContent = ''; showFood(); drawChart(); };
-showFood(); drawChart();
+  drawChart(w); $('svOut').innerHTML = `מָה יָצָא? <span style="color:#7a4cc2">${w.map((i, k) => k ? (/^[בומפ]/.test(FOODS[i].he) ? 'וּ' : 'וְ') + FOODS[i].he : FOODS[i].he).join(' ')}</span> 🎉`; tone(true); burst($('svOut'), ['🎉', '⭐']); };
+$('svReset').onclick = () => { SV.c = FOODS.map(() => 0); save(); $('svOut').textContent = ''; drawCount(); drawChart(); };
+drawCount(); drawChart();
 
 /* ---------- 3. true or false? 6 statements from the class counts (3 workbook frames) ---------- */
 const FR = [['כָּל הַתַּלְמִידִים אוֹהֲבִים לֶאֱכֹל ', (c, n) => c === n], ['אַף אֶחָד לֹא אוֹהֵב לֶאֱכֹל ', c => c === 0], ['הַרְבֵּה תַּלְמִידִים אוֹהֲבִים לֶאֱכֹל ', (c, n) => c > n / 2]];
@@ -903,8 +911,8 @@ $('tCd').onclick = () => countdown(null, 'הָרִימוּ ✔ אוֹ ✘!');
 $('tNext').onclick = () => { ti3 = (ti3 + 1) % TS.length; showT(); }; $('tPrev').onclick = () => { ti3 = (ti3 + TS.length - 1) % TS.length; showT(); };
 $('tNew').onclick = makeTS;
 /* fallback: type the counts here if section 2 was not done */
-function drawFix(){ $('tFix').innerHTML = `<table class="s25-tbl"><tr><td>כַּמָּה תַּלְמִידִים בַּכִּתָּה?</td><td><input type="number" min="1" max="40" data-n value="${SV.n}"></td></tr>${FOODS.map((f, i) => `<tr><td>${f.he}</td><td><input type="number" min="0" max="40" data-i="${i}" value="${SV.c[i]}"></td></tr>`).join('')}</table>`;
-  $('tFix').querySelectorAll('input').forEach(inp => inp.onchange = () => { if (inp.hasAttribute('data-n')) SV.n = Math.max(1, +inp.value || 1); else SV.c[+inp.dataset.i] = Math.max(0, +inp.value || 0); save(); $('svN').value = SV.n; showFood(); drawChart(); makeTS(); }); }
+function drawFix(){ $('tFix').innerHTML = `<table class="s25-tbl"><tr><td>כַּמָּה תַּלְמִידִים בַּכִּתָּה?</td><td><input type="number" min="1" max="20" data-n value="${SV.n}"></td></tr>${FOODS.map((f, i) => `<tr><td>${f.he}</td><td><input type="number" min="0" max="20" data-i="${i}" value="${SV.c[i]}"></td></tr>`).join('')}</table>`;
+  $('tFix').querySelectorAll('input').forEach(inp => inp.onchange = () => { if (inp.hasAttribute("data-n")) SV.n = clampN(inp.value); else setC(+inp.dataset.i, inp.value); save(); $('svN').value = SV.n; drawCount(); drawChart(); drawFix(); makeTS(); }); }
 drawFix(); makeTS();
 document.querySelector('a[href="#s3"]').addEventListener('click', () => { drawFix(); makeTS(); });
 
