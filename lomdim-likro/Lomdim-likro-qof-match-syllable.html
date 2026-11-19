@@ -2,11 +2,12 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
-<title>מְחַבְּרִים: תְּמוּנָה וַהֲבָרָה — ק · ר</title>
+<title>מְחַבְּרִים: תְּמוּנָה וַהֲבָרָה — ק</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/print-ind.css?v=1">
 <style>
-/* R7 #2: 6 workbook pictures — 6 first-syllable boxes (mixed); draw lines; 2 per page; p2 = answer key */
+/* Mon 12/14 (ק alone, teacher 11/19: one letter per Monday): 6 workbook pictures (ק + the known ב ת שׁ) — 6 first-syllable boxes (mixed);
+   draw lines; 2 per page; p2 = answer key. (The ק · ר version with רַ is now Lomdim-likro-resh-match-syllable.html.) */
 .mt{display:grid;grid-template-columns:40mm 1fr 30mm;flex:1;min-height:0;padding:0 8mm}
 .col{display:grid;grid-template-rows:repeat(6,minmax(0,1fr));gap:1.6mm}
 .p,.q{position:relative;display:flex;align-items:center}
@@ -21,8 +22,8 @@
 <body>
 <div id="pages"></div>
 <script>
-const PICS = [['cold', 2], ['train', 1], ['legs', 4], ['banana', 5], ['orange', 3], ['clock', 0]];   /* [picture, box index] */
-const BOX = ['שָׁ', 'רַ', 'קַ', 'תַ', 'רַ', 'בָּ'];
+const PICS = [['cold', 2], ['banana', 5], ['orange', 4], ['clock', 0], ['broccoli', 1], ['two', 3]];   /* [picture, box index] */
+const BOX = ['שָׁ', 'בְּ', 'קַ', 'שְׁ', 'תַ', 'בָּ'];
 const half = ex => `${PI.top('תְּמוּנָה וַהֲבָרָה', { tag: ex ? 'Answer key' : '' })}
   ${PI.ins(0, 'חַבְּרוּ בְּקַו: תְּמוּנָה — הַצְּלִיל הָרִאשׁוֹן.')}
   <div class="mt${ex ? ' ex' : ''}"><div class="col">${PICS.map(([p, b]) => `<div class="p" data-b="${b}">${PI.pic('tzlil:' + p)}<span class="dot"></span></div>`).join('')}</div><div></div>

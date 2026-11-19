@@ -64,6 +64,20 @@ const A3 = { type: 'board', label: 'חִמּוּם A', title: 'קוֹרְאִי�
   note: 'חִמּוּם A: חֲזָרָה עַל הָאוֹת שׁ (11/9; אֵין אוֹת שֶׁנִּלְמְדָה לִפְנֵי 2-3 שָׁבוּעוֹת). 1. סִבּוּב 1: תַּלְמִיד א קוֹרֵא שׁוּרָה, תַּלְמִיד ב בּוֹדֵק. 2. סִבּוּב 2: מַחְלִיפִים. 3. כָּל אֶחָד אוֹמֵר לְבֶן הַזּוּג 3 הֲבָרוֹת, וְהַשֵּׁנִי כּוֹתֵב. 3-2-1 הָרִימוּ!',
   credits: CR + '3 apples – Shixart1985, CC BY 2.0 · rug – Ohead, CC BY 4.0 · clock – Christoph Braun, CC0 · blue sky – SpongeLover08, CC0.' };
 
+/* ---------- Mon 12/14 (ק page, one letter per Monday): A4 carousel "בּ: כּוֹתְבִים אֶת הַצְּלִיל הָרִאשׁוֹן" (ב was taught 11/30).
+   duck + bottle = NEW photos, not downloaded yet (teacher's OK pending): their paths show a word box until the files exist ---------- */
+const A4 = { type: 'carousel', label: 'חִמּוּם A', title: 'בּ: כּוֹתְבִים אֶת הַצְּלִיל הָרִאשׁוֹן',
+  sub: 'רוֹאִים תְּמוּנָה ⬅ כּוֹתְבִים עַל הַלּוּחַ: בָּ, בַּ, בְּ אוֹ ✘ ⬅ 3-2-1 הָרִימוּ! ⬅ אוֹמְרִים לֶחָבֵר: "זֶה ___."',
+  boxes: ['בָּ', 'בַּ', 'בְּ', '✘'],
+  items: [
+    { src: WM + '4/44/Bananas_white_background_DS.jpg/500px-Bananas_white_background_DS.jpg', ans: 'בָּ', word: 'בָּנָנָה' },
+    { src: NEW + 'duck.jpg', ans: 'בַּ', word: 'בַּרְוָז' }, { src: NEW + 'bottle.jpg', ans: 'בַּ', word: 'בַּקְבּוּק' },
+    { src: 'bayit:clock', ans: '✘', word: 'שָׁעוֹן' }, { src: H + 'wu-house.jpg', ans: 'בַּ', word: 'בַּיִת' },
+    { src: NEW + 'broccoli.jpg', ans: 'בְּ', word: 'בְּרוֹקוֹלִי' }, { src: P.door, ans: '✘', word: 'דֶּלֶת' },
+    { src: WM + '3/3d/Three_Balloons_GRV.jpg/500px-Three_Balloons_GRV.jpg', ans: 'בָּ', word: 'בָּלוֹן' } ],
+  note: 'חִמּוּם A: חֲזָרָה עַל הָאוֹת ב (11/30). כָּל תַּלְמִיד כּוֹתֵב עַל לוּחַ קָטָן אֶת הַצְּלִיל הָרִאשׁוֹן (בָּ / בַּ / בְּ), אוֹ ✘ אִם הַמִּלָּה לֹא מַתְחִילָה בְּב. 3-2-1 הָרִימוּ!, הַמּוֹרֶה מְגַלֶּה, וְאוֹמְרִים לֶחָבֵר: "זֶה ___."',
+  credits: CR + 'bananas – Augustus Binu, CC BY-SA 3.0 · duck – PENDING (teacher\'s OK to download) · bottle – PENDING (teacher\'s OK to download) · clock – Christoph Braun, CC0 · house – "Newly developed single-family home in northern Germany", Boereck, public domain · ' + PENDING('broccoli') + ' · door – Cbaile19, CC0 · balloons – ZuhalM, CC BY-SA 4.0.' };
+
 window.WAB_SETS = {
   /* Niflaot 11/19 הַחֶדֶר שֶׁלִּי (the approved model) */
   '1119': { label: 'חִמּוּם B', title: 'בְּאֵיזוֹ קוֹמָה אַתָּה גָּר?', sub: 'מְדַבְּרִים בְּזוּגוֹת: שׁוֹאֲלִים וְעוֹנִים. בְּכָל סִבּוּב — בֶּן זוּג חָדָשׁ.',
@@ -93,7 +107,7 @@ window.WAB_SETS = {
     note: 'חִמּוּם A: חֲזָרָה עַל "מֵאֵיפֹה אַתָּה?" (עַמּוּדִים 22-24). 1. קוֹרְאִים יַחַד אֶת שְׁמוֹת הֶעָרִים. 2. סִבּוּב 1 + סִבּוּב 2 (דַּקָּה כָּל אֶחָד), בֶּן זוּג חָדָשׁ. 3. כּוֹתְבִים עַל לוּחַ קָטָן מֵאֵיפֹה בֶּן הַזּוּג, 3-2-1 הָרִימוּ! 4. שְׁנַיִם-שְׁלוֹשָׁה תַּלְמִידִים אוֹמְרִים: "הוּא מִ___."',
     credits: CR + 'Azrieli towers – Eurovaran, CC BY-SA 4.0 · Eiffel Tower – Benh LIEU SONG, public domain · Big Ben – Julian Herzog, CC BY 4.0 · Haifa Carmelit station – Deinocheirus, CC BY-SA 4.0 · Eilat coral reef – Yoav95179, CC BY-SA 4.0 · ' + PENDING('akko') + ' · ' + PENDING('newyork') + '.' },
 
-  A2, B2, A3,
+  A2, B2, A3, A4,
 
   /* R8 Tue 12/8 ma-yesh-barechov: B3 הַחֶדֶר שֶׁלִּי */
   B3: { label: 'חִמּוּם B', title: 'הַחֶדֶר שֶׁלִּי', sub: 'מְדַבְּרִים בְּזוּגוֹת, וְאָז כּוֹתְבִים מִשְׁפָּט.',

@@ -2,12 +2,13 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
-<title>ב, ת אוֹ שׁ? מַקִּיפִים וְכוֹתְבִים</title>
+<title>ב אוֹ שׁ? מַקִּיפִים וְכוֹתְבִים</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&family=Rubik:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/print-ind.css?v=1">
 <style>
-/* R3 #2: 12 workbook pictures, circle the first sound (בּ ת שׁ) and write the syllable; p2 = answer key */
-.g12{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:3mm;flex:1;min-height:0}
+/* Mon 11/30 (ב alone, teacher 11/19: one letter per Monday): 10 workbook pictures, circle the first sound (בּ / שׁ) and write the syllable;
+   p2 = answer key. (The 12-picture ב, ת אוֹ שׁ version is now Lomdim-likro-tav-first-sound.html.) */
+.g12{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:3mm;flex:1;min-height:0}
 .c{border:.35mm solid #c9ccd3;border-radius:3mm;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2mm}
 .c .pi-ph{width:36mm;height:30mm}
 .ch{display:flex;gap:5mm;font-size:22pt;font-weight:800;direction:rtl}
@@ -22,13 +23,13 @@
 <div id="pages"></div>
 <script>
 const IT = [['banana', 'בָּנָנָה', 'בּ', 'בָּ'], ['duck', 'בַּרְוָז', 'בּ', 'בַּ'], ['bottle', 'בַּקְבּוּק', 'בּ', 'בַּ'], ['house', 'בַּיִת', 'בּ', 'בַּ'],
-  ['balloon', 'בָּלוֹן', 'בּ', 'בָּ'], ['broccoli', 'בְּרוֹקוֹלִי', 'בּ', 'בְּ'], ['apple', 'תַּפּוּחַ', 'ת', 'תַ'], ['orange', 'תַּפּוּז', 'ת', 'תַ'],
-  ['hen', 'תַּרְנְגוֹלֶת', 'ת', 'תַ'], ['frame', 'תְּמוּנָה', 'ת', 'תְ'], ['three', 'שָׁלוֹשׁ', 'שׁ', 'שָׁ'], ['carpet', 'שָׁטִיחַ', 'שׁ', 'שָׁ']];
+  ['balloon', 'בָּלוֹן', 'בּ', 'בָּ'], ['broccoli', 'בְּרוֹקוֹלִי', 'בּ', 'בְּ'], ['clothes', 'בְּגָדִים', 'בּ', 'בְּ'], ['three', 'שָׁלוֹשׁ', 'שׁ', 'שָׁ'],
+  ['carpet', 'שָׁטִיחַ', 'שׁ', 'שָׁ'], ['two', 'שְׁתַּיִם', 'שׁ', 'שְׁ']];
 const MIX = PI.shuffle(IT, 30);
-const page = ex => PI.page(`${PI.top('ב, ת אוֹ שׁ?', { tag: ex ? 'Answer key' : '' })}
+const page = ex => PI.page(`${PI.top('ב אוֹ שׁ? מַקִּיפִים וְכוֹתְבִים', { tag: ex ? 'Answer key' : '' })}
   ${PI.ins(0, 'הַקִּיפוּ אֶת הַצְּלִיל הָרִאשׁוֹן, וְכִתְבוּ אֶת הַהֲבָרָה.')}
   <div class="g12">${MIX.map(([p, w, l, s]) => `<div class="c">${PI.pic('tzlil:' + p)}<span class="nm">${ex ? w : ''}</span>
-    <div class="ch">${['בּ', 'ת', 'שׁ'].map(x => `<span class="${ex && x === l ? 'ok' : ''}">${x}</span>`).join('')}</div><div class="wl">${ex ? s : ''}</div></div>`).join('')}</div>
+    <div class="ch">${['בּ', 'שׁ'].map(x => `<span class="${ex && x === l ? 'ok' : ''}">${x}</span>`).join('')}</div><div class="wl">${ex ? s : ''}</div></div>`).join('')}</div>
   ${ex ? '<div class="pi-key" dir="ltr"><p>Accept בָּ / בַּ and שָׁ / שַׁ either way (kamatz = patach).</p></div>' : ''}`);
 document.getElementById('pages').innerHTML = page(false) + page(true);
 </script>
