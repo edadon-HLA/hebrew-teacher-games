@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>רְצוּעוֹת הַשִּׂיחָה · רחוב העולם 2.28–2.29 (להדפסה)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* Dialogue strips (no glue): page 1 = the 6 lines of 2.29 as strips (180 x 22 mm) in mixed order, cut by the teacher, envelope per student.
+   Page 2 = 2 per A4 sheet "מְסַדְּרִים אֶת הַשִּׂיחָה" + write one line. Page 3 = key (book order). Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#111;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.page{width:190mm;height:255mm;margin:0 auto;page-break-after:always;break-after:page;overflow:hidden;position:relative}
+.page:last-child{page-break-after:auto;break-after:auto}
+.lab{text-align:center;font-size:9pt;color:#888;margin:0 0 4mm}
+.strips{display:grid;gap:0;justify-content:center}
+.st{position:relative;width:180mm;height:22mm;border:1.5px solid #111;margin-top:-1.5px;display:flex;align-items:center;gap:4mm;padding:0 5mm;font-size:20pt;font-weight:800}
+.st .nm{flex:none;color:#fff;border-radius:99px;padding:0 4mm;font-size:15pt}
+.st.keren .nm{background:#2f9d55}.st.dan .nm{background:#2a8bd0}
+.st i{position:absolute;bottom:.8mm;left:1.5mm;font-size:7pt;font-style:normal;color:#aaa;direction:ltr}
+.st b{font-size:11pt;color:#1b8a3a;margin-inline-start:auto}
+.half{display:grid;grid-template-rows:125mm 5mm 125mm;height:255mm}
+.cut{border-top:1.5px dashed #777;align-self:center}
+.ws{display:flex;flex-direction:column;padding:2mm 3mm;gap:3mm;overflow:hidden}
+.hd{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:4mm}
+.hd .nm{font-size:12pt;font-weight:700;display:flex;gap:2mm;align-items:flex-end}.hd .nm i{flex:1;border-bottom:1.2px solid #111;height:6mm}
+.hd b{font-size:20pt;font-weight:800}.hd .tag{font-size:9pt;color:#888;text-align:left}
+.ins{font-size:12pt;font-weight:700;color:#444;text-align:center}
+.order{display:grid;grid-template-columns:repeat(6,1fr);gap:2mm;direction:rtl}
+.order div{border:1.5px solid #444;border-radius:2mm;height:12mm;display:flex;align-items:center;justify-content:flex-start;padding-inline-start:2mm;font-size:9pt;color:#888}
+.q{font-size:14pt;font-weight:800}
+.ln{height:14mm;border-top:1px solid #7bbfe6;border-bottom:1px solid #7bbfe6;position:relative}.ln::after{content:'';position:absolute;left:0;right:0;top:50%;border-top:1px dashed #f08a8a}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="olam-2.28-data.js?v=1"></script>
+<script>
+const D = OLAM228, DL = D.DIALOG;
+const MIX = [3, 0, 5, 2, 4, 1];   /* fixed mixed order of the strips */
+const strip = (i, key) => `<div class="st ${DL[i].who}"><span class="nm">${D.NAME[DL[i].who]}</span><span>${DL[i].t}</span>${key ? `<b>${i + 1}</b>` : ''}<i>2.29</i></div>`;
+const sheet = `<div class="ws">
+  <div class="hd"><div class="nm">שֵׁם: <i></i></div><b>מְסַדְּרִים אֶת הַשִּׂיחָה</b><div class="tag"><bdi dir="ltr">2.29</bdi></div></div>
+  <div class="ins">מְסַדְּרִים אֶת הָרְצוּעוֹת עַל הַשֻּׁלְחָן: מִי מְדַבֵּר קֹדֶם?</div>
+  <div class="order">${[1, 2, 3, 4, 5, 6].map(n => `<div>${n}</div>`).join('')}</div>
+  <div class="q">כִּתְבוּ שׁוּרָה אַחַת:</div><div class="ln"></div><div class="ln"></div></div>`;
+document.getElementById('out').innerHTML =
+  `<div class="page"><div class="lab">רְצוּעוֹת הַשִּׂיחָה · רְחוֹב הָעוֹלָם <bdi dir="ltr">2.29</bdi> · הַמּוֹרֶה גּוֹזֵר מֵרֹאשׁ · סֶט אֶחָד לְכָל תַּלְמִיד (בְּמַעֲטָפָה)</div><div class="strips">${MIX.map(i => strip(i)).join('')}</div></div>` +
+  `<div class="page"><div class="half">${sheet}<div class="cut"></div>${sheet}</div></div>` +
+  `<div class="page"><div class="lab">מַפְתֵּחַ · Answer key (סֵדֶר הַחוֹבֶרֶת)</div><div class="strips">${DL.map((_, i) => strip(i, true)).join('')}</div></div>`;
+</script>
+</body>
+</html>

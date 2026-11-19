@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>אוֹכֵל, רָעֵב אוֹ צָמֵא? · רחוב העולם 2.28–2.29 (להדפסה)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* Independent sort sheet (no glue): 8 numbered HungryArt scenes, students write each number in the right box.
+   2 per page (top / bottom) + page 2 = key. Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#111;font-family:'Noto Sans Hebrew',Arial,sans-serif}
+.page{width:190mm;height:255mm;margin:0 auto;display:grid;grid-template-rows:125mm 5mm 125mm;page-break-after:always;break-after:page;overflow:hidden}
+.page:last-child{page-break-after:auto;break-after:auto}
+.cut{border-top:1.5px dashed #777;align-self:center;position:relative}
+.cut::after{content:'✂';position:absolute;top:-3mm;left:2mm;font-size:10pt;color:#777;background:#fff;padding:0 1mm;line-height:1}
+.ws{display:flex;flex-direction:column;padding:2mm 3mm;overflow:hidden}
+.hd{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:4mm}
+.hd .nm{font-size:12pt;font-weight:700;display:flex;gap:2mm;align-items:flex-end}.hd .nm i{flex:1;border-bottom:1.2px solid #111;height:6mm}
+.hd b{font-size:20pt;font-weight:800}.hd .tag{font-size:9pt;color:#888;text-align:left}.hd .key{font-size:11pt;color:#1b8a3a;font-weight:800;text-align:left}
+.ins{font-size:13pt;font-weight:800;margin:1mm 0 2mm;text-align:center}
+.pics{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:34mm;gap:2mm}
+.p{position:relative;border:1.2px solid #444;border-radius:2mm;display:grid;place-items:center;overflow:hidden}
+.p svg{height:25mm;width:auto;max-width:100%}
+.p .n{position:absolute;top:1mm;right:1mm;width:7mm;height:7mm;border-radius:50%;background:#111;color:#fff;display:grid;place-items:center;font-size:12pt;font-weight:800}
+.boxes{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:2.5mm;margin-top:3mm;min-height:0}
+.bx{border:2.5px solid #111;border-radius:3mm;display:flex;flex-direction:column;align-items:center;padding:1mm}
+.bx b{font-size:17pt;font-weight:800;border-bottom:1.5px solid #111;width:100%;text-align:center}
+.bx span{flex:1;display:grid;place-items:center;font-size:22pt;font-weight:800;color:#1b8a3a}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="olam-2.28-data.js?v=1"></script>
+<script>
+/* 2.28–2.29 sort sheet: the 6 workbook p.22 crops in a fixed mixed order (spec: 1 צְמֵאָה, 2 אוֹכֵל, 3 רְעֵבָה, 4 צָמֵא, 5 אוֹכֶלֶת, 6 רָעֵב), 3 boxes.
+   Key: eat = 2, 5 · hungry = 3, 6 · thirsty = 1, 4 */
+const BY = OLAM228.BY;
+const P = ['tzmea', 'ochel', 'reeva', 'tzame', 'ochelet', 'raev'].map(id => [id, BY[id].k]);
+const B = [['eat', 'אוֹכֵל / אוֹכֶלֶת'], ['hungry', 'רָעֵב / רְעֵבָה'], ['thirsty', 'צָמֵא / צְמֵאָה']];
+const sheet = key => `<div class="ws">
+  <div class="hd"><div class="nm">שֵׁם: <i></i></div><b>אוֹכֵל, רָעֵב אוֹ צָמֵא?</b>${key ? '<div class="key">מַפְתֵּחַ · Answer key</div>' : '<div class="tag"><bdi dir="ltr">2.28</bdi></div>'}</div>
+  <div class="ins">כִּתְבוּ אֶת הַמִּסְפָּר בַּמָּקוֹם הַנָּכוֹן.</div>
+  <div class="pics">${P.map(([id], i) => `<div class="p"><img src="${BY[id].img}" alt="" style="height:100%;width:100%;object-fit:cover"><span class="n">${i + 1}</span></div>`).join('')}</div>
+  <div class="boxes">${B.map(([g, he]) => `<div class="bx"><b>${he}</b><span>${key ? P.map((p, i) => p[1] === g ? i + 1 : 0).filter(Boolean).join(' · ') : ''}</span></div>`).join('')}</div></div>`;
+document.getElementById('out').innerHTML =
+  `<div class="page">${sheet()}<div class="cut"></div>${sheet()}</div>` +
+  `<div class="page">${sheet(true)}<div></div><div></div></div>`;
+</script>
+</body>
+</html>
