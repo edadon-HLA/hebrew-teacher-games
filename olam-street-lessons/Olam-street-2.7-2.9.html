@@ -527,16 +527,16 @@ function startFind(){
 $('fNext').onclick = () => { ti = (ti + 1) % TARGETS.length; startFind(); };
 $('tEar').onclick = () => say(TARGETS[ti][1]);
 startFind();
-/* step 2: handwriting (cursive shapes, as in the workbook) */
+/* handwriting: each letter traced from the workbook's own model letter (olam/crops/2.8-*.png, 2.11-*.png), book lines -> y 14 / 50 / 86 (same as shared/warmup-talk.js) */
 const LET = [
-  { n: 'מ', p: ['M28 18 L28 82', 'M28 18 L72 82', 'M72 82 L72 18'] },
-  { n: 'ה', p: ['M26 24 Q60 10 78 30 Q80 56 72 82', 'M30 46 Q50 40 56 58 Q58 72 54 82'] },
-  { n: 'ש', p: ['M62 20 C40 18 30 42 38 62 C46 80 74 78 76 60 C78 44 54 44 36 56'] },
-  { n: 'ל', p: ['M82 8 Q58 6 55 26 L53 72 Q52 92 37 90 Q24 88 29 74 Q34 63 53 70'] },
-  { n: 'ו', p: ['M50 18 L50 82'] },
-  { n: 'ך', p: ['M26 24 Q60 12 72 28 L72 96'] },
+  { n: 'מ', p: ['M35 42 V84.5', 'M35 42 L63 84.5', 'M63 84.5 V41'] },
+  { n: 'ה', p: ['M29.9 45.7 C36 42.3 42 41.2 47 41.2 C61 41.2 70.3 50 70.3 62.3 C70.3 72 66.5 79 61.6 84.5', 'M30.7 61.8 C34 59.2 37 58.4 40 58.4 C46 58.4 49.8 63 49.7 69 C49.6 75 47.2 80 44.4 84.5'] },
+  { n: 'ש', p: ['M36 69 C46 63 58 56 58 47 C58 37 49 37 44 41 C38 47 35 56 35 65 C35 77 41 83.5 49 83.5 C56 83.5 61 79 63 70'] },
+  { n: 'ל', p: ['M68 2 C60 2 52 2 47 4 C42 7 42 14 42.5 22 L46 68 C47 76 43 79 39 78 C33 77 31 70 32 64 C33 58 37 54 42 51'] },
+  { n: 'ו', p: ['M48 41 V84.5'] },
+  { n: 'ך', p: ['M30 42 C40 37 52 37 60 41 C67 45 69 53 68 62 C67 74 60 82 50 83 L34 83 C32 83 32 85 32 88 L32 99'] },
 ];
-const GUIDE = '<line x1="0" y1="18" x2="100" y2="18" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="82" x2="100" y2="82" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="50" x2="100" y2="50" stroke="#f08a8a" stroke-width="1" stroke-dasharray="4 4"/>';
+const GUIDE = '<line x1="0" y1="14" x2="100" y2="14" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="86" x2="100" y2="86" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="50" x2="100" y2="50" stroke="#f08a8a" stroke-width="1" stroke-dasharray="4 4"/>';
 $('wgrid').innerHTML = LET.map((l, i) => `<div class="wbox"><h3>${l.n}</h3><div class="pad" id="pad${i}"><svg class="guide" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${GUIDE}<g class="model">${l.p.map(d => `<path d="${d}"/>`).join('')}</g><g class="anim"></g></svg><canvas></canvas></div>
   <div class="row"><button class="btn" type="button" data-demo="${i}">▶ הַדְגָּמָה</button><button class="btn" type="button" data-clear="${i}">↺</button></div></div>`).join('');
 LET.forEach((l, i) => {

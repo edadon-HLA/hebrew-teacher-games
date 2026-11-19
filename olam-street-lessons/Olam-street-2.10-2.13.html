@@ -617,16 +617,16 @@ function startFind(){
 $('fNext').onclick = () => { ti = (ti + 1) % TARGETS.length; startFind(); };
 $('tEar').onclick = () => say(TARGETS[ti][1], 'f');
 startFind();
-/* handwriting (cursive shapes as in the workbook) */
+/* handwriting: each letter traced from the workbook's own model letter (olam/crops/2.8-*.png, 2.11-*.png), book lines -> y 14 / 50 / 86 (same as shared/warmup-talk.js) */
 const LET = [
-  { n: 'ב', p: ['M30 26 Q62 14 74 34 Q80 56 70 82 L28 82'] },
-  { n: 'ס', p: ['M50 22 A28 28 0 1 0 50.1 22'] },
-  { n: 'ד', p: ['M28 24 L72 24 Q74 52 62 82'] },
-  { n: 'ר', p: ['M26 30 Q60 14 74 40 Q78 62 70 82'] },
-  { n: 'ט', p: ['M66 22 C44 20 30 44 38 64 C46 84 76 76 72 56 C70 44 54 44 46 56'] },
-  { n: 'ו', p: ['M50 18 L50 82'] },
+  { n: 'ב', p: ['M28 49 C36 43 42 41 47 41 C60 41 68 51 68 64 C68 73 64 80 59 85 C57 79 53 72 46 71.5 C40 71 35 76 32 85'] },
+  { n: 'ס', p: ['M48 41.5 A22.5 22 0 1 0 48.1 41.5'] },
+  { n: 'ד', p: ['M32 47 C38 42 43 40 48 40 C58 40 63 46 63 53 C63 61 55 63 49 62 C45 61.5 44 65 47 67 C52 69 58 66 61 70 C63 74 63 80 61 84.5'] },
+  { n: 'ר', p: ['M28 49 C35 43 42 40 49 40 C61 40 69 49 69 62 C69 71 65 78 60 84'] },
+  { n: 'ט', p: ['M60 13 C48 24 34 36 33 52 C32 68 38 84.5 51 84.5 C62 84.5 65 72 64 59'] },
+  { n: 'ו', p: ['M48 41 V84.5'] },
 ];
-const GUIDE = '<line x1="0" y1="18" x2="100" y2="18" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="82" x2="100" y2="82" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="50" x2="100" y2="50" stroke="#f08a8a" stroke-width="1" stroke-dasharray="4 4"/>';
+const GUIDE = '<line x1="0" y1="14" x2="100" y2="14" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="86" x2="100" y2="86" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="50" x2="100" y2="50" stroke="#f08a8a" stroke-width="1" stroke-dasharray="4 4"/>';
 $('wgrid').innerHTML = LET.map((l, i) => `<div class="wbox"><h3>${l.n}</h3><div class="pad" id="pad${i}"><svg class="guide" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${GUIDE}<g class="model">${l.p.map(d => `<path d="${d}"/>`).join('')}</g><g class="anim"></g></svg><canvas></canvas></div>
   <div class="row"><button class="btn" type="button" data-demo="${i}">▶ הַדְגָּמָה</button><button class="btn" type="button" data-clear="${i}">↺</button></div></div>`).join('');
 LET.forEach((l, i) => {

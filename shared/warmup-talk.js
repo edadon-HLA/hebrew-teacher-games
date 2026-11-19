@@ -63,27 +63,28 @@
         q('m').textContent = last ? 'כָּל הַכָּבוֹד! 🎉' : 'מַחֲלִיפִים! בֶּן זוּג חָדָשׁ · סִבּוּב ' + (rd + 1) + ' מִתּוֹךְ ' + N;
         q('go').textContent = last ? '↺ מֵהַהַתְחָלָה' : goTxt; }, 1000); };
   }
-  /* WT.cursive(text, h) -> inline <svg> of the words in the workbook cursive shapes (the same paths as the 2.8 / 2.11 writing pads).
+  /* WT.cursive(text, h) -> inline <svg> of the words in the workbook cursive shapes. Each letter is traced from the workbook's own model
+     letter (crops olam/crops/2.8-*.png and 2.11-*.png, book top / base lines mapped to y=14 / y=86, ink centred on x=50; ה = the 2.24 trace).
      Letters: מ ה ש ל ו ך (2.8) · ב ס ד ר ט (2.11); space and "?" supported. h = height in px (default 70). */
   const CUR = {
-    'מ': ['M28 18 L28 82', 'M28 18 L72 82', 'M72 82 L72 18'],
-    'ה': ['M26 24 Q60 10 78 30 Q80 56 72 82', 'M30 46 Q50 40 56 58 Q58 72 54 82'],
-    'ש': ['M62 20 C40 18 30 42 38 62 C46 80 74 78 76 60 C78 44 54 44 36 56'],
-    'ל': ['M82 8 Q58 6 55 26 L53 72 Q52 92 37 90 Q24 88 29 74 Q34 63 53 70'],
-    'ו': ['M50 18 L50 82'],
-    'ך': ['M26 24 Q60 12 72 28 L72 96'],
-    'ב': ['M30 26 Q62 14 74 34 Q80 56 70 82 L28 82'],
-    'ס': ['M50 22 A28 28 0 1 0 50.1 22'],
-    'ד': ['M28 24 L72 24 Q74 52 62 82'],
-    'ר': ['M26 30 Q60 14 74 40 Q78 62 70 82'],
-    'ט': ['M66 22 C44 20 30 44 38 64 C46 84 76 76 72 56 C70 44 54 44 46 56'],
+    'מ': ['M35 42 V84.5', 'M35 42 L63 84.5', 'M63 84.5 V41'],
+    'ה': ['M29.9 45.7 C36 42.3 42 41.2 47 41.2 C61 41.2 70.3 50 70.3 62.3 C70.3 72 66.5 79 61.6 84.5', 'M30.7 61.8 C34 59.2 37 58.4 40 58.4 C46 58.4 49.8 63 49.7 69 C49.6 75 47.2 80 44.4 84.5'],
+    'ש': ['M36 69 C46 63 58 56 58 47 C58 37 49 37 44 41 C38 47 35 56 35 65 C35 77 41 83.5 49 83.5 C56 83.5 61 79 63 70'],
+    'ל': ['M68 2 C60 2 52 2 47 4 C42 7 42 14 42.5 22 L46 68 C47 76 43 79 39 78 C33 77 31 70 32 64 C33 58 37 54 42 51'],
+    'ו': ['M48 41 V84.5'],
+    'ך': ['M30 42 C40 37 52 37 60 41 C67 45 69 53 68 62 C67 74 60 82 50 83 L34 83 C32 83 32 85 32 88 L32 99'],
+    'ב': ['M28 49 C36 43 42 41 47 41 C60 41 68 51 68 64 C68 73 64 80 59 85 C57 79 53 72 46 71.5 C40 71 35 76 32 85'],
+    'ס': ['M48 41.5 A22.5 22 0 1 0 48.1 41.5'],
+    'ד': ['M32 47 C38 42 43 40 48 40 C58 40 63 46 63 53 C63 61 55 63 49 62 C45 61.5 44 65 47 67 C52 69 58 66 61 70 C63 74 63 80 61 84.5'],
+    'ר': ['M28 49 C35 43 42 40 49 40 C61 40 69 49 69 62 C69 71 65 78 60 84'],
+    'ט': ['M60 13 C48 24 34 36 33 52 C32 68 38 84.5 51 84.5 C62 84.5 65 72 64 59'],
   };
-  const WID = { 'ו': 34, ' ': 34, '?': 40 };
+  const WID = { 'ו': 34, ' ': 34, '?': 46 };
   function cursive(text, h){
     const chars = [...text]; let x = 0; const parts = [];
     const total = chars.reduce((s, c) => s + (WID[c] || 66), 0);
     chars.forEach(c => { const w = WID[c] || 66; const left = total - x - w;   /* RTL: first letter on the right */
-      if (c === '?') parts.push(`<text x="${left + 30}" y="82" font-size="70" font-family="Arial" text-anchor="middle" fill="currentColor" stroke="none">?</text>`);
+      if (c === '?') parts.push(`<text x="${left + 18}" y="86" font-size="70" font-family="Arial" text-anchor="middle" fill="currentColor" stroke="none">?</text>`);
       else if (CUR[c]) parts.push(`<g transform="translate(${left - (100 - w) / 2} 0)">${CUR[c].map(d => `<path d="${d}"/>`).join('')}</g>`);
       x += w; });
     return `<svg class="wt-cur" viewBox="0 0 ${total} 100" style="height:${h || 70}px;width:auto;overflow:visible" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" aria-label="${esc(text)}">${parts.join('')}</svg>`;
@@ -92,7 +93,7 @@
   function chat(root){
     const rows = [['א', 'מָה שְׁלוֹמְךָ?', 'מה שלומך?'], ['ב', 'טוֹב / בְּסֵדֶר', ['טוב', 'בסדר']], ['ב', 'מָה שְׁלוֹמְךָ?', 'מה שלומך?']];
     root.innerHTML = `<div class="wt-frame">${rows.map(([w, t, c]) => `<div class="${w === 'ב' ? 'b' : 'a'}" style="align-items:flex-start"><span class="w">${w}</span>
-      <span style="display:flex;flex-direction:column;gap:4px"><span>${t}</span><span style="color:#1f4fbf;display:flex;gap:18px;align-items:center">${(Array.isArray(c) ? c : [c]).map(x => cursive(x, 64)).join('<span style="font-size:30px">/</span>')}</span></span></div>`).join('')}</div>
+      <span style="display:flex;flex-direction:column;gap:4px"><span>${t}</span><span style="color:#1f4fbf;display:flex;gap:18px;align-items:center">${(Array.isArray(c) ? c : [c]).map(x => cursive(x, 64)).join('<span dir="ltr" style="font:400 60px/1 Arial,sans-serif;color:#23233a;padding:0 6px;align-self:center">/</span>')}</span></span></div>`).join('')}</div>
       <div data-a="tm"></div>`;
     talk(root.querySelector('[data-a="tm"]'), [], { n: 2 });
   }
