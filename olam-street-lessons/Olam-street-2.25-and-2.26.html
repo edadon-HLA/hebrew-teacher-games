@@ -945,15 +945,16 @@ function startFind(){
 $('fNext').onclick = () => { ti = (ti + 1) % TARGETS.length; startFind(); };
 $('tEar').onclick = () => say(TARGETS[ti][1]);
 startFind();
-/* cursive models on the workbook lines of 2.24 (top y=14, dashed middle y=50, baseline y=86): ה = the 2.24 trace; ו ל ך כ ת approximate
-   strokes in the same style (ך goes below the baseline, ל above the top line). Each path is one stroke, in writing order. */
+/* cursive models on the workbook lines of 2.24 (top y=14, dashed middle y=50, baseline y=86): ה = the 2.24 trace; ו ל ך כ ת traced
+   from the workbook's own model letters on p.20 (crops olam/crops/2.26-*.png, book top/base lines mapped to y=14/86, 0.409 per px;
+   ך's long tail is cut at the pad edge). Each path is one stroke, in writing order. */
 const CUR = {
   'ה': ['M29.9 45.7 C36 42.3 42 41.2 47 41.2 C61 41.2 70.3 50 70.3 62.3 C70.3 72 66.5 79 61.6 84.5', 'M30.7 61.8 C34 59.2 37 58.4 40 58.4 C46 58.4 49.8 63 49.7 69 C49.6 75 47.2 80 44.4 84.5'],
-  'ו': ['M52 40 C52 56 51 70 50 84.5'],
-  'ל': ['M72 12 C70 6 62 4 57 9 C52 14 53 26 53 40 C53 56 55 70 52 80 C49 88 40 86 39 78 C38 70 46 66 56 64'],
-  'ך': ['M30 44 C40 40 52 40 60 43 C66 46 67 52 67 60 L67 99'],
-  'כ': ['M30 44 C40 40 52 40 60 44 C68 49 70 58 69 66 C68 77 60 84.5 48 84.5 L32 84.5'],
-  'ת': ['M66 84.5 L66 56 C66 45 58 41 51 42 C43 43 41 51 41 60 L41 75 C41 84 33 86 28 80'],
+  'ו': ['M50 40 V84.5'],
+  'ל': ['M68 5 C60 4 50 4 46 9 C43 14 43 28 43 42 C43 58 44 72 41 80 C38 87 29 87 27 79 C25 70 32 63 43 61'],
+  'ך': ['M33 44 C42 38.5 54 38 61 40.5 C68 43 72 50 72 58 C72 69 66 78 56 79 C46 80 40 80 37 82 L36 99'],
+  'כ': ['M31 43 C40 39.5 52 38.5 60 40.5 C68 43 71 52 71 62 C71 74 66 84 56 84.5 L31 84.5'],
+  'ת': ['M71 84.5 L71 58 C71 47 64 41 56 41 C46 41 39 47 38 57 L37 80 C36.5 85 31 86 27 83'],
 };
 const LET = ['ה', 'ו', 'ל', 'ך', 'ה', 'ו', 'ל', 'כ', 'ת'].map(n => ({ n, p: CUR[n] }));
 const GUIDE = '<line x1="0" y1="14" x2="100" y2="14" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="86" x2="100" y2="86" stroke="#7bbfe6" stroke-width="1.2"/><line x1="0" y1="50" x2="100" y2="50" stroke="#f08a8a" stroke-width="1" stroke-dasharray="4 4"/>';

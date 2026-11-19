@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מִשְׂחַק זִכָּרוֹן · רחוב העולם 2.27 (להדפסה)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;700;800&display=swap">
+<style>
+/* Food memory cards: 10 pairs (picture card = site food art, word card with nikud), 60 x 60 mm, 12 per page, 2 pages, cut lines.
+   Single-sided: print on thick paper (card stock) so the cards cannot be seen through. Cut by the teacher, 1 set per pair.
+   Letter-safe box 190 x 255 mm. */
+@page{size:A4;margin:21mm 10mm}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#111;font-family:'Noto Sans Hebrew','Segoe UI Emoji',Arial,sans-serif}
+.page{width:190mm;height:255mm;margin:0 auto;page-break-after:always;break-after:page;overflow:hidden;padding-top:6mm;position:relative}
+.page:last-child{page-break-after:auto;break-after:auto}
+.lab{position:absolute;top:0;left:0;right:0;text-align:center;font-size:8.5pt;color:#888;line-height:5mm}
+.grid{display:grid;grid-template-columns:repeat(3,60mm);grid-auto-rows:60mm;justify-content:center;direction:rtl}
+.c{position:relative;border:1.5px solid #111;margin:-.75px;display:grid;place-items:center;text-align:center;padding:4mm;overflow:hidden}
+.c svg{max-width:48mm;max-height:48mm;width:auto;height:auto}.c .emo{font-size:96pt;line-height:1}
+.c.w{font-size:28pt;font-weight:800;line-height:1.2}
+.c i{position:absolute;bottom:1mm;left:1.5mm;font-size:7pt;font-style:normal;color:#aaa;direction:ltr}
+@media screen{body{background:#eee;padding:10px}.page{background:#fff;box-shadow:0 2px 12px #0003;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script src="olam-2.27-data.js?v=1"></script>
+<script>
+/* 2.27 place memory cards: 8 pairs (workbook p.21 place picture <-> place word), 16 cards 60 x 60 mm, 12 + 4 per page */
+const PL = OLAM227.PLACES;
+const pic = i => `<div class="c"><img src="${PL[i].img}" alt="" style="width:50mm;height:50mm;object-fit:cover;border-radius:3mm"><i>2.27</i></div>`;
+const word = i => `<div class="c w" style="font-size:24pt">${PL[i].he}<i>2.27</i></div>`;
+const MIX = ['p3', 'w0', 'p7', 'w5', 'p1', 'w6', 'p4', 'w2', 'p0', 'w7', 'p5', 'w3', 'p6', 'w1', 'p2', 'w4'];
+const cards = MIX.map(k => k[0] === 'p' ? pic(+k.slice(1)) : word(+k.slice(1)));
+const lab = n => `<div class="lab">מִשְׂחַק זִכָּרוֹן · רְחוֹב הָעוֹלָם <bdi dir="ltr">2.27</bdi> · דַּף ${n} מִתּוֹךְ 2 · מַדְפִּיסִים עַל צַד אֶחָד (נְיָר עָבֶה) · גּוֹזְרִים לְאֹרֶךְ הַקַּוִּים</div>`;
+document.getElementById('out').innerHTML = `<div class="page">${lab(1)}<div class="grid">${cards.slice(0, 12).join('')}</div></div><div class="page">${lab(2)}<div class="grid">${cards.slice(12).join('')}</div></div>`;
+</script>
+</body>
+</html>
