@@ -65,7 +65,7 @@ const A3 = { type: 'board', label: 'חִמּוּם A', title: 'קוֹרְאִי�
   credits: CR + '3 apples – Shixart1985, CC BY 2.0 · rug – Ohead, CC BY 4.0 · clock – Christoph Braun, CC0 · blue sky – SpongeLover08, CC0.' };
 
 /* ---------- Mon 12/14 (ק page, one letter per Monday): A4 carousel "בּ: כּוֹתְבִים אֶת הַצְּלִיל הָרִאשׁוֹן" (ב was taught 11/30).
-   duck + bottle = NEW photos, not downloaded yet (teacher's OK pending): their paths show a word box until the files exist ---------- */
+   duck + bottle = NEW photos in shared/warmup-photos/ (downloaded with the teacher's OK, 11/19: "Yes, download") ---------- */
 const A4 = { type: 'carousel', label: 'חִמּוּם A', title: 'בּ: כּוֹתְבִים אֶת הַצְּלִיל הָרִאשׁוֹן',
   sub: 'רוֹאִים תְּמוּנָה ⬅ כּוֹתְבִים עַל הַלּוּחַ: בָּ, בַּ, בְּ אוֹ ✘ ⬅ 3-2-1 הָרִימוּ! ⬅ אוֹמְרִים לֶחָבֵר: "זֶה ___."',
   boxes: ['בָּ', 'בַּ', 'בְּ', '✘'],
@@ -76,7 +76,7 @@ const A4 = { type: 'carousel', label: 'חִמּוּם A', title: 'בּ: כּוֹ
     { src: NEW + 'broccoli.jpg', ans: 'בְּ', word: 'בְּרוֹקוֹלִי' }, { src: P.door, ans: '✘', word: 'דֶּלֶת' },
     { src: WM + '3/3d/Three_Balloons_GRV.jpg/500px-Three_Balloons_GRV.jpg', ans: 'בָּ', word: 'בָּלוֹן' } ],
   note: 'חִמּוּם A: חֲזָרָה עַל הָאוֹת ב (11/30). כָּל תַּלְמִיד כּוֹתֵב עַל לוּחַ קָטָן אֶת הַצְּלִיל הָרִאשׁוֹן (בָּ / בַּ / בְּ), אוֹ ✘ אִם הַמִּלָּה לֹא מַתְחִילָה בְּב. 3-2-1 הָרִימוּ!, הַמּוֹרֶה מְגַלֶּה, וְאוֹמְרִים לֶחָבֵר: "זֶה ___."',
-  credits: CR + 'bananas – Augustus Binu, CC BY-SA 3.0 · duck – PENDING (teacher\'s OK to download) · bottle – PENDING (teacher\'s OK to download) · clock – Christoph Braun, CC0 · house – "Newly developed single-family home in northern Germany", Boereck, public domain · ' + PENDING('broccoli') + ' · door – Cbaile19, CC0 · balloons – ZuhalM, CC BY-SA 4.0.' };
+  credits: CR + 'bananas – Augustus Binu, CC BY-SA 3.0 · duck – "Mallard drake at Marymoor Park (cropped)", Dcoetzee, public domain · bottle – "Bottle of water", Celiapratginestos, CC BY-SA 4.0 · clock – Christoph Braun, CC0 · house – "Newly developed single-family home in northern Germany", Boereck, public domain · ' + PENDING('broccoli') + ' · door – Cbaile19, CC0 · balloons – ZuhalM, CC BY-SA 4.0.' };
 
 window.WAB_SETS = {
   /* Niflaot 11/19 הַחֶדֶר שֶׁלִּי (the approved model) */
